@@ -15,7 +15,7 @@ module "loganalytics" {
 }
 
 module "kubernetes" {
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=cft"
 
   environment = var.environment
   location    = var.location
