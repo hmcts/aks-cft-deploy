@@ -18,10 +18,4 @@ private_dns_zones = [
 hub = "sbox"
 
 additional_routes = [
-  {
-    name                   = "0_0_0_0"
-    address_prefix         = "0.0.0.0/0"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.10.200.36"
-  }
 ]
