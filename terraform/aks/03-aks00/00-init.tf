@@ -29,8 +29,8 @@ locals {
 
 provider "azurerm" {
   # subscription_id            = local.acr[var.project].subscription
-  subscription_id            = local.acr["global"].subscription
-  skip_provider_registration = "true"
+  # subscription_id            = local.acr["global"].subscription
+  # skip_provider_registration = "true"
   features {}
   alias = "acr"
 }
