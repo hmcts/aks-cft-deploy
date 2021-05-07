@@ -92,7 +92,7 @@ stages:
               stack: '01-network'
               project: $(project)
               tfversion: $(tfversion)
-              terraformServiceConnection: OPS-APPROVAL-GATE-${{ parameters.env }}-ENVS #OPS-APPROVAL-GATE-MGMT-ENVS
+              terraformServiceConnection: DCD-CFTAPPS-SBOX #OPS-APPROVAL-GATE-MGMT-ENVS
               tfInitSub: ${{ variables.tfInitSub }}
 
 
