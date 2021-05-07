@@ -78,12 +78,12 @@ locals {
   }
 
   common_tags = {
-    "managedBy"          = "SS DevOps"
-    "solutionOwner"      = "Shared Services"
+    "managedBy"          = "PlatformEngineering"
+    "solutionOwner"      = "CFT"
     "activityName"       = "AKS"
     "dataClassification" = "Internal"
-    "automation"         = "AKS Build Infrastructure"
-    "costCentre"         = "ss-aks" // until we get a better one, this is the generic cft contingency one
+    "automation"         = "cft-aks-deploy"
+    "costCentre"         = "10245117" // until we get a better one, this is the generic cft contingency one
     "environment"        = local.env_display_names[var.environment]
     "criticality"        = local.criticality[var.environment]
   }
