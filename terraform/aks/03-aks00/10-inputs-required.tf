@@ -24,3 +24,7 @@ variable "kubernetes_cluster_agent_vm_size" {
 
 variable "kubernetes_cluster_version" {}
 
+# CFT specific
+variable "kubernetes_cluster_version" {
+  default = false
+}
