@@ -6,10 +6,10 @@ locals {
   // TODO delete after applying MI in all ENVs
   // working around 'Error: Provider configuration not present'
   acr = {
-    ss = {
-      subscription = "5ca62022-6aa2-4cee-aaa7-e7536c8d566c"
-      project      = "sds"
-    }
+    # ss = {
+    #   subscription = "5ca62022-6aa2-4cee-aaa7-e7536c8d566c"
+    #   project      = "sds"
+    # }
   }
 
   criticality = {
