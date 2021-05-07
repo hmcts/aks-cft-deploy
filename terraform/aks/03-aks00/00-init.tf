@@ -27,12 +27,12 @@ locals {
   }
 }
 
-provider "azurerm" {
-  subscription_id            = local.acr[var.project].subscription
-  skip_provider_registration = "true"
-  features {}
-  alias = "acr"
-}
+# provider "azurerm" {
+#   subscription_id            = local.acr[var.project].subscription
+#   skip_provider_registration = "true"
+#   features {}
+#   alias = "acr"
+# }
 
 provider "azurerm" {
   subscription_id            = local.acr["global"].subscription
