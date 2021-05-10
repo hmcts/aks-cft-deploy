@@ -14,6 +14,11 @@ kubectl apply -f ${FLUX_HELM_CRD}
 kubectl -n admin delete secret flux-helm-repositories || true
 helm upgrade flux-helm-operator fluxcd/helm-operator --install --namespace admin   -f  deployments/fluxcd/helm-operator-values.yaml --version 1.2.0 --wait
 
+# Change $ENV var to correct name
+if [ $ENV = "sbox" ]
+then
+ENV="sandbox"
+fi
 
 #Install kustomize
 curl -s "https://raw.githubusercontent.com/\
