@@ -32,7 +32,7 @@ chmod +x create-custom-namespaces.sh
 chmod +x create-cluster-admins.sh
 chmod +x install-sealed-secrets.sh
 chmod +x create-flux-githubkey-secret.sh
-# chmod +x install-flux.sh
+chmod +x install-flux.sh
 
 echo "Starting Deployment"
 ./get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
