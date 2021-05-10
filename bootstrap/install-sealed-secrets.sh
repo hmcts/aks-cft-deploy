@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VAULT_NAME="${4}"
+VAULT_NAME="dcdcftappssboxkv"
 VERSION="1.10.3"
 NAMESPACE="admin"
 
