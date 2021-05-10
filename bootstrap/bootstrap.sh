@@ -27,6 +27,7 @@ then
     usage
 fi
 
+chmod +x get-aks-credentials.sh
 
 echo "Starting Deployment"
 ./get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
