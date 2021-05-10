@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 
-VAULT_NAME="${4}"
+VAULT_NAME=${4}
 VERSION="1.10.3"
 NAMESPACE="admin"
 
