@@ -35,7 +35,7 @@ resources:
   - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/flux.yaml
 patchesStrategicMerge:
   - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/patches/${ENV}/flux.yaml
-  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/patches/${ENV}/${CLUSTER_NAME}/flux.yaml
+  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/patches/${ENV}/cluster-${CLUSTER_NAME}/flux.yaml
 EOF
 ) > "${TMP_DIR}/kustomization.yaml"
 # -----------------------------------------------------------
