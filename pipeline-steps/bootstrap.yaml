@@ -4,6 +4,7 @@ parameters:
   project: ''
   command: ''
   clusterName: ''
+  akskeyvault: ''
 
 steps:
 
@@ -41,6 +42,6 @@ steps:
     scriptType: shell
     failOnStandardError: 'false'
     scriptPath: bootstrap/bootstrap.sh
-    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) ${{ parameters.clusterName }} deploy '
+    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) ${{ parameters.clusterName }} deploy ${{ parameters.akskeyvault }} '
 
 

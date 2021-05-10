@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-PARAM_LIST=( PROJECT SERVICE ENVIRONMENT KEYVAULT SUBSCRIPTION_NAME CLUSTER_NAME COMMAND )
+PARAM_LIST=( PROJECT SERVICE ENVIRONMENT KEYVAULT SUBSCRIPTION_NAME CLUSTER_NAME COMMAND AKS_KEYVAULT )
 ############################################################
 # Functions
 ############################################################
@@ -31,12 +31,14 @@ chmod +x get-aks-credentials.sh
 chmod +x create-custom-namespaces.sh
 chmod +x create-cluster-admins.sh
 chmod +x install-sealed-secrets.sh
+chmod +x create-flux-githubkey-secret
 
 echo "Starting Deployment"
 ./get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
 ./create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"
 ./create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
 ./install-sealed-secrets.sh "$@"|| error_exit "ERROR: Unable to install sealed secrets"
+./create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
 # ./create-sshkeys.sh "$@" || error_exit "ERROR: SSHKey Create Issues"
 # ./apply-default-rbac.sh "$@" || error_exit "ERROR: Unable to set k8s RBAC"
 # ./deploy-flux.sh "$@" || error_exit "ERROR: Unable to deploy Fluxcd"

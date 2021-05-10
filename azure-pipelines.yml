@@ -163,6 +163,7 @@ stages:
               clusterName: '00'
               project: $(project)
               serviceConnection: $(serviceConnection)
+              akskeyvault: dcdcftapps${{ parameters.env }}kv
 
   # - stage: BootStrapCluster01
   #   displayName: 'BootStrap Cluster 01'
