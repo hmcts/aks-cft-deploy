@@ -1,9 +1,12 @@
 #!/bin/bash
 set -e
 
-VAULT_NAME="dcdcftappssboxkv"
+VAULT_NAME=${4}
 VERSION="1.10.3"
 NAMESPACE="admin"
+
+
+echo "KEYVAULT NAME: $VAULT_NAME"
 
 az keyvault secret download \
   --file sealed-secrets-pki.yaml \
