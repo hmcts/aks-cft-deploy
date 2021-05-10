@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 VAULT_NAME=${4}
 VERSION="1.10.3"
