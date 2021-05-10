@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VAULT_NAME=${4}
+VAULT_NAME="${4}"
 VERSION="1.10.3"
 NAMESPACE="admin"
 
@@ -9,7 +9,7 @@ az keyvault secret download \
   --file sealed-secrets-pki.yaml \
   --name sealed-secrets-pki \
   --encoding ascii \
-  --vault-name ${VAULT_NAME}
+  --vault-name $VAULT_NAME
 
 kubectl apply -f sealed-secrets-pki.yaml
 
