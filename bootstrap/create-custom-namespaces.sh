@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
 
-NAMESPACES=(bootstrap/deployments/namespaces.yaml)
+NAMESPACES=(deployments/namespaces.yaml)
 kubectl apply -f $NAMESPACES
