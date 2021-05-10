@@ -28,8 +28,8 @@ then
 fi
 
 
-# echo "Starting Deployment"
-# ./get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
+echo "Starting Deployment"
+./get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
 # ./create-sshkeys.sh "$@" || error_exit "ERROR: SSHKey Create Issues"
 # ./apply-default-rbac.sh "$@" || error_exit "ERROR: Unable to set k8s RBAC"
 # ./deploy-flux.sh "$@" || error_exit "ERROR: Unable to deploy Fluxcd"
