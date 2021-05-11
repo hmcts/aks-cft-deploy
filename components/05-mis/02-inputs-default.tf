@@ -1,7 +1,3 @@
-variable "application_name" {
-  default = "flux"
-}
-
 locals {
   // TODO delete after applying MI in all ENVs
   // working around 'Error: Provider configuration not present'
@@ -10,42 +6,6 @@ locals {
     #   subscription = "5ca62022-6aa2-4cee-aaa7-e7536c8d566c"
     #   project      = "sds"
     # }
-  }
-
-  criticality = {
-    sbox     = "Low"
-    aat      = "High"
-    stg      = "High"
-    prod     = "High"
-    ithc     = "Medium"
-    test     = "Medium"
-    perftest = "Medium"
-    demo     = "Medium"
-    dev      = "Low"
-
-  }
-
-  env_display_names = {
-    sbox     = "Sandbox"
-    aat      = "Staging"
-    stg      = "Staging"
-    prod     = "Production"
-    ithc     = "ITHC"
-    test     = "Test"
-    perftest = "Test"
-    dev      = "Development"
-    demo     = "Demo"
-  }
-
-  common_tags = {
-    "managedBy"          = "PlatformEngineering"
-    "solutionOwner"      = "CFT"
-    "activityName"       = "AKS"
-    "dataClassification" = "Internal"
-    "automation"         = "cft-aks-deploy"
-    "costCentre"         = "10245117" // until we get a better one, this is the generic cft contingency one
-    "environment"        = local.env_display_names[var.environment]
-    "criticality"        = local.criticality[var.environment]
   }
 
   log_analytics_env_mapping = {
@@ -69,10 +29,22 @@ locals {
     }
   }
   log_analytics_subscription_id = local.log_analytics_workspace[[for x in keys(local.log_analytics_env_mapping) : x if contains(local.log_analytics_env_mapping[x], var.environment)][0]].subscription_id
-  resolved_name = local.log_analytics_workspace[[for x in keys(local.log_analytics_env_mapping) : x if contains(local.log_analytics_env_mapping[x], var.environment)][0]].name
+  resolved_name                 = local.log_analytics_workspace[[for x in keys(local.log_analytics_env_mapping) : x if contains(local.log_analytics_env_mapping[x], var.environment)][0]].name
 
 }
 
 variable "location" {
   default = "UK South"
+}
+
+variable "builtFrom" {
+  default = "hmcts/aks-cft-deploy"
+}
+
+variable "product" {
+  default = "cft-platform"
+}
+
+variable "application_name" {
+  default = "flux"
 }
