@@ -16,10 +16,15 @@ variable "kubernetes_cluster_agent_min_count" {
   default = 1
 }
 variable "kubernetes_cluster_agent_max_count" {
-  default = 6
+  default = 3
 }
 variable "kubernetes_cluster_agent_vm_size" {
   default = "Standard_DS3_v2"
 }
 
 variable "kubernetes_cluster_version" {}
+
+# CFT specific
+variable "project_acr_enabled" {
+  default = false
+}

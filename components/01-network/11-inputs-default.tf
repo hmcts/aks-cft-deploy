@@ -1,21 +1,3 @@
-variable "location" {
-  default = "uksouth"
-}
-
-variable "service_shortname" {
-  default = "aks"
-}
-
-variable "private_endpoint_private_dns_zones" {
-  default = [
-    "privatelink.database.windows.net",
-    "privatelink.blob.core.windows.net",
-    "privatelink.vaultcore.azure.net",
-    "privatelink.datafactory.azure.net",
-    "privatelink.postgres.database.azure.com",
-  ]
-}
-
 locals {
   hub = {
     nonprod = {
@@ -53,40 +35,24 @@ locals {
     }
   }
 
-  criticality = {
-    sbox     = "Low"
-    aat      = "High"
-    stg      = "High"
-    prod     = "High"
-    ithc     = "Medium"
-    test     = "Medium"
-    perftest = "Medium"
-    demo     = "Medium"
-    dev      = "Low"
-  }
+}
 
-  env_display_names = {
-    sbox     = "Sandbox"
-    aat      = "Staging"
-    stg      = "Staging"
-    prod     = "Production"
-    ithc     = "ITHC"
-    test     = "Test"
-    perftest = "Test"
-    dev      = "Development"
-    demo     = "Demo"
-  }
+variable "location" {
+  default = "uksouth"
+}
 
-  common_tags = {
-    "managedBy"          = "PlatformEngineering"
-    "solutionOwner"      = "CFT"
-    "activityName"       = "AKS"
-    "dataClassification" = "Internal"
-    "automation"         = "cft-aks-deploy"
-    "costCentre"         = "10245117" // until we get a better one, this is the generic cft contingency one
-    "environment"        = local.env_display_names[var.environment]
-    "criticality"        = local.criticality[var.environment]
-  }
+variable "service_shortname" {
+  default = "aks"
+}
+
+variable "private_endpoint_private_dns_zones" {
+  default = [
+    "privatelink.database.windows.net",
+    "privatelink.blob.core.windows.net",
+    "privatelink.vaultcore.azure.net",
+    "privatelink.datafactory.azure.net",
+    "privatelink.postgres.database.azure.com",
+  ]
 }
 
 variable "additional_routes" {
@@ -95,4 +61,12 @@ variable "additional_routes" {
 
 variable "additional_subnets" {
   default = []
+}
+
+variable "builtFrom" {
+  default = "hmcts/aks-cft-deploy"
+}
+
+variable "product" {
+  default = "cft-platform"
 }

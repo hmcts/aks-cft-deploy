@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
     var.environment,
     var.cluster_number
   )
-  tags = local.common_tags
+  tags = module.ctags.common_tags
 }
 
 module "loganalytics" {
@@ -15,7 +15,7 @@ module "loganalytics" {
 }
 
 module "kubernetes" {
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=cft"
 
   environment = var.environment
   location    = var.location
@@ -43,23 +43,20 @@ module "kubernetes" {
 
   kubernetes_cluster_ssh_key = var.kubernetes_cluster_ssh_key
 
-  kubernetes_cluster_agent_min_count    = var.kubernetes_cluster_agent_min_count
-  kubernetes_cluster_agent_max_count    = var.kubernetes_cluster_agent_max_count
-  kubernetes_cluster_agent_vm_size      = var.kubernetes_cluster_agent_vm_size
-  kubernetes_cluster_version            = var.kubernetes_cluster_version
-  kubernetes_cluster_agent_os_disk_size = "128"
+  kubernetes_cluster_agent_min_count = var.kubernetes_cluster_agent_min_count
+  kubernetes_cluster_agent_max_count = var.kubernetes_cluster_agent_max_count
+  kubernetes_cluster_agent_vm_size   = var.kubernetes_cluster_agent_vm_size
+  kubernetes_cluster_version         = var.kubernetes_cluster_version
 
-  tags = local.common_tags
+  tags = module.ctags.common_tags
 
   additional_node_pools = [
-    {
-      name                = "msnode"
-      vm_size             = var.kubernetes_cluster_agent_vm_size
-      min_count           = 2
-      max_count           = 5
-      os_type             = "Windows"
-      node_taints         = ["kubernetes.io/os=windows:NoSchedule"]
-      enable_auto_scaling = true
-    }
   ]
+}
+
+module "ctags" {
+  source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
+  environment = var.environment
+  product     = var.product
+  builtFrom   = var.builtFrom
 }
