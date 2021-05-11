@@ -1,3 +1,6 @@
+trigger: none
+pr: none
+
 parameters:
   - name: Run_Stage
     displayName: Stage to Run
@@ -36,7 +39,7 @@ parameters:
 
 name: HMCTS CFT AKS Azure Infrastructure Deployment Pipeline
 # TODO refactor pipeline to do plan by default, for now pls no trigger
-trigger: none
+
 
 variables:
   - name: tfversion
