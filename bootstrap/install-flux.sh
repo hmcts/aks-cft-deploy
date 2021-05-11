@@ -1,0 +1,45 @@
+#!/bin/bash
+set -ex
+
+ENV=$3
+CLUSTER_NAME=$6
+VAULT_NAME=$8
+HELM_REPO=https://charts.fluxcd.io
+VALUES=deployments/fluxcd/values.yaml
+FLUX_HELM_CRD=https://raw.githubusercontent.com/fluxcd/helm-operator/chart-1.2.0/deploy/crds.yaml
+
+helm repo add fluxcd ${HELM_REPO}
+
+kubectl apply -f ${FLUX_HELM_CRD}
+kubectl -n admin delete secret flux-helm-repositories || true
+helm upgrade flux-helm-operator fluxcd/helm-operator --install --namespace admin   -f  deployments/fluxcd/helm-operator-values.yaml --version 1.2.0 --wait
+
+# Change $ENV var to correct name
+if [ $ENV = "sbox" ]
+then
+ENV="sandbox"
+fi
+
+#Install kustomize
+curl -s "https://raw.githubusercontent.com/\
+kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+TMP_DIR=/tmp/flux/${ENV}/${CLUSTER_NAME}
+mkdir -p $TMP_DIR
+# -----------------------------------------------------------
+(
+cat <<EOF
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: admin
+resources:
+  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/flux.yaml
+patchesStrategicMerge:
+  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/patches/${ENV}/flux.yaml
+  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/patches/${ENV}/cluster-${CLUSTER_NAME}/flux.yaml
+EOF
+) > "${TMP_DIR}/kustomization.yaml"
+# -----------------------------------------------------------
+
+kubectl apply -f https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/$ENV/common/sealed-secrets/acr-credentials.yaml
+
+./kustomize build ${TMP_DIR} |  kubectl apply -f -

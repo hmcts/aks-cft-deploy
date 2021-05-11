@@ -1,0 +1,41 @@
+parameters:
+  environment: ''
+  location: ''
+  stack: ''
+  project: ''
+  tfInitSub: ''
+
+steps:
+  - template: keyvault-read.yaml
+    parameters:
+      serviceConnection: $(serviceConnection)
+      environment: ${{ parameters.environment }}
+
+  - task: TerraformCLI@0
+    displayName: terraform init
+    inputs:
+          command: init
+          workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}'
+          backendType: azurerm
+          backendServiceArm: $(serviceconnection)
+          backendAzureRmResourceGroupName: 'azure-control-$(env)-rg'
+          backendAzureRmResourceGroupLocation: ${{ parameters.location }}
+          backendAzureRmStorageAccountName: $(controlStorageAccount)
+          backendAzureRmStorageAccountSku: Standard_LRS
+          backendAzureRmContainerName: subscription-tfstate
+          backendAzureRmKey: '${{ parameters.location }}/${{ parameters.project }}/$(env)/${{ parameters.stack }}/terraform.tfstate'
+          commandOptions: '-backend-config=subscription_id=${{ parameters.tfInitSub }}'
+
+  - task: TerraformCLI@0
+    displayName: terraform validate
+    inputs:
+          command: validate
+          workingDirectory: $(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}
+
+  - task: TerraformCLI@0
+    displayName: Terraform destroy
+    inputs:
+      command: destroy
+      workingDirectory: $(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}
+      environmentServiceName: $(serviceconnection)
+      commandOptions: '-var control_vault=$(controlKeyVault) -var environment=$(env) -var project=$(project) -var-file $(System.DefaultWorkingDirectory)/environments/${{ parameters.stack }}/$(env).tfvars'
