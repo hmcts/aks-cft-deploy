@@ -1,5 +1,10 @@
-trigger: none
-pr: none
+name: HMCTS CFT AKS Azure Infrastructure Deployment Pipeline
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - main
 
 parameters:
   - name: Run_Stage
@@ -37,23 +42,19 @@ parameters:
     # - STG
     # - PROD
 
-name: HMCTS CFT AKS Azure Infrastructure Deployment Pipeline
-# TODO refactor pipeline to do plan by default, for now pls no trigger
 
 
 variables:
   - name: tfversion
     value: 0.15.1
-  # If another project comes along and wants to use the same pipeline file then make this a variable in the UI
-  # but it might be better to template the pipeline more and have a different pipeline file
-  # so that someone doesn't pick the wrong var in the dropdown
   - name: project
     value: cft
-  # same comment as above ^^
   - name: serviceConnection
     value: OPS-APPROVAL-GATE-${{ parameters.env }}-ENVS
   - name: tfInitSub
     value: "04d27a32-7a07-48b3-95b8-3c8691e1a263"
+  - name: isMain
+    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
 
 stages:
   - stage: Genesis
