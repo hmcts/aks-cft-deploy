@@ -53,6 +53,19 @@ variables:
     value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
 
 stages:
+
+  - stage: PreChecks
+    displayName: 'PreChecks'
+    condition: ne(variables.isMain, true)
+    jobs:
+      - job: PreChecks
+        steps:
+          - template: pipeline-steps/terraform-precheck.yaml
+            parameters:
+              keyvaultName: infra-vault-nonprod
+              keyvaultSecret: 'azure-devops-token'
+              serviceConnection: azurerm-sandbox
+
   - stage: Genesis
     displayName: 'Genesis'
     condition: contains('${{ parameters.Run_Stage }}', 'Deploy_Full')
