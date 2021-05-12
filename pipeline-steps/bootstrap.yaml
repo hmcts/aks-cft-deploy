@@ -9,7 +9,6 @@ parameters:
 steps:
 
 - template: keyvault-read.yaml
-  condition: eq(variables.isMain, true)
   parameters:
     serviceConnection: $(serviceConnection)
     environment: ${{ parameters.environment }}
