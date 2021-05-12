@@ -15,6 +15,7 @@ steps:
 
 - task: AzureCLI@1
   displayName: 'Setup Authentication'
+  condition: eq(variables.isMain, true)
   inputs:
       azureSubscription: $(serviceConnection)
       addSpnToEnvironment: true
@@ -25,6 +26,7 @@ steps:
 
 - task: AzureCLI@1
   displayName: 'Bootstrap'
+  condition: eq(variables.isMain, true)
   inputs:
     azureSubscription: $(serviceConnection)
     addSpnToEnvironment: true
