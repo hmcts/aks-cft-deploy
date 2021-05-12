@@ -9,12 +9,14 @@ parameters:
 steps:
 
 - template: keyvault-read.yaml
+  condition: eq(variables.isMain, true)
   parameters:
     serviceConnection: $(serviceConnection)
     environment: ${{ parameters.environment }}
 
 - task: AzureCLI@1
   displayName: 'Setup Authentication'
+  condition: eq(variables.isMain, true)
   inputs:
       azureSubscription: $(serviceConnection)
       addSpnToEnvironment: true
@@ -25,6 +27,7 @@ steps:
 
 - task: AzureCLI@1
   displayName: 'Bootstrap'
+  condition: eq(variables.isMain, true)
   inputs:
     azureSubscription: $(serviceConnection)
     addSpnToEnvironment: true

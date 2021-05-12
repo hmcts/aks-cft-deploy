@@ -44,7 +44,6 @@ steps:
 
   - task: TerraformCLI@0
     displayName: terraform plan
-    condition: eq(variables.isMain, true)
     inputs:
       command: plan
       terraformVersion: ${{ parameters.tfversion }}
@@ -54,6 +53,7 @@ steps:
 
   - task: TerraformCLI@0
     displayName: Terraform apply
+    condition: eq(variables.isMain, true)
     inputs:
       command: apply
       terraformVersion: ${{ parameters.tfversion }}
