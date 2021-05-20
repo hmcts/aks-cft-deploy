@@ -94,10 +94,10 @@ resource "azurerm_virtual_network_peering" "spoke-to-vpn" {
 
 # core-infra-vnet
 
-data "azurerm_virtual_network" "core-infra-${local.env}" {
-  provider            = "azurerm.core-infra-${local.env}"
-  name                = "core-infra-vnet-${local.env}"
-  resource_group_name = "core-infra-${local.env}"
+data "azurerm_virtual_network" "core-infra-${local.environment}" {
+  provider            = "azurerm.core-infra-${local.environment}"
+  name                = "core-infra-vnet-${local.environment}"
+  resource_group_name = "core-infra-${local.environment}"
 }
 
 resource "azurerm_virtual_network_peering" "core-infra-to-cftapps" {
