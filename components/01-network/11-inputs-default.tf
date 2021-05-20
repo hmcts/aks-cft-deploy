@@ -33,17 +33,18 @@ locals {
         next_hop_ip = "10.49.8.36"
       }
     }
+  }
+
 
   peerings = {
     sbox = {
       core-infra-sandbox-id = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
     }
-  
-    }
+
   }
 
   env = (var.environment == "sbox") ? "sandbox" : "${(var.environment == "perftest") ? "test" : "${var.environment}"}"
-  
+
 }
 
 variable "location" {
