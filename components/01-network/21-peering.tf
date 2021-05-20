@@ -101,7 +101,7 @@ data "azurerm_virtual_network" "core-infra-vnet" {
 }
 
 resource "azurerm_virtual_network_peering" "core-infra-to-cftapps" {
-  provider = azurerm.core-infra-sandbox
+  provider = azurerm.core-infra-vnet
 
   name = format("%s%s",
     var.project,
