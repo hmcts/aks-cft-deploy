@@ -43,7 +43,7 @@ locals {
 
   }
 
-  env = (var.environment == "sbox") ? "sandbox" : "${(var.environment == "perftest") ? "test" : "${var.environment}"}"
+  environment = (var.environment == "sbox") ? "sandbox" : "${(var.environment == "perftest") ? "test" : "${var.environment}"}"
 
 }
 
