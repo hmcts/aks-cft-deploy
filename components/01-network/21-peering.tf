@@ -100,7 +100,7 @@ data "azurerm_virtual_network" "core-infra-${local.env}" {
   resource_group_name = "core-infra-${local.env}"
 }
 
-resource "azurerm_virtual_network_peering" "cftapps-sbox_to_sandbox_ase" {
+resource "azurerm_virtual_network_peering" "core-infra-to-cftapps" {
   provider = azurerm.core-infra-sandbox
 
   name = format("%s%s",
@@ -115,7 +115,7 @@ resource "azurerm_virtual_network_peering" "cftapps-sbox_to_sandbox_ase" {
   allow_forwarded_traffic      = true
 }
 
-resource "azurerm_virtual_network_peering" "sandbox_ase_to_cftapps-sbox" {
+resource "azurerm_virtual_network_peering" "cftapps-to-core-infra" {
   name                         = data.azurerm_virtual_network.core-infra-sandbox.name
   resource_group_name          = module.network.network_resource_group
   virtual_network_name         = module.network.network_name
