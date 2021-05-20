@@ -95,7 +95,7 @@ resource "azurerm_virtual_network_peering" "spoke-to-vpn" {
 # core-infra-vnet
 
 data "azurerm_virtual_network" "core-infra-vnet" {
-  provider            = "azurerm.core-infra-${local.environment}"
+  provider            = azurerm.core-infra-vnet
   name                = "core-infra-vnet-${local.environment}"
   resource_group_name = "core-infra-${local.environment}"
 }
