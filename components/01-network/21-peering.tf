@@ -91,3 +91,35 @@ resource "azurerm_virtual_network_peering" "spoke-to-vpn" {
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
 }
+
+# core-infra-vnet
+
+data "azurerm_virtual_network" "core-infra-${local.env}" {
+  provider            = "azurerm.core-infra-${local.env}"
+  name                = "core-infra-vnet-${local.env}"
+  resource_group_name = "core-infra-${local.env}"
+}
+
+resource "azurerm_virtual_network_peering" "cftapps-sbox_to_sandbox_ase" {
+  provider = azurerm.core-infra-sandbox
+
+  name = format("%s%s",
+    var.project,
+    var.environment
+  )
+
+  resource_group_name          = data.azurerm_virtual_network.core-infra-sandbox.resource_group_name
+  virtual_network_name         = data.azurerm_virtual_network.core-infra-sandbox.name
+  remote_virtual_network_id    = module.network.network_id
+  allow_virtual_network_access = true
+  allow_forwarded_traffic      = true
+}
+
+resource "azurerm_virtual_network_peering" "sandbox_ase_to_cftapps-sbox" {
+  name                         = data.azurerm_virtual_network.core-infra-sandbox.name
+  resource_group_name          = module.network.network_resource_group
+  virtual_network_name         = module.network.network_name
+  remote_virtual_network_id    = data.azurerm_virtual_network.vpn.id
+  allow_virtual_network_access = true
+  allow_forwarded_traffic      = true
+}

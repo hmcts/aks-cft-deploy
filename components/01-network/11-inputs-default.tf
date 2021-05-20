@@ -35,6 +35,8 @@ locals {
     }
   }
 
+  env = (var.environment == "sbox") ? "sandbox"
+  
 }
 
 variable "location" {
