@@ -23,20 +23,27 @@ additional_routes = [
     name                   = "10_99_128_0"
     address_prefix         = "10.99.128.0/18"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
+    next_hop_in_ip_address = "10.10.200.36"
   },
   {
     # core-infra-vnet-idam-sprod
     name                   = "10_100_64_0"
     address_prefix         = "10.100.64.0/18"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
+    next_hop_in_ip_address = "10.10.200.36"
   },
   {
     # core-infra-vnet-idam-saat
     name                   = "10_103_0_0"
     address_prefix         = "10.103.0.0/18"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
+    next_hop_in_ip_address = "10.10.200.36"
+  },
+  {
+    # core-cftsbox-intsvc-vnet
+    name                   = "10_10_8_0"
+    address_prefix         = "10.10.8.0/21"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.10.200.36"
   }
 ]
