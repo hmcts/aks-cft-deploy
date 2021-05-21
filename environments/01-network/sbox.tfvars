@@ -18,4 +18,28 @@ private_dns_zones = [
 hub = "sbox"
 
 additional_routes = [
+  {
+    name                   = "core_infra_vnet_idam_sandbox"
+    address_prefix         = "10.99.128.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.10.200.36"
+  },
+  {
+    name                   = "core_infra_vnet_idam_sprod"
+    address_prefix         = "10.100.64.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.10.200.36"
+  },
+  {
+    name                   = "core_infra_vnet_idam_saat"
+    address_prefix         = "10.103.0.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.10.200.36"
+  },
+  {
+    name                   = "core_cftsbox_intsvc_vnet"
+    address_prefix         = "10.10.8.0/21"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.10.200.36"
+  }
 ]
