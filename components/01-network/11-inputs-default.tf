@@ -53,7 +53,7 @@ variable "private_endpoint_private_dns_zones" {
     "privatelink.datafactory.azure.net",
     "privatelink.postgres.database.azure.com",
     "platform.hmcts.net", # added as all envs require this currently
-    "reform.hmcts.net" # added as all envs require this currently
+    "reform.hmcts.net"    # added as all envs require this currently
   ]
 }
 
