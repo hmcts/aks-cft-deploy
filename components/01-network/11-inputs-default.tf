@@ -52,6 +52,8 @@ variable "private_endpoint_private_dns_zones" {
     "privatelink.vaultcore.azure.net",
     "privatelink.datafactory.azure.net",
     "privatelink.postgres.database.azure.com",
+    "platform.hmcts.net",
+    "reform.hmcts.net"
   ]
 }
 
