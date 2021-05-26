@@ -11,6 +11,6 @@ data "azurerm_virtual_network" "network" {
 
 resource "azurerm_role_assignment" "network_access" {
   principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
-  role_definition_name = "Contributor"
+  role_definition_name = "Network Contributor"
   scope                = data.azurerm_virtual_network.network.id
 }
