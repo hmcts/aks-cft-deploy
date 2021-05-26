@@ -8,7 +8,7 @@ locals {
     #   mi = "jenkins-cftptl-intsvc-mi"
     # }
     cftsbox = {
-      subscription = "8999dec3-0104-4a27-94ee-6588559729d1"
+      subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
       mi           = "jenkins-cftsbox-intsvc-mi"
     }
   }
