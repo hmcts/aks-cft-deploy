@@ -25,7 +25,7 @@ module "kubernetes" {
     azurerm.hmcts-control = azurerm.hmcts-control
     azurerm.acr           = azurerm.acr
     azurerm.global_acr    = azurerm.global_acr
-    azure.mi_cft          = azurerm.mi_cft
+    azurerm.mi_cft        = azurerm.mi_cft
   }
 
   resource_group_name = azurerm_resource_group.kubernetes_resource_group.name
