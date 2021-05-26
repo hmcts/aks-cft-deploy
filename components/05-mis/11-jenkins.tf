@@ -1,5 +1,5 @@
 locals {
-  jenkins-mi = (var.env == "sbox") ? "cftsbox" : "cftptl"
+  jenkins-mi = (var.environment == "sbox") ? "cftsbox" : "cftptl"
 
   jenkins = {
 
