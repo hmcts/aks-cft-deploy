@@ -1,6 +1,6 @@
 cluster_number = "00"
 
-kubernetes_cluster_version = "1.20.5"
+kubernetes_cluster_version = "1.19.7"
 
 kubernetes_cluster_agent_min_count = "6"
 kubernetes_cluster_agent_max_count = "15"
