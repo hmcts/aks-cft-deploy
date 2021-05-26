@@ -17,3 +17,7 @@ variable "builtFrom" {
 variable "product" {
   default = "cft-platform"
 }
+
+variable "kubernetes_cluster_agent_max_pods" {
+  default = "30"
+}
