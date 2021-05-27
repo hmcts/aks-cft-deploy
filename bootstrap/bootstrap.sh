@@ -25,7 +25,7 @@ fi
 chmod +x scripts/get-aks-credentials.sh
 chmod +x scripts/create-custom-namespaces.sh
 chmod +x scripts/create-cluster-admins.sh
-chmod +x script/create-developer-roles.sh
+chmod +x scripts/create-developer-roles.sh
 chmod +x scripts/install-sealed-secrets.sh
 chmod +x scripts/create-flux-githubkey-secret.sh
 chmod +x scripts/install-flux.sh

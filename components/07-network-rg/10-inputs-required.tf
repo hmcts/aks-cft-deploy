@@ -1,12 +1,8 @@
 # General
-variable "environment" {
-}
+variable "environment" {}
 
-variable "project" {
-}
+variable "project" {}
 
-variable "enable_debug" {
-
-}
+variable "enable_debug" {}
 
 variable "control_vault" {}

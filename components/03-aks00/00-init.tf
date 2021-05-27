@@ -18,22 +18,18 @@ provider "azurerm" {
 
 locals {
   acr = {
-    # ss = {
-    #   subscription = "5ca62022-6aa2-4cee-aaa7-e7536c8d566c"
-    # }
     global = {
       subscription = "8999dec3-0104-4a27-94ee-6588559729d1"
     }
   }
 
-
+  # MIs for managed-identities-sandbox-rg etc - they are RPE MIs
   mi_cft = {
     sbox = {
       subscription = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
     }
 
   }
-
 
 }
 
