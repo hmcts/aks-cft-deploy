@@ -16,8 +16,8 @@ function error_exit {
 }
 
 
-# Make sure the 8 arguments are passed
-if [[ $# -lt 8 ]]
+# Make sure the 9 arguments are passed
+if [[ $# -lt 9 ]]
 then
     usage
 fi
@@ -29,6 +29,7 @@ chmod +x scripts/create-developer-roles.sh
 chmod +x scripts/install-sealed-secrets.sh
 chmod +x scripts/create-flux-githubkey-secret.sh
 chmod +x scripts/install-flux.sh
+chmod +x scripts/generate-sealed-secrets-pki.sh
 
 echo "Starting Deployment"
 ./scripts/get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
@@ -38,6 +39,5 @@ echo "Starting Deployment"
 ./scripts/install-sealed-secrets.sh "$@"|| error_exit "ERROR: Unable to install sealed secrets"
 ./scripts/create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
 ./scripts/install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
-[ $9 == "true" ] && echo "IT WORKS" && error_exit "ERROR: Unable to generate sealed secrets"
-# [ $9 == "true" ] &&  ./scripts/generate-sealed-secrets-pki.sh "$@"|| error_exit "ERROR: Unable to generate sealed secrets"
+[ $9 == "true" ] && echo ./scripts/generate-sealed-secrets-pki.sh "$@" && error_exit "ERROR: Unable to generate sealed secrets"
 echo "Deployment Complete"
