@@ -140,25 +140,25 @@ stages:
               tfInitSub: ${{ variables.tfInitSub }}
 
 
-  # - stage: Aks01
-  #   displayName: 'Deploy AKS 01'
-  #   condition: or(contains('${{ parameters.Run_Stage }}', 'Deploy_Full'), contains('${{ parameters.Run_Stage }}', 'DeployAks01'))
-  #   variables:
-  #     armClientSecret: $[ stageDependencies.ReadKeyVault.ReadKeyVault.outputs['SetSubscriptionSP.ARM_CLIENT_SECRET'] ]
-  #     controlStorageAccount: $[ stageDependencies.ReadKeyVault.ReadKeyVault.outputs['SetControlVars.controlStorageAccount'] ]
-  #   dependsOn:
-  #     - Managed_Identity
-  #   jobs:
-  #     - job: DeployInfrastructure
-  #       steps:
-  #         - template: pipeline-steps/deploy-service.yaml
-  #           parameters:
-  #             environment: ${{ parameters.env }}
-  #             location: ${{ parameters.location }}
-  #             stack: '04-aks01'
-  #             project: $(project)
-  #             tfversion: $(tfversion)
-  #             tfInitSub: ${{ variables.tfInitSub }}
+  - stage: Aks01
+    displayName: 'Deploy AKS 01'
+    condition: or(contains('${{ parameters.Run_Stage }}', 'Deploy_Full'), contains('${{ parameters.Run_Stage }}', 'DeployAks01'))
+    variables:
+      armClientSecret: $[ stageDependencies.ReadKeyVault.ReadKeyVault.outputs['SetSubscriptionSP.ARM_CLIENT_SECRET'] ]
+      controlStorageAccount: $[ stageDependencies.ReadKeyVault.ReadKeyVault.outputs['SetControlVars.controlStorageAccount'] ]
+    dependsOn:
+      - Managed_Identity
+    jobs:
+      - job: DeployInfrastructure
+        steps:
+          - template: pipeline-steps/deploy-service.yaml
+            parameters:
+              environment: ${{ parameters.env }}
+              location: ${{ parameters.location }}
+              stack: '04-aks01'
+              project: $(project)
+              tfversion: $(tfversion)
+              tfInitSub: ${{ variables.tfInitSub }}
 
   - stage: BootStrapCluster00
     displayName: 'BootStrap Cluster 00'
@@ -176,20 +176,20 @@ stages:
               serviceConnection: $(serviceConnection)
               akskeyvault: dcdcftapps${{ parameters.env }}kv
 
-  # - stage: BootStrapCluster01
-  #   displayName: 'BootStrap Cluster 01'
-  #   condition: or(contains('${{ parameters.Run_Stage }}', 'Deploy_Full'), contains('${{ parameters.Run_Stage }}', 'DeployAks01'), contains('${{ parameters.Run_Stage }}', 'BootstrapAks01'))
-  #   dependsOn: Aks01
-  #   jobs:
-  #     - job: BootStrap
-  #       steps:
-  #         - template: pipeline-steps/bootstrap.yaml
-  #           parameters:
-  #             environment: ${{ parameters.env }}
-  #             command: $(command)
-  #             clusterName: '01'
-  #             project: $(project)
-  #             serviceConnection: $(serviceConnection)      
+  - stage: BootStrapCluster01
+    displayName: 'BootStrap Cluster 01'
+    condition: or(contains('${{ parameters.Run_Stage }}', 'Deploy_Full'), contains('${{ parameters.Run_Stage }}', 'DeployAks01'), contains('${{ parameters.Run_Stage }}', 'BootstrapAks01'))
+    # dependsOn: Aks01
+    jobs:
+      - job: BootStrap
+        steps:
+          - template: pipeline-steps/bootstrap.yaml
+            parameters:
+              environment: ${{ parameters.env }}
+              command: $(command)
+              clusterName: '01'
+              project: $(project)
+              serviceConnection: $(serviceConnection)      
 
   - stage: DestroyAks00
     displayName: 'Destroy AKS 00 Infrastructure'
@@ -206,17 +206,17 @@ stages:
               tfversion: $(tfversion)
               tfInitSub: ${{ variables.tfInitSub }}
 
-  # - stage: DestroyAks01
-  #   displayName: 'Destroy AKS 01 Infrastructure'
-  #   condition: contains('${{ parameters.Run_Stage }}', 'DestroyAks01')
-  #   jobs:
-  #     - job: DestroyInfrastructure
-  #       steps:
-  #         - template: pipeline-steps/destroy-service.yaml
-  #           parameters:
-  #             environment: ${{ parameters.env }}
-  #             location: ${{ parameters.location }}
-  #             stack: '04-aks01'
-  #             project: $(project)
-  #             tfversion: $(tfversion)
-  #             tfInitSub: ${{ variables.tfInitSub }}
+  - stage: DestroyAks01
+    displayName: 'Destroy AKS 01 Infrastructure'
+    condition: contains('${{ parameters.Run_Stage }}', 'DestroyAks01')
+    jobs:
+      - job: DestroyInfrastructure
+        steps:
+          - template: pipeline-steps/destroy-service.yaml
+            parameters:
+              environment: ${{ parameters.env }}
+              location: ${{ parameters.location }}
+              stack: '04-aks01'
+              project: $(project)
+              tfversion: $(tfversion)
+              tfInitSub: ${{ variables.tfInitSub }}
