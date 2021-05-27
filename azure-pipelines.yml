@@ -175,6 +175,7 @@ stages:
               project: $(project)
               serviceConnection: $(serviceConnection)
               akskeyvault: dcdcftapps${{ parameters.env }}kv
+              GenerateSealedSecrets: true
 
   - stage: BootStrapCluster01
     displayName: 'BootStrap Cluster 01'
@@ -191,6 +192,7 @@ stages:
               project: $(project)
               serviceConnection: $(serviceConnection)      
               akskeyvault: dcdcftapps${{ parameters.env }}kv
+              GenerateSealedSecrets: false
 
   - stage: DestroyAks00
     displayName: 'Destroy AKS 00 Infrastructure'
