@@ -5,7 +5,7 @@ VAULT_NAME=$8
 STORAGE_ACCOUNT_NAME=cftapps${3}
 RESOURCE_GROUP_NAME=core-infra-${3}-rg 
 
-Create an azure file share for NeuVector persistent storage
+#Create an azure file share for NeuVector persistent storage
 CONNECTION_STRING=$(az storage account show-connection-string -n ${STORAGE_ACCOUNT_NAME} -g ${RESOURCE_GROUP_NAME} --query 'connectionString' -o tsv)
 az storage share create --name neuvector-data-00 --quota 1 --connection-string ${CONNECTION_STRING}
 az storage share create --name neuvector-data-01 --quota 1 --connection-string ${CONNECTION_STRING}
