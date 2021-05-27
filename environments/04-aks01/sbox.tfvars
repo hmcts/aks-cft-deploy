@@ -1,4 +1,4 @@
-cluster_number = "00"
+cluster_number = "01"
 
 kubernetes_cluster_version = "1.19.7"
 
