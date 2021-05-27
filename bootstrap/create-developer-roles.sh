@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-BINDING_YAML=roles/${1:-reader}-role-binding.yaml
-AKS_USER_GROUP_PREFIX=${2:-dcd_group_aks_user_}
+BINDING_YAML=roles/reader-role-binding.yaml
+AKS_USER_GROUP_PREFIX=dcd_group_aks_user_
 
 SUBSCRIPTION_NAME=$(az account show --query name -o tsv)
 
