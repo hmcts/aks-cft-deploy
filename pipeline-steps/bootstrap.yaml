@@ -6,8 +6,6 @@ parameters:
   clusterName: ''
   akskeyvault: ''
   GenerateSealedSecrets: ''
-  neuvectorStoageAccountResourceGroup: ''
-  neuvectorStoageAccount: ''
 
 steps:
 
@@ -36,4 +34,4 @@ steps:
     scriptType: shell
     failOnStandardError: 'false'
     scriptPath: bootstrap/bootstrap.sh
-    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) ${{ parameters.clusterName }} deploy ${{ parameters.akskeyvault }} ${{ parameters.GenerateSealedSecrets }} ${{ parameters.neuvectorStoageAccountResourceGroup }} ${{ parameters.neuvectorStoageAccount }} '
+    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) ${{ parameters.clusterName }} deploy ${{ parameters.akskeyvault }} ${{ parameters.GenerateSealedSecrets }} '

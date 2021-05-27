@@ -1,0 +1,10 @@
+#!/bin/bash
+
+ENV=$1
+STORAGE_ACCOUNT_NAME=cftapps${1}
+RESOURCE_GROUP_NAME=core-infra-${1}-rg 
+
+
+echo $STORAGE_ACCOUNT_NAME
+
+echo $RESOURCE_GROUP_NAME
