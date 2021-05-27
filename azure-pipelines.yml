@@ -190,6 +190,7 @@ stages:
               clusterName: '01'
               project: $(project)
               serviceConnection: $(serviceConnection)      
+              akskeyvault: dcdcftapps${{ parameters.env }}kv
 
   - stage: DestroyAks00
     displayName: 'Destroy AKS 00 Infrastructure'
