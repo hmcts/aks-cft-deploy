@@ -2,9 +2,6 @@
 set -e
 
 PARAM_LIST=( PROJECT SERVICE ENVIRONMENT KEYVAULT SUBSCRIPTION_NAME CLUSTER_NAME COMMAND AKS_KEYVAULT )
-############################################################
-# Functions
-############################################################
 
 function usage() {
     echo ""
@@ -15,32 +12,30 @@ function usage() {
 function error_exit {
 	echo "$1" 1>&2
   echo "Stopping..."
-  #cleanup
 	exit 1
 }
 
-############################################################
 
-# Make sure they 7 arguments are passed
+# Make sure the 8 arguments are passed
 if [[ $# -lt 8 ]]
 then
     usage
 fi
 
-chmod +x get-aks-credentials.sh
-chmod +x create-custom-namespaces.sh
-chmod +x create-cluster-admins.sh
-chmod +x create-developer-roles.sh
-chmod +x install-sealed-secrets.sh
-chmod +x create-flux-githubkey-secret.sh
-chmod +x install-flux.sh
+chmod +x scripts/get-aks-credentials.sh
+chmod +x scripts/create-custom-namespaces.sh
+chmod +x scripts/create-cluster-admins.sh
+chmod +x script/create-developer-roles.sh
+chmod +x scripts/install-sealed-secrets.sh
+chmod +x scripts/create-flux-githubkey-secret.sh
+chmod +x scripts/install-flux.sh
 
 echo "Starting Deployment"
-./get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
-./create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"
-./create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
-./create-developer-roles.sh "$@" || error_exit "ERROR: Unable to create developer roles"
-./install-sealed-secrets.sh "$@"|| error_exit "ERROR: Unable to install sealed secrets"
-./create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
-./install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
+./scripts/get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
+./scripts/create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"
+./scripts/create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
+./scripts/create-developer-roles.sh "$@" || error_exit "ERROR: Unable to create developer roles"
+./scripts/install-sealed-secrets.sh "$@"|| error_exit "ERROR: Unable to install sealed secrets"
+./scripts/create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
+./scripts/install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
 echo "Deployment Complete"
