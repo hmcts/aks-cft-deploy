@@ -176,6 +176,8 @@ stages:
               serviceConnection: $(serviceConnection)
               akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
+              neuvectorStoageAccountResourceGroup: core-infra-${{ parameters.env }}-rg 
+              neuvectorStoageAccount: cftapps${{ parameters.env }}
 
   - stage: BootStrapCluster01
     displayName: 'BootStrap Cluster 01'
@@ -193,6 +195,8 @@ stages:
               serviceConnection: $(serviceConnection)      
               akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
+              neuvectorStoageAccountResourceGroup: core-infra-${{ parameters.env }}-rg 
+              neuvectorStoageAccount: cftapps${{ parameters.env }}
 
   - stage: DestroyAks00
     displayName: 'Destroy AKS 00 Infrastructure'
