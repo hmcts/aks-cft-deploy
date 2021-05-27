@@ -30,6 +30,7 @@ fi
 chmod +x get-aks-credentials.sh
 chmod +x create-custom-namespaces.sh
 chmod +x create-cluster-admins.sh
+chmod +x create-developer-roles.sh
 chmod +x install-sealed-secrets.sh
 chmod +x create-flux-githubkey-secret.sh
 chmod +x install-flux.sh
