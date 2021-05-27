@@ -22,7 +22,7 @@ function error_exit {
 ############################################################
 
 # Make sure they 7 arguments are passed
-if [[ $# -lt 7 ]]
+if [[ $# -lt 8 ]]
 then
     usage
 fi
@@ -38,7 +38,8 @@ echo "Starting Deployment"
 ./get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
 ./create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"
 ./create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
+./create-developer-roles.sh "$@" || error_exit "ERROR: Unable to create developer roles"
 ./install-sealed-secrets.sh "$@"|| error_exit "ERROR: Unable to install sealed secrets"
 ./create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
 ./install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
-# echo "Deployment Complete"
+echo "Deployment Complete"
