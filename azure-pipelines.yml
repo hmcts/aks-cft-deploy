@@ -175,7 +175,7 @@ stages:
               project: $(project)
               serviceConnection: $(serviceConnection)
               akskeyvault: dcdcftapps${{ parameters.env }}kv
-              GenerateSealedSecrets: true
+              GenerateSealedSecrets: false
 
   - stage: BootStrapCluster01
     displayName: 'BootStrap Cluster 01'
