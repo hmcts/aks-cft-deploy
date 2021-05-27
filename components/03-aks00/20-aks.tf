@@ -38,7 +38,8 @@ module "kubernetes" {
   service_shortname = var.service_shortname
   project           = var.project
 
-  log_workspace_id = module.loganalytics.workspace_id
+  log_workspace_id           = module.loganalytics.workspace_id
+  monitor_diagnostic_setting = var.monitor_diagnostic_setting
 
   control_vault = var.control_vault
 

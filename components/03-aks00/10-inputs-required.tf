@@ -28,3 +28,7 @@ variable "kubernetes_cluster_version" {}
 variable "project_acr_enabled" {
   default = false
 }
+
+variable "monitor_diagnostic_setting" {
+  default = true
+}
