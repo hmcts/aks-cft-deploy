@@ -72,3 +72,7 @@ variable "builtFrom" {
 variable "product" {
   default = "cft-platform"
 }
+
+variable "additional_routes_appgw" {
+  default = []
+}
