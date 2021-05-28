@@ -19,7 +19,7 @@ module "network" {
   iaas_subnet_cidr_blocks                = var.iaas_subnet_cidr_blocks
   additional_subnets                     = var.additional_subnets
 
-  appgw_routetable = var.appgw_routetable
+  appgw_routetable        = var.appgw_routetable
   additional_routes_appgw = var.additional_routes_appgw
 
   tags = module.ctags.common_tags
