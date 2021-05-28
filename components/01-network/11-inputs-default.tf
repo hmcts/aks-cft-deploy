@@ -72,3 +72,7 @@ variable "builtFrom" {
 variable "product" {
   default = "cft-platform"
 }
+
+variable "appgw_routetable" {
+  default = false
+}
