@@ -20,6 +20,7 @@ module "network" {
   additional_subnets                     = var.additional_subnets
 
   appgw_routetable = var.appgw_routetable
+  additional_routes_appgw = var.additional_routes_appgw
 
   tags = module.ctags.common_tags
 }

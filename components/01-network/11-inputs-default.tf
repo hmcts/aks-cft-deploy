@@ -76,3 +76,7 @@ variable "product" {
 variable "appgw_routetable" {
   default = false
 }
+
+variable "additional_routes_appgw" {
+  default = []
+}
