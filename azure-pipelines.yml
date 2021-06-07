@@ -14,8 +14,8 @@ parameters:
     - BootstrapAks00
     - BootstrapAks01
     - Deploy
-    - DestroyAks00
-    - DestroyAks01
+    #- DestroyAks00
+    #- DestroyAks01
 
   - name: location
     displayName: Location
