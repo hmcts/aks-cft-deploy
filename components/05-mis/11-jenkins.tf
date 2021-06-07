@@ -3,14 +3,14 @@ locals {
 
   jenkins = {
 
-    # cftptl = {
-    #   subscription = "5ca62022-6aa2-4cee-aaa7-e7536c8d566c"
-    #   mi = "jenkins-cftptl-intsvc-mi"
-    # }
-    cftsbox = {
-      subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
-      mi           = "jenkins-cftsbox-intsvc-mi"
+    cftptl = {
+      subscription = "5ca62022-6aa2-4cee-aaa7-e7536c8d566c"
+      mi = "jenkins-cftptl-intsvc-mi"
     }
+    #cftsbox = {
+    #  subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+    #  mi           = "jenkins-cftsbox-intsvc-mi"
+    #}
   }
 
 }
