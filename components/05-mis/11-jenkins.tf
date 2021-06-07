@@ -5,7 +5,7 @@ locals {
 
     cftptl = {
       subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
-      mi = "jenkins-cftptl-intsvc-mi"
+      mi           = "jenkins-cftptl-intsvc-mi"
     }
     cftsbox = {
       subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
