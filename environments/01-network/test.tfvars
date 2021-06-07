@@ -19,6 +19,9 @@ private_dns_zones = [
 hub = "nonprod"
 
 additional_routes = [
+]
+
+additional_routes_appgw = [
   {
     name                   = "core_infra_vnet_idam_perftest"
     address_prefix         = "10.120.0.0/18"
