@@ -4,7 +4,7 @@ locals {
   jenkins = {
 
     cftptl = {
-      subscription = "5ca62022-6aa2-4cee-aaa7-e7536c8d566c"
+      subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
       mi = "jenkins-cftptl-intsvc-mi"
     }
     cftsbox = {

@@ -1,30 +1,26 @@
 enable_debug = "true"
 
 network_address_space                  = "10.48.64.0/18"
-aks_00_subnet_cidr_blocks              = "10.48.16.0/20"
-aks_01_subnet_cidr_blocks              = "10.48.32.0/20"
-iaas_subnet_cidr_blocks                = "10.48.1.0/24"
-application_gateway_subnet_cidr_blocks = "10.48.0.128/25"
+aks_00_subnet_cidr_blocks              = "10.48.64.0/20"
+aks_01_subnet_cidr_blocks              = "10.48.80.0/20"
+iaas_subnet_cidr_blocks                = "10.48.97.0/24"
+application_gateway_subnet_cidr_blocks = "10.48.32.0/25"
 
 additional_subnets = [
 ]
 
-private_dns_subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
 private_dns_zones = [
   "perftest.platform.hmcts.net",
   "service.core-compute-perftest.internal",
-  "service.core-compute-idam-perftest.internal",
-  "service.core-compute-perftest.internal",
-  "service.core-compute-idam-perftest.internal",
-  "service.core-compute-idam-sprod.internal",
-  "service.core-compute-idam-saat.internal"
+  "service.core-compute-idam-perftest.internal"
 ]
 
-hub = "sbox"
+hub = "nonprod"
 
 additional_routes = [
   {
-    name                   = "core_infra_vnet_idam_sandbox"
+    name                   = "core_infra_vnet_idam_perftest"
     address_prefix         = "10.120.0.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
