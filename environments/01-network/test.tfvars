@@ -4,7 +4,7 @@ network_address_space                  = "10.48.64.0/18"
 aks_00_subnet_cidr_blocks              = "10.48.64.0/20"
 aks_01_subnet_cidr_blocks              = "10.48.80.0/20"
 iaas_subnet_cidr_blocks                = "10.48.97.0/24"
-application_gateway_subnet_cidr_blocks = "10.48.32.0/25"
+application_gateway_subnet_cidr_blocks = "10.48.96.0/25"
 
 additional_subnets = [
 ]
