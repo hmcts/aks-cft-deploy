@@ -33,7 +33,7 @@ parameters:
     # - ITHC
     # - DEV
     # - DEMO
-    # - SBOX
+    - SBOX
     - TEST
     # - STG
     # - PROD
