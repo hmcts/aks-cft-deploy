@@ -55,6 +55,8 @@ module "kubernetes" {
 
   additional_node_pools = [
   ]
+
+  project_acr_enabled = var.project_acr_enabled
 }
 
 module "ctags" {
