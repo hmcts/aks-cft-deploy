@@ -21,3 +21,7 @@ variable "product" {
 variable "kubernetes_cluster_agent_max_pods" {
   default = "30"
 }
+
+variable "project_acr_enabled" {
+  default = false
+}
