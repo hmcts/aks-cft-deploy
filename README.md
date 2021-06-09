@@ -27,7 +27,7 @@ Terraform code to deploy CFT AKS Cluster and underlying infrastructure.
         c) Install flux and helm operator
         
     5) Destroy
-        a) Optional to perform terraform destroy for AKS
+        a) Optional to perform terraform destroy for AKS.
 
 
 ## Scripts Information
