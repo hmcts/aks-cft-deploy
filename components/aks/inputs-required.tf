@@ -21,6 +21,8 @@ variable "kubernetes_cluster_agent_vm_size" {
 
 variable "kubernetes_cluster_version" {}
 
+variable "cluster_count" {}
+
 # CFT specific
 variable "project_acr_enabled" {
   default = false
