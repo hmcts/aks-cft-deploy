@@ -9,7 +9,6 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
   )
   tags = module.ctags.common_tags
 }
-
 module "loganalytics" {
   source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=master"
   environment = var.environment
