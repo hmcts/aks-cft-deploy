@@ -4,14 +4,14 @@ trigger: none
 
 parameters:
 
-  # - name: Action
-  #   displayName: Action
-  #   type: string
-  #   default: 'Plan'
-  #   values:
-  #   - Plan
-  #   - Apply
-  #   - Destroy
+  - name: Action
+    displayName: Action
+    type: string
+    default: 'Plan'
+    values:
+    - Plan
+    - Apply
+    - Destroy
 
   - name: cluster
     displayName: Cluster
