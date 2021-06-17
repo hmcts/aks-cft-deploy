@@ -78,4 +78,4 @@ steps:
     name: setClusterNumbers
     env:
       clusters: $(TF_OUT_CLUSTERS)
-      commandOptions: '-out=tfplan-${{ parameters.project }}-$(env)-${{ parameters.stack }} -var control_vault=$(controlKeyVault) -var environment=$(env) -var project=$(project) -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }} -var-file $(System.DefaultWorkingDirectory)/environments/${{ parameters.stack }}/$(env).tfvars ${{ parameters.targetCommand }}'
+      commandOptions: '-out=tfplan-${{ parameters.project }}-$(env)-${{ parameters.stack }} -var control_vault=$(controlKeyVault) -var environment=$(env) -var project=$(project) -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }} -var-file $(System.DefaultWorkingDirectory)/environments/${{ parameters.stack }}/$(env).tfvars -target module.kubernetes[01]'
