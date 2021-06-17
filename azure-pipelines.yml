@@ -191,10 +191,10 @@ stages:
   #             environment: ${{ parameters.env }}
   #             command: $(command)
   #             clusterName: '00'
-  #             project: $(project)
-  #             serviceConnection: $(serviceConnection)
-  #             akskeyvault: dcdcftapps${{ parameters.env }}kv
-  #             GenerateSealedSecrets: false
+              # project: $(project)
+              # serviceConnection: $(serviceConnection)
+              # akskeyvault: dcdcftapps${{ parameters.env }}kv
+              # GenerateSealedSecrets: false
 
   - stage: BootStrapClusters
     displayName: 'BootStrap Clusters'
@@ -210,7 +210,11 @@ stages:
           - template: pipeline-steps/bootstrap.yaml
             parameters:
               environment: ${{ parameters.env }}
+              project: $(project)
               serviceConnection: $(serviceConnection)
+              akskeyvault: dcdcftapps${{ parameters.env }}kv
+              GenerateSealedSecrets: false
+              command: $(command)
 
   # - stage: DestroyAks00
   #   displayName: 'Destroy AKS 00 Infrastructure'
