@@ -64,13 +64,3 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}'
       environmentServiceName: $(serviceConnection)
       commandOptions: '--auto-approve tfplan-${{ parameters.project }}-${{ parameters.stack }}-$(env)'
-
-  - task: TerraformCLI@0
-    displayName: Terraform apply
-    condition: and(variables.isMain, true, eq(variables['Action'], 'Apply'))
-    inputs:
-      command: apply
-      terraformVersion: ${{ parameters.tfversion }}
-      workingDirectory: '$(System.DefaultWorkingDirectory)/components/00-genesis'
-      environmentServiceName: $(serviceConnection)
-      commandOptions: '--auto-approve tfplan-${{ parameters.project }}-${{ parameters.stack }}-$(env)'
