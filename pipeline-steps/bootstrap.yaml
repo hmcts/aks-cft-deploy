@@ -3,7 +3,7 @@ parameters:
   environment: ''
   project: ''
   command: ''
-  clusterName: ''
+  # clusterName: ''
   akskeyvault: ''
   GenerateSealedSecrets: ''
 
@@ -16,7 +16,7 @@ steps:
 
 - task: AzureCLI@1
   displayName: 'Setup Authentication'
-  condition: eq(variables.isMain, true)
+  condition: and(variables.isMain, eq(variables['Action'], 'Apply'))
   inputs:
       azureSubscription: $(serviceConnection)
       addSpnToEnvironment: true
@@ -27,11 +27,11 @@ steps:
 
 - task: AzureCLI@1
   displayName: 'Bootstrap'
-  condition: eq(variables.isMain, true)
+  condition: and(variables.isMain, true, eq(variables['Action'], 'Apply'))
   inputs:
     azureSubscription: $(serviceConnection)
     addSpnToEnvironment: true
     scriptType: shell
     failOnStandardError: 'false'
     scriptPath: bootstrap/bootstrap.sh
-    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) ${{ parameters.clusterName }} deploy ${{ parameters.akskeyvault }} ${{ parameters.GenerateSealedSecrets }} '
+    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) "$(clusters)" deploy ${{ parameters.akskeyvault }} ${{ parameters.GenerateSealedSecrets }} '

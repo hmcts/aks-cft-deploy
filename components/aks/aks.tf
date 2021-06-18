@@ -1,20 +1,21 @@
 resource "azurerm_resource_group" "kubernetes_resource_group" {
+  count    = var.cluster_count
   location = var.location
 
   name = format("%s-%s-%s-rg",
     var.project,
     var.environment,
-    var.cluster_number
+    "0${count.index}"
   )
   tags = module.ctags.common_tags
 }
-
 module "loganalytics" {
   source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=master"
   environment = var.environment
 }
 
 module "kubernetes" {
+  count  = var.cluster_count
   source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=cft"
 
   environment = var.environment
@@ -28,13 +29,13 @@ module "kubernetes" {
     azurerm.mi_cft        = azurerm.mi_cft
   }
 
-  resource_group_name = azurerm_resource_group.kubernetes_resource_group.name
+  resource_group_name = azurerm_resource_group.kubernetes_resource_group[count.index].name
 
   network_name                = local.network_name
   network_shortname           = local.network_shortname
   network_resource_group_name = local.network_resource_group_name
 
-  cluster_number    = var.cluster_number
+  cluster_number    = "0${count.index}"
   service_shortname = var.service_shortname
   project           = var.project
 
@@ -53,7 +54,7 @@ module "kubernetes" {
 
   tags = module.ctags.common_tags
 
-  additional_node_pools = [
+  additional_node_pools = contains(["ptlsbox", "ptl"], var.environment) ? [] : [
   ]
 
   project_acr_enabled = var.project_acr_enabled
