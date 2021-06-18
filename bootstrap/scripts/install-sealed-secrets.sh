@@ -5,7 +5,7 @@ VAULT_NAME=${8}
 VERSION="1.10.3"
 NAMESPACE="admin"
 
-if [ -f sealed-secrets-pki.yaml ]; then
+if [ ! -f sealed-secrets-pki.yaml ]; then
 az keyvault secret download \
   --file sealed-secrets-pki.yaml \
   --name sealed-secrets-pki \
