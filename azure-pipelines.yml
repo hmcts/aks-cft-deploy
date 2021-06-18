@@ -74,7 +74,7 @@ stages:
 
   - stage: Genesis
     displayName: 'Genesis'
-    # condition: contains('${{ parameters.Run_Stage }}', 'All')
+    condition: ne('${{ parameters.Action }}', 'Destroy')
     jobs:
       - job: Genesis
         steps:
@@ -91,7 +91,7 @@ stages:
 
   - stage: Network
     displayName: 'Network'
-    # condition: contains('${{ parameters.Run_Stage }}', 'All')
+    condition: ne('${{ parameters.Action }}', 'Destroy')
     jobs:
       - job: NetworkRg
         steps:
@@ -122,7 +122,7 @@ stages:
 
   - stage: Managed_Identity
     displayName: 'Managed_Identity'
-    # condition: contains('${{ parameters.Run_Stage }}', 'All')
+    condition: ne('${{ parameters.Action }}', 'Destroy')
     dependsOn: Network
     jobs:
       - job: Managed_Identity
@@ -141,6 +141,7 @@ stages:
 
   - stage: Aks
     displayName: 'Deploy AKS clusters'
+    condition: ne('${{ parameters.Action }}', 'Destroy')
     dependsOn:
       - Managed_Identity
     jobs:
@@ -158,43 +159,6 @@ stages:
               product: ${{ variables.product }}
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: "-target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
-
-  # - stage: Aks01
-  #   displayName: 'Deploy AKS 01'
-  #   condition: or(contains('${{ parameters.Run_Stage }}', 'Deploy_Full'), contains('${{ parameters.Run_Stage }}', 'DeployAks01'))
-  #   variables:
-  #     armClientSecret: $[ stageDependencies.ReadKeyVault.ReadKeyVault.outputs['SetSubscriptionSP.ARM_CLIENT_SECRET'] ]
-  #     controlStorageAccount: $[ stageDependencies.ReadKeyVault.ReadKeyVault.outputs['SetControlVars.controlStorageAccount'] ]
-  #   dependsOn:
-  #     - Managed_Identity
-  #   jobs:
-  #     - job: DeployInfrastructure
-  #       steps:
-  #         - template: pipeline-steps/deploy-service.yaml
-  #           parameters:
-  #             environment: ${{ parameters.env }}
-  #             location: ${{ parameters.location }}
-  #             stack: '04-aks01'
-  #             project: $(project)
-  #             tfversion: $(tfversion)
-  #             tfInitSub: ${{ variables.tfInitSub }}
-
-  # - stage: BootStrapCluster00
-  #   displayName: 'BootStrap Cluster 00'
-  #   condition: or(contains('${{ parameters.Run_Stage }}', 'Deploy_Full'), contains('${{ parameters.Run_Stage }}', 'DeployAks00'), contains('${{ parameters.Run_Stage }}', 'BootstrapAks00'))
-  #   # dependsOn: Aks00
-  #   jobs:
-  #     - job: BootStrap
-  #       steps:
-  #         - template: pipeline-steps/bootstrap.yaml
-  #           parameters:
-  #             environment: ${{ parameters.env }}
-  #             command: $(command)
-  #             clusterName: '00'
-              # project: $(project)
-              # serviceConnection: $(serviceConnection)
-              # akskeyvault: dcdcftapps${{ parameters.env }}kv
-              # GenerateSealedSecrets: false
 
   - stage: BootStrapClusters
     displayName: 'BootStrap Clusters'
@@ -215,23 +179,6 @@ stages:
               akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
               command: $(command)
-
-  # - stage: DestroyAks00
-  #   displayName: 'Destroy AKS 00 Infrastructure'
-  #   condition: contains('${{ parameters.Run_Stage }}', 'DestroyAks00')
-  #   jobs:
-  #     - job: DestroyInfrastructure
-  #       steps:
-  #         - template: pipeline-steps/destroy-service.yaml
-  #           parameters:
-  #             environment: ${{ parameters.env }}
-  #             location: ${{ parameters.location }}
-  #             stack: '03-aks00'
-  #             project: $(project)
-  #             tfversion: $(tfversion)
-  #             tfInitSub: ${{ variables.tfInitSub }}
-  #             builtFrom: $(Build.Repository.Name)
-  #             product: ${{ variables.product }}
 
   - stage: DestroyAks
     displayName: 'Destroy AKS Infrastructure'

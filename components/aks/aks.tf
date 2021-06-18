@@ -16,7 +16,7 @@ module "loganalytics" {
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=cft_refactor"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=cft"
 
   environment = var.environment
   location    = var.location
