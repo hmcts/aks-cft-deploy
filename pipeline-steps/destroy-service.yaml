@@ -4,9 +4,6 @@ parameters:
   stack: ''
   project: ''
   tfInitSub: ''
-  targetCommand: ''
-  builtFrom: ''
-  product: ''
 
 steps:
   - template: keyvault-read.yaml
@@ -15,7 +12,7 @@ steps:
       environment: ${{ parameters.environment }}
 
   - task: TerraformCLI@0
-    displayName: Terraform init
+    displayName: terraform init
     inputs:
           command: init
           workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}'
@@ -27,19 +24,18 @@ steps:
           backendAzureRmStorageAccountSku: Standard_LRS
           backendAzureRmContainerName: subscription-tfstate
           backendAzureRmKey: '${{ parameters.location }}/${{ parameters.project }}/$(env)/${{ parameters.stack }}/terraform.tfstate'
-          commandOptions: '-backend-config=subscription_id=${{ parameters.tfInitSub }} -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }}'
+          commandOptions: '-backend-config=subscription_id=${{ parameters.tfInitSub }}'
 
   - task: TerraformCLI@0
-    displayName: Terraform validate
+    displayName: terraform validate
     inputs:
           command: validate
           workingDirectory: $(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}
 
   - task: TerraformCLI@0
     displayName: Terraform destroy
-    condition: and(succeeded(), eq(variables['action'], 'Destroy'))
     inputs:
       command: destroy
       workingDirectory: $(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}
       environmentServiceName: $(serviceconnection)
-      commandOptions: '-var control_vault=$(controlKeyVault) -var environment=$(env) -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }} -var project=$(project) -var-file $(System.DefaultWorkingDirectory)/environments/${{ parameters.stack }}/$(env).tfvars ${{ parameters.targetCommand }}'
+      commandOptions: '-var control_vault=$(controlKeyVault) -var environment=$(env) -var project=$(project) -var-file $(System.DefaultWorkingDirectory)/environments/${{ parameters.stack }}/$(env).tfvars'

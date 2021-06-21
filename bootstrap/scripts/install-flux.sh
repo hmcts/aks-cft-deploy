@@ -44,5 +44,3 @@ EOF
 kubectl apply -f https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/$ENV/common/sealed-secrets/acr-credentials.yaml
 
 ./kustomize build ${TMP_DIR} |  kubectl apply -f -
-
-rm -rf kustomize
