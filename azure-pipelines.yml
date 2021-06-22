@@ -99,7 +99,7 @@ stages:
             parameters:
               environment: ${{ parameters.env }}
               location: ${{ parameters.location }}
-              stack: '07-network-rg'
+              stack: 'network-rg'
               project: $(project)
               tfversion: $(tfversion)
               tfInitSub: ${{ variables.tfInitSub }}
@@ -112,7 +112,7 @@ stages:
             parameters:
               environment: ${{ parameters.env }}
               location: ${{ parameters.location }}
-              stack: '01-network'
+              stack: 'network'
               project: $(project)
               tfversion: $(tfversion)
               terraformServiceConnection: OPS-APPROVAL-GATE-MGMT-ENVS-CNP #OPS-APPROVAL-GATE-MGMT-ENVS
@@ -132,7 +132,7 @@ stages:
               serviceConnection: $(serviceConnection)
               environment: ${{ parameters.env }}
               location: ${{ parameters.location }}
-              stack: managed-identity
+              stack: 'managed-identity'
               project: $(project)
               tfversion: $(tfversion)
               tfInitSub: ${{ variables.tfInitSub }}
