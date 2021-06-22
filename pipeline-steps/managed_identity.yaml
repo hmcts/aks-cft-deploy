@@ -6,6 +6,8 @@ parameters:
   project: ''
   tfversion: ''
   tfInitSub: ''
+  builtFrom: ''
+  product: ''
 
 steps:
 
@@ -33,7 +35,7 @@ steps:
       backendAzureRmStorageAccountSku: Standard_LRS
       backendAzureRmContainerName: subscription-tfstate
       backendAzureRmKey: '${{ parameters.location }}/${{ parameters.project }}/$(env)/05-mis/terraform-mi.tfstate'
-      commandOptions: '-backend-config=subscription_id=${{ parameters.tfInitSub }}'
+      commandOptions: '-backend-config=subscription_id=${{ parameters.tfInitSub }} -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }}'
 
   - task: TerraformCLI@0
     displayName: terraform validate
@@ -49,11 +51,11 @@ steps:
       terraformVersion: ${{ parameters.tfversion }}
       workingDirectory: $(System.DefaultWorkingDirectory)/components/05-mis
       environmentServiceName: $(serviceConnection)
-      commandOptions: '-out=tfplan-${{ parameters.project }}-$(env)-${{ parameters.stack }} -var subscription_id=$(ARM_SUBSCRIPTION_ID) -var control_vault=$(controlKeyVault) -var environment=$(env) -var project=$(project)'
+      commandOptions: '-out=tfplan-${{ parameters.project }}-$(env)-${{ parameters.stack }} -var subscription_id=$(ARM_SUBSCRIPTION_ID) -var control_vault=$(controlKeyVault) -var environment=$(env) -var project=$(project) -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }}'
 
   - task: TerraformCLI@0
     displayName: Terraform apply
-    condition: eq(variables.isMain, true)
+    condition: and(variables.isMain, true, eq(variables['Action'], 'Apply'))
     inputs:
       command: apply
       terraformVersion: ${{ parameters.tfversion }}
