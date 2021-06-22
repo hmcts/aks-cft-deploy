@@ -1,9 +1,6 @@
 parameters:
-  service: ''
   environment: ''
   project: ''
-  command: ''
-  # clusterName: ''
   akskeyvault: ''
   GenerateSealedSecrets: ''
 

@@ -82,7 +82,7 @@ stages:
             parameters:
               environment: ${{ parameters.env }}
               location: ${{ parameters.location }}
-              stack: '00-genesis'
+              stack: 'genesis'
               project: $(project)
               tfversion: $(tfversion)
               tfInitSub: ${{ variables.tfInitSub }}
@@ -178,7 +178,6 @@ stages:
               serviceConnection: $(serviceConnection)
               akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
-              command: $(command)
 
   - stage: DestroyAks
     displayName: 'Destroy AKS Infrastructure'
