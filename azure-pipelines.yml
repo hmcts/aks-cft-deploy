@@ -178,7 +178,6 @@ stages:
               serviceConnection: $(serviceConnection)
               akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
-              command: $(command)
 
   - stage: DestroyAks
     displayName: 'Destroy AKS Infrastructure'
