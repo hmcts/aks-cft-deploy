@@ -3,12 +3,11 @@ variable "environment" {}
 
 variable "project" {}
 
-variable "builtFrom" {}
-
-variable "product" {}
-
 # Remote State
 variable "control_vault" {}
+
+# Service
+variable "cluster_number" {}
 
 # Kubernetes
 variable "kubernetes_cluster_ssh_key" {}
@@ -24,8 +23,6 @@ variable "kubernetes_cluster_agent_vm_size" {
 }
 
 variable "kubernetes_cluster_version" {}
-
-variable "cluster_count" {}
 
 # CFT specific
 variable "project_acr_enabled" {
