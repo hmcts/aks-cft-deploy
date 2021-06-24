@@ -60,3 +60,10 @@ provider "azurerm" {
   features {}
   subscription_id = "04d27a32-7a07-48b3-95b8-3c8691e1a263"
 }
+
+provider "azurerm" {
+  alias                      = "mi_cft"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = local.mi_cft[var.environment].subscription
+}
