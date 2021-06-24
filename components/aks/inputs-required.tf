@@ -35,3 +35,7 @@ variable "project_acr_enabled" {
 variable "monitor_diagnostic_setting" {
   default = true
 }
+
+variable "sku_tier" {
+  default = "Free"
+}
