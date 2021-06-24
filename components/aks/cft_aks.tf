@@ -10,5 +10,5 @@ resource "azurerm_role_assignment" "uami_cft_rg_identity_operator" {
   scope                = data.azurerm_resource_group.managed-identity-operator-cft-mi.id
   role_definition_name = "Managed Identity Operator"
 
-    depends_on = [module.kubernetes[*]]
+  depends_on = [module.kubernetes[*]]
 }
