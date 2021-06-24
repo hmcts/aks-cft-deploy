@@ -21,7 +21,7 @@ module "kubernetes" {
   environment = var.environment
   location    = var.location
 
-  sku_tier    = var.sku_tier
+  sku_tier = var.sku_tier
   providers = {
     azurerm               = azurerm
     azurerm.hmcts-control = azurerm.hmcts-control
