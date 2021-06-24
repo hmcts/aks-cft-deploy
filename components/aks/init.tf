@@ -18,6 +18,9 @@ provider "azurerm" {
 }
 
 locals {
+
+  environment = (var.environment == "sbox") ? "sandbox" : (var.environment == "test") ? "perftest" : "${var.environment}"
+
   acr = {
     global = {
       subscription = "8999dec3-0104-4a27-94ee-6588559729d1"
