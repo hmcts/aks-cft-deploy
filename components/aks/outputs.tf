@@ -4,6 +4,6 @@ output "clusters" {
 }
 
 output "kubelet_object_ids" {
-  value     = join(" ", module.kubernetes[*].kubelet_object_id)
+  value     = join(",", module.kubernetes[*].kubelet_object_id)
   sensitive = false
 }
