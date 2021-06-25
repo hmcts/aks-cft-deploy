@@ -82,7 +82,7 @@ stages:
             parameters:
               environment: ${{ parameters.env }}
               location: ${{ parameters.location }}
-              stack: '00-genesis'
+              stack: 'genesis'
               project: $(project)
               tfversion: $(tfversion)
               tfInitSub: ${{ variables.tfInitSub }}
@@ -99,7 +99,7 @@ stages:
             parameters:
               environment: ${{ parameters.env }}
               location: ${{ parameters.location }}
-              stack: '07-network-rg'
+              stack: 'network-rg'
               project: $(project)
               tfversion: $(tfversion)
               tfInitSub: ${{ variables.tfInitSub }}
@@ -112,7 +112,7 @@ stages:
             parameters:
               environment: ${{ parameters.env }}
               location: ${{ parameters.location }}
-              stack: '01-network'
+              stack: 'network'
               project: $(project)
               tfversion: $(tfversion)
               terraformServiceConnection: OPS-APPROVAL-GATE-MGMT-ENVS-CNP #OPS-APPROVAL-GATE-MGMT-ENVS
@@ -132,7 +132,7 @@ stages:
               serviceConnection: $(serviceConnection)
               environment: ${{ parameters.env }}
               location: ${{ parameters.location }}
-              stack: managed-identity
+              stack: 'managed-identity'
               project: $(project)
               tfversion: $(tfversion)
               tfInitSub: ${{ variables.tfInitSub }}
@@ -158,7 +158,7 @@ stages:
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
               ${{ if ne(parameters['cluster'], 'All') }}:
-                targetCommand: "-target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
+                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
 
   - stage: BootStrapClusters
     displayName: 'BootStrap Clusters'
@@ -178,7 +178,6 @@ stages:
               serviceConnection: $(serviceConnection)
               akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
-              command: $(command)
 
   - stage: DestroyAks
     displayName: 'Destroy AKS Infrastructure'
@@ -197,4 +196,4 @@ stages:
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
               ${{ if ne(parameters['cluster'], 'All') }}:
-                targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
+                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"

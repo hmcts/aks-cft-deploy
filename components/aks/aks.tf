@@ -9,6 +9,13 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
   )
   tags = module.ctags.common_tags
 }
+
+resource "azurerm_resource_group" "disks_resource_group" {
+  location = var.location
+  name     = "disks-${var.environment}-rg"
+  tags     = module.ctags.common_tags
+}
+
 module "loganalytics" {
   source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=master"
   environment = var.environment
@@ -16,17 +23,17 @@ module "loganalytics" {
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=cft"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=cft-merge"
 
   environment = var.environment
   location    = var.location
 
+  sku_tier = var.sku_tier
   providers = {
     azurerm               = azurerm
     azurerm.hmcts-control = azurerm.hmcts-control
     azurerm.acr           = azurerm.acr
     azurerm.global_acr    = azurerm.global_acr
-    azurerm.mi_cft        = azurerm.mi_cft
   }
 
   resource_group_name = azurerm_resource_group.kubernetes_resource_group[count.index].name
@@ -58,6 +65,8 @@ module "kubernetes" {
   ]
 
   project_acr_enabled = var.project_acr_enabled
+
+  depends_on = [azurerm_resource_group.disks_resource_group]
 }
 
 module "ctags" {
