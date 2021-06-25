@@ -3,7 +3,7 @@ set -ex
 
 ENV=$3
 CLUSTER_NAME=$6
-FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/addfluxsystem
+FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 
 # Install Flux
 kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components.yaml
