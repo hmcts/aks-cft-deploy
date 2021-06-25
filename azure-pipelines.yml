@@ -196,4 +196,4 @@ stages:
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
               ${{ if ne(parameters['cluster'], 'All') }}:
-                targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
+                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
