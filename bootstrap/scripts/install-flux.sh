@@ -3,9 +3,6 @@ set -ex
 
 ENV=$3
 CLUSTER_NAME=$6
-VAULT_NAME=$8
-HELM_REPO=https://charts.fluxcd.io
-VALUES=deployments/fluxcd/values.yaml
 FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/addfluxsystem
 
 # Install Flux
