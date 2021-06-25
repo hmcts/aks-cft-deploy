@@ -8,11 +8,11 @@ HELM_REPO=https://charts.fluxcd.io
 VALUES=deployments/fluxcd/values.yaml
 FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/addfluxsystem
 
-#Git credentials
-kubectl apply -f ${FLUX_CONFIG_URL}/clusters/sbox/base/git-credentials.yaml
-
 # Install Flux
 kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components.yaml
+
+#Git credentials
+kubectl apply -f ${FLUX_CONFIG_URL}/clusters/sbox/base/git-credentials.yaml
 
 #Create Flux Sync CRDs
 kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/flux-config-gitrepo.yaml
