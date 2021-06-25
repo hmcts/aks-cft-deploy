@@ -30,7 +30,6 @@ chmod +x scripts/create-custom-namespaces.sh
 chmod +x scripts/create-cluster-admins.sh
 chmod +x scripts/create-developer-roles.sh
 chmod +x scripts/install-sealed-secrets.sh
-chmod +x scripts/create-flux-githubkey-secret.sh
 chmod +x scripts/install-flux.sh
 chmod +x scripts/generate-sealed-secrets-pki.sh
 chmod +x scripts/create-neuvector-azure-file-share.sh
@@ -44,7 +43,6 @@ for cluster in ${6}; do
   ./scripts/create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
   ./scripts/create-developer-roles.sh "$@" || error_exit "ERROR: Unable to create developer roles"
   ./scripts/install-sealed-secrets.sh "$@"|| error_exit "ERROR: Unable to install sealed secrets"
-  ./scripts/create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
   ./scripts/install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
   ./scripts/create-neuvector-azure-file-share.sh "$@"|| error_exit "ERROR: Unable to create Neuvector Azure File Shares"
   [ $9 == "true" ] && echo ./scripts/generate-sealed-secrets-pki.sh "$@" && error_exit "ERROR: Unable to generate sealed secrets"
