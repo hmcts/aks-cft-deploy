@@ -12,3 +12,17 @@ resource "azurerm_role_assignment" "uami_cft_rg_identity_operator" {
 
   depends_on = [module.kubernetes]
 }
+
+data "azurerm_resource_group" "managed-identity-operator" {
+  name = "managed-identities-${local.environment-mi}-rg"
+
+}
+
+resource "azurerm_role_assignment" "uami_rg_identity_operator" {
+  count                = var.cluster_count
+  principal_id         = module.kubernetes["${count.index}"].kubelet_object_id
+  scope                = data.azurerm_resource_group.managed-identity-operator.id
+  role_definition_name = "Managed Identity Operator"
+
+  depends_on = [module.kubernetes]
+}
