@@ -28,7 +28,6 @@ echo "Params: $@"
 chmod +x scripts/get-aks-credentials.sh
 chmod +x scripts/create-custom-namespaces.sh
 chmod +x scripts/create-cluster-admins.sh
-chmod +x scripts/create-developer-roles.sh
 chmod +x scripts/install-sealed-secrets.sh
 chmod +x scripts/install-flux.sh
 chmod +x scripts/generate-sealed-secrets-pki.sh
@@ -41,7 +40,6 @@ for cluster in ${6}; do
   ./scripts/get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
   ./scripts/create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"
   ./scripts/create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
-  ./scripts/create-developer-roles.sh "$@" || error_exit "ERROR: Unable to create developer roles"
   ./scripts/install-sealed-secrets.sh "$@"|| error_exit "ERROR: Unable to install sealed secrets"
   ./scripts/install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
   ./scripts/create-neuvector-azure-file-share.sh "$@"|| error_exit "ERROR: Unable to create Neuvector Azure File Shares"
