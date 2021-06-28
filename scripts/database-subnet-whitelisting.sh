@@ -25,9 +25,10 @@ do
     then 
         echo "Skipping this as $pg already has vnet rules"; 
     else 
-        echo "Creating vnet rules for $pg"; 
-        az postgres server vnet-rule create --name=cft-aks-00 --subnet /subscriptions/8a07fdcd-6abd-48b3-ad88-ff737a4b9e3c/resourceGroups/cft-test-network-rg/providers/Microsoft.Network/virtualNetworks/cft-test-vnet/subnets/aks-00  --resource-group $rg --server-name $pg
-        az postgres server vnet-rule create --name=cft-aks-01 --subnet /subscriptions/8a07fdcd-6abd-48b3-ad88-ff737a4b9e3c/resourceGroups/cft-test-network-rg/providers/Microsoft.Network/virtualNetworks/cft-test-vnet/subnets/aks-01  --resource-group $rg --server-name $pg
+        echo "Creating vnet rules for $pg";
+        subscription_id=$(az account show --subscription DCD-CFTAPPS-$env --query id -o tsv)
+        az postgres server vnet-rule create --name=cft-aks-00 --subnet /subscriptions/$subscription_id/resourceGroups/cft-$env-network-rg/providers/Microsoft.Network/virtualNetworks/cft-$env-vnet/subnets/aks-00  --resource-group $rg --server-name $pg
+        az postgres server vnet-rule create --name=cft-aks-01 --subnet /subscriptions/$subscription_id/resourceGroups/cft-$env-network-rg/providers/Microsoft.Network/virtualNetworks/cft-$env-vnet/subnets/aks-01  --resource-group $rg --server-name $pg
     fi;
   
    
