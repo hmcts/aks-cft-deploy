@@ -50,9 +50,9 @@ variables:
     value: cft
   - name: serviceConnection
     ${{ if eq( parameters['env'], 'perftest') }}: 
-    value: OPS-APPROVAL-GATE-TEST-ENVS
+    value: "OPS-APPROVAL-GATE-TEST-ENVS"
     ${{ if ne( parameters['env'], 'perftest' ) }}: 
-    value: OPS-APPROVAL-GATE-${{ parameters.env }}-ENVS
+    value: "OPS-APPROVAL-GATE-${{ parameters.env }}-ENVS"
   - name: tfInitSub
     value: "04d27a32-7a07-48b3-95b8-3c8691e1a263"
   - name: isMain
