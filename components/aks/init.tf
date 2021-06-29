@@ -34,7 +34,7 @@ locals {
       subscription = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
     }
     test = {
-      subscription = "8a07fdcd-6abd-48b3-ad88-ff737a4b9e3c"
+      subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
 
   }
