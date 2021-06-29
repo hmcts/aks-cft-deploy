@@ -39,7 +39,7 @@ parameters:
     # - DEV
     # - DEMO
     - SBOX
-    - TEST
+    - PERFTEST
     # - STG
     # - PROD
 
