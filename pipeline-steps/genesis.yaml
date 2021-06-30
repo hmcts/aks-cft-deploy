@@ -31,9 +31,9 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}'
       backendType: azurerm
       backendServiceArm: $(serviceconnection)
-      ${{ if eq( $(env), 'perftest') }}: 
+      ${{ if eq( ${env}, 'perftest') }}: 
          backendAzureRmResourceGroupName: 'azure-control-test-rg'
-      ${{ if ne( $(env), 'perftest' ) }}: 
+      ${{ if ne( ${env}, 'perftest' ) }}: 
          backendAzureRmResourceGroupName: 'azure-control-$(env)-rg'
       backendAzureRmResourceGroupLocation: ${{ parameters.location }}
       backendAzureRmStorageAccountName: $(controlStorageAccount)
