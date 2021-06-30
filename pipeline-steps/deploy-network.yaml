@@ -30,8 +30,10 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}'
       backendType: azurerm
       backendServiceArm: ${{ parameters.terraformServiceConnection }}
-      backendAzureRmResourceGroupName: 'azure-control-$(env)-rg'
-      backendAzureRmResourceGroupLocation: ${{ parameters.location }}
+      ${{ if eq( parameters['env'], 'perftest') }}: 
+         backendAzureRmResourceGroupName: 'azure-control-test-rg'
+      ${{ if ne( parameters['env'], 'perftest' ) }}: 
+         backendAzureRmResourceGroupLocation: ${{ parameters.location }}
       backendAzureRmStorageAccountName: $(controlStorageAccount)
       backendAzureRmStorageAccountSku: Standard_LRS
       backendAzureRmContainerName: subscription-tfstate
