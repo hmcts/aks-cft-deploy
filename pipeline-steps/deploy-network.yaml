@@ -33,7 +33,8 @@ steps:
       ${{ if eq( parameters['env'], 'perftest') }}: 
          backendAzureRmResourceGroupName: 'azure-control-test-rg'
       ${{ if ne( parameters['env'], 'perftest' ) }}: 
-         backendAzureRmResourceGroupLocation: ${{ parameters.location }}
+         backendAzureRmResourceGroupName: 'azure-control-$env-rg'
+      backendAzureRmResourceGroupLocation: ${{ parameters.location }}
       backendAzureRmStorageAccountName: $(controlStorageAccount)
       backendAzureRmStorageAccountSku: Standard_LRS
       backendAzureRmContainerName: subscription-tfstate
