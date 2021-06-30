@@ -31,10 +31,10 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}'
       backendType: azurerm
       backendServiceArm: $(serviceconnection)
-      ${{ if eq( parameters['env'], 'perftest') }}: 
-        backendAzureRmResourceGroupName: 'azure-control-test-rg'
-      ${{ if ne( parameters['env'], 'perftest' ) }}: 
-        backendAzureRmResourceGroupName: 'azure-control-$(env)-rg'
+      ${{ if eq( $(env), 'perftest') }}: 
+         backendAzureRmResourceGroupName: 'azure-control-test-rg'
+      ${{ if ne( $(env), 'perftest' ) }}: 
+         backendAzureRmResourceGroupName: 'azure-control-$(env)-rg'
       backendAzureRmResourceGroupLocation: ${{ parameters.location }}
       backendAzureRmStorageAccountName: $(controlStorageAccount)
       backendAzureRmStorageAccountSku: Standard_LRS
