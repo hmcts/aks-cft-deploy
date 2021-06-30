@@ -10,8 +10,8 @@ data "azurerm_resource_group" "genesis_rg" {
 
 locals {
 
-  environment = (var.environment == "perftest") ? "test" :  "${var.environment}"
-  
+  environment = (var.environment == "perftest") ? "test" : "${var.environment}"
+
 }
 
 data "azurerm_key_vault" "genesis_keyvault" {
