@@ -8,6 +8,12 @@ data "azurerm_resource_group" "genesis_rg" {
   name = "genesis-rg"
 }
 
+locals {
+
+  environment = (var.environment == "perftest") ? "test" : "${var.environment}"
+
+}
+
 data "azurerm_key_vault" "genesis_keyvault" {
   name                = "${lower(replace(data.azurerm_subscription.current.display_name, "-", ""))}kv"
   resource_group_name = data.azurerm_resource_group.genesis_rg.name
@@ -16,7 +22,7 @@ data "azurerm_key_vault" "genesis_keyvault" {
 data "azurerm_key_vault" "hmcts_access_vault" {
   provider            = azurerm.hmcts-control
   name                = var.control_vault
-  resource_group_name = "azure-control-${var.environment}-rg"
+  resource_group_name = "azure-control-${local.environment}-rg"
 }
 
 data "azurerm_key_vault_secret" "kubernetes_cluster_client_id" {

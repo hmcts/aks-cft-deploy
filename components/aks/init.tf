@@ -33,7 +33,7 @@ locals {
     sbox = {
       subscription = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
     }
-    test = {
+    perftest = {
       subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
 

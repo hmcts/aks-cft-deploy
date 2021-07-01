@@ -1,6 +1,6 @@
 module "genesis" {
   source           = "git::https://github.com/hmcts/aks-module-genesis.git?ref=master"
-  environment      = var.environment
+  environment      = local.environment
   tags             = module.ctags.common_tags
   developers_group = local.developers_group
 }
