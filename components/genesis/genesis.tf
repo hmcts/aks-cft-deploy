@@ -1,9 +1,3 @@
-locals {
-
-  environment = (var.environment == "perftest") ? "test" : "${var.environment}"
-
-}
-
 module "genesis" {
   source           = "git::https://github.com/hmcts/aDTS Operationsks-module-genesis.git?ref=master"
   environment      = local.environment
