@@ -179,7 +179,10 @@ stages:
               environment: ${{ parameters.env }}
               project: $(project)
               serviceConnection: $(serviceConnection)
-              akskeyvault: dcdcftapps${{ parameters.env }}kv
+              ${{ if eq( parameters['env'], 'perftest') }}: 
+                 akskeyvault: dcdcftappstestkv
+              ${{ if ne( parameters['env'], 'perftest' ) }}: 
+                 akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
 
   - stage: DestroyAks
