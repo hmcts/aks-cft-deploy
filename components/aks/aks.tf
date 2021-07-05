@@ -25,8 +25,9 @@ module "kubernetes" {
   count  = var.cluster_count
   source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=control-vault-access"
 
-  environment = var.environment
-  location    = var.location
+  control_resource_group = "azure-control-${var.environment}-rg"
+  environment            = var.environment
+  location               = var.location
 
   sku_tier = var.sku_tier
   providers = {
