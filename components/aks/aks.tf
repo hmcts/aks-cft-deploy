@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
 
 resource "azurerm_resource_group" "disks_resource_group" {
   location = var.location
-  name     = "disks-${var.control_resource_environment}-rg"
+  name     = "disks-${var.environment}-rg"
   tags     = module.ctags.common_tags
 }
 
