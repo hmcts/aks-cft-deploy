@@ -23,10 +23,11 @@ module "loganalytics" {
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=control-vault-access"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
-  environment = var.environment
-  location    = var.location
+  control_resource_group = "azure-control-${local.control_resource_environment}-rg"
+  environment            = var.environment
+  location               = var.location
 
   sku_tier = var.sku_tier
   providers = {
