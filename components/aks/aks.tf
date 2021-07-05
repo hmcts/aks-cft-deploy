@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
 
 resource "azurerm_resource_group" "disks_resource_group" {
   location = var.location
-  name     = "disks-${var.environment}-rg"
+  name     = "disks-${var.control_resource_environment}-rg"
   tags     = module.ctags.common_tags
 }
 
@@ -25,7 +25,7 @@ module "kubernetes" {
   count  = var.cluster_count
   source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=control-vault-access"
 
-  control_resource_group = "azure-control-${var.environment}-rg"
+  control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.environment
   location               = var.location
 

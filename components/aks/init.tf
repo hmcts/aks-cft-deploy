@@ -19,7 +19,7 @@ provider "azurerm" {
 
 locals {
 
-  # control_resource_environment = var.environment == "perftest" ? "test" : "${var.environment}"
+  control_resource_environment = var.environment == "perftest" ? "test" : "${var.environment}"
 
   environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
 
