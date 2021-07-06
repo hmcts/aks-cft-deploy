@@ -11,6 +11,8 @@ VNET_RESOURCE_GROUP="vnet-rg"
 SUBNET00="aks-00"
 SUBNET01="aks-01"
 
+# Sets to postgres account (required for az postgres server vnet-rule create as it requires --resource-group)
+az account set -s $SUBSCRIPTION_NAME_POSTGRES
 
 POSTGRES_SQL_LIST+=($(az postgres server list --subscription=$SUBSCRIPTION_NAME_POSTGRES --query "[?(contains(name,'$ENV'))].name" -o tsv | sort -u))
 
