@@ -19,9 +19,12 @@ provider "azurerm" {
 
 locals {
 
-  environment = (var.environment == "sbox") ? "sandbox" : (var.environment == "test") ? "perftest" : "${var.environment}"
+  control_resource_environment = var.environment == "perftest" ? "test" : "${var.environment}"
 
-  environment-mi = (var.environment == "sandbox") ? "sbox" : (var.environment == "test") ? "perftest" : "${var.environment}"
+  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
+
+  environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : "${var.environment}"
+
   acr = {
     global = {
       subscription = "8999dec3-0104-4a27-94ee-6588559729d1"
@@ -33,8 +36,8 @@ locals {
     sbox = {
       subscription = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
     }
-    test = {
-      subscription = "8a07fdcd-6abd-48b3-ad88-ff737a4b9e3c"
+    perftest = {
+      subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
 
   }
@@ -62,9 +65,9 @@ provider "azurerm" {
   subscription_id = "04d27a32-7a07-48b3-95b8-3c8691e1a263"
 }
 
-# provider "azurerm" {
-#   alias                      = "mi_cft"
-#   skip_provider_registration = "true"
-#   features {}
-#   subscription_id = local.mi_cft[var.environment].subscription
-# }
+provider "azurerm" {
+  alias                      = "mi_cft"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = local.mi_cft[var.environment].subscription
+}

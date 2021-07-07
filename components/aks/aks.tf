@@ -23,10 +23,11 @@ module "loganalytics" {
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=cft-merge"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
-  environment = var.environment
-  location    = var.location
+  control_resource_group = "azure-control-${local.control_resource_environment}-rg"
+  environment            = var.environment
+  location               = var.location
 
   sku_tier = var.sku_tier
   providers = {
@@ -34,6 +35,7 @@ module "kubernetes" {
     azurerm.hmcts-control = azurerm.hmcts-control
     azurerm.acr           = azurerm.acr
     azurerm.global_acr    = azurerm.global_acr
+    azurerm.mi_cft        = azurerm.mi_cft
   }
 
   resource_group_name = azurerm_resource_group.kubernetes_resource_group[count.index].name

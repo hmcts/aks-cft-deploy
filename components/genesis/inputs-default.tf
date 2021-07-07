@@ -1,6 +1,6 @@
 locals {
 
-  environment = (var.environment == "aat") ? "stg" : "${(var.environment == "perftest") ? "test" : "${var.environment}"}"
+  environment = (var.environment == "aat") ? "stg" : (var.environment == "perftest") ? "test" : "${var.environment}"
 
   developers_group = "DTS Operations (env:${local.environment})"
 

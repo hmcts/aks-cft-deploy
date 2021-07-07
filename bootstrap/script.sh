@@ -1,8 +1,12 @@
 #!/bin/bash
 
 ENV=$1
-STORAGE_ACCOUNT_NAME=cftapps${1}
-RESOURCE_GROUP_NAME=core-infra-${1}-rg 
+
+if [ $ENV = "perftest" ]; then
+  ENV="test"
+fi
+STORAGE_ACCOUNT_NAME=cftapps$ENV
+RESOURCE_GROUP_NAME=core-infra-$ENV-rg 
 
 
 echo $STORAGE_ACCOUNT_NAME
