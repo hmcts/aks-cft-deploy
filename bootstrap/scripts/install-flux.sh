@@ -9,7 +9,7 @@ FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components.yaml
 
 #Git credentials
-kubectl apply -f ${FLUX_CONFIG_URL}/clusters/sbox/base/git-credentials.yaml
+kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/${ENV}/base/git-credentials.yaml
 
 #Create Flux Sync CRDs
 kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/flux-config-gitrepo.yaml
