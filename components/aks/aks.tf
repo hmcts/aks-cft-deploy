@@ -23,7 +23,7 @@ module "loganalytics" {
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=update-disk-rg-role-assignment "
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=update-disk-rg-role-assignment"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.environment
