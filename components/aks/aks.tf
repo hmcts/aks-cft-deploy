@@ -53,6 +53,8 @@ module "kubernetes" {
 
   control_vault = var.control_vault
 
+  ptl_cluster = var.ptl_cluster
+
   kubernetes_cluster_ssh_key = var.kubernetes_cluster_ssh_key
 
   kubernetes_cluster_agent_min_count = var.kubernetes_cluster_agent_min_count

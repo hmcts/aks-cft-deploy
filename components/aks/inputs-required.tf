@@ -39,3 +39,7 @@ variable "monitor_diagnostic_setting" {
 variable "sku_tier" {
   default = "Free"
 }
+
+variable "ptl_cluster" {
+  default = false
+}
