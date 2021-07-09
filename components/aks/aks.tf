@@ -23,7 +23,7 @@ module "loganalytics" {
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=update-disk-rg-role-assignment"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.environment
@@ -52,6 +52,8 @@ module "kubernetes" {
   monitor_diagnostic_setting = var.monitor_diagnostic_setting
 
   control_vault = var.control_vault
+
+  ptl_cluster = var.ptl_cluster
 
   kubernetes_cluster_ssh_key = var.kubernetes_cluster_ssh_key
 
