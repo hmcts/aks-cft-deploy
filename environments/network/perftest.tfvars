@@ -38,18 +38,3 @@ additional_routes = [
     next_hop_in_ip_address = "10.11.72.36"
   }
 ]
-
-additional_routes_appgw = [
-  {
-    name                   = "core_infra_vnet_idam_perftest"
-    address_prefix         = "10.120.0.0/18"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
-  },
-  {
-    name                   = "vpn"
-    address_prefix         = "10.99.0.0/18"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
-  }
-]
