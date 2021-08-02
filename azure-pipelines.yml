@@ -40,7 +40,7 @@ parameters:
     # - DEMO
     - SBOX
     - PERFTEST
-    - STG
+    - AAT
     # - PROD
 
 variables:
