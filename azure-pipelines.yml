@@ -165,27 +165,27 @@ stages:
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
 
-  - stage: BootStrapClusters
-    displayName: 'BootStrap Clusters'
-    dependsOn: Aks
-    jobs:
-      - job: BootStrap
-        variables:
-          ${{ if eq(parameters['cluster'], 'All') }}:
-            clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
-          ${{ if ne(parameters['cluster'], 'All') }}:
-            clusters: ${{ parameters.cluster }}
-        steps:
-          - template: pipeline-steps/bootstrap.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              project: $(project)
-              serviceConnection: $(serviceConnection)
-              ${{ if eq( parameters['env'], 'perftest') }}: 
-                 akskeyvault: dcdcftappstestkv
-              ${{ if ne( parameters['env'], 'perftest' ) }}: 
-                 akskeyvault: dcdcftapps${{ parameters.env }}kv
-              GenerateSealedSecrets: false
+  # - stage: BootStrapClusters
+  #   displayName: 'BootStrap Clusters'
+  #   dependsOn: Aks
+  #   jobs:
+  #     - job: BootStrap
+  #       variables:
+  #         ${{ if eq(parameters['cluster'], 'All') }}:
+  #           clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
+  #         ${{ if ne(parameters['cluster'], 'All') }}:
+  #           clusters: ${{ parameters.cluster }}
+  #       steps:
+  #         - template: pipeline-steps/bootstrap.yaml
+  #           parameters:
+  #             environment: ${{ parameters.env }}
+  #             project: $(project)
+  #             serviceConnection: $(serviceConnection)
+  #             ${{ if eq( parameters['env'], 'perftest') }}: 
+  #                akskeyvault: dcdcftappstestkv
+  #             ${{ if ne( parameters['env'], 'perftest' ) }}: 
+  #                akskeyvault: dcdcftapps${{ parameters.env }}kv
+  #             GenerateSealedSecrets: false
 
   - stage: DestroyAks
     displayName: 'Destroy AKS Infrastructure'
