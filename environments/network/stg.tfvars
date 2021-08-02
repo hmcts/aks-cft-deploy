@@ -13,7 +13,14 @@ private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
 private_dns_zones = [
   "aat.platform.hmcts.net",
   "service.core-compute-aat.internal",
-  "service.core-compute-idam-aat.internal"
+  "service.core-compute-idam-aat.internal",
+  "service.core-compute-idam-aat2.internal",
+  "reform.hmcts.net",
+  "service.core-compute-preview.internal",
+  "service.core-compute-idam-preview.internal",
+  "platform.hmcts.net",
+  "privatelink.blob.core.windows.net",
+  "privatelink.postgres.database.azure.com"
 ]
 
 hub = "prod"
