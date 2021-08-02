@@ -19,11 +19,11 @@ provider "azurerm" {
 
 locals {
 
-  control_resource_environment = var.environment == "perftest" ? "test" : "${var.environment}"
+  control_resource_environment = var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : "${var.environment}"
 
-  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
+  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : "${var.environment}"
 
-  environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : "${var.environment}"
+  environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : "${var.environment}"
 
   acr = {
     global = {
@@ -38,6 +38,9 @@ locals {
     }
     perftest = {
       subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+    }
+    aat = {
+      subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
 
   }
