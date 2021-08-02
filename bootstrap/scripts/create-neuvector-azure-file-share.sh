@@ -4,7 +4,9 @@ set -e
 ENV=$3
 
 if [ $ENV = "perftest" ]; then
-  ENV="test"
+ENV="test"
+elif [ $ENV = "aat" ]; then
+ENV="stg"
 fi
 
 VAULT_NAME=$8

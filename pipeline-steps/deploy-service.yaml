@@ -34,6 +34,10 @@ steps:
          backendAzureRmResourceGroupName: 'azure-control-test-rg'
       ${{ if ne( parameters['environment'], 'perftest' ) }}: 
          backendAzureRmResourceGroupName: 'azure-control-${{ parameters.environment }}-rg'
+      ${{ if eq( parameters['environment'], 'aat') }}: 
+         backendAzureRmResourceGroupName: 'azure-control-stg-rg'
+      ${{ if ne( parameters['environment'], 'aat' ) }}: 
+         backendAzureRmResourceGroupName: 'azure-control-${{ parameters.environment }}-rg'
       backendAzureRmResourceGroupLocation: ${{ parameters.location }}
       backendAzureRmStorageAccountName: $(controlStorageAccount)
       backendAzureRmStorageAccountSku: Standard_LRS
