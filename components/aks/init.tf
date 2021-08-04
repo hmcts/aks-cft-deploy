@@ -21,7 +21,7 @@ locals {
 
   control_resource_environment = var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : "${var.environment}"
 
-  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : "${var.environment}"
+  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
 
   environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : "${var.environment}"
 
