@@ -15,12 +15,8 @@ private_dns_zones = [
   "service.core-compute-aat.internal",
   "service.core-compute-idam-aat.internal",
   "service.core-compute-idam-aat2.internal",
-  "reform.hmcts.net",
   "service.core-compute-preview.internal",
   "service.core-compute-idam-preview.internal",
-  "platform.hmcts.net",
-  "privatelink.blob.core.windows.net",
-  "privatelink.postgres.database.azure.com"
 ]
 
 hub = "prod"
