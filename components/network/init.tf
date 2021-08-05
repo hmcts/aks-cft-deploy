@@ -35,6 +35,34 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
+  subscription_id            = local.hub[var.hub].subscription
+  skip_provider_registration = "true"
+  features {}
+  alias = "hub"
+}
+
+provider "azurerm" {
+  subscription_id            = local.hub["sbox"].subscription
+  skip_provider_registration = "true"
+  features {}
+  alias = "hub-sbox"
+}
+
+provider "azurerm" {
+  subscription_id            = local.hub["nonprod"].subscription
+  skip_provider_registration = "true"
+  features {}
+  alias = "hub-nonprod"
+}
+
+provider "azurerm" {
+  subscription_id            = local.hub["prod"].subscription
+  skip_provider_registration = "true"
+  features {}
+  alias = "hub-prod"
+}
+
+provider "azurerm" {
   subscription_id            = var.private_dns_subscription
   skip_provider_registration = "true"
   features {}
