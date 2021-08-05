@@ -12,7 +12,7 @@ data "azurerm_virtual_network" "hub-south-vnet-nonprod" {
   resource_group_name = local.hub["nonprod"].ukSouth.name
 }
 
-resource "azurerm_virtual_network_peering" "hub-south-to-spoke" {
+resource "azurerm_virtual_network_peering" "hubnonprod-south-to-spoke" {
   count    = var.environment == "aat" ? 1 : 0
   provider = azurerm.hub
 
@@ -28,7 +28,7 @@ resource "azurerm_virtual_network_peering" "hub-south-to-spoke" {
   allow_forwarded_traffic      = true
 }
 
-resource "azurerm_virtual_network_peering" "spoke-to-hub-south" {
+resource "azurerm_virtual_network_peering" "spoke-to-hubnonprod-south" {
   count                        = var.environment == "aat" ? 1 : 0
   name                         = "hubUkS"
   resource_group_name          = module.network.network_resource_group
