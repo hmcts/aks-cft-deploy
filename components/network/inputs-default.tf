@@ -57,6 +57,19 @@ variable "private_endpoint_private_dns_zones" {
   ]
 }
 
+  hub_to_env_mapping = {
+    sbox    = ["sbox", "ptlsbox"]
+    nonprod = ["demo", "dev", "aat", "perftest", "ithc", "ptl"]
+    prod    = ["prod", "aat", "ptl"]
+  }
+
+  regions = [
+    "ukSouth",
+    "ukWest"
+  ]
+
+}
+
 variable "additional_routes" {
   default = []
 }
