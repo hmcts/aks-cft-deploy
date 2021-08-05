@@ -35,6 +35,18 @@ locals {
     }
   }
 
+  hub_to_env_mapping = {
+    sbox    = ["sbox", "ptlsbox"]
+    nonprod = ["demo", "dev", "aat", "perftest", "ithc", "ptl"]
+    prod    = ["prod", "aat", "ptl"]
+  }
+
+  regions = [
+    "ukSouth",
+    "ukWest"
+  ]
+
+
 }
 
 variable "location" {
@@ -55,19 +67,6 @@ variable "private_endpoint_private_dns_zones" {
     "platform.hmcts.net", # added as all envs require this currently
     "reform.hmcts.net"    # added as all envs require this currently
   ]
-}
-
-  hub_to_env_mapping = {
-    sbox    = ["sbox", "ptlsbox"]
-    nonprod = ["demo", "dev", "aat", "perftest", "ithc", "ptl"]
-    prod    = ["prod", "aat", "ptl"]
-  }
-
-  regions = [
-    "ukSouth",
-    "ukWest"
-  ]
-
 }
 
 variable "additional_routes" {
