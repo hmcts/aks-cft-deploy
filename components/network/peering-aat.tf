@@ -30,7 +30,7 @@ resource "azurerm_virtual_network_peering" "hubnonprod-south-to-spoke" {
 
 resource "azurerm_virtual_network_peering" "spoke-to-hubnonprod-south" {
   count                        = var.environment == "aat" ? 1 : 0
-  name                         = "hubUkS"
+  name                         = "hubUkSnonprod"
   resource_group_name          = module.network.network_resource_group
   virtual_network_name         = module.network.network_name
   remote_virtual_network_id    = data.azurerm_virtual_network.hub-south-vnet-nonprod.id
