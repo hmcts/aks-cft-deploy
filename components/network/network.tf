@@ -8,7 +8,7 @@ module "network" {
   environment                  = var.environment
 
   network_address_space = var.network_address_space
-  network_location      = var.locationnetwork_shortname
+  network_location      = var.location
   network_shortname     = local.network_shortname
   project               = var.project
   service_shortname     = var.service_shortname
