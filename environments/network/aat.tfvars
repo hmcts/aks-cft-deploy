@@ -44,8 +44,8 @@ additional_routes = [
 
 additional_routes_appgw = [
   {
-    name                   = "core_infra_vnet_idam_aat"
-    address_prefix         = "10.98.0.0/18"
+    name                   = "core_infra_vnet_idam_aat2"
+    address_prefix         = "10.103.128.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
   },
