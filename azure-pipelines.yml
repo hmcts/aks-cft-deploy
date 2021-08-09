@@ -41,6 +41,7 @@ parameters:
     - SBOX
     - PERFTEST
     - AAT
+    - PTLSBOX
     # - PROD
 
 variables:
