@@ -35,7 +35,7 @@ parameters:
     type: string
     default: 'AAT'
     values:
-    # - ITHC
+    - ITHC
     # - DEV
     # - DEMO
     - SBOX
