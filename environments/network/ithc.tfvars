@@ -20,47 +20,41 @@ hub = "prod"
 
 additional_routes = [
   {
-    name                   = "preview"
-    address_prefix         = "10.12.64.0/18"
+    name                   = "AKSITHCtoHUBPalo"
+    address_prefix         = "10.0.0.0/8"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "10_0_0_0"
-    address_prefix         = "10.0.0.0/8"
+    name                   = "BastionMgmtVnet"
+    address_prefix         = "10.48.0.0/27"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
+    next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "172_16_0_0"
-    address_prefix         = "172.16.0.0/12"
+    name                   = "Internet"
+    address_prefix         = "0.0.0.0"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
-  },
-  {
-    name                   = "192_168_0_0"
-    address_prefix         = "192.168.0.0/16"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
+    next_hop_in_ip_address = "10.11.72.36"
   }
 ]
 
 additional_routes_appgw = [
   {
-    name                   = "core_infra_vnet_idam_ithc2"
-    address_prefix         = "10.103.128.0/18"
+    name                   = "AKSITHCtoHUBPalo"
+    address_prefix         = "10.0.0.0/8"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
+    next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "core_cftptl_intvsc_vnet"
-    address_prefix         = "10.10.64.0/21"
+    name                   = "BastionMgmtVnet"
+    address_prefix         = "10.48.0.0/27"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
+    next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "core_preview_vnet"
-    address_prefix         = "10.12.64.0/18"
+    name                   = "Internet"
+    address_prefix         = "0.0.0.0"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   }
