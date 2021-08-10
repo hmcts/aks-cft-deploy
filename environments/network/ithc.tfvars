@@ -1,10 +1,10 @@
 enable_debug = "true"
 
 network_address_space                  = "10.11.192.0/18"
-aks_00_subnet_cidr_blocks              = "10.11.128.0/20"
-aks_01_subnet_cidr_blocks              = "10.11.144.0/20"
-iaas_subnet_cidr_blocks                = "10.11.160.0/24"
-application_gateway_subnet_cidr_blocks = "10.11.161.0/25"
+aks_00_subnet_cidr_blocks              = "10.11.192.0/20"
+aks_01_subnet_cidr_blocks              = "10.11.208.0/20"
+iaas_subnet_cidr_blocks                = "10.11.224.0/24"
+application_gateway_subnet_cidr_blocks = "10.11.225.0/25"
 
 additional_subnets = [
 ]
@@ -16,24 +16,24 @@ private_dns_zones = [
   "service.core-compute-idam-ithc.internal",
 ]
 
-hub = "prod"
+hub = "nonprod"
 
 additional_routes = [
   {
-    name                   = "AKSITHCtoHUBPalo"
+    name                   = "10_0_0_0"
     address_prefix         = "10.0.0.0/8"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "BastionMgmtVnet"
-    address_prefix         = "10.48.0.0/27"
+    name                   = "172_16_0_0"
+    address_prefix         = "172.16.0.0/12"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "Internet"
-    address_prefix         = "0.0.0.0"
+    name                   = "192_168_0_0"
+    address_prefix         = "192.168.0.0/16"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   }
@@ -41,20 +41,20 @@ additional_routes = [
 
 additional_routes_appgw = [
   {
-    name                   = "AKSITHCtoHUBPalo"
-    address_prefix         = "10.0.0.0/8"
+    name                   = "core_infra_vnet_idam_ithc"
+    address_prefix         = "10.120.64.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "BastionMgmtVnet"
-    address_prefix         = "10.48.0.0/27"
+    name                   = "core_infra_subnet_mgmtithc"
+    address_prefix         = "10.112.0.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "Internet"
-    address_prefix         = "0.0.0.0"
+    name                   = "core_cftptl_intvsc_vnet"
+    address_prefix         = "10.10.64.0/21"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   }
