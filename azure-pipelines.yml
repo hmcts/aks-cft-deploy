@@ -33,9 +33,9 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'AAT'
+    default: 'ITHC'
     values:
-    # - ITHC
+    - ITHC
     # - DEV
     # - DEMO
     - SBOX

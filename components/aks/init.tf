@@ -43,6 +43,10 @@ locals {
       subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
 
+    ithc = {
+      subscription = "62864d44-5da9-4ae9-89e7-0cf33942fa09"
+    }
+
   }
 
 }
