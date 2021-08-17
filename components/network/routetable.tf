@@ -4,7 +4,7 @@ resource "azurerm_route_table" "route_table" {
     var.environment
   )
 
-  location            = var.network_location
+  location            = var.location
   resource_group_name = var.resource_group_name
   tags                = module.ctags.common_tags
 }
