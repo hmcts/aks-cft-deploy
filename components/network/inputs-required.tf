@@ -24,5 +24,4 @@ variable "iaas_subnet_cidr_blocks" {}
 
 variable "application_gateway_subnet_cidr_blocks" {}
 
-variable "resource_group_name" {
-}
+variable "resource_group_name" {}
