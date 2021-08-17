@@ -59,6 +59,3 @@ additional_routes_appgw = [
     next_hop_in_ip_address = "10.11.72.36"
   }
 ]
-
-# Route Table
-resource_group_name = "core-infra-ithc"

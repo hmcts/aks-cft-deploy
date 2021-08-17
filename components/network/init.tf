@@ -75,3 +75,24 @@ provider "azurerm" {
   features {}
   alias = "vpn"
 }
+
+provider "azurerm" {
+
+  alias                      = "core-infra-routetable"
+  skip_provider_registration = "true"
+  features {}
+
+  subscription_id = local.core-infra-routetable[var.environment].subscription
+
+}
+
+locals {
+  core-infra-routetable = {
+    sbox = {
+      subscription = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
+    }
+    ithc = {
+      subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+    }
+  }
+}

@@ -4,8 +4,10 @@ resource "azurerm_route_table" "route_table" {
     var.environment
   )
 
+  provider = azurerm.core-infra-routetable
+
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = "core-infra-${var.environment}"
   tags                = module.ctags.common_tags
 }
 
@@ -16,6 +18,8 @@ resource "azurerm_route" "default_route" {
   address_prefix         = var.route_address_prefix
   next_hop_type          = var.route_next_hop_type
   next_hop_in_ip_address = var.route_next_hop_in_ip_address
+
+  provider = azurerm.core-infra-routetable
 }
 
 resource "azurerm_route" "additional_route" {
@@ -27,4 +31,7 @@ resource "azurerm_route" "additional_route" {
   address_prefix         = each.value.address_prefix
   next_hop_type          = each.value.next_hop_type
   next_hop_in_ip_address = each.value.next_hop_type != "VirtualAppliance" ? null : each.value.next_hop_in_ip_address
+
+  provider = azurerm.core-infra-routetable
+
 }
