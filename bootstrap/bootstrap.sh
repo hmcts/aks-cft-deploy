@@ -49,7 +49,7 @@ for cluster in ${6}; do
   ./scripts/install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
   ./scripts/create-neuvector-azure-file-share.sh "$@"|| error_exit "ERROR: Unable to create Neuvector Azure File Shares"
   [ $9 == "true" ] && (./scripts/generate-sealed-secrets-pki.sh "$@" || error_exit "ERROR: Unable to generate sealed secrets")
-  # [[ $3 =~ ^(aat|perftest|prod)$ ]] && (./scripts/register-cluster-with-dynatrace.sh || error_exit "ERROR: Unable to register cluster with Dynatrace")
+  [[ $3 =~ ^(aat|perftest|prod)$ ]] && (./scripts/register-cluster-with-dynatrace.sh || error_exit "ERROR: Unable to register cluster with Dynatrace")
   echo "Deployment Complete"
 
 done
