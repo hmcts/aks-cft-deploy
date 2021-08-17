@@ -1,23 +1,30 @@
-resource "azurerm_route_table" "routetable" {
-  name                = "aks-aat-core-infra-route-table"
-  location            = var.location
-  resource_group_name = module.network.resource_group_name
+resource "azurerm_route_table" "route_table" {
+  name = format("%s-%s-route-table",
+    var.service_shortname,
+    var.environment
+  )
 
-  disable_bgp_route_propagation = false
+  location            = var.network_location
+  resource_group_name = var.resource_group_name
+  tags                = module.ctags.common_tags
+}
 
-  route {
-    name                   = "aks-00"
-    address_prefix         = "10.10.128.0/20"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
-  }
+resource "azurerm_route" "default_route" {
+  name                   = var.route_name
+  route_table_name       = azurerm_route_table.route_table.name
+  resource_group_name    = var.resource_group_name
+  address_prefix         = var.route_address_prefix
+  next_hop_type          = var.route_next_hop_type
+  next_hop_in_ip_address = var.route_next_hop_in_ip_address
+}
 
-  route {
-    name                   = "aks-01"
-    address_prefix         = "10.10.144.0/20"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
-  }
+resource "azurerm_route" "additional_route" {
+  for_each = { for route in var.additional_routes : route.name => route }
 
-  tags = module.ctags.common_tags
+  name                   = lower(each.value.name)
+  route_table_name       = azurerm_route_table.route_table.name
+  resource_group_name    = var.resource_group_name
+  address_prefix         = each.value.address_prefix
+  next_hop_type          = each.value.next_hop_type
+  next_hop_in_ip_address = each.value.next_hop_type != "VirtualAppliance" ? null : each.value.next_hop_in_ip_address
 }
