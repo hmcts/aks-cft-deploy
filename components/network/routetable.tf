@@ -1,5 +1,5 @@
 resource "azurerm_route_table" "route_table" {
-  name = format("%s-%s-route-table",
+  name = format("%s-%s-core-infra-route-table",
     var.service_shortname,
     var.environment
   )
