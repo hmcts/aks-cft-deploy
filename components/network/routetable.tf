@@ -1,7 +1,7 @@
 resource "azurerm_route_table" "routetable" {
   name                = "aks-aat-core-infra-route-table"
   location            = var.location
-  resource_group_name = core-infra-var.environment
+  resource_group_name = module.network.resource_group_name
 
   disable_bgp_route_propagation = false
 
