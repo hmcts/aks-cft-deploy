@@ -6,9 +6,17 @@ resource "azurerm_route_table" "routetable" {
   disable_bgp_route_propagation = false
 
   route {
-    name           = "route1"
-    address_prefix = "10.1.0.0/16"
-    next_hop_type  = "vnetlocal"
+    name                   = "aks-00"
+    address_prefix         = "10.10.128.0/20"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  }
+
+  route {
+    name                   = "aks-01"
+    address_prefix         = "10.10.144.0/20"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   }
 
   tags = module.ctags.common_tags
