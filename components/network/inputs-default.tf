@@ -94,3 +94,7 @@ variable "product" {
 variable "additional_routes_appgw" {
   default = []
 }
+
+variable "resource_group_name" {
+  default = []
+}
