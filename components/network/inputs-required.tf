@@ -23,3 +23,11 @@ variable "aks_01_subnet_cidr_blocks" {}
 variable "iaas_subnet_cidr_blocks" {}
 
 variable "application_gateway_subnet_cidr_blocks" {}
+
+variable "route_name" {}
+
+variable "route_address_prefix" {}
+
+variable "route_next_hop_type" {}
+
+variable "route_next_hop_in_ip_address" {}
