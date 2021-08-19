@@ -96,7 +96,10 @@ variable "additional_routes_appgw" {
 }
 
 variable "route_name" {
-  default = "default"
+  default = [
+    "aks-00",
+    "aks-01"
+  ]
 }
 
 variable "route_address_prefix" {

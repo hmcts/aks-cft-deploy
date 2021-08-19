@@ -12,7 +12,9 @@ resource "azurerm_route_table" "route_table" {
 }
 
 resource "azurerm_route" "default_route" {
-  name                   = var.route_name
+  for_each = { for name in var.route_name : route.name => route }
+
+  name                   = lower(each.value.name)
   route_table_name       = azurerm_route_table.route_table.name
   resource_group_name    = "core-infra-${var.environment}"
   address_prefix         = var.route_address_prefix
