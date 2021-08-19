@@ -99,6 +99,9 @@ variable "route_name" {
   default = []
 }
 
+variable "routes" {
+  default = []
+}
 variable "route_address_prefix" {
   default = "0.0.0.0/0"
 }
