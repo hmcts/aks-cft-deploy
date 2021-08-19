@@ -98,3 +98,7 @@ variable "additional_routes_appgw" {
 variable "routes" {
   default = []
 }
+
+variable "additional_routes_coreinfra" {
+  default = []
+}
