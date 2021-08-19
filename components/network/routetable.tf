@@ -17,7 +17,7 @@ resource "azurerm_route" "default_route" {
   name                   = lower(each.value.name)
   route_table_name       = azurerm_route_table.route_table.name
   resource_group_name    = "core-infra-${var.environment}"
-  address_prefix         = var.route_address_prefix
+  address_prefix         = lower(each.value.address_prefix)
   next_hop_type          = var.route_next_hop_type
   next_hop_in_ip_address = var.route_next_hop_in_ip_address
 
