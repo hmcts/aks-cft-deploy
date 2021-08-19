@@ -100,10 +100,7 @@ variable "route_name" {
 }
 
 variable "route_address_prefix" {
-  default = [
-    "10.10.128.0/20",
-    "10.10.144.0/20"
-  ]
+  default = "0.0.0.0/0"
 }
 
 variable "route_next_hop_type" {
