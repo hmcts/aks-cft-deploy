@@ -77,13 +77,10 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-
-  alias                      = "core-infra-routetable"
+  subscription_id            = local.core-infra-routetable[var.environment].subscription
   skip_provider_registration = "true"
   features {}
-
-  subscription_id = local.core-infra-routetable[var.environment].subscription
-
+  alias = "core-infra-routetable"
 }
 
 locals {
