@@ -12,7 +12,7 @@ resource "azurerm_route_table" "route_table" {
 }
 
 resource "azurerm_route" "default_route" {
-  for_each = { for name in var.route_name : route.name => route }
+  for_each = var.route_name
 
   name                   = lower(each.value.name)
   route_table_name       = azurerm_route_table.route_table.name
