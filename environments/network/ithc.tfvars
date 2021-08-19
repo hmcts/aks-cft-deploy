@@ -30,10 +30,7 @@ routes = [
     address_prefix         = "10.10.144.0/20"
     next_hop_type          = "VirtualApplicance"
     next_hop_in_ip_address = "10.11.8.36"
-  }
-]
-
-additional_routes = [
+  },
   {
     name                   = "10_0_0_0"
     address_prefix         = "10.0.0.0/8"
