@@ -95,10 +95,6 @@ variable "additional_routes_appgw" {
   default = []
 }
 
-variable "route_name" {
-  default = []
-}
-
 variable "routes" {
   default = []
 }
