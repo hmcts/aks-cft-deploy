@@ -96,10 +96,9 @@ variable "additional_routes_appgw" {
 }
 
 variable "route_name" {
-  default = [
-    "aks-00",
-  "aks-01"]
+  default = "default"
 }
+
 variable "route_address_prefix" {
   default = [
     "10.10.128.0/20",
@@ -112,5 +111,5 @@ variable "route_next_hop_type" {
 }
 
 variable "route_next_hop_in_ip_address" {
-  default = "10.11.8.36"
+  default = "10.10.1.1"
 }
