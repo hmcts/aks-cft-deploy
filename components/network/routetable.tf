@@ -28,5 +28,5 @@ resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
   for_each = var.coreinfra_subnets
 
   route_table_id = azurerm_route_table.route_table_coreinfra.id
-  subnet_id      = azurerm_subnet.sub[each.key].id
+  subnet_id      = azurerm_subnet.each.value.id
 }
