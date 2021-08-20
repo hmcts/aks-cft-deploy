@@ -102,3 +102,7 @@ variable "routes" {
 variable "additional_routes_coreinfra" {
   default = []
 }
+
+variable "coreinfra_subnets" {
+  default = []
+}
