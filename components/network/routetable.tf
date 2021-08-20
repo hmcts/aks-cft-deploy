@@ -27,6 +27,6 @@ resource "azurerm_route" "default_route" {
 resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
   for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
 
-  subnet_id      = each.value.subnet.id
+  subnet_id      = each.value.name.id
   route_table_id = azurerm_route_table.route_table_coreinfra.id
 }
