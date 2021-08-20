@@ -77,9 +77,15 @@ additional_routes_coreinfra = [
 
 coreinfra_subnets = [
   {
-    name = "aks-00"
+    name                   = "aks-00"
+    address_prefix         = "10.11.192.0/20"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   },
   {
-    name = "aks-01"
+    name                   = "aks-01"
+    address_prefix         = "10.11.208.0/20"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   }
 ]
