@@ -75,13 +75,7 @@ additional_routes_coreinfra = [
   }
 ]
 
-coreinfra_subnets = [
-  {
-    subnet_id      = "/subscriptions/62864d44-5da9-4ae9-89e7-0cf33942fa09/resourceGroups/cft-ithc-network-rg/providers/Microsoft.Network/virtualNetworks/cft-ithc-vnet/subnets/aks-00"
-    route_table_id = "azurerm_route_table.route_table_coreinfra.id"
-  },
-  {
-    subnet_id      = "/subscriptions/62864d44-5da9-4ae9-89e7-0cf33942fa09/resourceGroups/cft-ithc-network-rg/providers/Microsoft.Network/virtualNetworks/cft-ithc-vnet/subnets/aks-01"
-    route_table_id = "azurerm_route_table.route_table_coreinfra.id"
-  }
-]
+coreinfra_subnets = {
+  "aks-00" = "10.11.192.0/20"
+  "aks-01" = "10.11.208.0/20"
+}

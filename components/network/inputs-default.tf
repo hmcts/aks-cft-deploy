@@ -103,6 +103,6 @@ variable "additional_routes_coreinfra" {
   default = []
 }
 
-variable "coreinfra_subnets" {
-  default = []
+variable "network_subnets" {
+  type = map(string)
 }
