@@ -74,3 +74,12 @@ additional_routes_coreinfra = [
     next_hop_in_ip_address = "10.11.8.36"
   }
 ]
+
+coreinfra_subnets = [
+  {
+    name = "aks-00"
+  },
+  {
+    name = "aks-01"
+  }
+]
