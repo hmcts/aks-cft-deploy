@@ -75,7 +75,11 @@ additional_routes_coreinfra = [
   }
 ]
 
-coreinfra_subnets = {
-  "aks-00" = "10.11.192.0/20"
-  "aks-01" = "10.11.208.0/20"
-}
+coreinfra_subnets = [
+  {
+    name = "aks-00"
+  },
+  {
+    name = "aks-01"
+  }
+]
