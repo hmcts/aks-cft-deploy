@@ -104,5 +104,8 @@ variable "additional_routes_coreinfra" {
 }
 
 variable "coreinfra_subnets" {
-  default = []
+  default = [
+    "aks-00",
+    "aks-01"
+  ]
 }
