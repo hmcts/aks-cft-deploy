@@ -77,9 +77,9 @@ additional_routes_coreinfra = [
 
 coreinfra_subnets = [
   {
-    name = "aks-00"
+    subnet = "aks-00"
   },
   {
-    name = "aks-01"
+    subnet = "aks-01"
   }
 ]
