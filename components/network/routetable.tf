@@ -31,19 +31,10 @@ resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
   subnet_id      = each.value.subnet_id
 }
 
-data "azurerm_subnet" "coreinfra_subnets" {
-  for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
-  
-  name                 = each.value.name
-  virtual_network_name = "core-infra-vnet-${var.environment}"
-  resource_group_name  = "core-infra-${var.environment}"
-  provider = azurerm.core-infra-routetable
-}
-
 resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
   for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
 
   route_table_id = azurerm_route_table.route_table_coreinfra.id
   subnet_id      = data.azurerm_subnet.coreinfra_subnets[each.value.name].id
-  provider = azurerm.core-infra-routetable
+  provider       = azurerm.core-infra-routetable
 }
