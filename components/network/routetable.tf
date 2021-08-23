@@ -11,7 +11,7 @@ resource "azurerm_route_table" "route_table_coreinfra" {
   tags                = module.ctags.common_tags
 }
 
-resource "azurerm_route" "default_route" {
+resource "azurerm_route" "coreinfra_routes" {
   for_each = { for route in var.additional_routes_coreinfra : route.name => route }
 
   name                   = lower(each.value.name)
@@ -29,4 +29,21 @@ resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
 
   route_table_id = azurerm_route_table.route_table_coreinfra.id
   subnet_id      = each.value.subnet_id
+}
+
+data "azurerm_subnet" "coreinfra_subnets" {
+  for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
+  
+  name                 = each.value.name
+  virtual_network_name = "core-infra-vnet-${var.environment}"
+  resource_group_name  = "core-infra-${var.environment}"
+  provider = azurerm.core-infra-routetable
+}
+
+resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
+  for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
+
+  route_table_id = azurerm_route_table.route_table_coreinfra.id
+  subnet_id      = data.azurerm_subnet.coreinfra_subnets[each.value.name].id
+  provider = azurerm.core-infra-routetable
 }
