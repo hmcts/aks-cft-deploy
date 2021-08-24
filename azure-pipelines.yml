@@ -33,7 +33,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'SBOX'
+    default: 'PERFTEST'
     values:
     - ITHC
     # - DEV
