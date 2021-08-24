@@ -44,7 +44,7 @@ locals {
     }
 
     ithc = {
-      subscription = "62864d44-5da9-4ae9-89e7-0cf33942fa09"
+      subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
 
   }
