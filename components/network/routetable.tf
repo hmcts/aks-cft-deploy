@@ -22,6 +22,10 @@ resource "azurerm_route" "coreinfra_routes" {
   next_hop_in_ip_address = each.value.next_hop_in_ip_address
 
   provider = azurerm.core-infra-routetable
+
+  depends_on = [
+    azurerm_route_table.route_table_coreinfra
+  ]
 }
 
 data "azurerm_subnet" "coreinfra_subnets" {
@@ -39,4 +43,8 @@ resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
   route_table_id = azurerm_route_table.route_table_coreinfra.id
   subnet_id      = data.azurerm_subnet.coreinfra_subnets[each.value.name].id
   provider       = azurerm.core-infra-routetable
+
+  depends_on = [
+    azurerm_route_table.route_table_coreinfra
+  ]
 }
