@@ -89,10 +89,10 @@ coreinfra_subnets = [
     name = "elasticsearch"
   },
   {
-    name = "core-infra-subnet-0-perftest"
+    name = "core-infra-subnet-0-aat"
   },
   {
-    name = "core-infra-subnet-1-perftest"
+    name = "core-infra-subnet-1-aat"
   },
   {
     name = "scan-storage"
