@@ -16,7 +16,7 @@ resource "azurerm_route" "coreinfra_routes" {
 
   name                   = lower(each.value.name)
   route_table_name       = azurerm_route_table.route_table_coreinfra.name
-  resource_group_name    = "core-infra-${var.environment}"
+  resource_group_name    = "core-infra-${local.environment}"
   address_prefix         = each.value.address_prefix
   next_hop_type          = each.value.next_hop_type
   next_hop_in_ip_address = each.value.next_hop_in_ip_address
@@ -28,8 +28,8 @@ data "azurerm_subnet" "coreinfra_subnets" {
   for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
 
   name                 = each.value.name
-  virtual_network_name = "core-infra-vnet-${var.environment}"
-  resource_group_name  = "core-infra-${var.environment}"
+  virtual_network_name = "core-infra-vnet-${local.environment}"
+  resource_group_name  = "core-infra-${local.environment}"
   provider             = azurerm.core-infra-routetable
 }
 
