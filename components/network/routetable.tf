@@ -7,7 +7,7 @@ resource "azurerm_route_table" "route_table_coreinfra" {
   provider = azurerm.core-infra-routetable
 
   location            = var.location
-  resource_group_name = "core-infra-${var.environment}"
+  resource_group_name = "core-infra-${local.environment}"
   tags                = module.ctags.common_tags
 }
 
