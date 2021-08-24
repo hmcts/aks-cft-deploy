@@ -59,3 +59,27 @@ additional_routes_appgw = [
     next_hop_in_ip_address = "10.11.72.36"
   }
 ]
+
+additional_routes_coreinfra = [
+  {
+    name                   = "aks-00"
+    address_prefix         = "10.48.64.0/20"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "aks-01"
+    address_prefix         = "10.48.80.0/20"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  }
+]
+
+coreinfra_subnets = [
+  {
+    name = "core-infra-subnet-0-ithc"
+  },
+  {
+    name = "core-infra-subnet-1-perftest"
+  }
+]
