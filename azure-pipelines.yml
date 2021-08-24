@@ -33,7 +33,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'PERFTEST'
+    default: 'AAT'
     values:
     - ITHC
     # - DEV
