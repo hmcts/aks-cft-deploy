@@ -77,7 +77,7 @@ additional_routes_coreinfra = [
 
 coreinfra_subnets = [
   {
-    name = "core-infra-subnet-0-ithc"
+    name = "elasticsearch"
   },
   {
     name = "core-infra-subnet-1-perftest"
