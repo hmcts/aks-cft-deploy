@@ -94,3 +94,15 @@ variable "product" {
 variable "additional_routes_appgw" {
   default = []
 }
+
+variable "routes" {
+  default = []
+}
+
+variable "additional_routes_coreinfra" {
+  default = []
+}
+
+variable "coreinfra_subnets" {
+  default = []
+}
