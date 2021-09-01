@@ -54,6 +54,8 @@ variables:
       value: "OPS-APPROVAL-GATE-TEST-ENVS"
     ${{ if eq( parameters['env'], 'aat' ) }}: 
       value: "OPS-APPROVAL-GATE-STG-ENVS"
+    ${{ if eq( parameters['env'], 'ptlsbox' ) }}: 
+      value: "DTS-CFTSBOX-INTSVC"
     ${{ if notIn( parameters['env'], 'aat', 'perftest') }}: 
       value: "OPS-APPROVAL-GATE-${{ parameters.env }}-ENVS"
   - name: tfInitSub
