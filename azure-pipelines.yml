@@ -33,7 +33,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'AAT'
+    default: 'PTLSBOX'
     values:
     # - ITHC
     # - DEV
