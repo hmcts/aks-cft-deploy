@@ -35,7 +35,7 @@ parameters:
     type: string
     default: 'PTLSBOX'
     values:
-    # - ITHC
+    - ITHC
     # - DEV
     # - DEMO
     - SBOX
