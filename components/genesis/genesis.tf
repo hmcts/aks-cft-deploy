@@ -1,5 +1,5 @@
 module "genesis" {
-  source           = "git::https://github.com/hmcts/aks-module-genesis.git?ref=DTSPO-1032-ptlsbox"
+  source           = "git::https://github.com/hmcts/aks-module-genesis.git?ref=dtspo4185-fix-azuread-errors"
   environment      = local.environment
   tags             = module.ctags.common_tags
   developers_group = local.developers_group
