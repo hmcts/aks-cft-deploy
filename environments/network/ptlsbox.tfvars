@@ -55,33 +55,3 @@ additional_routes_appgw = [ # TODO
     next_hop_in_ip_address = "10.11.72.36"
   }
 ]
-
-additional_routes_coreinfra = [ # TODO
-  {
-    name                   = "aks-00"
-    address_prefix         = "10.11.192.0/20"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
-  },
-  {
-    name                   = "aks-01"
-    address_prefix         = "10.11.208.0/20"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
-  }
-]
-
-coreinfra_subnets = [ # TODO
-  {
-    name = "core-infra-subnet-0-ithc"
-  },
-  {
-    name = "core-infra-subnet-1-ithc"
-  },
-  {
-    name = "elasticsearch"
-  },
-  {
-    name = "scan-storage"
-  }
-]
