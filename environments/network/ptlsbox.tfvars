@@ -18,7 +18,7 @@ private_dns_zones = [
   "service.core-compute-idam-saat.internal",
 ]
 
-hub = "nonprod"
+hub = "sbox"
 
 additional_routes = [
   {
