@@ -34,24 +34,3 @@ additional_routes = [
     next_hop_in_ip_address = "10.10.200.36"
   }
 ]
-
-additional_routes_appgw = [ # TODO
-  {
-    name                   = "core_infra_vnet_idam_ithc"
-    address_prefix         = "10.120.64.0/18"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
-  },
-  {
-    name                   = "core_infra_subnet_mgmtithc"
-    address_prefix         = "10.112.0.0/18"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
-  },
-  {
-    name                   = "core_cftptl_intvsc_vnet"
-    address_prefix         = "10.10.64.0/21"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
-  }
-]
