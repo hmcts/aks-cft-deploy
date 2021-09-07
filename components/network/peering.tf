@@ -79,26 +79,26 @@ module "vnet_peer_hub_sbox" {
 
 # VPN
 
-module "vnet_peer_vpn" {
-  source = "../../modules/vnet_peering"
+# module "vnet_peer_vpn" {
+#   source = "../../modules/vnet_peering"
+# 
+#   initiator_peer_name = "vpn"
+# 
+#   target_peer_name = format("%s%s",
+#     var.project,
+#     var.environment
+#   )
 
-  initiator_peer_name = "vpn"
+#   initiator_vnet                = module.network.network_name
+#   initiator_vnet_resource_group = module.network.network_resource_group
+#   initiator_vnet_subscription   = var.subscription_id
 
-  target_peer_name = format("%s%s",
-    var.project,
-    var.environment
-  )
+#   target_vnet                = data.azurerm_virtual_network.vpn.name
+#   target_vnet_resource_group = data.azurerm_virtual_network.vpn.resource_group_name
+#   target_vnet_subscription   = "ed302caf-ec27-4c64-a05e-85731c3ce90e"
 
-  initiator_vnet                = module.network.network_name
-  initiator_vnet_resource_group = module.network.network_resource_group
-  initiator_vnet_subscription   = var.subscription_id
-
-  target_vnet                = data.azurerm_virtual_network.vpn.name
-  target_vnet_resource_group = data.azurerm_virtual_network.vpn.resource_group_name
-  target_vnet_subscription   = "ed302caf-ec27-4c64-a05e-85731c3ce90e"
-
-  providers = {
-    azurerm.initiator = azurerm
-    azurerm.target    = azurerm.vpn
-  }
-}
+#   providers = {
+#     azurerm.initiator = azurerm
+#     azurerm.target    = azurerm.vpn
+#   }
+# }
