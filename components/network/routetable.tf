@@ -4,11 +4,6 @@ resource "azurerm_route_table" "route_table_coreinfra" {
     var.environment
   )
 
-  for_each = {
-    for ptlsbox in var.environment : ptlsbox => v
-    if ptlsbox.name != ""
-  }
-
   provider = azurerm.core-infra-routetable
 
   location            = var.location
