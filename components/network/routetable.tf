@@ -1,7 +1,7 @@
 resource "azurerm_route_table" "route_table_coreinfra" {
   name = format("%s-%s-core-infra-route-table",
     var.service_shortname,
-    var.environment
+    var.environment == "ptlsbox" ? false : true
   )
 
   provider = azurerm.core-infra-routetable
