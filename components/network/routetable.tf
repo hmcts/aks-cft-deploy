@@ -1,5 +1,5 @@
 resource "azurerm_route_table" "route_table_coreinfra" {
-  count = var.environment == "PTLSBOX" ? 0 : 1
+  count = var.environment == "PTLSBOX" ? 0 : 0
   name = format("%s-%s-core-infra-route-table",
     var.service_shortname,
     var.environment
