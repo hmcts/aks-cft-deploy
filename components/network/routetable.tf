@@ -4,6 +4,8 @@ resource "azurerm_route_table" "route_table_coreinfra" {
     var.environment
   )
 
+  count = var.environment == "PTLSBOX" ? 0 : 0
+
   provider = azurerm.core-infra-routetable
 
   location            = var.location
