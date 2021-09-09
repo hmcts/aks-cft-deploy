@@ -15,6 +15,8 @@ resource "azurerm_route_table" "route_table_coreinfra" {
 resource "azurerm_route" "coreinfra_routes" {
   for_each = { for route in var.additional_routes_coreinfra : route.name => route }
 
+  count = var.environment == "ptlsbox" ? 0 : 1
+
   name                   = lower(each.value.name)
   route_table_name       = azurerm_route_table.route_table_coreinfra.name
   resource_group_name    = "core-infra-${local.environment}"
@@ -32,6 +34,8 @@ resource "azurerm_route" "coreinfra_routes" {
 data "azurerm_subnet" "coreinfra_subnets" {
   for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
 
+  count = var.environment == "ptlsbox" ? 0 : 1
+
   name                 = each.value.name
   virtual_network_name = "core-infra-vnet-${local.environment}"
   resource_group_name  = "core-infra-${local.environment}"
@@ -40,6 +44,8 @@ data "azurerm_subnet" "coreinfra_subnets" {
 
 resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
   for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
+
+  count = var.environment == "ptlsbox" ? 0 : 1
 
   route_table_id = azurerm_route_table.route_table_coreinfra.id
   subnet_id      = data.azurerm_subnet.coreinfra_subnets[each.value.name].id
