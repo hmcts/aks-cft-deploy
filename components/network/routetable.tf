@@ -13,22 +13,22 @@ resource "azurerm_route_table" "route_table_coreinfra" {
   tags                = module.ctags.common_tags
 }
 
-#resource "azurerm_route" "coreinfra_routes" {
-#  for_each = { for route in var.additional_routes_coreinfra : route.name => route }
+resource "azurerm_route" "coreinfra_routes" {
+  for_each = { for route in var.additional_routes_coreinfra : route.name => route }
 
-#  name                   = lower(each.value.name)
-#  route_table_name       = azurerm_route_table.route_table_coreinfra[count.index]
-#  resource_group_name    = "core-infra-${local.environment}"
-#  address_prefix         = each.value.address_prefix
-#  next_hop_type          = each.value.next_hop_type
-#  next_hop_in_ip_address = each.value.next_hop_in_ip_address
+  name                   = lower(each.value.name)
+  route_table_name       = azurerm_route_table.route_table_coreinfra.name
+  resource_group_name    = "core-infra-${local.environment}"
+  address_prefix         = each.value.address_prefix
+  next_hop_type          = each.value.next_hop_type
+  next_hop_in_ip_address = each.value.next_hop_in_ip_address
 
-#  provider = azurerm.core-infra-routetable
+  provider = azurerm.core-infra-routetable
 
-#  depends_on = [
-#    azurerm_route_table.route_table_coreinfra
-#  ]
-#}
+  depends_on = [
+    azurerm_route_table.route_table_coreinfra
+  ]
+}
 
 # #data "azurerm_subnet" "coreinfra_subnets" {
 # #  for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
