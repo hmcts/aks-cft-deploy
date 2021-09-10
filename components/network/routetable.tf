@@ -1,4 +1,5 @@
 resource "azurerm_route_table" "route_table_coreinfra" {
+  for_each = var.create_route_table ? [var.environment] : []
   name = format("%s-%s-core-infra-route-table",
     var.service_shortname,
     var.environment
@@ -12,7 +13,7 @@ resource "azurerm_route_table" "route_table_coreinfra" {
 }
 
 resource "azurerm_route" "coreinfra_routes" {
-  for_each = { for route in var.additional_routes_coreinfra : route.name => route }
+  for_each = { for route in var.additional_routes_coreinfra : route.name => route if var.create_route_table }
 
   name                   = lower(each.value.name)
   route_table_name       = azurerm_route_table.route_table_coreinfra.name

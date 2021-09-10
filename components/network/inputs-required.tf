@@ -23,3 +23,8 @@ variable "aks_01_subnet_cidr_blocks" {}
 variable "iaas_subnet_cidr_blocks" {}
 
 variable "application_gateway_subnet_cidr_blocks" {}
+
+variable "create_route_table" {
+  type    = bool
+  default = true
+}
