@@ -25,10 +25,6 @@ variable "iaas_subnet_cidr_blocks" {}
 variable "application_gateway_subnet_cidr_blocks" {}
 
 variable "create_route_table" {
-  type = map(any)
-  default = {
-    routetable = {
-      list = ["ptlsbox"]
-    }
-  }
+  type    = string
+  default = true
 }
