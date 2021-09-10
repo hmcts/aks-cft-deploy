@@ -1,6 +1,6 @@
 resource "azurerm_route_table" "route_table_coreinfra" {
   # for_each = var.create_route_table ? [var.environment] : []
-  count = var.environment == "ptlsbox" ? 0 : 1
+  count = contains(["ptlsbox"], var.environment) ? 0 : 1
   name = format("%s-%s-core-infra-route-table",
     var.service_shortname,
     var.environment
