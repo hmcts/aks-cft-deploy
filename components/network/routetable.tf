@@ -17,7 +17,7 @@ resource "azurerm_route" "coreinfra_routes" {
   for_each = { for route in var.additional_routes_coreinfra : route.name => route }
 
   name                   = lower(each.value.name)
-  route_table_name       = azurerm_route_table.route_table_coreinfra.name
+  route_table_name       = azurerm_route_table.route_table_coreinfra[0].name
   resource_group_name    = "core-infra-${local.environment}"
   address_prefix         = each.value.address_prefix
   next_hop_type          = each.value.next_hop_type
