@@ -30,23 +30,23 @@ resource "azurerm_route" "coreinfra_routes" {
   ]
 }
 
-# #data "azurerm_subnet" "coreinfra_subnets" {
-# #  for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
+data "azurerm_subnet" "coreinfra_subnets" {
+  for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
 
-#   name                 = each.value.name
-#   virtual_network_name = "core-infra-vnet-${local.environment}"
-#   resource_group_name  = "core-infra-${local.environment}"
-#   provider             = azurerm.core-infra-routetable
-# }
+  name                 = each.value.name
+  virtual_network_name = "core-infra-vnet-${local.environment}"
+  resource_group_name  = "core-infra-${local.environment}"
+  provider             = azurerm.core-infra-routetable
+}
 
-# resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
-#   for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
+resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
+  for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
 
-#   route_table_id = azurerm_route_table.route_table_coreinfra[count.index]
-#   subnet_id      = data.azurerm_subnet.coreinfra_subnets[each.value.name].id
-#   provider       = azurerm.core-infra-routetable
+  route_table_id = azurerm_route_table.route_table_coreinfra[0].id
+  subnet_id      = data.azurerm_subnet.coreinfra_subnets[each.value.name].id
+  provider       = azurerm.core-infra-routetable
 
-#   depends_on = [
-#     azurerm_route_table.route_table_coreinfra
-#   ]
-# }
+  depends_on = [
+    azurerm_route_table.route_table_coreinfra
+  ]
+}
