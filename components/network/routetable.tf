@@ -1,5 +1,6 @@
 resource "azurerm_route_table" "route_table_coreinfra" {
-  for_each = var.create_route_table ? [var.environment] : []
+  # for_each = var.create_route_table ? [var.environment] : []
+  count = var.environment == "ptlsbox" ? 0 : 1
   name = format("%s-%s-core-infra-route-table",
     var.service_shortname,
     var.environment
@@ -13,10 +14,10 @@ resource "azurerm_route_table" "route_table_coreinfra" {
 }
 
 resource "azurerm_route" "coreinfra_routes" {
-  for_each = { for route in var.additional_routes_coreinfra : route.name => route if var.create_route_table }
+  for_each = { for route in var.additional_routes_coreinfra : route.name => route }
 
   name                   = lower(each.value.name)
-  route_table_name       = azurerm_route_table.route_table_coreinfra[var.environment].name
+  route_table_name       = azurerm_route_table.route_table_coreinfra.name
   resource_group_name    = "core-infra-${local.environment}"
   address_prefix         = each.value.address_prefix
   next_hop_type          = each.value.next_hop_type

@@ -56,4 +56,4 @@ additional_routes_coreinfra = [
   }
 ]
 
-create_route_table = false
+#create_route_table = false

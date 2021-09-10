@@ -24,7 +24,7 @@ variable "iaas_subnet_cidr_blocks" {}
 
 variable "application_gateway_subnet_cidr_blocks" {}
 
-variable "create_route_table" {
-  type    = string
-  default = true
-}
+#variable "create_route_table" {
+#  type    = bool
+#  default = true
+#}
