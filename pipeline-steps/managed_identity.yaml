@@ -34,8 +34,7 @@ steps:
       ${{ if eq( parameters['environment'], 'aat') }}: 
          backendAzureRmResourceGroupName: 'azure-control-stg-rg'
       ${{ if eq( parameters['environment'], 'ptlsbox') }}: 
-         backendAzureRmResourceGroupName: 'azure-control-ptlsbox-rg'
-         backendAzureRmStorageAccountName: 'c64b1c6d6d8fe26a2c768sa'
+         backendAzureRmResourceGroupName: 'azure-control-sbox-rg'
       ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox') }}: 
          backendAzureRmResourceGroupName: 'azure-control-${{ parameters.environment }}-rg'
       backendAzureRmResourceGroupLocation: ${{ parameters.location }}
