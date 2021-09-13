@@ -37,8 +37,6 @@ steps:
       lowerCaseEnv=$(echo "${{ parameters.environment }}" | tr "[:upper:]" "[:lower:]")
       echo "##vso[task.setvariable variable=env]$lowerCaseEnv"
       echo Lower case env: $lowerCaseEnv
-    ${{ if eq( parameters['environment'], 'ptlsbox') }}:
-         backendAzureRmResourceGroupName: 'azure-control-ptlsbox-rg'
 
 
 - task: AzureKeyVault@1
