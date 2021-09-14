@@ -23,7 +23,7 @@ locals {
 
   environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
 
-  environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : "${var.environment}"
+  environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : var.environment == "ptlsbox" ? "cftptl-intsvc" : "${var.environment}"
 
   acr = {
     global = {
