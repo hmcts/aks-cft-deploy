@@ -26,7 +26,7 @@ module "kubernetes" {
   source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
-  environment            = var.environment
+  environment            = local.kubernetes-environment
   location               = var.location
 
   sku_tier = var.sku_tier
