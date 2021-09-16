@@ -94,6 +94,9 @@ locals {
     perftest = {
       subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
+    ptlsbox = {
+      subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+    }
   }
 
   environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
