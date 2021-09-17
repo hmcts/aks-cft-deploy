@@ -23,7 +23,7 @@ module "loganalytics" {
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=AzureRM_2_77"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.environment
