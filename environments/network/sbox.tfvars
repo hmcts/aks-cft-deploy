@@ -48,11 +48,35 @@ additional_routes_appgw = [
     address_prefix         = "10.99.128.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.10.200.36"
-  },
+  }
+]
+
+additional_routes_coreinfra = [
   {
-    name                   = "vpn"
-    address_prefix         = "10.99.0.0/18"
+    name                   = "aks-00"
+    address_prefix         = "10.2.8.0/23"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.10.200.36"
+  },
+  {
+    name                   = "aks-01"
+    address_prefix         = "10.2.10.0/23"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.10.200.36"
+  }
+]
+
+coreinfra_subnets = [
+  {
+    name = "core-infra-subnet-0-sandbox"
+  },
+  {
+    name = "core-infra-subnet-1-sandbox"
+  },
+  {
+    name = "elasticsearch"
+  },
+  {
+    name = "scan-storage"
   }
 ]

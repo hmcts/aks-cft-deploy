@@ -35,6 +35,27 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
+  subscription_id            = local.hub["sbox"].subscription
+  skip_provider_registration = "true"
+  features {}
+  alias = "hub-sbox"
+}
+
+provider "azurerm" {
+  subscription_id            = local.hub["nonprod"].subscription
+  skip_provider_registration = "true"
+  features {}
+  alias = "hub-nonprod"
+}
+
+provider "azurerm" {
+  subscription_id            = local.hub["prod"].subscription
+  skip_provider_registration = "true"
+  features {}
+  alias = "hub-prod"
+}
+
+provider "azurerm" {
   subscription_id            = var.private_dns_subscription
   skip_provider_registration = "true"
   features {}
@@ -53,4 +74,30 @@ provider "azurerm" {
   skip_provider_registration = "true"
   features {}
   alias = "vpn"
+}
+
+provider "azurerm" {
+  subscription_id            = local.core-infra-routetable[var.environment].subscription
+  skip_provider_registration = "true"
+  features {}
+  alias = "core-infra-routetable"
+}
+
+locals {
+  core-infra-routetable = {
+    sbox = {
+      subscription = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
+    }
+    ithc = {
+      subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+    }
+    perftest = {
+      subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+    }
+    ptlsbox = {
+      subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+    }
+  }
+
+  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
 }
