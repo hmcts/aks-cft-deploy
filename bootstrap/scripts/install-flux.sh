@@ -5,6 +5,11 @@ ENV=$3
 CLUSTER_NAME=$6
 FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 
+# Change $ENV var to correct name
+if [ $ENV = "ptlsbox" ]; then
+ENV="sbox-intsvc"
+fi
+
 # Install Flux
 kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components.yaml
 
@@ -13,11 +18,6 @@ kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/${ENV}/base/git-credentials
 
 #Create Flux Sync CRDs
 kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/flux-config-gitrepo.yaml
-
-# Change $ENV var to correct name
-if [ $ENV = "ptlsbox" ]; then
-ENV="sbox-intsvc"
-fi
 
 #Install kustomize
 curl -s "https://raw.githubusercontent.com/\
