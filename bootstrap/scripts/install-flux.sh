@@ -14,6 +14,11 @@ kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/${ENV}/base/git-credentials
 #Create Flux Sync CRDs
 kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/flux-config-gitrepo.yaml
 
+# Change $ENV var to correct name
+if [ $ENV = "ptlsbox" ]; then
+ENV="sbox-intsvc"
+fi
+
 #Install kustomize
 curl -s "https://raw.githubusercontent.com/\
 kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
