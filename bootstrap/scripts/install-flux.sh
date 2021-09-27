@@ -6,8 +6,8 @@ CLUSTER_NAME=$6
 FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 
 # Change $ENV var to correct name
-if [ $ENV = "ptlsbox" ]; then
-ENV="sbox-intsvc"
+if [ ${ENV} == "ptlsbox" ]; then
+  ENV="sbox-intsvc"
 fi
 
 # Install Flux
