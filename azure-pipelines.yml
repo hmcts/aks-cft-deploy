@@ -33,7 +33,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'PTLSBOX'
+    default: 'PTLPROD'
     values:
     - ITHC
     # - DEV
@@ -42,6 +42,7 @@ parameters:
     - PERFTEST
     - AAT
     - PTLSBOX
+    - PTLPROD
     # - PROD
 
 variables:
@@ -56,7 +57,9 @@ variables:
       value: "OPS-APPROVAL-GATE-STG-ENVS"
     ${{ if eq( parameters['env'], 'ptlsbox' ) }}: 
       value: "DTS-CFTSBOX-INTSVC"
-    ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox') }}: 
+    ${{ if eq( parameters['env'], 'ptlprod' ) }}: 
+      value: "DTS-CFTPTL-INTSVC"
+    ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptlprod') }}: 
       value: "OPS-APPROVAL-GATE-${{ parameters.env }}-ENVS"
   - name: tfInitSub
     value: "04d27a32-7a07-48b3-95b8-3c8691e1a263"
