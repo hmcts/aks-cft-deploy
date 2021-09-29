@@ -33,7 +33,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'PTL'
+    default: 'PTLPROD'
     values:
     - ITHC
     # - DEV
@@ -42,7 +42,7 @@ parameters:
     - PERFTEST
     - AAT
     - PTLSBOX
-    - PTL
+    - PTLPROD
     # - PROD
 
 variables:
