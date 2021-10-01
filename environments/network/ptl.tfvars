@@ -10,7 +10,6 @@ additional_subnets = [
 ]
 
 private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
-##TODO
 private_dns_zones = [
   "aat.platform.hmcts.net",
   "demo.platform.hmcts.net",
@@ -53,7 +52,6 @@ private_dns_zones = [
 ]
 
 hub = "prod"
-##TODO
 additional_routes = [
   {
     name                   = "Internet"
