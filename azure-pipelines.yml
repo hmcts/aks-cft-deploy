@@ -131,24 +131,24 @@ stages:
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
 
-  # - stage: Managed_Identity
-  #   displayName: 'Managed_Identity'
-  #   condition: ne('${{ parameters.Action }}', 'Destroy')
-  #   dependsOn: Network
-  #   jobs:
-  #     - job: Managed_Identity
-  #       steps:
-  #         - template: pipeline-steps/managed_identity.yaml
-  #           parameters:
-  #             serviceConnection: $(serviceConnection)
-  #             environment: ${{ parameters.env }}
-  #             location: ${{ parameters.location }}
-  #             stack: 'managed-identity'
-  #             project: $(project)
-  #             tfversion: $(tfversion)
-  #             tfInitSub: ${{ variables.tfInitSub }}
-  #             builtFrom: $(Build.Repository.Name)
-  #             product: ${{ variables.product }}
+  - stage: Managed_Identity
+    displayName: 'Managed_Identity'
+    condition: ne('${{ parameters.Action }}', 'Destroy')
+    dependsOn: Network
+    jobs:
+      - job: Managed_Identity
+        steps:
+          - template: pipeline-steps/managed_identity.yaml
+            parameters:
+              serviceConnection: $(serviceConnection)
+              environment: ${{ parameters.env }}
+              location: ${{ parameters.location }}
+              stack: 'managed-identity'
+              project: $(project)
+              tfversion: $(tfversion)
+              tfInitSub: ${{ variables.tfInitSub }}
+              builtFrom: $(Build.Repository.Name)
+              product: ${{ variables.product }}
 
   # - stage: Aks
   #   displayName: 'Deploy AKS clusters'
