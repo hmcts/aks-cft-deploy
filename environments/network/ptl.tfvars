@@ -1,10 +1,10 @@
 enable_debug = "true"
-##TODO - Check Netbox for free CIDR range to use for network address space.
-network_address_space                  = "10.10.64.0/21 "
-aks_00_subnet_cidr_blocks              = "10.10.64.0/23"
-aks_01_subnet_cidr_blocks              = "10.10.66.0/23"
-iaas_subnet_cidr_blocks                = "10.10.70.0/23"
-application_gateway_subnet_cidr_blocks = "10.10.68.0/25"
+
+network_address_space                  = "10.10.72.0/21 "
+aks_00_subnet_cidr_blocks              = "10.10.72.0/23"
+aks_01_subnet_cidr_blocks              = "10.10.74.0/23"
+iaas_subnet_cidr_blocks                = "10.10.78.0/23"
+application_gateway_subnet_cidr_blocks = "10.10.70.0/25"
 
 additional_subnets = [
 ]
