@@ -51,7 +51,11 @@ private_dns_zones = [
   "test.platform.hmcst.net",
 ]
 
-hub = "prod"
+hub = [
+  "prod",
+  "nonprod"
+]
+
 additional_routes = [
   {
     name                   = "Internet"
