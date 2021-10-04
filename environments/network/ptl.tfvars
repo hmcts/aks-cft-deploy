@@ -30,7 +30,7 @@ private_dns_zones = [
   "privatelink.sql.azuresynapse.com",
   "privatelink.vaultcore.azure.net",
   "prod.platform.hmcts.net",
-  "reform.hmtcs.net",
+  "reform.hmcts.net",
   "service.core-compute-aat.internal",
   "service.core-compute-demo.internal",
   "service.core-compute-ethosldata.internal",
