@@ -3,8 +3,8 @@ enable_debug = "true"
 network_address_space                  = "10.10.72.0/21 "
 aks_00_subnet_cidr_blocks              = "10.10.72.0/23"
 aks_01_subnet_cidr_blocks              = "10.10.74.0/23"
-iaas_subnet_cidr_blocks                = "10.10.76.0/23"
-application_gateway_subnet_cidr_blocks = "10.10.78.0/25"
+iaas_subnet_cidr_blocks                = "10.10.76.0/24"
+application_gateway_subnet_cidr_blocks = "10.10.77.0/24"
 
 additional_subnets = [
 ]
