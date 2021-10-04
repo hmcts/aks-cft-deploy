@@ -102,5 +102,5 @@ locals {
     }
   }
 
-  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
+  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : var.environment == "cftptl" ? "ptl" : "${var.environment}"
 }
