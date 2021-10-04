@@ -48,7 +48,7 @@ private_dns_zones = [
   "service.core-compute-preview.internal",
   "service.core-compute-prod.internal",
   "staging.platform.hmcts.net",
-  "test.platform.hmcst.net",
+  "test.platform.hmcts.net",
 ]
 
 hub = "prod"
