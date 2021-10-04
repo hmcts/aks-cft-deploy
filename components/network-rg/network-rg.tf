@@ -8,6 +8,15 @@ resource "azurerm_resource_group" "network_resource_group" {
   tags = module.ctags.common_tags
 }
 
+resource "azurerm_resource_group" "core_infra_resource_group" {
+  location = var.location
+
+  name = format("core-infra-%s",
+    var.environment
+  )
+  tags = module.ctags.common_tags
+}
+
 module "ctags" {
   source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
   environment = var.environment
