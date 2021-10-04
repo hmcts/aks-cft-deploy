@@ -55,12 +55,6 @@ hub = "prod"
 
 additional_routes = [
   {
-    name                   = "Internet"
-    address_prefix         = "0.0.0.0/0"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
-  },
-  {
     name                   = "sdsdev"
     address_prefix         = "10.145.0.0/18"
     next_hop_type          = "VirtualAppliance"
