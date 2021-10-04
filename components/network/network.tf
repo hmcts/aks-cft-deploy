@@ -1,7 +1,7 @@
 module "network" {
   source = "git::https://github.com/hmcts/aks-module-network.git?ref=cft"
 
-  for_each = toset(local.hub)
+  for_each = tostring(local.hub)
 
   resource_group_name = local.network_resource_group_name
 
