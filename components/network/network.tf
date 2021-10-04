@@ -1,8 +1,6 @@
 module "network" {
   source = "git::https://github.com/hmcts/aks-module-network.git?ref=cft"
 
-  for_each = toset(var.hub)
-
   resource_group_name = local.network_resource_group_name
 
   route_next_hop_in_ip_address = local.hub[var.hub].ukSouth.next_hop_ip
