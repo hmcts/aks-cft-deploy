@@ -15,7 +15,7 @@ locals {
 }
 
 data "azurerm_key_vault" "genesis_keyvault" {
-  name                = contains(["ptlsbox", "ptl"], var.environment) ? "dts${local.project}${replace(var.environment, "-", "")}" : "${lower(replace(data.azurerm_subscription.current.display_name, "-", ""))}kv"
+  name                = contains(["ptlsbox", "ptl"], var.environment) ? "dts${var.project}${replace(var.environment, "-", "")}" : "${lower(replace(data.azurerm_subscription.current.display_name, "-", ""))}kv"
   resource_group_name = data.azurerm_resource_group.genesis_rg.name
 }
 
