@@ -3,7 +3,6 @@ module "genesis" {
   environment      = local.environment
   tags             = module.ctags.common_tags
   developers_group = local.developers_group
-  project          = var.project
 }
 module "ctags" {
   source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"

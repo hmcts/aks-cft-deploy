@@ -14,10 +14,6 @@ terraform {
 
 variable "subscription_id" {}
 
-variable "project" {
-  default = "cft"
-}
-
 provider "azurerm" {
   features {}
   subscription_id = var.subscription_id
