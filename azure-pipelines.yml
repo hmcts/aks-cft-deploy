@@ -189,7 +189,7 @@ stages:
               ${{ if eq( parameters['env'], 'aat' ) }}: 
                  akskeyvault: "dcdcftappsstgkv"
               ${{ if eq( parameters['env'], 'ptlsbox' ) }}: 
-                 akskeyvault: "dtscftsboxintsvckv"
+                 akskeyvault: "dtscftptlsbox"
               ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox') }}: 
                  akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
