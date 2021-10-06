@@ -14,7 +14,6 @@ private_dns_zones = [
   "sbox.platform.hmcts.net",
   "service.core-compute-sandbox.internal",
   "service.core-compute-idam-sandbox.internal",
-  "service.core-compute-idam-sprod.internal",
   "service.core-compute-idam-saat.internal",
 ]
 
