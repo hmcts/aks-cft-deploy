@@ -20,4 +20,6 @@ locals {
     var.environment
   )
 
+  environment = (var.environment == "ptl") ? "prod" : "${var.environment}"
+
 }
