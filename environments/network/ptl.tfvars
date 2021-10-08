@@ -22,7 +22,7 @@ private_dns_zones = [
   "perftest.platform.hmcts.net",
   "preview.platform.hmcts.net",
   "privatelink.dev.azuresynapse.net",
-  "privatelink.sql.azuresynapse.com",
+  "privatelink.sql.azuresynapse.net",
   "prod.platform.hmcts.net",
   "service.core-compute-aat.internal",
   "service.core-compute-demo.internal",
