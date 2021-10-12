@@ -185,11 +185,15 @@ stages:
               project: $(project)
               serviceConnection: $(serviceConnection)
               ${{ if eq( parameters['env'], 'perftest') }}: 
-                 akskeyvault: "dcdcftappstestkv"
+                akskeyvault: "dcdcftappstestkv"
               ${{ if eq( parameters['env'], 'aat' ) }}: 
-                 akskeyvault: "dcdcftappsstgkv"
+                akskeyvault: "dcdcftappsstgkv"
+              ${{ if eq( parameters['env'], 'ptlsbox' ) }}: 
+                akskeyvault: "dtscftptlsbox"
+              ${{ if eq( parameters['env'], 'ptl' ) }}: 
+                  kskeyvault: "dtscftptl"
               ${{ if notIn( parameters['env'], 'aat', 'perftest') }}: 
-                 akskeyvault: dcdcftapps${{ parameters.env }}kv
+                akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
 
   - stage: DestroyAks
