@@ -23,9 +23,11 @@ steps:
           backendServiceArm: $(serviceconnection)
           ${{ if eq( parameters['environment'], 'perftest') }}: 
             backendAzureRmResourceGroupName: 'azure-control-test-rg'
+          ${{ if eq( parameters['environment'], 'preview') }}: 
+          backendAzureRmResourceGroupName: 'azure-control-dev-rg'
           ${{ if eq( parameters['environment'], 'aat') }}: 
             backendAzureRmResourceGroupName: 'azure-control-stg-rg'
-          ${{ if notIn( parameters['environment'], 'aat', 'perftest') }}: 
+          ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'preview') }}: 
             backendAzureRmResourceGroupName: 'azure-control-${{ parameters.environment }}-rg'
           backendAzureRmResourceGroupLocation: ${{ parameters.location }}
           backendAzureRmStorageAccountName: $(controlStorageAccount)

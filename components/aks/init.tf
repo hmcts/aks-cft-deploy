@@ -19,11 +19,11 @@ provider "azurerm" {
 
 locals {
 
-  control_resource_environment = var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment == "ptlsbox" ? "sbox" : "${var.environment}"
+  control_resource_environment = var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment == "ptlsbox" ? "sbox" : var.environment == "preview" ? "dev" : "${var.environment}"
 
-  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : var.environment == "ptlsbox" ? "cftsbox-intsvc" : "${var.environment}"
+  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : var.environment == "ptlsbox" ? "cftsbox-intsvc" : var.environment == "preview" ? "dev" : "${var.environment}"
 
-  environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : "${var.environment}"
+  environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : var.environment == "preview" ? "dev" : "${var.environment}"
   acr = {
     global = {
       subscription = "8999dec3-0104-4a27-94ee-6588559729d1"
@@ -41,15 +41,15 @@ locals {
     aat = {
       subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
-
     ithc = {
       subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
-
     ptlsbox = {
       subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
     }
-
+    preview = {
+      subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+    }
   }
 
 }

@@ -36,7 +36,7 @@ parameters:
     default: 'PTLSBOX'
     values:
     - ITHC
-    # - PREVIEW
+    - PREVIEW
     # - DEMO
     - SBOX
     - PERFTEST
