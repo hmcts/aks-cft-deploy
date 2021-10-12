@@ -24,7 +24,7 @@ steps:
           ${{ if eq( parameters['environment'], 'perftest') }}: 
             backendAzureRmResourceGroupName: 'azure-control-test-rg'
           ${{ if eq( parameters['environment'], 'preview') }}: 
-          backendAzureRmResourceGroupName: 'azure-control-dev-rg'
+            backendAzureRmResourceGroupName: 'azure-control-dev-rg'
           ${{ if eq( parameters['environment'], 'aat') }}: 
             backendAzureRmResourceGroupName: 'azure-control-stg-rg'
           ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'preview') }}: 
