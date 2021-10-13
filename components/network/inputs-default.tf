@@ -43,7 +43,7 @@ locals {
 
   hub_to_env_mapping = {
     sbox    = ["sbox", "ptlsbox"]
-    nonprod = ["demo", "dev", "aat", "perftest", "ithc", "ptl"]
+    nonprod = ["demo", "dev", "aat", "perftest", "ithc", "ptl" "preview"]
     prod    = ["prod", "aat", "ptl"]
   }
 
