@@ -1,4 +1,4 @@
-/* # HUB
+# HUB
 
 module "vnet_peer_hub_prod" {
   source = "../../modules/vnet_peering"
@@ -101,4 +101,4 @@ module "vnet_peer_vpn" {
     azurerm.initiator = azurerm
     azurerm.target    = azurerm.vpn
   }
-} */
+}
