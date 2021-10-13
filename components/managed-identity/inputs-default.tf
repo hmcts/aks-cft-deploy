@@ -1,4 +1,7 @@
 locals {
+
+  environment = (var.environment == "preview") ? "dev" : "${var.environment}"
+
   // TODO delete after applying MI in all ENVs
   // working around 'Error: Provider configuration not present'
   acr = {
@@ -10,7 +13,7 @@ locals {
 
   log_analytics_env_mapping = {
     sandbox = ["sbox", "ptlsbox"]
-    nonprod = ["dev", "perftest", "ithc", "demo", "aat" "preview"]
+    nonprod = ["dev", "perftest", "ithc", "demo", "aat", "preview"]
     prod    = ["prod", "mgmt"]
   }
 
