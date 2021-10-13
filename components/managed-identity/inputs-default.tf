@@ -1,7 +1,4 @@
 locals {
-
-  environment = (var.environment == "preview") ? "dev" : "${var.environment}"
-
   // TODO delete after applying MI in all ENVs
   // working around 'Error: Provider configuration not present'
   acr = {
