@@ -23,7 +23,7 @@ locals {
 
   environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : var.environment == "ptlsbox" ? "cftsbox-intsvc" : var.environment == "preview" ? "dev" : "${var.environment}"
 
-  environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : var.environment == "preview" ? "dev" : "${var.environment}"
+  environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : "${var.environment}"
   acr = {
     global = {
       subscription = "8999dec3-0104-4a27-94ee-6588559729d1"
