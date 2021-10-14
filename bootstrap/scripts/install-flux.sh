@@ -54,10 +54,10 @@ fi
 # ------------------------Flux V2----------------------------
 FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 
-if [ ${ENV} == "mgmt-sandbox" ]; then
+if [ ${ENV} == "ptlsbox" ]; then
   CLUSTER_ENV="sbox-intsvc"
-elif [ ${ENV} == "cftptl" ]; then
-  CLUSTER_ENV="ptl-intsvc"
+elif [ ${ENV} == "ptl" ]; then
+  CLUSTER_ENV="cftptl"
 else 
   CLUSTER_ENV=${ENV}
 fi
