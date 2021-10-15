@@ -1,4 +1,5 @@
 resource "azurerm_route_table" "route_table_coreinfra" {
+  count = contains(["ptlsbox"], var.environment) ? 0 : 1
   name = format("%s-%s-core-infra-route-table",
     var.service_shortname,
     var.environment
@@ -15,7 +16,7 @@ resource "azurerm_route" "coreinfra_routes" {
   for_each = { for route in var.additional_routes_coreinfra : route.name => route }
 
   name                   = lower(each.value.name)
-  route_table_name       = azurerm_route_table.route_table_coreinfra.name
+  route_table_name       = azurerm_route_table.route_table_coreinfra[0].name
   resource_group_name    = "core-infra-${local.environment}"
   address_prefix         = each.value.address_prefix
   next_hop_type          = each.value.next_hop_type
@@ -40,7 +41,7 @@ data "azurerm_subnet" "coreinfra_subnets" {
 resource "azurerm_subnet_route_table_association" "coreinfra_subnets" {
   for_each = { for subnet in var.coreinfra_subnets : subnet.name => subnet }
 
-  route_table_id = azurerm_route_table.route_table_coreinfra.id
+  route_table_id = azurerm_route_table.route_table_coreinfra[0].id
   subnet_id      = data.azurerm_subnet.coreinfra_subnets[each.value.name].id
   provider       = azurerm.core-infra-routetable
 
