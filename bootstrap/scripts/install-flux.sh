@@ -57,7 +57,7 @@ FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 if [ ${ENV} == "ptlsbox" ]; then
   CLUSTER_ENV="sbox-intsvc"
 elif [ ${ENV} == "ptl" ]; then
-  CLUSTER_ENV="cftptl"
+  CLUSTER_ENV="cft-ptl"
 else 
   CLUSTER_ENV=${ENV}
 fi
