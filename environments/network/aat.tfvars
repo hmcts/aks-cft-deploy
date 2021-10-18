@@ -68,3 +68,33 @@ additional_routes_appgw = [
     next_hop_in_ip_address = "10.11.72.36"
   }
 ]
+
+additional_routes_coreinfra = [
+  {
+    name                   = "aks-00"
+    address_prefix         = "10.10.128.0/20"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "aks-01"
+    address_prefix         = "10.10.144.0/20"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  }
+]
+
+coreinfra_subnets = [
+  {
+    name = "elasticsearch"
+  },
+  {
+    name = "core-infra-subnet-0-aat"
+  },
+  {
+    name = "core-infra-subnet-1-aat"
+  },
+  {
+    name = "scan-storage"
+  }
+]
