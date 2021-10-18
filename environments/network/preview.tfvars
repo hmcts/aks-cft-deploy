@@ -24,6 +24,12 @@ hub = "nonprod"
 
 additional_routes = [
   {
+    name                   = "aat"
+    address_prefix         = "10.10.128.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
     name                   = "10_0_0_0"
     address_prefix         = "10.0.0.0/8"
     next_hop_type          = "VirtualAppliance"
@@ -46,9 +52,21 @@ additional_routes = [
 additional_routes_appgw = [
   {
     name                   = "core_infra_vnet_idam_preview"
-    address_prefix         = "10.120.64.0/18"
+    address_prefix         = "10.97.64.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "core_infra_vnet_idam_aat"
+    address_prefix         = "10.98.0.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "core_infra_vnet_idam_aat2"
+    address_prefix         = "10.103.128.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   },
   {
     name                   = "core_infra_subnet_mgmtpreview"
@@ -67,13 +85,13 @@ additional_routes_appgw = [
 additional_routes_coreinfra = [
   {
     name                   = "aks-00"
-    address_prefix         = "10.11.192.0/20"
+    address_prefix         = "10.48.128.0/20"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
     name                   = "aks-01"
-    address_prefix         = "10.11.208.0/20"
+    address_prefix         = "10.48.144.0/20"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   }

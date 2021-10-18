@@ -19,9 +19,9 @@ provider "azurerm" {
 
 locals {
 
-  control_resource_environment = var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment == "ptlsbox" ? "sbox" : var.environment == "preview" ? "dev" : "${var.environment}"
+  control_resource_environment = var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment == "ptlsbox" ? "sbox" : "${var.environment}"
 
-  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : var.environment == "ptlsbox" ? "cftsbox-intsvc" : var.environment == "preview" ? "dev" : "${var.environment}"
+  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : var.environment == "ptlsbox" ? "cftsbox-intsvc" : "${var.environment}"
 
   environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : var.environment == "preview" ? "dev" : "${var.environment}"
   acr = {
