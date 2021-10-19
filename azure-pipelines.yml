@@ -36,7 +36,7 @@ parameters:
     default: 'PTL'
     values:
     - ITHC
-    # - DEV
+    # - PREVIEW
     # - DEMO
     - SBOX
     - PERFTEST

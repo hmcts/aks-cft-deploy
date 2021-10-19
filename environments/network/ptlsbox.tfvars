@@ -11,10 +11,10 @@ additional_subnets = [
 
 private_dns_subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
 private_dns_zones = [
+  "sandbox.platform.hmcts.net",
   "sbox.platform.hmcts.net",
   "service.core-compute-sandbox.internal",
   "service.core-compute-idam-sandbox.internal",
-  "service.core-compute-idam-sprod.internal",
   "service.core-compute-idam-saat.internal",
 ]
 
