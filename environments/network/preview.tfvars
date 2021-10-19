@@ -27,7 +27,7 @@ additional_routes = [
     name                   = "aat"
     address_prefix         = "10.10.128.0/18"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
+    next_hop_in_ip_address = "10.11.72.36"
   },
   {
     name                   = "10_0_0_0"
@@ -51,20 +51,14 @@ additional_routes = [
 
 additional_routes_appgw = [
   {
-    name                   = "core_infra_vnet_idam_aat"
-    address_prefix         = "10.98.0.0/18"
+    name                   = "core_infra_vnet_idam_preview"
+    address_prefix         = "10.97.64.0/18"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
-  },
-  {
-    name                   = "core_infra_vnet_idam_aat2"
-    address_prefix         = "10.103.128.0/18"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
+    next_hop_in_ip_address = "10.11.72.36"
   },
   {
     name                   = "core_infra_subnet_mgmtpreview"
-    address_prefix         = "10.112.0.0/18"
+    address_prefix         = "10.97.0.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
@@ -72,7 +66,7 @@ additional_routes_appgw = [
     name                   = "core_cftptl_intvsc_vnet"
     address_prefix         = "10.10.64.0/21"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
+    next_hop_in_ip_address = "10.11.8.36"
   }
 ]
 
