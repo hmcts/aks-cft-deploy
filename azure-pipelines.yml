@@ -198,6 +198,7 @@ stages:
               ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl') }}: 
                 akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
+              
   - stage: DestroyAks
     displayName: 'Destroy AKS Infrastructure'
     condition: contains('${{ parameters.Action }}', 'Destroy')
