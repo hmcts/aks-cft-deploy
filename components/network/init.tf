@@ -100,6 +100,10 @@ locals {
     ptlsbox = {
       subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
     }
+
+    demo = {
+      subscription = "d025fece-ce99-4df2-b7a9-b649d3ff2060"
+    }
   }
 
   environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
