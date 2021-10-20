@@ -1,5 +1,5 @@
 enable_debug = "true"
-
+# TODO
 network_address_space                  = "10.2.8.0/21"
 aks_00_subnet_cidr_blocks              = "10.2.8.0/23"
 aks_01_subnet_cidr_blocks              = "10.2.10.0/23"
@@ -9,14 +9,12 @@ application_gateway_subnet_cidr_blocks = "10.2.13.0/25"
 additional_subnets = [
 ]
 
-private_dns_subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
 private_dns_zones = [
-  "sandbox.platform.hmcts.net",
-  "sbox.platform.hmcts.net",
+  "demo.platform.hmcts.net",
   "service.core-compute-sandbox.internal",
-  "service.core-compute-idam-sandbox.internal",
-  "service.core-compute-idam-sprod.internal",
-  "service.core-compute-idam-saat.internal"
+  "service.core-compute-demo.internal",
+  "service.core-compute-idam-demo.internal"
 ]
 
 hub = "nonprod"
@@ -39,44 +37,25 @@ additional_routes = [
     address_prefix         = "192.168.0.0/16"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.10.200.36"
+  },
+  {
+    name                   = "postgres"
+    address_prefix         = "10.96.192.0/22"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "BastionMgmtVnet"
+    address_prefix         = "10.48.0.32/27"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
   }
 ]
-
 additional_routes_appgw = [
-  {
-    name                   = "core_infra_vnet_idam_sandbox"
-    address_prefix         = "10.99.128.0/18"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.10.200.36"
-  }
 ]
 
 additional_routes_coreinfra = [
-  {
-    name                   = "aks-00"
-    address_prefix         = "10.2.8.0/23"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.10.200.36"
-  },
-  {
-    name                   = "aks-01"
-    address_prefix         = "10.2.10.0/23"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.10.200.36"
-  }
 ]
 
 coreinfra_subnets = [
-  {
-    name = "core-infra-subnet-0-sandbox"
-  },
-  {
-    name = "core-infra-subnet-1-sandbox"
-  },
-  {
-    name = "elasticsearch"
-  },
-  {
-    name = "scan-storage"
-  }
 ]
