@@ -34,6 +34,7 @@ locals {
     mode                = "User"
     availability_zones  = var.availability_zones
   }
+}
 
 module "kubernetes" {
   count  = var.cluster_count
@@ -50,6 +51,7 @@ module "kubernetes" {
     azurerm.acr           = azurerm.acr
     azurerm.global_acr    = azurerm.global_acr
   }
+
 
   resource_group_name = azurerm_resource_group.kubernetes_resource_group[count.index].name
 
