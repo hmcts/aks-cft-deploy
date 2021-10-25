@@ -1,5 +1,5 @@
 resource "azurerm_public_ip" "demo_public_ip" {
-  count = contains(["demo"], var.environment) ? 0 : 2
+  count = contains(["demo"], var.environment) ? 2 : 0
   name = format("cft-aks-%s-pip",
     var.environment
   )
