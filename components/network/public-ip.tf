@@ -1,12 +1,10 @@
-# resource "azurerm_public_ip" "demo_public_ip" {
-#   count = contains(["demo"], var.environment) ? 2 : 0
-#   name = format("cft-aks-%s-pip",
-#     var.environment
-#   )
+resource "azurerm_public_ip" "demo_public_ip" {
+  count = contains(["demo"], var.environment) ? 2 : 0
+  name  = cft-aks-demo-pip-[count.index]
 
-#   location            = var.location
-#   resource_group_name = "core-infra-${local.environment}"
-#   allocation_method   = "Static"
+  location            = var.location
+  resource_group_name = "core-infra-${local.environment}"
+  allocation_method   = "Static"
 
-#   tags = module.ctags.common_tags
-# }
+  tags = module.ctags.common_tags
+}
