@@ -21,6 +21,20 @@ module "loganalytics" {
   environment = var.environment
 }
 
+locals {
+  linux_node_pool = {
+    name                = "linux"
+    vm_size             = lookup(var.linux_node_pool, "vm_size", "Standard_DS3_v2")
+    min_count           = lookup(var.linux_node_pool, "min_nodes", 2)
+    max_count           = lookup(var.linux_node_pool, "max_nodes", 4)
+    max_pods            = lookup(var.linux_node_pool, "max_pods", 30)
+    os_type             = "Linux"
+    node_taints         = []
+    enable_auto_scaling = true
+    mode                = "User"
+    availability_zones  = var.availability_zones
+  }
+
 module "kubernetes" {
   count  = var.cluster_count
   source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
@@ -56,15 +70,26 @@ module "kubernetes" {
 
   kubernetes_cluster_ssh_key = var.kubernetes_cluster_ssh_key
 
-  kubernetes_cluster_agent_min_count = var.kubernetes_cluster_agent_min_count
-  kubernetes_cluster_agent_max_count = var.kubernetes_cluster_agent_max_count
-  kubernetes_cluster_agent_vm_size   = var.kubernetes_cluster_agent_vm_size
+  kubernetes_cluster_agent_min_count    = lookup(var.system_node_pool, "min_nodes", 1)
+  kubernetes_cluster_agent_max_count    = lookup(var.system_node_pool, "max_nodes", 3)
+  kubernetes_cluster_agent_vm_size      = lookup(var.system_node_pool, "vm_size", "Standard_DS3_v2")
   kubernetes_cluster_version         = var.kubernetes_cluster_version
   kubernetes_cluster_agent_max_pods  = var.kubernetes_cluster_agent_max_pods
 
   tags = module.ctags.common_tags
 
+  enable_user_system_nodepool_split = true
+  
   additional_node_pools = contains(["ptlsbox", "ptl"], var.environment) ? [] : [
+  {
+      name                = "linux"
+      vm_size             = lookup(var.linux_node_pool, "vm_size", "Standard_DS3_v2")
+      min_count           = lookup(var.linux_node_pool, "min_nodes", 2)
+      max_count           = lookup(var.linux_node_pool, "max_nodes", 4)
+      os_type             = "Linux"
+      node_taints         = []
+      enable_auto_scaling = true
+    }
   ]
 
   project_acr_enabled = var.project_acr_enabled
