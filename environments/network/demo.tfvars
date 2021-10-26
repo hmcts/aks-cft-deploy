@@ -36,22 +36,21 @@ additional_routes = [
     address_prefix         = "192.168.0.0/16"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.10.200.36"
-  }
-]
-
-additional_routes_appgw = [
-  {
-    name                   = "BastionMgmtVnet"
-    address_prefix         = "10.48.0.32/27"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
   },
   {
     name                   = "postgres"
     address_prefix         = "10.96.192.0/22"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "BastionMgmtVnet"
+    address_prefix         = "10.48.0.32/27"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
   }
+]
+additional_routes_appgw = [
 ]
 
 additional_routes_coreinfra = [
