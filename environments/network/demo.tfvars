@@ -3,8 +3,8 @@ enable_debug = "true"
 network_address_space                  = "10.50.64.0/18"
 aks_00_subnet_cidr_blocks              = "10.50.64.0/20"
 aks_01_subnet_cidr_blocks              = "10.50.80.0/20"
-iaas_subnet_cidr_blocks                = "10.50.96.0/23"
-application_gateway_subnet_cidr_blocks = "10.50.98.0/24"
+iaas_subnet_cidr_blocks                = "10.50.96.0/24"
+application_gateway_subnet_cidr_blocks = "10.50.97.0/25"
 
 additional_subnets = [
 ]
@@ -38,18 +38,13 @@ additional_routes = [
     next_hop_in_ip_address = "10.10.200.36"
   },
   {
-    name                   = "postgres"
-    address_prefix         = "10.96.192.0/22"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
-  },
-  {
     name                   = "BastionMgmtVnet"
     address_prefix         = "10.48.0.32/27"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   }
 ]
+
 additional_routes_appgw = [
 ]
 
