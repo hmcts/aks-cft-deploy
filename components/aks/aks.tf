@@ -66,7 +66,7 @@ module "kubernetes" {
 
   tags = module.ctags.common_tags
 
-  enable_user_system_nodepool_split = true
+  enable_user_system_nodepool_split = var.enable_user_system_nodepool_split == true ? true : false
 
   additional_node_pools = contains(["ptlsbox", "ptl"], var.environment) ? [] : [
     {
