@@ -2,6 +2,9 @@ name: HMCTS CFT AKS Azure Infrastructure Deployment Pipeline
 
 trigger: none
 
+pool:
+  vmImage: 'ubuntu-latest'
+
 parameters:
 
   - name: Action
@@ -33,7 +36,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'PTLSBOX'
+    default: 'SBOX'
     values:
     - ITHC
     # - PREVIEW
