@@ -8,8 +8,8 @@ project_acr_enabled               = true
 sku_tier                          = "Paid"
 
 system_node_pool = {
-  min_nodes = 2,
-  max_nodes = 4
+  min_nodes = 6,
+  max_nodes = 15
 }
 linux_node_pool = {
   min_nodes = 4,
