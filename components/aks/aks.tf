@@ -67,7 +67,7 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = var.enable_user_system_nodepool_split == true ? true : false
 
-  additional_node_pools = contains(["sbox", "ptlsbox", "ptl", "perftest", "ithc", "aat"], var.environment) ? [] : [
+  additional_node_pools = contains(["ptlsbox", "ptl", "perftest", "ithc", "aat"], var.environment) ? [] : [
     {
       name                = "linux"
       vm_size             = lookup(var.linux_node_pool, "vm_size", "Standard_DS3_v2")
