@@ -9,7 +9,6 @@ VALUES=deployments/fluxcd/values.yaml
 FLUX_HELM_CRD=https://raw.githubusercontent.com/fluxcd/helm-operator/chart-1.2.0/deploy/crds.yaml
 
 FLUX_V1_CLUSTER=('ithc' 'perftest' 'aat' 'demo' 'prod')
-FLUX_V2_CLUSTER=('ithc' 'perftest' 'aat' 'sbox' 'ptlsbox' 'ptl' 'preview' 'demo' 'prod')
 
 #Install kustomize
 curl -s "https://raw.githubusercontent.com/\
