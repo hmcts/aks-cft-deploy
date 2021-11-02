@@ -15,3 +15,10 @@ linux_node_pool = {
   min_nodes = 4,
   max_nodes = 10
 }
+
+additional_subnets = [
+  {
+    name           = "api-management"
+    address_prefix = "10.2.14.0/25"
+  }
+]
