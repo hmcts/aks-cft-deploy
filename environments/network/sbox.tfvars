@@ -7,6 +7,10 @@ iaas_subnet_cidr_blocks                = "10.2.12.0/24"
 application_gateway_subnet_cidr_blocks = "10.2.13.0/25"
 
 additional_subnets = [
+  {
+    name           = "api-management"
+    address_prefix = "10.2.14.0/25"
+  }
 ]
 
 private_dns_subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
@@ -15,7 +19,6 @@ private_dns_zones = [
   "sbox.platform.hmcts.net",
   "service.core-compute-sandbox.internal",
   "service.core-compute-idam-sandbox.internal",
-  "service.core-compute-idam-sprod.internal",
   "service.core-compute-idam-saat.internal"
 ]
 
