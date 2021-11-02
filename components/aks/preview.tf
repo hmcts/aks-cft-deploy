@@ -1,5 +1,4 @@
 data "azurerm_resource_group" "managed-identity-preview1aat" {
-  count    = contains(["preview"], var.environment) ? 1 : 0
   provider = azurerm.preview1aat
   name     = "managed-identities-aat-rg"
 }
@@ -15,7 +14,6 @@ resource "azurerm_role_assignment" "preview1aat_cft_rg_identity_operator" {
 }
 
 data "azurerm_resource_group" "managed-identity-preview2aat" {
-  count    = contains(["preview"], var.environment) ? 1 : 0
   provider = azurerm.preview2aat
   name     = "managed-identities-aat-rg"
 }
