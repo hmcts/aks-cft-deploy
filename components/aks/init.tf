@@ -48,7 +48,7 @@ locals {
       subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
     }
     preview = {
-      subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      subscription = "8b6ea922-0862-443e-af15-6056e1c9b9a4"
     }
   }
 
@@ -79,7 +79,7 @@ provider "azurerm" {
   alias                      = "preview1aat"
   skip_provider_registration = "true"
   features {}
-  subscription_id = "8b6ea922-0862-443e-af15-6056e1c9b9a4"
+  subscription_id = "96c274ce-846d-4e48-89a7-d528432298a7"
 }
 
 provider "azurerm" {
