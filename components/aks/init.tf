@@ -48,6 +48,12 @@ locals {
       subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
     }
     preview = {
+      subscription = "8b6ea922-0862-443e-af15-6056e1c9b9a4"
+    }
+    preview1aat = {
+      subscription = "96c274ce-846d-4e48-89a7-d528432298a7"
+    }
+    preview2aat = {
       subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
   }
@@ -76,8 +82,15 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  alias                      = "mi_cft"
+  alias                      = "preview1aat"
   skip_provider_registration = "true"
   features {}
-  subscription_id = local.mi_cft[var.environment].subscription
+  subscription_id = local.mi_cft[preview1aat].subscription
+}
+
+provider "azurerm" {
+  alias                      = "preview2aat"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = local.mi_cft[preview2aat].subscription
 }
