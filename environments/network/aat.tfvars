@@ -29,6 +29,12 @@ additional_routes = [
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
+    name                   = "cft_preview_vnet"
+    address_prefix         = "10.48.128.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
     name                   = "10_0_0_0"
     address_prefix         = "10.0.0.0/8"
     next_hop_type          = "VirtualAppliance"
@@ -66,5 +72,41 @@ additional_routes_appgw = [
     address_prefix         = "10.12.64.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "cft_preview_vnet"
+    address_prefix         = "10.48.128.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  }
+]
+
+additional_routes_coreinfra = [
+  {
+    name                   = "aks-00"
+    address_prefix         = "10.10.128.0/20"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "aks-01"
+    address_prefix         = "10.10.144.0/20"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  }
+]
+
+coreinfra_subnets = [
+  {
+    name = "elasticsearch"
+  },
+  {
+    name = "core-infra-subnet-0-aat"
+  },
+  {
+    name = "core-infra-subnet-1-aat"
+  },
+  {
+    name = "scan-storage"
   }
 ]
