@@ -36,7 +36,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'AAT'
+    default: 'PTL'
     values:
     - ITHC
     # - PREVIEW
@@ -45,6 +45,7 @@ parameters:
     - PERFTEST
     - AAT
     - PTLSBOX
+    - PTL
     # - PROD
 
 variables:
