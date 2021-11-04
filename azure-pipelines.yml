@@ -45,6 +45,7 @@ parameters:
     - PERFTEST
     - AAT
     - PTLSBOX
+    - PTL
     # - PROD
 
 variables:

@@ -104,6 +104,9 @@ locals {
     demo = {
       subscription = "d025fece-ce99-4df2-b7a9-b649d3ff2060"
     }
+    ptl = {
+      subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+    }
   }
 
   environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
