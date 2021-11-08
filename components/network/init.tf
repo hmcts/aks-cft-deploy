@@ -100,6 +100,9 @@ locals {
     ptlsbox = {
       subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
     }
+    preview = {
+      subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+    }
     ptl = {
       subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
     }
