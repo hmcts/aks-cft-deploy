@@ -10,7 +10,7 @@ parameters:
   - name: Action
     displayName: Action
     type: string
-    default: 'Apply'
+    default: 'Plan'
     values:
     - Plan
     - Apply
