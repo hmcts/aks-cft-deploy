@@ -19,7 +19,7 @@ provider "azurerm" {
 
 locals {
 
-  control_resource_environment = var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment == "ptlsbox" ? "sbox" : var.environment == "ptl" ? "prod" : "${var.environment}"
+  control_resource_environment = var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment == "ptlsbox" ? "sbox" : var.environment == "preview" ? "dev" : var.environment == "ptl" ? "prod" : "${var.environment}"
 
   environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : var.environment == "ptlsbox" ? "cftsbox-intsvc" : var.environment == "ptl" ? "cftptl-intsvc" : "${var.environment}"
 
@@ -41,15 +41,15 @@ locals {
     aat = {
       subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
-
     ithc = {
       subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
-
     ptlsbox = {
       subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
     }
-
+    preview = {
+      subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+    }
     ptl = {
       subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
     }
@@ -80,8 +80,15 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  alias                      = "mi_cft"
+  alias                      = "preview1aat"
   skip_provider_registration = "true"
   features {}
-  subscription_id = local.mi_cft[var.environment].subscription
+  subscription_id = "96c274ce-846d-4e48-89a7-d528432298a7"
+}
+
+provider "azurerm" {
+  alias                      = "preview2aat"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
 }
