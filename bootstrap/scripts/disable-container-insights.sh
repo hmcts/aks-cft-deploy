@@ -8,6 +8,4 @@ CLUSTER_NAME="${6}"
 
 echo "Disable Application Insights on Cluster"
 
-az account set --subscription $SUBSCRIPTION_NAME
-
 az aks disable-addons -a monitoring -n "${PROJECT}"-"${ENVIRONMENT}"-"${CLUSTER_NAME}"-"${SERVICE}" -g "${PROJECT}"-"${ENVIRONMENT}"-"${CLUSTER_NAME}"-rg
