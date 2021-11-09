@@ -50,7 +50,7 @@ parameters:
 
 variables:
   - name: tfversion
-    value: 0.15.1
+    value: 1.0.10
   - name: project
     value: cft
   - name: serviceConnection
@@ -178,37 +178,37 @@ stages:
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
 
-  # - stage: BootStrapClusters
-  #   displayName: 'BootStrap Clusters'
-  #   dependsOn: Aks
-  #   jobs:
-  #     - job: BootStrap
-  #       variables:
-  #         ${{ if eq(parameters['cluster'], 'All') }}:
-  #           clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
-  #         ${{ if ne(parameters['cluster'], 'All') }}:
-  #           clusters: ${{ parameters.cluster }}
-  #       steps:
-  #         - template: pipeline-steps/bootstrap.yaml
-  #           parameters:
-  #             environment: ${{ parameters.env }}
-  #             project: $(project)
-  #             serviceConnection: $(serviceConnection)
-  #             ${{ if eq( parameters['env'], 'perftest') }}:
-  #               akskeyvault: "dcdcftappstestkv"
-  #             ${{ if eq( parameters['env'], 'aat' ) }}: 
-  #               akskeyvault: "dcdcftappsstgkv"
-  #             ${{ if eq( parameters['env'], 'ptlsbox' ) }}: 
-  #               akskeyvault: "dtscftptlsbox"
-  #             ${{ if eq( parameters['env'], 'ptl' ) }}: 
-  #               akskeyvault: "dtscftptl"
-  #             ${{ if eq( parameters['env'], 'preview' ) }}: 
-  #               akskeyvault: "dcdcftappsdevkv"
-  #             ${{ if eq( parameters['env'], 'demo' ) }}: 
-  #               akskeyvault: "dcdcftappsdemokv"
-  #             ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview', 'demo') }}: 
-  #               akskeyvault: dcdcftapps${{ parameters.env }}kv
-  #             GenerateSealedSecrets: false
+  - stage: BootStrapClusters
+    displayName: 'BootStrap Clusters'
+    dependsOn: Aks
+    jobs:
+      - job: BootStrap
+        variables:
+          ${{ if eq(parameters['cluster'], 'All') }}:
+            clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
+          ${{ if ne(parameters['cluster'], 'All') }}:
+            clusters: ${{ parameters.cluster }}
+        steps:
+          - template: pipeline-steps/bootstrap.yaml
+            parameters:
+              environment: ${{ parameters.env }}
+              project: $(project)
+              serviceConnection: $(serviceConnection)
+              ${{ if eq( parameters['env'], 'perftest') }}:
+                akskeyvault: "dcdcftappstestkv"
+              ${{ if eq( parameters['env'], 'aat' ) }}: 
+                akskeyvault: "dcdcftappsstgkv"
+              ${{ if eq( parameters['env'], 'ptlsbox' ) }}: 
+                akskeyvault: "dtscftptlsbox"
+              ${{ if eq( parameters['env'], 'ptl' ) }}: 
+                akskeyvault: "dtscftptl"
+              ${{ if eq( parameters['env'], 'preview' ) }}: 
+                akskeyvault: "dcdcftappsdevkv"
+              ${{ if eq( parameters['env'], 'demo' ) }}: 
+                akskeyvault: "dcdcftappsdemokv"
+              ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview', 'demo') }}: 
+                akskeyvault: dcdcftapps${{ parameters.env }}kv
+              GenerateSealedSecrets: false
 
   - stage: DestroyAks
     displayName: 'Destroy AKS Infrastructure'

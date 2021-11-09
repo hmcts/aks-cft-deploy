@@ -34,6 +34,7 @@ chmod +x scripts/install-flux.sh
 chmod +x scripts/generate-sealed-secrets-pki.sh
 chmod +x scripts/create-neuvector-azure-file-share.sh
 chmod +x scripts/register-cluster-with-dynatrace.sh
+chmod +x scripts/disable-container-insights.sh
 
 for cluster in ${6}; do 
   set -- "${@:1:5}" "$cluster" "${@:7:9}"
@@ -45,6 +46,7 @@ for cluster in ${6}; do
   ./scripts/install-sealed-secrets.sh "$@"|| error_exit "ERROR: Unable to install sealed secrets"
   ./scripts/create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
   ./scripts/install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
+  [[ $3 =~ ^(ptlsbox|sbox|preview|ithc|perftest|aat|demo|)$ ]] && (./scripts/disable-container-insights.sh "$@" || error_exit "ERROR: Unable to disable container application insights")
   [[ $6 =~ ^(aat|ithc|perftest|prod)$ ]] && (./scripts/create-neuvector-azure-file-share.sh "$@"|| error_exit "ERROR: Unable to create Neuvector Azure File Shares")
   [ $9 == "true" ] && (./scripts/generate-sealed-secrets-pki.sh "$@" || error_exit "ERROR: Unable to generate sealed secrets")
   [[ $3 =~ ^(aat|perftest|prod)$ ]] && (./scripts/register-cluster-with-dynatrace.sh || error_exit "ERROR: Unable to register cluster with Dynatrace")
