@@ -6,7 +6,6 @@ kubernetes_cluster_ssh_key         = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUDk
 sku_tier                           = "Paid"
 enable_user_system_nodepool_split  = true
 
-
 system_node_pool = {
   min_nodes = 30,
   max_nodes = 50
