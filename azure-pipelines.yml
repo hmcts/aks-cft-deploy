@@ -50,7 +50,7 @@ parameters:
 
 variables:
   - name: tfversion
-    value: 0.15.1
+    value: 1.0.10
   - name: project
     value: cft
   - name: serviceConnection
