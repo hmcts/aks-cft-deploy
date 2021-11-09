@@ -6,6 +6,8 @@ if [ $ENV = "perftest" ]; then
 ENV="test"
 elif [ $ENV = "aat" ]; then
 ENV="stg"
+elif [ $ENV = "preview" ]; then
+ENV="dev"
 fi
 
 STORAGE_ACCOUNT_NAME=cftapps$ENV

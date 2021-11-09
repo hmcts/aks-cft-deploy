@@ -67,7 +67,7 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = var.enable_user_system_nodepool_split == true ? true : false
 
-  additional_node_pools = contains(["ptlsbox", "ptl", "perftest", "ithc", "aat", "demo"], var.environment) ? [] : [
+  additional_node_pools = contains(["ptlsbox", "ptl", "perftest", "ithc", "aat", "preview", "demo"], var.environment) ? [] : [
     {
       name                = "linux"
       vm_size             = lookup(var.linux_node_pool, "vm_size", "Standard_DS3_v2")
@@ -81,8 +81,8 @@ module "kubernetes" {
   ]
 
   project_acr_enabled = var.project_acr_enabled
-
-  depends_on = [azurerm_resource_group.disks_resource_group]
+  availability_zones  = var.availability_zones
+  depends_on          = [azurerm_resource_group.disks_resource_group]
 }
 
 module "ctags" {

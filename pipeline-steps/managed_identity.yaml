@@ -31,6 +31,8 @@ steps:
       backendServiceArm: $(serviceConnection)
       ${{ if eq( parameters['environment'], 'perftest') }}: 
         backendAzureRmResourceGroupName: 'azure-control-test-rg'
+      ${{ if eq( parameters['environment'], 'preview') }}: 
+        backendAzureRmResourceGroupName: 'azure-control-dev-rg'
       ${{ if eq( parameters['environment'], 'aat') }}: 
          backendAzureRmResourceGroupName: 'azure-control-stg-rg'
       ${{ if eq( parameters['environment'], 'ptlsbox') }}: 
@@ -39,7 +41,7 @@ steps:
          backendAzureRmResourceGroupName: 'azure-control-demo-rg'
       ${{ if eq( parameters['environment'], 'ptl') }}: 
          backendAzureRmResourceGroupName: 'azure-control-prod-rg'
-      ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'demo') }}: 
+      ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview', 'demo') }}: 
          backendAzureRmResourceGroupName: 'azure-control-${{ parameters.environment }}-rg'
       backendAzureRmResourceGroupLocation: ${{ parameters.location }}
       backendAzureRmStorageAccountName: $(controlStorageAccount)
