@@ -36,19 +36,11 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-<<<<<<< HEAD
     default: 'DEMO'
     values:
     - ITHC
-    # - PREVIEW
-    - DEMO
-=======
-    default: 'SBOX'
-    values:
-    - ITHC
     - PREVIEW
-    # - DEMO
->>>>>>> main
+    - DEMO
     - SBOX
     - PERFTEST
     - AAT
