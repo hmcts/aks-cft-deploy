@@ -34,6 +34,7 @@ chmod +x scripts/install-flux.sh
 chmod +x scripts/generate-sealed-secrets-pki.sh
 chmod +x scripts/create-neuvector-azure-file-share.sh
 chmod +x scripts/register-cluster-with-dynatrace.sh
+chmod +x scripts/disable-container-insights.sh
 
 for cluster in ${6}; do 
   set -- "${@:1:5}" "$cluster" "${@:7:9}"
