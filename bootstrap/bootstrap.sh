@@ -46,7 +46,7 @@ for cluster in ${6}; do
   ./scripts/install-sealed-secrets.sh "$@"|| error_exit "ERROR: Unable to install sealed secrets"
   ./scripts/create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
   ./scripts/install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
-  [[ $3 =~ ^(ptlsbox|sbox|preview|ithc|aat|demo|)$ ]] && (./scripts/disable-container-insights.sh "$@" || error_exit "ERROR: Unable to disable container application insights")
+  [[ $3 =~ ^(ptlsbox|sbox|preview|ithc|aat|demo|ptl)$ ]] && (./scripts/disable-container-insights.sh "$@" || error_exit "ERROR: Unable to disable container application insights")
   [[ $6 =~ ^(aat|ithc|perftest|prod)$ ]] && (./scripts/create-neuvector-azure-file-share.sh "$@"|| error_exit "ERROR: Unable to create Neuvector Azure File Shares")
   [ $9 == "true" ] && (./scripts/generate-sealed-secrets-pki.sh "$@" || error_exit "ERROR: Unable to generate sealed secrets")
   [[ $3 =~ ^(aat|perftest|prod)$ ]] && (./scripts/register-cluster-with-dynatrace.sh || error_exit "ERROR: Unable to register cluster with Dynatrace")
