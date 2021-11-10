@@ -64,8 +64,6 @@ variables:
       value: "DTS-CFTSBOX-INTSVC"
     ${{ if eq( parameters['env'], 'ptl' ) }}: 
       value: "DTS-CFTPTL-INTSVC"
-    # ${{ if eq( parameters['env'], 'demo' ) }}: 
-    #   value: "OPS-APPROVAL-GATE-DEMO-ENVS"
     ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'preview', 'ptl') }}: 
       value: "OPS-APPROVAL-GATE-${{ parameters.env }}-ENVS"
   - name: tfInitSub
