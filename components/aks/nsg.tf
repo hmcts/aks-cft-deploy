@@ -26,7 +26,7 @@ resource "azurerm_network_security_rule" "AllowInternetToOAuthProxy" {
     var.cluster_number,
     var.service_shortname
   )
-  network_security_group_name = module.kubernetes.kubernetes_cluster.node_resource_group.network_security_group_name
+  network_security_group_name = data.azurerm_resources.aks_nsg.resource_group_name.network_security_group_name.name
 }
 
 resource "azurerm_network_security_rule" "TraefikNoProxy" {
