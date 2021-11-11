@@ -9,7 +9,8 @@
 # }
 
 data "azurerm_resources" "example" {
-  resource_group_name = azurerm_resource_group.kubernetes_resource_group[count.index].name
+  #   resource_group_name = resource.kubernetes_resource_group[count.index].name
+  resource_group_name = module.kubernetes.kubernetes_cluster.node_resource_group
 
   type = "Microsoft.Network/networkSecurityGroups"
 }
