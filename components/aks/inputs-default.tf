@@ -22,4 +22,6 @@ variable "kubernetes_cluster_agent_max_pods" {
   default = "30"
 }
 
-variable "aks_cluster_nsg_rules" {}
+variable "aks_cluster_nsg_rules" {
+  default = []
+}
