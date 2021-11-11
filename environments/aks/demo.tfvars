@@ -17,4 +17,4 @@ linux_node_pool = {
 
 availability_zones = ["1"]
 
-cluster_number = "0${count.index}"
+cluster_number = ["00", "01"]
