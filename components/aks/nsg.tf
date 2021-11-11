@@ -23,7 +23,7 @@ resource "azurerm_network_security_rule" "AllowInternetToOAuthProxy" {
   resource_group_name = format("%s-%s-%s-%s-node-rg",
     var.project,
     var.environment,
-    var.cluster_number,
+    var.cluster_count,
     var.service_shortname
   )
   network_security_group_name = data.azurerm_resources.example.resources.0.name
@@ -43,7 +43,7 @@ resource "azurerm_network_security_rule" "TraefikNoProxy" {
   resource_group_name = format("%s-%s-%s-%s-node-rg",
     var.project,
     var.environment,
-    var.cluster_number,
+    var.cluster_count,
     var.service_shortname
   )
   network_security_group_name = data.azurerm_resources.example.resources.0.name
