@@ -9,7 +9,7 @@
 # }
 
 data "azurerm_resources" "example" {
-  resource_group_name = azurerm_resource_group.kubernetes_resource_group
+  resource_group_name = azurerm_resource_group.kubernetes_resource_group.name
 
   type = "Microsoft.Network/networkSecurityGroups"
 }
