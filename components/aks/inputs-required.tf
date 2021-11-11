@@ -51,3 +51,5 @@ variable "enable_user_system_nodepool_split" {
 variable "availability_zones" {
   type = list(any)
 }
+
+variable "cluster_number" {}

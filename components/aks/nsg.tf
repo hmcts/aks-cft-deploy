@@ -46,5 +46,5 @@ resource "azurerm_network_security_rule" "TraefikNoProxy" {
     var.cluster_number,
     var.service_shortname
   )
-  network_security_group_name = azurerm_network_security_group.network_security_group_name.name
+  network_security_group_name = data.azurerm_resources.example.resources.0.name
 }
