@@ -26,7 +26,7 @@ resource "azurerm_network_security_rule" "AllowInternetToOAuthProxy" {
     var.cluster_number,
     var.service_shortname
   )
-  network_security_group_name = "aks-agentpool-25349269-nsg"
+  network_security_group_name = data.aks_nsg.network_security_group_name.network_security_group_name
 }
 
 resource "azurerm_network_security_rule" "TraefikNoProxy" {
@@ -46,5 +46,5 @@ resource "azurerm_network_security_rule" "TraefikNoProxy" {
     var.cluster_number,
     var.service_shortname
   )
-  network_security_group_name = "aks-agentpool-25349269-nsg"
+  network_security_group_name = data.aks_nsg.network_security_group_name.network_security_group_name
 }
