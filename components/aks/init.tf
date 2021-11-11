@@ -83,6 +83,18 @@ locals {
       source_address_prefix      = "*"
       destination_address_prefix = "51.11.5.163, 20.68.186.154"
     }
+
+    BulkscanToCrimeStorage = {
+      name                       = "BulkscanToCrimeStorage"
+      priority                   = 100
+      direction                  = "Outbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = "443"
+      source_address_prefix      = "VirtualNetwork"
+      destination_address_prefix = "10.200.66.12"
+    }
   }
 }
 
