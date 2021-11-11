@@ -29,6 +29,6 @@ resource "azurerm_network_security_rule" "aks-cluster-nsg-rules" {
   destination_port_range      = each.value.destination_port_range
   source_address_prefix       = each.value.source_address_prefix
   destination_address_prefix  = each.value.destination_address_prefix
-  resource_group_name         = azurerm_kubernetes_cluster.example.node_resource_group
+  resource_group_name         = azurerm_resource_group.kubernetes_resource_group
   network_security_group_name = data.azurerm_resources.example.resources.0.name
 }
