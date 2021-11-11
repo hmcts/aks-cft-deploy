@@ -1,3 +1,14 @@
+data "azurerm_resources" "example" {
+  resource_group_name = format("%s-%s-%s-%s-node-rg",
+    var.project,
+    var.environment,
+    var.cluster_number,
+    var.service_shortname
+  )
+
+  type = "Microsoft.Network/networkSecurityGroups"
+}
+
 resource "azurerm_network_security_rule" "AllowInternetToOAuthProxy" {
   count                      = contains(["demo"], var.environment) ? 1 : 0
   name                       = "AllowInternetToOAuthProxy"
@@ -15,7 +26,7 @@ resource "azurerm_network_security_rule" "AllowInternetToOAuthProxy" {
     var.cluster_number,
     var.service_shortname
   )
-  network_security_group_name = azurerm_network_security_group.network_security_group_name.name
+  network_security_group_name = data.azurerm_resources.example.resources.0.name
 }
 
 resource "azurerm_network_security_rule" "TraefikNoProxy" {
