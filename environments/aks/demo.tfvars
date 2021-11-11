@@ -17,9 +17,8 @@ linux_node_pool = {
 
 availability_zones = ["1"]
 
-aks-cluster-nsg-rules = {
-
-  AllowInternetToOAuthProxy = {
+aks-cluster-nsg-rules = [
+  {
     name                       = "AllowInternetToOAuthProxy"
     priority                   = 100
     direction                  = "Inbound"
@@ -30,7 +29,7 @@ aks-cluster-nsg-rules = {
     source_address_prefix      = "*"
     destination_address_prefix = "51.11.25.221, 20.68.184.102"
   },
-  TraefikNoProxy = {
+  {
     name                       = "TraefikNoProxy"
     priority                   = 110
     direction                  = "Inbound"
@@ -41,7 +40,7 @@ aks-cluster-nsg-rules = {
     source_address_prefix      = "*"
     destination_address_prefix = "51.11.5.163, 20.68.186.154"
   },
-  BulkscanToCrimeStorage = {
+  {
     name                       = "BulkscanToCrimeStorage"
     priority                   = 100
     direction                  = "Outbound"
@@ -52,4 +51,4 @@ aks-cluster-nsg-rules = {
     source_address_prefix      = "VirtualNetwork"
     destination_address_prefix = "10.200.66.12"
   }
-}
+]
