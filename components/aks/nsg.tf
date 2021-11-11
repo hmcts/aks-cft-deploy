@@ -1,11 +1,11 @@
-data "azurerm_resources" "example" {
-  resource_group_name = azurerm_kubernetes_cluster.example.node_resource_group
+data "azurerm_resources" "aksnsg" {
+  resource_group_name = azurerm_kubernetes_cluster.locals.network_resource_group_name.node_resource_group
 
   type = "Microsoft.Network/networkSecurityGroups"
 }
 
 output "name_nsg" {
-  value = data.azurerm_resources.example.resources.0.name
+  value = data.azurerm_resources.aksnsg.resources.0.name
 }
 
 resource "azurerm_network_security_rule" "aks-cluster-nsg-rules" {
