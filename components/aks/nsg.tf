@@ -9,7 +9,7 @@ output "aks_nsg" {
 }
 
 resource "azurerm_network_security_rule" "aks-cluster-nsg-rules" {
-  for_each                    = local.aks-cluster-nsg-rules
+  for_each                    = var.aks-cluster-nsg-rules
   name                        = each.key
   priority                    = each.value.priority
   direction                   = each.value.direction
