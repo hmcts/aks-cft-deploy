@@ -17,7 +17,7 @@ linux_node_pool = {
 
 availability_zones = ["1"]
 
-aks-cluster-nsg-rules = [
+aks_cluster_nsg_rules = [
   {
     name                       = "AllowInternetToOAuthProxy"
     priority                   = 100
@@ -39,16 +39,5 @@ aks-cluster-nsg-rules = [
     destination_port_range     = "443"
     source_address_prefix      = "*"
     destination_address_prefix = "51.11.5.163, 20.68.186.154"
-  },
-  {
-    name                       = "BulkscanToCrimeStorage"
-    priority                   = 100
-    direction                  = "Outbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "443"
-    source_address_prefix      = "VirtualNetwork"
-    destination_address_prefix = "10.200.66.12"
   }
 ]
