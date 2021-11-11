@@ -16,3 +16,5 @@ linux_node_pool = {
 }
 
 availability_zones = ["1"]
+
+cluster_number = 0
