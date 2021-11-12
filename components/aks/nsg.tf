@@ -1,7 +1,9 @@
 data "azurerm_resources" "aks_nsg" {
-  resource_group_name = format("%s-%s-00-aks-node-rg",
+  count = var.cluster_count
+  resource_group_name = format("%s-%s-%s-aks-node-rg",
     var.project,
     var.environment,
+    "0${count.index}"
   )
   type = "Microsoft.Network/networkSecurityGroups"
 }
@@ -22,7 +24,7 @@ resource "azurerm_network_security_rule" "AllowInternetToOAuthProxy" {
     var.cluster_number,
     var.service_shortname
   )
-  network_security_group_name = data.azurerm_resources.aks_nsg.resources.0.name
+  network_security_group_name = data.azurerm_resources.aks_nsg.resources[count.index].name
 }
 
 resource "azurerm_network_security_rule" "TraefikNoProxy" {
@@ -42,5 +44,5 @@ resource "azurerm_network_security_rule" "TraefikNoProxy" {
     var.cluster_number,
     var.service_shortname
   )
-  network_security_group_name = data.azurerm_resources.aks_nsg.resources.0.name
+  network_security_group_name = data.azurerm_resources.aks_nsg.resources[count.index].name
 }
