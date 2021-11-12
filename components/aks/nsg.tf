@@ -1,7 +1,9 @@
 data "azurerm_resources" "aks_nsg" {
-  resource_group_name = format("%s-%s-00-aks-node-rg",
+  resource_group_name = format("%s-%s-%s-%s-node-rg",
     var.project,
     var.environment,
+    var.cluster_number,
+    var.service_shortname
   )
   type = "Microsoft.Network/networkSecurityGroups"
 }
