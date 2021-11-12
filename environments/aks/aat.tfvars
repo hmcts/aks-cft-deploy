@@ -13,5 +13,3 @@ linux_node_pool = {
   min_nodes = 4,
   max_nodes = 10
 }
-
-availability_zones = ["1"]
