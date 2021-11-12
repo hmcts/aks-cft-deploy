@@ -1,10 +1,7 @@
 data "azurerm_resources" "aks_nsg" {
-  count = var.cluster_count
-
-  resource_group_name = format("%s-%s-%s-aks-node-rg",
+  resource_group_name = format("%s-%s-00-aks-node-rg",
     var.project,
     var.environment,
-    "0${count.index}"
   )
   type = "Microsoft.Network/networkSecurityGroups"
 }
