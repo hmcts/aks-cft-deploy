@@ -9,7 +9,7 @@ application_gateway_subnet_cidr_blocks = "10.10.161.0/25"
 additional_subnets = [
   {
     name           = "api-management"
-    address_prefix = "10.48.96.128/25"
+    address_prefix = "10.10.161.128/25"
   }
 ]
 
