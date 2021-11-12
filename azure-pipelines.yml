@@ -134,75 +134,75 @@ stages:
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
 
-#   - stage: Managed_Identity
-#     displayName: 'Managed_Identity'
-#     condition: ne('${{ parameters.Action }}', 'Destroy')
-#     dependsOn: Network
-#     jobs:
-#       - job: Managed_Identity
-#         steps:
-#           - template: pipeline-steps/managed_identity.yaml
-#             parameters:
-#               serviceConnection: $(serviceConnection)
-#               environment: ${{ parameters.env }}
-#               location: ${{ parameters.location }}
-#               stack: 'managed-identity'
-#               project: $(project)
-#               tfversion: $(tfversion)
-#               tfInitSub: ${{ variables.tfInitSub }}
-#               builtFrom: $(Build.Repository.Name)
-#               product: ${{ variables.product }}
+  - stage: Managed_Identity
+    displayName: 'Managed_Identity'
+    condition: ne('${{ parameters.Action }}', 'Destroy')
+    dependsOn: Network
+    jobs:
+      - job: Managed_Identity
+        steps:
+          - template: pipeline-steps/managed_identity.yaml
+            parameters:
+              serviceConnection: $(serviceConnection)
+              environment: ${{ parameters.env }}
+              location: ${{ parameters.location }}
+              stack: 'managed-identity'
+              project: $(project)
+              tfversion: $(tfversion)
+              tfInitSub: ${{ variables.tfInitSub }}
+              builtFrom: $(Build.Repository.Name)
+              product: ${{ variables.product }}
 
-#   - stage: Aks
-#     displayName: 'Deploy AKS clusters'
-#     condition: ne('${{ parameters.Action }}', 'Destroy')
-#     dependsOn:
-#       - Managed_Identity
-#     jobs:
-#       - job: DeployInfrastructure
-#         steps:
-#           - template: pipeline-steps/deploy-service.yaml
-#             parameters:
-#               environment: ${{ parameters.env }}
-#               location: ${{ parameters.location }}
-#               stack: 'aks'
-#               project: $(project)
-#               tfversion: $(tfversion)
-#               tfInitSub: ${{ variables.tfInitSub }}
-#               builtFrom: $(Build.Repository.Name)
-#               product: ${{ variables.product }}
-#               ${{ if ne(parameters['cluster'], 'All') }}:
-#                 targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
+  - stage: Aks
+    displayName: 'Deploy AKS clusters'
+    condition: ne('${{ parameters.Action }}', 'Destroy')
+    dependsOn:
+      - Managed_Identity
+    jobs:
+      - job: DeployInfrastructure
+        steps:
+          - template: pipeline-steps/deploy-service.yaml
+            parameters:
+              environment: ${{ parameters.env }}
+              location: ${{ parameters.location }}
+              stack: 'aks'
+              project: $(project)
+              tfversion: $(tfversion)
+              tfInitSub: ${{ variables.tfInitSub }}
+              builtFrom: $(Build.Repository.Name)
+              product: ${{ variables.product }}
+              ${{ if ne(parameters['cluster'], 'All') }}:
+                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
 
-#   - stage: BootStrapClusters
-#     displayName: 'BootStrap Clusters'
-#     dependsOn: Aks
-#     jobs:
-#       - job: BootStrap
-#         variables:
-#           ${{ if eq(parameters['cluster'], 'All') }}:
-#             clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
-#           ${{ if ne(parameters['cluster'], 'All') }}:
-#             clusters: ${{ parameters.cluster }}
-#         steps:
-#           - template: pipeline-steps/bootstrap.yaml
-#             parameters:
-#               environment: ${{ parameters.env }}
-#               project: $(project)
-#               serviceConnection: $(serviceConnection)
-#               ${{ if eq( parameters['env'], 'perftest') }}:
-#                 akskeyvault: "dcdcftappstestkv"
-#               ${{ if eq( parameters['env'], 'aat' ) }}: 
-#                 akskeyvault: "dcdcftappsstgkv"
-#               ${{ if eq( parameters['env'], 'ptlsbox' ) }}: 
-#                 akskeyvault: "dtscftptlsbox"
-#               ${{ if eq( parameters['env'], 'ptl' ) }}: 
-#                 akskeyvault: "dtscftptl"
-#               ${{ if eq( parameters['env'], 'preview' ) }}: 
-#                 akskeyvault: "dcdcftappsdevkv"
-#               ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}: 
-#                 akskeyvault: dcdcftapps${{ parameters.env }}kv
-#               GenerateSealedSecrets: false
+  - stage: BootStrapClusters
+    displayName: 'BootStrap Clusters'
+    dependsOn: Aks
+    jobs:
+      - job: BootStrap
+        variables:
+          ${{ if eq(parameters['cluster'], 'All') }}:
+            clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
+          ${{ if ne(parameters['cluster'], 'All') }}:
+            clusters: ${{ parameters.cluster }}
+        steps:
+          - template: pipeline-steps/bootstrap.yaml
+            parameters:
+              environment: ${{ parameters.env }}
+              project: $(project)
+              serviceConnection: $(serviceConnection)
+              ${{ if eq( parameters['env'], 'perftest') }}:
+                akskeyvault: "dcdcftappstestkv"
+              ${{ if eq( parameters['env'], 'aat' ) }}: 
+                akskeyvault: "dcdcftappsstgkv"
+              ${{ if eq( parameters['env'], 'ptlsbox' ) }}: 
+                akskeyvault: "dtscftptlsbox"
+              ${{ if eq( parameters['env'], 'ptl' ) }}: 
+                akskeyvault: "dtscftptl"
+              ${{ if eq( parameters['env'], 'preview' ) }}: 
+                akskeyvault: "dcdcftappsdevkv"
+              ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}: 
+                akskeyvault: dcdcftapps${{ parameters.env }}kv
+              GenerateSealedSecrets: false
 
   - stage: DestroyAks
     displayName: 'Destroy AKS Infrastructure'
