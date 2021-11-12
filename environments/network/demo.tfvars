@@ -7,6 +7,10 @@ iaas_subnet_cidr_blocks                = "10.50.96.0/24"
 application_gateway_subnet_cidr_blocks = "10.50.97.0/25"
 
 additional_subnets = [
+  {
+    name           = "api-management"
+    address_prefix = "10.50.97.128/25"
+  }
 ]
 
 private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
