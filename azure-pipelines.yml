@@ -46,7 +46,7 @@ parameters:
     - AAT
     - PTLSBOX
     - PTL
-    # - PROD
+    - PROD
 
 variables:
   - name: tfversion
