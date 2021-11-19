@@ -31,6 +31,8 @@ steps:
       backendServiceArm: $(serviceConnection)
       ${{ if eq( parameters['environment'], 'perftest') }}: 
         backendAzureRmResourceGroupName: 'azure-control-test-rg'
+      ${{ if eq( parameters['environment'], 'prod') }}: 
+        backendAzureRmResourceGroupName: 'azure-control-prod-rg'
       ${{ if eq( parameters['environment'], 'preview') }}: 
         backendAzureRmResourceGroupName: 'azure-control-dev-rg'
       ${{ if eq( parameters['environment'], 'aat') }}: 
