@@ -53,7 +53,9 @@ locals {
     ptl = {
       subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
     }
-
+    prod = {
+      subscription = "8999dec3-0104-4a27-94ee-6588559729d1"
+    }
   }
 
 }
