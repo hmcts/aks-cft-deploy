@@ -13,15 +13,15 @@ resource "azurerm_private_dns_zone_virtual_network_link" "link" {
 }
 
 // private endpoint zones are only located in the prod subscription
-# resource "azurerm_private_dns_zone_virtual_network_link" "private_endpoint" {
-#   for_each = toset(var.private_endpoint_private_dns_zones)
+resource "azurerm_private_dns_zone_virtual_network_link" "private_endpoint" {
+  for_each = toset(var.private_endpoint_private_dns_zones)
 
-#   provider = azurerm.private-dns-private-endpoint
-#   name = format("%s%s",
-#     var.project,
-#     var.environment
-#   )
-#   resource_group_name   = "core-infra-intsvc-rg"
-#   private_dns_zone_name = each.key
-#   virtual_network_id    = module.network.network_id
-# }
+  provider = azurerm.private-dns-private-endpoint
+  name = format("%s%s",
+    var.project,
+    var.environment
+  )
+  resource_group_name   = "core-infra-intsvc-rg"
+  private_dns_zone_name = each.key
+  virtual_network_id    = module.network.network_id
+}
