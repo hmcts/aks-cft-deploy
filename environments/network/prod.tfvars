@@ -17,9 +17,7 @@ private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
 private_dns_zones = [
   "service.core-compute-prod.internal",
   "service.core-compute-idam-prod.internal",
-  "service.core-compute-idam-prod2.internal",
-  "platform.hmcts.net",
-  "reform.hmcts.net",
+  "service.core-compute-idam-prod2.internal"
 ]
 
 hub = "prod"
