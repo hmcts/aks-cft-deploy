@@ -42,3 +42,4 @@ As CFT is currently configured via ARM templates and an active solution, some ad
     - Some logic built into script
       - If connection security has no subnets, it doesn't add these subnets - most likely been upgraded to v11 which uses private endpoints
       - Checks if either of the subnets have been deployed already, as part of migration process is to update hmcts/cnp-database-subnet-whitelisting repo
+      
