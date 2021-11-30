@@ -10,7 +10,7 @@ system_node_pool = {
   max_nodes = 4
 }
 linux_node_pool = {
-  min_nodes = 55,
+  min_nodes = 50,
   max_nodes = 60
 }
 
