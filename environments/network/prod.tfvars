@@ -55,13 +55,13 @@ additional_routes_appgw = [
 additional_routes_coreinfra = [
   {
     name                   = "aks-00"
-    address_prefix         = "10.90.128.0/20"
+    address_prefix         = "10.90.64.0/20"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
   },
   {
     name                   = "aks-01"
-    address_prefix         = "10.90.144.0/20"
+    address_prefix         = "10.90.80.0/20"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
   }
