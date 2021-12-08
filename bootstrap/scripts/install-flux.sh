@@ -75,7 +75,6 @@ kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/flux-config-gitrepo.ya
 
 TMP_DIR=/tmp/flux/${CLUSTER_ENV}/${CLUSTER_NAME}
 mkdir -p $TMP_DIR
-
 # -----------------------------------------------------------
 (
 cat <<EOF
