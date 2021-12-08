@@ -9,8 +9,6 @@ VALUES=deployments/fluxcd/values.yaml
 FLUX_HELM_CRD=https://raw.githubusercontent.com/fluxcd/helm-operator/chart-1.2.0/deploy/crds.yaml
 
 FLUX_V1_CLUSTER=('ithc' 'perftest' 'aat' 'demo' 'prod')
-DYNATRACE_CLUSTER=('perftest')
-DYNATRACE_CRD=https://github.com/Dynatrace/dynatrace-operator/releases/download/v0.2.2/dynatrace.com_dynakubes.yaml
 
 #Install kustomize
 curl -s "https://raw.githubusercontent.com/\
@@ -77,11 +75,6 @@ kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/flux-config-gitrepo.ya
 
 TMP_DIR=/tmp/flux/${CLUSTER_ENV}/${CLUSTER_NAME}
 mkdir -p $TMP_DIR
-
-# Install Dynakube CRD for Dynatrace Operator
-  if [[ " ${DYNATRACE_CLUSTER[*]} " =~ " ${ENV} "]]; then
-    kubectl apply -f ${DYNATRACE_CRD}
-  fi
 
 # -----------------------------------------------------------
 (
