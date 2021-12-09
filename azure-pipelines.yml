@@ -56,8 +56,6 @@ variables:
   - name: serviceConnection
     ${{ if eq( parameters['env'], 'perftest') }}: 
       value: "OPS-APPROVAL-GATE-TEST-ENVS"
-    ${{ if eq( parameters['env'], 'prod') }}: 
-      value: "OPS-APPROVAL-GATE-PROD-ENVS"
     ${{ if eq( parameters['env'], 'preview') }}: 
       value: "OPS-APPROVAL-GATE-DEV-ENVS"
     ${{ if eq( parameters['env'], 'aat' ) }}: 
@@ -66,7 +64,7 @@ variables:
       value: "DTS-CFTSBOX-INTSVC"
     ${{ if eq( parameters['env'], 'ptl' ) }}: 
       value: "DTS-CFTPTL-INTSVC"
-    ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'preview', 'ptl', 'prod') }}: 
+    ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'preview', 'ptl') }}: 
       value: "OPS-APPROVAL-GATE-${{ parameters.env }}-ENVS"
   - name: tfInitSub
     value: "04d27a32-7a07-48b3-95b8-3c8691e1a263"
@@ -196,8 +194,6 @@ stages:
               serviceConnection: $(serviceConnection)
               ${{ if eq( parameters['env'], 'perftest') }}:
                 akskeyvault: "dcdcftappstestkv"
-              ${{ if eq( parameters['env'], 'prod') }}:
-                akskeyvault: "dcdcftappsprodkv"
               ${{ if eq( parameters['env'], 'aat' ) }}: 
                 akskeyvault: "dcdcftappsstgkv"
               ${{ if eq( parameters['env'], 'ptlsbox' ) }}: 
@@ -206,7 +202,7 @@ stages:
                 akskeyvault: "dtscftptl"
               ${{ if eq( parameters['env'], 'preview' ) }}: 
                 akskeyvault: "dcdcftappsdevkv"
-              ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview', 'prod') }}: 
+              ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}: 
                 akskeyvault: dcdcftapps${{ parameters.env }}kv
               GenerateSealedSecrets: false
 
