@@ -50,6 +50,12 @@ additional_routes_appgw = [
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
   },
+  {
+    name                   = "core-idam-prod-vnet"
+    address_prefix         = "10.106.0.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  }
 ]
 
 additional_routes_coreinfra = [
