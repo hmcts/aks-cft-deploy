@@ -9,8 +9,6 @@ resource "azurerm_role_assignment" "uami_cft_rg_identity_operator" {
   principal_id         = module.kubernetes["${count.index}"].kubelet_object_id
   scope                = data.azurerm_resource_group.managed-identity-operator-cft-mi.id
   role_definition_name = "Managed Identity Operator"
-
-  depends_on = [module.kubernetes]
 }
 
 # data "azurerm_resource_group" "managed-identity-operator-cft" {
