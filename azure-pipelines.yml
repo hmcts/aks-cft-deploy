@@ -36,7 +36,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'PERFTEST'
+    default: 'SBOX'
     values:
     - ITHC
     - PREVIEW
@@ -174,7 +174,7 @@ stages:
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
               ${{ if ne(parameters['cluster'], 'All') }}:
-                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
+                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}] -target azurerm_role_assignment.preview1aat_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator[${{parameters.cluster}}]"
 
   - stage: BootStrapClusters
     displayName: 'BootStrap Clusters'
@@ -223,4 +223,4 @@ stages:
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
               ${{ if ne(parameters['cluster'], 'All') }}:
-                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
+                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}] -target azurerm_role_assignment.preview1aat_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator[${{parameters.cluster}}]"
