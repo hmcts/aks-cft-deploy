@@ -52,7 +52,7 @@ EOF
 fi
 
 # ------------------------Flux V2----------------------------
-FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
+FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/PTL-Jenkins-new-cluster
 
 if [ ${ENV} == "ptlsbox" ]; then
   CLUSTER_ENV="sbox-intsvc"
