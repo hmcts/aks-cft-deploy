@@ -10,7 +10,7 @@ resource "azurerm_role_assignment" "preview1aat_cft_rg_identity_operator" {
   scope                = data.azurerm_resource_group.managed-identity-preview1aat.id
   role_definition_name = "Managed Identity Operator"
 
-  depends_on = [module.kubernetes]
+  # depends_on = [module.kubernetes]
 }
 
 data "azurerm_resource_group" "managed-identity-preview2aat" {
@@ -25,5 +25,5 @@ resource "azurerm_role_assignment" "preview2aat_cft_rg_identity_operator" {
   scope                = data.azurerm_resource_group.managed-identity-preview2aat.id
   role_definition_name = "Managed Identity Operator"
 
-  depends_on = [module.kubernetes]
+  # depends_on = [module.kubernetes]
 }
