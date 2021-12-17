@@ -102,7 +102,7 @@ locals {
     }
 
     demo = {
-      subscription = "d025fece-ce99-4df2-b7a9-b649d3ff2060"
+      subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
     preview = {
       subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
