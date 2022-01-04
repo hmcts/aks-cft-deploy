@@ -225,6 +225,7 @@ stages:
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}]"
       - job: DestroyInfrastructure2
+        dependsOn: DestroyInfrastructure
         steps:
           - template: pipeline-steps/destroy-service.yaml
             parameters:
@@ -239,6 +240,7 @@ stages:
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: "-target azurerm_role_assignment.preview1aat_cft_rg_identity_operator[${{parameters.cluster}}] "
       - job: DestroyInfrastructure3
+        dependsOn: DestroyInfrastructure2
         steps:
           - template: pipeline-steps/destroy-service.yaml
             parameters:
@@ -253,6 +255,7 @@ stages:
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: "-target azurerm_role_assignment.preview2aat_cft_rg_identity_operator[${{parameters.cluster}}]"
       - job: DestroyInfrastructure4
+        dependsOn: DestroyInfrastructure3
         steps:
           - template: pipeline-steps/destroy-service.yaml
             parameters:
