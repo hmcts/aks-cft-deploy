@@ -224,45 +224,45 @@ stages:
               product: ${{ variables.product }}
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}]"
-      # - job: DestroyInfrastructure
-      #   steps:
-      #     - template: pipeline-steps/destroy-service.yaml
-      #       parameters:
-      #         environment: ${{ parameters.env }}
-      #         location: ${{ parameters.location }}
-      #         stack: 'aks'
-      #         project: $(project)
-      #         tfversion: $(tfversion)
-      #         tfInitSub: ${{ variables.tfInitSub }}
-      #         builtFrom: $(Build.Repository.Name)
-      #         product: ${{ variables.product }}
-      #         ${{ if ne(parameters['cluster'], 'All') }}:
-      #           targetCommand: "-target azurerm_role_assignment.preview1aat_cft_rg_identity_operator[${{parameters.cluster}}] "
-      # - job: DestroyInfrastructure
-      #   steps:
-      #     - template: pipeline-steps/destroy-service.yaml
-      #       parameters:
-      #         environment: ${{ parameters.env }}
-      #         location: ${{ parameters.location }}
-      #         stack: 'aks'
-      #         project: $(project)
-      #         tfversion: $(tfversion)
-      #         tfInitSub: ${{ variables.tfInitSub }}
-      #         builtFrom: $(Build.Repository.Name)
-      #         product: ${{ variables.product }}
-      #         ${{ if ne(parameters['cluster'], 'All') }}:
-      #           targetCommand: "-target azurerm_role_assignment.preview2aat_cft_rg_identity_operator[${{parameters.cluster}}]"
-      # - job: DestroyInfrastructure
-      #   steps:
-      #     - template: pipeline-steps/destroy-service.yaml
-      #       parameters:
-      #         environment: ${{ parameters.env }}
-      #         location: ${{ parameters.location }}
-      #         stack: 'aks'
-      #         project: $(project)
-      #         tfversion: $(tfversion)
-      #         tfInitSub: ${{ variables.tfInitSub }}
-      #         builtFrom: $(Build.Repository.Name)
-      #         product: ${{ variables.product }}
-      #         ${{ if ne(parameters['cluster'], 'All') }}:
-      #           targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
+      - job: DestroyInfrastructure
+        steps:
+          - template: pipeline-steps/destroy-service.yaml
+            parameters:
+              environment: ${{ parameters.env }}
+              location: ${{ parameters.location }}
+              stack: 'aks'
+              project: $(project)
+              tfversion: $(tfversion)
+              tfInitSub: ${{ variables.tfInitSub }}
+              builtFrom: $(Build.Repository.Name)
+              product: ${{ variables.product }}
+              ${{ if ne(parameters['cluster'], 'All') }}:
+                targetCommand: "-target azurerm_role_assignment.preview1aat_cft_rg_identity_operator[${{parameters.cluster}}] "
+      - job: DestroyInfrastructure
+        steps:
+          - template: pipeline-steps/destroy-service.yaml
+            parameters:
+              environment: ${{ parameters.env }}
+              location: ${{ parameters.location }}
+              stack: 'aks'
+              project: $(project)
+              tfversion: $(tfversion)
+              tfInitSub: ${{ variables.tfInitSub }}
+              builtFrom: $(Build.Repository.Name)
+              product: ${{ variables.product }}
+              ${{ if ne(parameters['cluster'], 'All') }}:
+                targetCommand: "-target azurerm_role_assignment.preview2aat_cft_rg_identity_operator[${{parameters.cluster}}]"
+      - job: DestroyInfrastructure
+        steps:
+          - template: pipeline-steps/destroy-service.yaml
+            parameters:
+              environment: ${{ parameters.env }}
+              location: ${{ parameters.location }}
+              stack: 'aks'
+              project: $(project)
+              tfversion: $(tfversion)
+              tfInitSub: ${{ variables.tfInitSub }}
+              builtFrom: $(Build.Repository.Name)
+              product: ${{ variables.product }}
+              ${{ if ne(parameters['cluster'], 'All') }}:
+                targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
