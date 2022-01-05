@@ -1,12 +1,12 @@
-# data "azurerm_resources" "demo_nsg" {
-#   count = var.cluster_count
-#   resource_group_name = format("%s-%s-%s-aks-node-rg",
-#     var.project,
-#     var.environment,
-#     "0${count.index}"
-#   )
-#   type = "Microsoft.Network/networkSecurityGroups"
-# }
+data "azurerm_resources" "demo_nsg" {
+  count = var.cluster_count
+  resource_group_name = format("%s-%s-%s-aks-node-rg",
+    var.project,
+    var.environment,
+    "0${count.index}"
+  )
+  type = "Microsoft.Network/networkSecurityGroups"
+}
 resource "azurerm_network_security_rule" "AllowInternetToOAuthProxy" {
   count                       = contains(["demo"], var.environment) ? 1 : 0
   name                        = "AllowInternetToOAuthProxy"
