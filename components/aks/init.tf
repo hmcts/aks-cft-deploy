@@ -82,3 +82,17 @@ provider "azurerm" {
   features {}
   subscription_id = "04d27a32-7a07-48b3-95b8-3c8691e1a263"
 }
+
+provider "azurerm" {
+  alias                      = "preview1aat"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = "96c274ce-846d-4e48-89a7-d528432298a7"
+}
+
+provider "azurerm" {
+  alias                      = "preview2aat"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+}
