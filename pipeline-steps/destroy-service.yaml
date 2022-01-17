@@ -15,8 +15,8 @@ steps:
       environment: ${{ parameters.environment }}
 
   - task: AzureCLI@2
-    displayName:Azure CLI
-    name: Stop cluster
+    displayName: Azure CLI
+    name: Stop aks cluster
     inputs:
       azureSubscription: $(serviceConnection)
       scriptType: 'bash'
