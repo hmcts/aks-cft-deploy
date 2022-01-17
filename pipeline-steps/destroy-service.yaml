@@ -16,7 +16,7 @@ steps:
 
   - task: AzureCLI@2
     displayName: Azure CLI
-    name: Stop aks cluster
+    name: StopAksCluster
     inputs:
       azureSubscription: $(serviceConnection)
       scriptType: 'bash'
