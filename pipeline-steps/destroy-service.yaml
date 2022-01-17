@@ -22,7 +22,7 @@ steps:
       scriptType: 'bash'
       scriptLocation: 'scriptPath'
       arguments: '$(CLUSTER_NAME} $(RESOURCE_GROUP_NAME)' 
-      scriptPath: './pipeline-scripts/aks_stop.sh'
+      scriptPath: '$(System.DefaultWorkingDirectory)/pipeline-scripts/aks_stop.sh'
 
   - task: TerraformCLI@0
     displayName: Terraform init
