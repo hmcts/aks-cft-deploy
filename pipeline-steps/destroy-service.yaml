@@ -14,6 +14,16 @@ steps:
       serviceConnection: $(serviceConnection)
       environment: ${{ parameters.environment }}
 
+  - task: AzureCLI@2
+    displayName:Azure CLI
+    name: Stop cluster
+    inputs:
+      azureSubscription: $(serviceConnection)
+      scriptType: 'bash'
+      scriptLocation: 'scriptPath'
+      arguments: '$(CLUSTER_NAME} $(RESOURCE_GROUP_NAME)' 
+      scriptPath: './pipeline-scripts/aks_stop.sh'
+
   - task: TerraformCLI@0
     displayName: Terraform init
     inputs:

@@ -2,8 +2,8 @@
 
 set -e
 
-CLUSTER_NAME=$1
-RESOURCE_GROUP_NAME=$2
+CLUSTER_NAME='cft-$(environment)-0$(clusters)-aks'
+RESOURCE_GROUP_NAME='cft-$(environment)-0$(clusters)-rg'
 
 # Example: az aks stop --name myAKSCluster --resource-group myResourceGroup 
 # Real life example: az aks stop --name cft-sbox-00-aks --resource-group cft-sbox-00-rg
