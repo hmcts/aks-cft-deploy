@@ -23,8 +23,8 @@ steps:
       scriptLocation: 'scriptPath'
       # Set variable for aks stop
       arguments:
-        CLUSTER_NAME: 'cft-${{ parameters.environment }}-${{ parameters.cluster }}-aks'
-        RESOURCE_GROUP_NAME: 'cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg'
+        CLUSTER_NAME='cft-${{ parameters.environment }}-${{ parameters.cluster }}-aks'
+        RESOURCE_GROUP_NAME='cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg'
       scriptPath: '$(System.DefaultWorkingDirectory)/pipeline-scripts/aks_stop.sh'
 
   - task: TerraformCLI@0
