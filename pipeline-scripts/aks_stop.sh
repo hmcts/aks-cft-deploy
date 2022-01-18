@@ -2,8 +2,6 @@
 
 set -e
 
-
-
 # Example: az aks stop --name myAKSCluster --resource-group myResourceGroup 
 # Real life example: az aks stop --name cft-sbox-00-aks --resource-group cft-sbox-00-rg
 
