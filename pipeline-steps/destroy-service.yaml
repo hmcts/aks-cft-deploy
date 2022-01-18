@@ -14,6 +14,7 @@ steps:
       serviceConnection: $(serviceConnection)
       environment: ${{ parameters.environment }}
 
+
   - task: AzureCLI@2
     displayName: Azure CLI
     name: StopAksCluster
@@ -21,7 +22,10 @@ steps:
       azureSubscription: $(serviceConnection)
       scriptType: 'bash'
       scriptLocation: 'scriptPath'
-      arguments: '$(CLUSTER_NAME} $(RESOURCE_GROUP_NAME)' 
+      # Set variable for aks stop
+      arguments:
+        CLUSTER_NAME: 'cft-$(parameters.environment-$(parameters.cluster)-aks'
+        RESOURCE_GROUP_NAME: 'cft-$(parameters.env)-$(parameters.cluster)-rg'
       scriptPath: '$(System.DefaultWorkingDirectory)/pipeline-scripts/aks_stop.sh'
 
   - task: TerraformCLI@0
