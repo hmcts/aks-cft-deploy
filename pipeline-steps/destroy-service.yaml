@@ -28,7 +28,7 @@ steps:
         RESOURCE_GROUP_NAME='echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg'
         echo Cluster name is $CLUSTER_NAME and Resource group name is $RESOURCE_GROUP_NAME
 
-        # az aks stop --name $1 --resource-group $2
+        # az aks stop --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
 
   # - task: TerraformCLI@0
   #   displayName: Terraform init
