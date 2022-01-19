@@ -23,11 +23,11 @@ steps:
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        CLUSTER_NAME='echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-aks'
-        RESOURCE_GROUP_NAME='echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg'
+        CLUSTER_NAME='echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-aks | tr "[:upper:]" "[:lower:]'
+        RESOURCE_GROUP_NAME='echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg | tr "[:upper:]" "[:lower:]'
         echo Cluster name is $CLUSTER_NAME and Resource group name is $RESOURCE_GROUP_NAME
 
-        az aks stop --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
+        # az aks stop --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
 
   # - task: TerraformCLI@0
   #   displayName: Terraform init
