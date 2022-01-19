@@ -25,8 +25,8 @@ steps:
       inlineScript: |
         CLUSTER_NAME='echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-aks'
         RESOURCE_GROUP_NAME='echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg'
-        CLUSTER_LC=$(echo "$CLUSTER_NAME" | tr '[:upper:]' '[:lower:]')
-        RESOURCE_LC=$(echo "$RESOURCE_GROUP_NAME" | tr '[:upper:]' '[:lower:]')
+        CLUSTER_LC=$("$CLUSTER_NAME" | tr '[:upper:]' '[:lower:]')
+        RESOURCE_LC=$("$RESOURCE_GROUP_NAME" | tr '[:upper:]' '[:lower:]')
         echo Cluster name is $CLUSTER_LC and Resource group name is $RESOURCE_LC
 
         # az aks stop --name $CLUSTER_LC --resource-group $RESOURCE_LC
