@@ -230,6 +230,7 @@ stages:
           - template: pipeline-steps/destroy-service.yaml
             parameters:
               environment: ${{ parameters.env }}
+              cluster: ${{ parameters.cluster }}
               location: ${{ parameters.location }}
               stack: 'aks'
               project: $(project)
