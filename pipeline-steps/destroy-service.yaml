@@ -15,19 +15,22 @@ steps:
       serviceConnection: $(serviceConnection)
       environment: ${{ parameters.environment }}
 
-#  - task: AzureCLI@2
-#    displayName: StopAksCluster
-#    name: StopAksCluster
-#    inputs:
-#      azureSubscription: $(serviceConnection)
-#      scriptType: 'bash'
-#      scriptLocation: 'inlineScript'
-#      inlineScript: |
-#        CLUSTER_NAME=$(echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-aks | sed -e 's/\(.*\)/\L\1/')
-#        RESOURCE_GROUP_NAME=$(echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg | sed -e 's/\(.*\)/\L\1/')
-#        echo Cluster name is $CLUSTER_NAME and Resource group name is $RESOURCE_GROUP_NAME
-#
-#        az aks stop --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
+  - task: AzureCLI@2
+    displayName: StopAksCluster
+    name: StopAksCluster
+    inputs:
+      azureSubscription: $(serviceConnection)
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        CLUSTER_NAME=$(echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-aks | sed -e 's/\(.*\)/\L\1/')
+        RESOURCE_GROUP_NAME=$(echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg | sed -e 's/\(.*\)/\L\1/')
+        echo Cluster name is $CLUSTER_NAME and Resource group name is $RESOURCE_GROUP_NAME
+
+        az aks stop --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
+        sleep 180
+        az aks start --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
+        sleep 180
 
   - task: TerraformCLI@0
     displayName: Terraform init
