@@ -16,8 +16,8 @@ steps:
       environment: ${{ parameters.environment }}
 
   - task: AzureCLI@2
-    displayName: StopAksCluster
-    name: StopAksCluster
+    displayName: StopStartAksCluster
+    name: StopStartAksCluster
     inputs:
       azureSubscription: $(serviceConnection)
       scriptType: 'bash'
@@ -27,10 +27,15 @@ steps:
         RESOURCE_GROUP_NAME=$(echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg | sed -e 's/\(.*\)/\L\1/')
         echo Cluster name is $CLUSTER_NAME and Resource group name is $RESOURCE_GROUP_NAME
 
+        echo Stopping aks cluster has commenced.
         az aks stop --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
-        sleep 180
+        echo $? aks stop status
+        sleep 60
+        echo Starting aks cluster has commenced.
         az aks start --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
-        sleep 180
+        echo $? aks start status
+        sleep 30
+        echo Moving on to the Terraform destory section.
 
   - task: TerraformCLI@0
     displayName: Terraform init
