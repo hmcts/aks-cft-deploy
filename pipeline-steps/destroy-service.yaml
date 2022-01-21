@@ -29,11 +29,11 @@ steps:
 
         echo Stopping aks cluster has commenced.
         az aks stop --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
-        echo $? aks stop status
+        echo $? aks stop status.
         sleep 180
         echo Starting aks cluster has commenced.
         az aks start --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
-        echo $? aks start status
+        echo $? aks start status.
         sleep 180
         echo Moving on to the Terraform destroy section.
 
