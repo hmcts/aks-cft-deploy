@@ -1,5 +1,6 @@
 parameters:
   environment: ''
+  cluster: ''
   location: ''
   stack: ''
   project: ''
@@ -14,6 +15,28 @@ steps:
       serviceConnection: $(serviceConnection)
       environment: ${{ parameters.environment }}
 
+  - task: AzureCLI@2
+    displayName: StopStartAksCluster
+    name: StopStartAksCluster
+    inputs:
+      azureSubscription: $(serviceConnection)
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        CLUSTER_NAME=$(echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-aks | sed -e 's/\(.*\)/\L\1/')
+        RESOURCE_GROUP_NAME=$(echo cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg | sed -e 's/\(.*\)/\L\1/')
+        echo Cluster name is $CLUSTER_NAME and Resource group name is $RESOURCE_GROUP_NAME
+
+        echo Stopping aks cluster has commenced.
+        az aks stop --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
+        echo $? aks stop status.
+        sleep 180
+        echo Starting aks cluster has commenced.
+        az aks start --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
+        echo $? aks start status.
+        sleep 180
+        echo Moving on to the Terraform destroy section.
+
   - task: TerraformCLI@0
     displayName: Terraform init
     inputs:
@@ -21,17 +44,17 @@ steps:
           workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}'
           backendType: azurerm
           backendServiceArm: $(serviceconnection)
-          ${{ if eq( parameters['environment'], 'perftest') }}: 
+          ${{ if eq( parameters['environment'], 'perftest') }}:
             backendAzureRmResourceGroupName: 'azure-control-test-rg'
-          ${{ if eq( parameters['environment'], 'preview') }}: 
+          ${{ if eq( parameters['environment'], 'preview') }}:
             backendAzureRmResourceGroupName: 'azure-control-dev-rg'
-          ${{ if eq( parameters['environment'], 'aat') }}: 
+          ${{ if eq( parameters['environment'], 'aat') }}:
             backendAzureRmResourceGroupName: 'azure-control-stg-rg'
-          ${{ if eq( parameters['environment'], 'ptlsbox') }}: 
+          ${{ if eq( parameters['environment'], 'ptlsbox') }}:
             backendAzureRmResourceGroupName: 'azure-control-sbox-rg'
-          ${{ if eq( parameters['environment'], 'ptl') }}: 
+          ${{ if eq( parameters['environment'], 'ptl') }}:
             backendAzureRmResourceGroupName: 'azure-control-prod-rg'
-          ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}: 
+          ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}:
             backendAzureRmResourceGroupName: 'azure-control-${{ parameters.environment }}-rg'
           backendAzureRmResourceGroupLocation: ${{ parameters.location }}
           backendAzureRmStorageAccountName: $(controlStorageAccount)
