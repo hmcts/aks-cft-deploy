@@ -84,6 +84,11 @@ additional_routes = [
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
+    name                   = "cftaat"
+    address_prefix         = "10.10.128.0/18"
+    next_hop_type          = "virtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  {
     name                   = "test"
     address_prefix         = "10.25.240.0/21"
     next_hop_type          = "VirtualAppliance"
