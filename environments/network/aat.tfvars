@@ -111,7 +111,7 @@ additional_routes_coreinfra = [
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "ptl-00"
+    name                   = "cftptl"
     address_prefix         = "10.10.72.0/21"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
