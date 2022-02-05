@@ -34,7 +34,7 @@ steps:
         echo Starting aks cluster has commenced.
         az aks start --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME
         echo $? aks start status.
-        sleep 180
+        sleep 30
         echo Moving on to the Terraform destroy section.
 
   - task: TerraformCLI@0
