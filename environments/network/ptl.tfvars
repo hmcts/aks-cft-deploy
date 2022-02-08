@@ -129,3 +129,15 @@ additional_routes = [
 
 additional_routes_coreinfra = [
 ]
+
+coreinfra_subnets = [
+  {
+    name = "core-infra-subnet-0-ithc"
+  },
+  {
+    name = "core-infra-subnet-1-ithc"
+  },
+  {
+    name = "core-infra-subnet-1-perftest"
+  }
+]
