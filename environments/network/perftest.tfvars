@@ -85,5 +85,5 @@ coreinfra_subnets = [
   },
   {
     name = "core-infra-subnet-1-perftest"
-  },
+  }
 ]
