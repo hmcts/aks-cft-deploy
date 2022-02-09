@@ -136,6 +136,12 @@ additional_routes = [
     address_prefix         = "10.112.0.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "cftdemo-coreinfra"
+    address_prefix         = "10.96.192.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
   }
 ]
 
