@@ -7,11 +7,11 @@ ptl_cluster                        = true
 enable_user_system_nodepool_split  = true
 
 system_node_pool = {
-  min_nodes = 8,
-  max_nodes = 10
+  min_nodes = 2,
+  max_nodes = 4
 }
 linux_node_pool = {
-  min_nodes = 4,
+  min_nodes = 8,
   max_nodes = 10
 }
 
