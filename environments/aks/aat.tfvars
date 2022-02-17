@@ -7,12 +7,12 @@ sku_tier                           = "Paid"
 enable_user_system_nodepool_split  = true
 
 system_node_pool = {
-  min_nodes = 40,
-  max_nodes = 60
-}
-linux_node_pool = {
   min_nodes = 4,
   max_nodes = 10
+}
+linux_node_pool = {
+  min_nodes = 40,
+  max_nodes = 60
 }
 
 availability_zones = ["1", "2", "3"]

@@ -6,12 +6,12 @@ kubernetes_cluster_ssh_key         = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJve
 sku_tier                           = "Paid"
 
 system_node_pool = {
-  min_nodes = 50,
-  max_nodes = 60
-}
-linux_node_pool = {
   min_nodes = 4,
   max_nodes = 10
+}
+linux_node_pool = {
+  min_nodes = 50,
+  max_nodes = 60
 }
 
 availability_zones = []
