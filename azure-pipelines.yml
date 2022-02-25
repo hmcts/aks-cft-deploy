@@ -238,5 +238,7 @@ stages:
               tfInitSub: ${{ variables.tfInitSub }}
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
+              ${{ if or(eq( parameters['env'], 'ptl'), eq( parameters['env'], 'ptlsbox')) }}:
+                targetCommand: "-target module.kubernetes[00]"
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
