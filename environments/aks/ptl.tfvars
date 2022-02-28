@@ -9,13 +9,13 @@ enable_user_system_nodepool_split  = true
 kubernetes_cluster_agent_vm_size = "Standard_DS4_v2"
 
 system_node_pool = {
-  vm_size   = "Standard_DS4_v2",
   min_nodes = 2,
   max_nodes = 4
 }
 linux_node_pool = {
+  vm_size   = "Standard_DS4_v2",
   min_nodes = 8,
   max_nodes = 10
 }
 
-availability_zones = ["1"]
+availability_zones = []
