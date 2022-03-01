@@ -10,8 +10,8 @@ system_node_pool = {
   max_nodes = 4
 }
 linux_node_pool = {
-  min_nodes = 30,
-  max_nodes = 140
+  min_nodes = 4,
+  max_nodes = 6
 }
 
-availability_zones = ["1", "2", "3"]
+availability_zones = []
