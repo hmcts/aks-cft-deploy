@@ -10,7 +10,11 @@ additional_subnets = [
   {
     name           = "api-management"
     address_prefix = "10.2.14.0/25"
-  }
+  },
+  {
+    name           = "private-endpoints"
+    address_prefix = "10.2.15.0/24"
+  },
 ]
 
 private_dns_subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
