@@ -16,5 +16,5 @@ fi
 kubectl apply -f sealed-secrets-pki.yaml
 
 helm repo add hmctspublic https://hmctspublic.azurecr.io/helm/v1/repo
-helm upgrade sealed-secrets hmctspublic/sealed-secrets --version 1.12.0 --install --namespace ${NAMESPACE} \
+helm upgrade sealed-secrets hmctspublic/sealed-secrets --version 2.0.0 --install --namespace ${NAMESPACE} \
      -f  deployments/sealed-secrets/values.yaml --set secretName=sealed-secrets-pki --wait \
