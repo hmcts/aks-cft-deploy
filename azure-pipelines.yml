@@ -19,7 +19,7 @@ parameters:
   - name: cluster
     displayName: Cluster
     type: string
-    default: 'All'
+    default: '01'
     values:
     - 'All'
     - '00'
