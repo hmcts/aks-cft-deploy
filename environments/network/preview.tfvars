@@ -3,13 +3,13 @@ enable_debug = "true"
 network_address_space                  = "10.48.128.0/18"
 aks_00_subnet_cidr_blocks              = "10.48.128.0/20"
 aks_01_subnet_cidr_blocks              = "10.101.160.0/19"
-iaas_subnet_cidr_blocks                = "10.48.160.0/24"
-application_gateway_subnet_cidr_blocks = "10.48.161.0/25"
+iaas_subnet_cidr_blocks                = "10.101.192.0/24"
+application_gateway_subnet_cidr_blocks = "10.101.193.0/25"
 
 additional_subnets = [
   {
     name           = "api-management"
-    address_prefix = "10.48.161.128/25"
+    address_prefix = "10.101.193.128/25"
   },
   {
     name           = "private-endpoints"
