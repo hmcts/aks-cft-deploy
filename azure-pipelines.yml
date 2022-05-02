@@ -36,7 +36,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'SBOX'
+    default: 'PREVIEW'
     values:
     - ITHC
     - PREVIEW
