@@ -1,6 +1,6 @@
 enable_debug = "true"
 
-network_address_space                  = "10.48.128.0/18"
+network_address_space                  = "10.101.128.0/17"
 aks_00_subnet_cidr_blocks              = "10.101.128.0/19"
 aks_01_subnet_cidr_blocks              = "10.101.160.0/19"
 iaas_subnet_cidr_blocks                = "10.101.192.0/24"
