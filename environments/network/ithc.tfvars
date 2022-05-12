@@ -95,5 +95,8 @@ coreinfra_subnets = [
   },
   {
     name = "scan-storage"
+  },
+  {
+    name = "core-infra-subnet-apimgmt-ithc"
   }
 ]
