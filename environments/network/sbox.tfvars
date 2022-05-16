@@ -55,6 +55,12 @@ additional_routes_appgw = [
     address_prefix         = "10.99.128.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.10.200.36"
+  },
+  {
+    name                   = "core-infra-vnet-sandbox"
+    address_prefix         = "10.100.128.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.10.200.36"
   }
 ]
 
