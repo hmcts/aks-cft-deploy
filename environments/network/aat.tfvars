@@ -110,14 +110,8 @@ additional_routes_appgw = [
 
 additional_routes_coreinfra = [
   {
-    name                   = "aks-00"
-    address_prefix         = "10.10.128.0/20"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
-  },
-  {
-    name                   = "aks-01"
-    address_prefix         = "10.10.144.0/20"
+    name                   = "cft-aks-aat-vnet"
+    address_prefix         = "10.10.128.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
   },
