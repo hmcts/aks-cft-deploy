@@ -43,7 +43,7 @@ resource "azurerm_key_vault_access_policy" "jenkins-mi-policy" {
   object_id = data.azurerm_user_assigned_identity.jenkins-mi.principal_id
 
   secret_permissions = [
-    "get",
-    "list",
+    "Get",
+    "List",
   ]
 }
