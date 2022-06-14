@@ -27,8 +27,8 @@ resource "azurerm_key_vault_key" "sops-key" {
   key_size     = 2048
 
   key_opts = [
-    "Decrypt",
-    "Encrypt",
+    "decrypt",
+    "encrypt",
   ]
 }
 
