@@ -1,4 +1,4 @@
-cluster_count                      = 2
+cluster_count                      = 1
 kubernetes_cluster_version         = "1.21.7"
 kubernetes_cluster_agent_min_count = "40"
 kubernetes_cluster_agent_max_count = "50"
