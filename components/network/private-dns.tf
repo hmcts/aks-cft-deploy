@@ -7,6 +7,11 @@ resource "azurerm_private_dns_zone_virtual_network_link" "link" {
     var.project,
     var.environment
   )
+  provider = azurerm.private-dns
+  location            = var.location
+  resource_group_name = "core-infra-intsvc-rg"
+  tags                = module.ctags.common_tags
+}
   resource_group_name   = "core-infra-intsvc-rg"
   private_dns_zone_name = each.key
   virtual_network_id    = module.network.network_id
@@ -24,5 +29,4 @@ resource "azurerm_private_dns_zone_virtual_network_link" "private_endpoint" {
   resource_group_name   = "core-infra-intsvc-rg"
   private_dns_zone_name = each.key
   virtual_network_id    = module.network.network_id
-  tags                = module.ctags.common_tags
 }
