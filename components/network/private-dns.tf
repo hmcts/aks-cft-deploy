@@ -26,7 +26,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "private_endpoint" {
   virtual_network_id    = module.network.network_id
 }
 
-tags = module.ctags.common_tags
+  tags = module.ctags.common_tags
 }
 
 module "ctags" {
