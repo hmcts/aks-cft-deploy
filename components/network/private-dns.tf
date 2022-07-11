@@ -26,12 +26,3 @@ resource "azurerm_private_dns_zone_virtual_network_link" "private_endpoint" {
   virtual_network_id    = module.network.network_id
 }
 
-  tags = module.ctags.common_tags
-}
-
-module "ctags" {
-  source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
-  environment = var.environment
-  product     = var.product
-  builtFrom   = var.builtFrom
-}
