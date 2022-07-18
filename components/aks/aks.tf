@@ -29,6 +29,8 @@ module "kubernetes" {
   environment            = var.environment
   location               = var.location
 
+  oms_agent_enabled = var.oms_agent_enabled
+
   sku_tier = var.sku_tier
   providers = {
     azurerm               = azurerm
