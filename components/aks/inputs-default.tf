@@ -22,6 +22,6 @@ variable "kubernetes_cluster_agent_max_pods" {
   default = "30"
 }
 
-variable "oms_agent_enable" {
+variable "oms_agent_enabled" {
   default = false
 }
