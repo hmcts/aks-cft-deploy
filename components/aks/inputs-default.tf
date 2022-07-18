@@ -21,3 +21,7 @@ variable "linux_node_pool" {
 variable "kubernetes_cluster_agent_max_pods" {
   default = "30"
 }
+
+variable "oms_agent_enable" {
+  default = false
+}
