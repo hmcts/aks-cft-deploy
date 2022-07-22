@@ -19,7 +19,7 @@ parameters:
   - name: cluster
     displayName: Cluster
     type: string
-    default: '00'
+    default: 'All'
     values:
     - 'All'
     - '00'
@@ -36,7 +36,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'PREVIEW'
+    default: 'SBOX'
     values:
     - ITHC
     - PREVIEW
