@@ -24,17 +24,6 @@ resource "azurerm_role_assignment" "preview2aat_cft_rg_identity_operator" {
   role_definition_name = "Managed Identity Operator"
 }
 
-data "azurerm_resource_group" "externaldns_intsvc" {
-  provider = azurerm.dts-cftptl-intsvc
-  name     = "core-infra-intsvc-rg"
-}
-
-data "azurerm_dns_zone" "example" {
-  provider            = azurerm.dts-cftptl-intsvc
-  name                = "search-eventhubns"
-  resource_group_name = "search-service"
-}
-
 resource "azurerm_role_assignment" "preview_externaldns_read_rg" {
   count                = (contains(["preview"], var.environment) ? 1 : 0) * var.cluster_count
   provider             = azurerm.dts-cftptl-intsvc
