@@ -1,3 +1,5 @@
+# Update -target in azure-pipelines.yaml
+
 data "azurerm_resource_group" "managed-identity-preview1aat" {
   provider = azurerm.preview1aat
   name     = "managed-identities-aat-rg"
@@ -25,6 +27,7 @@ resource "azurerm_role_assignment" "preview2aat_cft_rg_identity_operator" {
 }
 
 data "azurerm_user_assigned_identity" "preview_sops_mi" {
+  count               = (contains(["preview"], var.environment) ? 1 : 0) * var.cluster_count
   name                = "aks-preview-mi"
   resource_group_name = "genesis-rg"
 }
