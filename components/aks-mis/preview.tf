@@ -23,3 +23,30 @@ resource "azurerm_role_assignment" "preview2aat_cft_rg_identity_operator" {
   scope                = data.azurerm_resource_group.managed-identity-preview2aat.id
   role_definition_name = "Managed Identity Operator"
 }
+
+data "azurerm_resource_group" "externaldns_intsvc" {
+  provider = azurerm.dts-cftptl-intsvc
+  name     = "core-infra-intsvc-rg"
+}
+
+data "azurerm_dns_zone" "example" {
+  provider            = azurerm.dts-cftptl-intsvc
+  name                = "search-eventhubns"
+  resource_group_name = "search-service"
+}
+
+resource "azurerm_role_assignment" "preview_externaldns_read_rg" {
+  count                = (contains(["preview"], var.environment) ? 1 : 0) * var.cluster_count
+  provider             = azurerm.dts-cftptl-intsvc
+  principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
+  scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg"
+  role_definition_name = "Reader"
+}
+
+resource "azurerm_role_assignment" "preview_externaldns_dns_zone_contributor" {
+  count                = (contains(["preview"], var.environment) ? 1 : 0) * var.cluster_count
+  provider             = azurerm.dts-cftptl-intsvc
+  principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
+  scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-preview.internal"
+  role_definition_name = "Private DNS Zone Contributor"
+}
