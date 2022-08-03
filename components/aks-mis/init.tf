@@ -98,6 +98,13 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
+  alias                      = "preview"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = "8b6ea922-0862-443e-af15-6056e1c9b9a4"
+}
+
+provider "azurerm" {
   alias                      = "dts-cftptl-intsvc"
   skip_provider_registration = "true"
   features {}

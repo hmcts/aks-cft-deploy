@@ -27,7 +27,7 @@ resource "azurerm_role_assignment" "preview2aat_cft_rg_identity_operator" {
 }
 
 data "azurerm_user_assigned_identity" "preview_sops_mi" {
-  count               = (contains(["preview"], var.environment) ? 1 : 0) * var.cluster_count
+  provider            = azurerm.preview
   name                = "aks-preview-mi"
   resource_group_name = "genesis-rg"
 }
