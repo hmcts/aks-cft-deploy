@@ -26,6 +26,7 @@ private_dns_zones = [
   "service.core-compute-idam-aat2.internal",
   "service.core-compute-preview.internal",
   "service.core-compute-idam-preview.internal",
+  "staging.platform.hmcts.net"
 ]
 
 hub = "prod"
