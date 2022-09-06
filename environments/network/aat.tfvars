@@ -24,6 +24,7 @@ private_dns_zones = [
   "service.core-compute-aat.internal",
   "service.core-compute-idam-aat.internal",
   "service.core-compute-idam-aat2.internal",
+  "preview.platform.hmcts.net",
   "service.core-compute-preview.internal",
   "service.core-compute-idam-preview.internal",
   "staging.platform.hmcts.net"
