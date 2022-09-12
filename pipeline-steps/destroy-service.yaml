@@ -10,7 +10,8 @@ parameters:
   product: ''
 
 steps:
-  - template: keyvault-read.yaml
+  - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
+  - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
     parameters:
       serviceConnection: $(serviceConnection)
       environment: ${{ parameters.environment }}
@@ -40,32 +41,32 @@ steps:
   - task: TerraformCLI@0
     displayName: Terraform init
     inputs:
-          command: init
-          workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}'
-          backendType: azurerm
-          backendServiceArm: $(serviceconnection)
-          ${{ if eq( parameters['environment'], 'perftest') }}:
-            backendAzureRmResourceGroupName: 'azure-control-test-rg'
-          ${{ if eq( parameters['environment'], 'preview') }}:
-            backendAzureRmResourceGroupName: 'azure-control-dev-rg'
-          ${{ if eq( parameters['environment'], 'aat') }}:
-            backendAzureRmResourceGroupName: 'azure-control-stg-rg'
-          ${{ if eq( parameters['environment'], 'ptlsbox') }}:
-            backendAzureRmResourceGroupName: 'azure-control-sbox-rg'
-          ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox', 'preview') }}:
-            backendAzureRmResourceGroupName: 'azure-control-${{ parameters.environment }}-rg'
-          backendAzureRmResourceGroupLocation: ${{ parameters.location }}
-          backendAzureRmStorageAccountName: $(controlStorageAccount)
-          backendAzureRmStorageAccountSku: Standard_LRS
-          backendAzureRmContainerName: subscription-tfstate
-          backendAzureRmKey: '${{ parameters.location }}/${{ parameters.project }}/$(env)/${{ parameters.stack }}/terraform.tfstate'
-          commandOptions: '-backend-config=subscription_id=${{ parameters.tfInitSub }} -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }}'
+        command: init
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}'
+        backendType: azurerm
+        backendServiceArm: $(serviceconnection)
+        ${{ if eq( parameters['environment'], 'perftest') }}:
+          backendAzureRmResourceGroupName: 'azure-control-test-rg'
+        ${{ if eq( parameters['environment'], 'preview') }}:
+          backendAzureRmResourceGroupName: 'azure-control-dev-rg'
+        ${{ if eq( parameters['environment'], 'aat') }}:
+          backendAzureRmResourceGroupName: 'azure-control-stg-rg'
+        ${{ if eq( parameters['environment'], 'ptlsbox') }}:
+          backendAzureRmResourceGroupName: 'azure-control-sbox-rg'
+        ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox', 'preview') }}:
+          backendAzureRmResourceGroupName: 'azure-control-${{ parameters.environment }}-rg'
+        backendAzureRmResourceGroupLocation: ${{ parameters.location }}
+        backendAzureRmStorageAccountName: $(controlStorageAccount)
+        backendAzureRmStorageAccountSku: Standard_LRS
+        backendAzureRmContainerName: subscription-tfstate
+        backendAzureRmKey: '${{ parameters.location }}/${{ parameters.product }}/$(buildRepoSuffix)/${{ parameters.environment }}/${{ parameters.stack }}/terraform.tfstate'
+        commandOptions: '-backend-config=subscription_id=${{ parameters.tfInitSub }} -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }}'
 
   - task: TerraformCLI@0
     displayName: Terraform validate
     inputs:
-          command: validate
-          workingDirectory: $(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}
+        command: validate
+        workingDirectory: $(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}
 
   - task: TerraformCLI@0
     displayName: Terraform destroy
