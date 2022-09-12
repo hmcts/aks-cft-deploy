@@ -46,11 +46,11 @@ parameters:
   - name: Action
     displayName: Action
     type: string
-    default: 'Plan'
+    default: 'plan'
     values:
-    - Plan
-    - Apply
-    - Destroy
+    - plan
+    - apply
+    - destroy
 
   - name: cluster
     displayName: Cluster
@@ -435,7 +435,7 @@ stages:
     - ${{ if eq(parameters.env, deployment.environment) }}:
       - stage: ${{ deployment.deployment }}
         dependsOn: ${{ deployment.dependsOn }}
-        condition: ne('${{ parameters.Action }}', 'Destroy')
+        condition: ne('${{ parameters.Action }}', 'destroy')
         jobs:
           - job: TerraformPlanApply
             pool:
@@ -453,6 +453,7 @@ stages:
   - stage: BootStrapClusters
     displayName: 'BootStrap Clusters'
     dependsOn: ${{ parameters.env }}_aks
+    condition: ne('${{ parameters.Action }}', 'destroy')
     jobs:
       - job: BootStrap
         variables:
@@ -482,7 +483,7 @@ stages:
 
   - stage: DestroyAks
     displayName: 'Destroy AKS Infrastructure'
-    condition: contains('${{ parameters.Action }}', 'Destroy')
+    condition: contains('${{ parameters.Action }}', 'destroy')
     jobs:
       - job: DestroyInfrastructure
         steps:
