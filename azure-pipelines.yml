@@ -449,10 +449,18 @@ stages:
                   serviceConnection: $(serviceConnection)
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
+                  planCommandOptions: >
+                    -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+                    -var project=${{ variables.project }}
+                    -lock=false
+                  destroyCommandOptions: >
+                    -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+                    -var project=${{ variables.project }}
+                    -var environment=${{ deployment.environment }}
+                    -lock=false
 
   - ${{ if ne('${{ parameters.Action }}', 'destroy') }}:
-    - stage: BootStrapClusters
-      displayName: 'BootStrap Clusters'
+    - stage: ${{ parameters.env }}_bootstrap_cluster
       dependsOn: ${{ parameters.env }}_aks
       jobs:
         - job: BootStrap
