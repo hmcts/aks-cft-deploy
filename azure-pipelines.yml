@@ -452,6 +452,7 @@ stages:
                   planCommandOptions: >
                     -var subscription_id=$(ARM_SUBSCRIPTION_ID)
                     -var project=${{ variables.project }}
+                    -var environment=${{ deployment.environment }}
                     -lock=false
                   destroyCommandOptions: >
                     -var subscription_id=$(ARM_SUBSCRIPTION_ID)
