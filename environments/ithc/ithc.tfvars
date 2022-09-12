@@ -1,28 +1,28 @@
 enable_debug = "true"
 
-network_address_space                  = "10.48.64.0/18"
-aks_00_subnet_cidr_blocks              = "10.48.64.0/20"
-aks_01_subnet_cidr_blocks              = "10.48.80.0/20"
-iaas_subnet_cidr_blocks                = "10.48.97.0/24"
-application_gateway_subnet_cidr_blocks = "10.48.96.0/25"
-postgresql_subnet_cidr_blocks          = "10.48.104.0/25"
+network_address_space                  = "10.11.192.0/18"
+aks_00_subnet_cidr_blocks              = "10.11.192.0/20"
+aks_01_subnet_cidr_blocks              = "10.11.208.0/20"
+iaas_subnet_cidr_blocks                = "10.11.224.0/24"
+application_gateway_subnet_cidr_blocks = "10.11.225.0/25"
+postgresql_subnet_cidr_blocks          = "10.11.232.0/25"
 
 additional_subnets = [
   {
     name           = "api-management"
-    address_prefix = "10.48.96.128/25"
+    address_prefix = "10.11.225.128/25"
   },
   {
     name           = "private-endpoints"
-    address_prefix = "10.48.100.0/22"
+    address_prefix = "10.11.228.0/22"
   },
 ]
 
 private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
 private_dns_zones = [
-  "perftest.platform.hmcts.net",
-  "service.core-compute-perftest.internal",
-  "service.core-compute-idam-perftest.internal"
+  "ithc.platform.hmcts.net",
+  "service.core-compute-ithc.internal",
+  "service.core-compute-idam-ithc.internal",
 ]
 
 hub = "nonprod"
@@ -50,14 +50,14 @@ additional_routes = [
 
 additional_routes_appgw = [
   {
-    name                   = "core_infra_vnet_idam_perftest"
-    address_prefix         = "10.120.0.0/18"
+    name                   = "core_infra_vnet_idam_ithc"
+    address_prefix         = "10.120.64.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "core_infra_subnet_mgmtperftest"
-    address_prefix         = "10.112.160.0/24"
+    name                   = "core_infra_subnet_mgmtithc"
+    address_prefix         = "10.112.0.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
@@ -66,25 +66,19 @@ additional_routes_appgw = [
     address_prefix         = "10.10.72.0/21"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
-  },
-  {
-    name                   = "core-infra-vnet-perftest"
-    address_prefix         = "10.112.128.0/18"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
   }
 ]
 
 additional_routes_coreinfra = [
   {
     name                   = "aks-00"
-    address_prefix         = "10.48.64.0/20"
+    address_prefix         = "10.11.192.0/20"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
     name                   = "aks-01"
-    address_prefix         = "10.48.80.0/20"
+    address_prefix         = "10.11.208.0/20"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
@@ -98,12 +92,37 @@ additional_routes_coreinfra = [
 
 coreinfra_subnets = [
   {
+    name = "core-infra-subnet-0-ithc"
+  },
+  {
+    name = "core-infra-subnet-1-ithc"
+  },
+  {
     name = "elasticsearch"
   },
   {
-    name = "core-infra-subnet-1-perftest"
+    name = "scan-storage"
   },
   {
-    name = "core-infra-subnet-apimgmt-perftest"
+    name = "core-infra-subnet-apimgmt-ithc"
   }
 ]
+
+
+cluster_count                      = 2
+kubernetes_cluster_version         = "1.23"
+kubernetes_cluster_agent_min_count = "25"
+kubernetes_cluster_agent_max_count = "40"
+kubernetes_cluster_ssh_key         = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUDkk4BOuQmaj4kO5PEyZ1+HR8u2AzRNkmFkICcQWJakXpNvzec+u1s8nSRaWtuZ8ubQwkTluCHY/OxCdmMOxG3K1+t2Dm0edhPTjGwRuRHzFLawEl8OSvMG97hg3aQMtjlflm05Ao2UCNG1wJLJrkiB5RIu2mBvp1hXolQsbTNUhZLDFDLJYRVoF49EzLbxVwM2jSm1hZESeB+BFgcQJQuEe9ORSldSYqK/c3mw+7EqCw3+zFvkN9fS1z9x2Zg2cnnVCLi/HE6Ul/QDD4TBb/1dFXUEZakXId8oP+W8e/2lTbGbjfW4l3ZnFRyT9B1qO5pQZXAE/CapVOVNOzoG6F"
+enable_user_system_nodepool_split  = true
+
+system_node_pool = {
+  min_nodes = 2,
+  max_nodes = 4
+}
+linux_node_pool = {
+  min_nodes = 25,
+  max_nodes = 40
+}
+
+availability_zones = ["1"]
