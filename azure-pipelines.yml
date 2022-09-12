@@ -432,10 +432,9 @@ stages:
               serviceConnection: azurerm-sandbox
 
   - ${{ each deployment in parameters.environment_components }}:
-    - ${{ if eq(parameters.env, deployment.environment) }}:
+    - ${{ if and(eq(parameters.env, deployment.environment), ne('${{ parameters.Action }}', 'destroy')) }}:
       - stage: ${{ deployment.deployment }}
         dependsOn: ${{ deployment.dependsOn }}
-        condition: ne('${{ parameters.Action }}', 'destroy')
         jobs:
           - job: TerraformPlanApply
             pool:
@@ -450,58 +449,58 @@ stages:
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
 
-  - stage: BootStrapClusters
-    displayName: 'BootStrap Clusters'
-    dependsOn: ${{ parameters.env }}_aks
-    condition: ne('${{ parameters.Action }}', 'destroy')
-    jobs:
-      - job: BootStrap
-        variables:
-          ${{ if eq(parameters['cluster'], 'All') }}:
-            clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
-          ${{ if ne(parameters['cluster'], 'All') }}:
-            clusters: ${{ parameters.cluster }}
-        steps:
-          - template: pipeline-steps/bootstrap.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              project: $(project)
-              serviceConnection: $(serviceConnection)
-              ${{ if eq( parameters['env'], 'perftest') }}:
-                akskeyvault: "dcdcftappstestkv"
-              ${{ if eq( parameters['env'], 'aat' ) }}:
-                akskeyvault: "dcdcftappsstgkv"
-              ${{ if eq( parameters['env'], 'ptlsbox' ) }}:
-                akskeyvault: "dtscftptlsbox"
-              ${{ if eq( parameters['env'], 'ptl' ) }}:
-                akskeyvault: "dtscftptl"
-              ${{ if eq( parameters['env'], 'preview' ) }}:
-                akskeyvault: "dcdcftappsdevkv"
-              ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}:
-                akskeyvault: dcdcftapps${{ parameters.env }}kv
-              GenerateSealedSecrets: false
+  - ${{ if ne('${{ parameters.Action }}', 'destroy') }}:
+    - stage: BootStrapClusters
+      displayName: 'BootStrap Clusters'
+      dependsOn: ${{ parameters.env }}_aks
+      jobs:
+        - job: BootStrap
+          variables:
+            ${{ if eq(parameters['cluster'], 'All') }}:
+              clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
+            ${{ if ne(parameters['cluster'], 'All') }}:
+              clusters: ${{ parameters.cluster }}
+          steps:
+            - template: pipeline-steps/bootstrap.yaml
+              parameters:
+                environment: ${{ parameters.env }}
+                project: $(project)
+                serviceConnection: $(serviceConnection)
+                ${{ if eq( parameters['env'], 'perftest') }}:
+                  akskeyvault: "dcdcftappstestkv"
+                ${{ if eq( parameters['env'], 'aat' ) }}:
+                  akskeyvault: "dcdcftappsstgkv"
+                ${{ if eq( parameters['env'], 'ptlsbox' ) }}:
+                  akskeyvault: "dtscftptlsbox"
+                ${{ if eq( parameters['env'], 'ptl' ) }}:
+                  akskeyvault: "dtscftptl"
+                ${{ if eq( parameters['env'], 'preview' ) }}:
+                  akskeyvault: "dcdcftappsdevkv"
+                ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}:
+                  akskeyvault: dcdcftapps${{ parameters.env }}kv
+                GenerateSealedSecrets: false
 
-  - stage: DestroyAks
-    displayName: 'Destroy AKS Infrastructure'
-    condition: contains('${{ parameters.Action }}', 'destroy')
-    jobs:
-      - job: DestroyInfrastructure
-        steps:
-          - template: pipeline-steps/destroy-service.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              cluster: ${{ parameters.cluster }}
-              location: ${{ parameters.location }}
-              stack: 'aks'
-              project: $(project)
-              tfversion: $(tfversion)
-              tfInitSub: ${{ variables.tfInitSub }}
-              builtFrom: $(Build.Repository.Name)
-              product: ${{ variables.product }}
-              ${{ or(eq( parameters['env'], 'ptl'), eq( parameters['env'], 'ptlsbox')) }}:
-                targetCommand: "-target module.kubernetes[00]"
-              ${{ if ne(parameters['cluster'], 'All') }}:
-                targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
+  - ${{ if eq('${{ parameters.Action }}', 'destroy') }}:
+    - stage: DestroyAks
+      displayName: 'Destroy AKS Infrastructure'
+      jobs:
+        - job: DestroyInfrastructure
+          steps:
+            - template: pipeline-steps/destroy-service.yaml
+              parameters:
+                environment: ${{ parameters.env }}
+                cluster: ${{ parameters.cluster }}
+                location: ${{ parameters.location }}
+                stack: 'aks'
+                project: $(project)
+                tfversion: $(tfversion)
+                tfInitSub: ${{ variables.tfInitSub }}
+                builtFrom: $(Build.Repository.Name)
+                product: ${{ variables.product }}
+                ${{ or(eq( parameters['env'], 'ptl'), eq( parameters['env'], 'ptlsbox')) }}:
+                  targetCommand: "-target module.kubernetes[00]"
+                ${{ if ne(parameters['cluster'], 'All') }}:
+                  targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
 
 
 #
