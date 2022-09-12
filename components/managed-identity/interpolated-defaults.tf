@@ -10,12 +10,12 @@ data "azurerm_resource_group" "genesis_rg" {
 
 locals {
 
-  environment = (var.env == "perftest") ? "test" : (var.env == "aat") ? "stg" : (var.env == "ptlsbox") ? "sbox" : (var.env == "preview") ? "dev" : (var.env == "ptl") ? "prod" : "${var.env}"
+  environment = (var.environment == "perftest") ? "test" : (var.environment == "aat") ? "stg" : (var.environment == "ptlsbox") ? "sbox" : (var.environment == "preview") ? "dev" : (var.environment == "ptl") ? "prod" : "${var.environment}"
 
 }
 
 data "azurerm_key_vault" "genesis_keyvault" {
-  name                = contains(["ptlsbox", "ptl"], var.env) ? "dts${var.project}${replace(var.env, "-", "")}" : "${lower(replace(data.azurerm_subscription.current.display_name, "-", ""))}kv"
+  name                = contains(["ptlsbox", "ptl"], var.environment) ? "dts${var.project}${replace(var.environment, "-", "")}" : "${lower(replace(data.azurerm_subscription.current.display_name, "-", ""))}kv"
   resource_group_name = data.azurerm_resource_group.genesis_rg.name
 }
 

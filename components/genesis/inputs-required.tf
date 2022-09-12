@@ -1,1 +1,1 @@
-variable "env" {}
+variable "environment" {}

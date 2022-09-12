@@ -1,5 +1,5 @@
 # General
-variable "env" {}
+variable "environment" {}
 
 variable "enable_debug" {}
 

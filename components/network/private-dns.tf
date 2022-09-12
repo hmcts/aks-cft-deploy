@@ -5,7 +5,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "link" {
   provider = azurerm.private-dns
   name = format("%s%s",
     var.project,
-    var.env
+    var.environment
   )
   resource_group_name   = "core-infra-intsvc-rg"
   private_dns_zone_name = each.key
@@ -20,7 +20,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "private_endpoint" {
   provider = azurerm.private-dns-private-endpoint
   name = format("%s%s",
     var.project,
-    var.env
+    var.environment
   )
   resource_group_name   = "core-infra-intsvc-rg"
   private_dns_zone_name = each.key

@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
 
   name = format("%s-%s-%s-rg",
     var.project,
-    var.env,
+    var.environment,
     "0${count.index}"
   )
   tags = module.ctags.common_tags
@@ -12,13 +12,13 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
 
 resource "azurerm_resource_group" "disks_resource_group" {
   location = var.location
-  name     = "disks-${var.env}-rg"
+  name     = "disks-${var.environment}-rg"
   tags     = module.ctags.common_tags
 }
 
 module "loganalytics" {
   source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=master"
-  environment = var.env
+  environment = var.environment
 }
 
 module "kubernetes" {
@@ -26,7 +26,7 @@ module "kubernetes" {
   source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=renovate/azurerm-3.x"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
-  environment            = var.env
+  environment            = var.environment
   location               = var.location
 
   oms_agent_enabled = var.oms_agent_enabled
@@ -69,7 +69,7 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = var.enable_user_system_nodepool_split == true ? true : false
 
-  additional_node_pools = contains([], var.env) ? [] : [
+  additional_node_pools = contains([], var.environment) ? [] : [
     {
       name                = "linux"
       vm_size             = lookup(var.linux_node_pool, "vm_size", "Standard_DS3_v2")
@@ -89,7 +89,7 @@ module "kubernetes" {
 
 module "ctags" {
   source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
-  environment = var.env
+  environment = var.environment
   product     = var.product
   builtFrom   = var.builtFrom
 }
