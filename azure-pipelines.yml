@@ -435,6 +435,7 @@ stages:
     - ${{ if and(eq(parameters.env, deployment.environment), ne('${{ parameters.Action }}', 'destroy')) }}:
       - stage: ${{ deployment.deployment }}
         dependsOn: ${{ deployment.dependsOn }}
+        condition: succeeded()
         jobs:
           - job: TerraformPlanApply
             pool:
