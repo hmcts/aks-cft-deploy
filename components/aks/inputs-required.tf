@@ -9,6 +9,8 @@ variable "product" {}
 
 variable "env" {}
 
+variable "subscription_id" {}
+
 # Remote State
 variable "control_vault" {}
 
@@ -53,3 +55,5 @@ variable "enable_user_system_nodepool_split" {
 variable "availability_zones" {
   type = list(any)
 }
+
+

@@ -12,3 +12,5 @@ variable "cluster_count" {}
 variable "control_vault" {}
 
 variable "env" {}
+
+variable "subscription_id" {}
