@@ -10,3 +10,5 @@ variable "product" {}
 variable "cluster_count" {}
 # Remote State
 variable "control_vault" {}
+
+variable "env" {}

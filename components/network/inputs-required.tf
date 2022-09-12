@@ -13,6 +13,8 @@ variable "private_dns_subscription" {}
 
 variable "private_dns_zones" {}
 
+variable "env" {}
+
 # Network
 variable "network_address_space" {}
 
