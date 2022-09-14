@@ -1,5 +1,5 @@
-# name: "HMCTS CFT AKS - branch: $(SourceBranchName) - action: ${{ parameters.overrideAction }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
-name: "HMCTS CFT AKS - action: ${{ parameters.overrideAction }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
+# name: "HMCTS CFT AKS - branch: $(SourceBranchName) - action: ${{ parameters.action }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
+name: "HMCTS CFT AKS - action: ${{ parameters.action }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
 
 trigger: none
 
@@ -39,12 +39,12 @@ variables:
   - name: product
     value: 'cft-platform'
   - name: action
-    value: ${{ parameters.Action }}
+    value: ${{ parameters.action }}
 
 
 parameters:
 
-  - name: Action
+  - name: action
     displayName: Action
     type: string
     default: 'plan'
@@ -436,7 +436,7 @@ stages:
               serviceConnection: azurerm-sandbox
 
   - ${{ each deployment in parameters.environment_components }}:
-    - ${{ if and(eq(parameters.env, deployment.environment), ne('${{ parameters.Action }}', 'destroy')) }}:
+    - ${{ if and(eq(parameters.env, deployment.environment), ne('${{ parameters.action }}', 'destroy')) }}:
       - stage: ${{ deployment.deployment }}
         dependsOn: ${{ deployment.dependsOn }}
         condition: succeeded()
@@ -447,7 +447,7 @@ stages:
             steps:
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
-                  overrideAction: ${{ parameters.Action }}
+                  overrideAction: ${{ parameters.action }}
                   environment: ${{ deployment.environment }}
                   component: ${{ deployment.component }}
                   serviceConnection: $(serviceConnection)
@@ -466,7 +466,7 @@ stages:
                     -var control_vault=$(controlKeyVault)
                     -lock=false
 
-  - ${{ if ne('${{ parameters.Action }}', 'destroy') }}:
+  - ${{ if ne('${{ parameters.action }}', 'destroy') }}:
     - stage: ${{ parameters.env }}_bootstrap_cluster
       dependsOn: ${{ parameters.env }}_aks
       jobs:
@@ -496,7 +496,7 @@ stages:
                   akskeyvault: dcdcftapps${{ parameters.env }}kv
                 GenerateSealedSecrets: false
 
-  - ${{ if eq('${{ parameters.Action }}', 'destroy') }}:
+  - ${{ if eq('${{ parameters.action }}', 'destroy') }}:
     - stage: DestroyAks
       displayName: 'Destroy AKS Infrastructure'
       jobs:
@@ -522,7 +522,7 @@ stages:
 #
 #  - stage: Genesis
 #    displayName: 'Genesis'
-#    condition: ne('${{ parameters.Action }}', 'Destroy')
+#    condition: ne('${{ parameters.action }}', 'Destroy')
 #    jobs:
 #      - job: Genesis
 #        steps:
@@ -539,7 +539,7 @@ stages:
 #
 #  - stage: Network
 #    displayName: 'Network'
-#    condition: ne('${{ parameters.Action }}', 'Destroy')
+#    condition: ne('${{ parameters.action }}', 'Destroy')
 #    jobs:
 #      - job: NetworkRg
 #        steps:
@@ -570,7 +570,7 @@ stages:
 #
 #  - stage: Managed_Identity
 #    displayName: 'Managed_Identity'
-#    condition: ne('${{ parameters.Action }}', 'Destroy')
+#    condition: ne('${{ parameters.action }}', 'Destroy')
 #    dependsOn: Network
 #    jobs:
 #      - job: Managed_Identity
@@ -589,7 +589,7 @@ stages:
 #
 #  - stage: Aks
 #    displayName: 'Deploy AKS clusters'
-#    condition: ne('${{ parameters.Action }}', 'Destroy')
+#    condition: ne('${{ parameters.action }}', 'Destroy')
 #    dependsOn:
 #      - Managed_Identity
 #    jobs:
@@ -655,7 +655,7 @@ stages:
 #
 #  - stage: DestroyAks
 #    displayName: 'Destroy AKS Infrastructure'
-#    condition: contains('${{ parameters.Action }}', 'Destroy')
+#    condition: contains('${{ parameters.action }}', 'Destroy')
 #    jobs:
 #      - job: DestroyInfrastructure
 #        steps:
