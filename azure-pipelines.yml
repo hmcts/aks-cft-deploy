@@ -425,15 +425,15 @@ stages:
   - stage: Precheck
     jobs:
       - job: Precheck
-          steps:
-            - bash: |
-                env | sort
-              displayName: Print Environment Variables
-            - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
-              parameters:
-                keyvaultName: infra-vault-nonprod
-                keyvaultSecret: 'azure-devops-token'
-                serviceConnection: azurerm-sandbox
+        steps:
+          - bash: |
+              env | sort
+            displayName: Print Environment Variables
+          - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
+            parameters:
+              keyvaultName: infra-vault-nonprod
+              keyvaultSecret: 'azure-devops-token'
+              serviceConnection: azurerm-sandbox
 
   - ${{ each deployment in parameters.environment_components }}:
     - ${{ if and(eq(parameters.env, deployment.environment), ne('${{ parameters.Action }}', 'destroy')) }}:
