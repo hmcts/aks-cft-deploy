@@ -1,5 +1,5 @@
 # name: "HMCTS CFT AKS - branch: $(SourceBranchName) - action: ${{ parameters.action }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
-name: "HMCTS CFT AKS - action: ${{ parameters.action }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
+name: "HMCTS CFT AKS █ branch = $(Build.SourceBranchName) █ action = ${{ parameters.action }} █ env = ${{ parameters.env }} █ cluster = ${{ parameters.cluster }} █ location = ${{ parameters.location }}"
 
 trigger: none
 
