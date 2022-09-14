@@ -1,4 +1,5 @@
-name: "HMCTS CFT AKS - branch: ${{ variables['Build.SourceBranchName'] }} - action: ${{ parameters.overrideAction }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
+# name: "HMCTS CFT AKS - branch: $(SourceBranchName) - action: ${{ parameters.overrideAction }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
+name: "HMCTS CFT AKS - action: ${{ parameters.overrideAction }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
 
 trigger: none
 
@@ -424,7 +425,7 @@ stages:
   - stage: Precheck
     jobs:
       - job: Precheck
-        steps:
+          - task:
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
               keyvaultName: infra-vault-nonprod
