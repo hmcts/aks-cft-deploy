@@ -1,4 +1,4 @@
-name: HMCTS CFT AKS Azure Infrastructure Deployment Pipeline
+name: "HMCTS CFT AKS - branch: ${{ variables['Build.SourceBranchName'] }} - action: ${{ parameters.overrideAction }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
 
 trigger: none
 
