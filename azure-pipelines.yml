@@ -426,7 +426,7 @@ stages:
     jobs:
       - job: Precheck
           steps:
-            - bash:
+            - bash: |
                 env | sort
               displayName: Print Environment Variables
             - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
