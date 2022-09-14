@@ -1,4 +1,3 @@
-# name: "HMCTS CFT AKS - branch: $(SourceBranchName) - action: ${{ parameters.action }} - env: ${{ parameters.env }} - cluster: ${{ parameters.cluster }} - location: ${{ parameters.location }}"
 name: "${{ parameters.action }} - ${{ parameters.env }}.${{ parameters.cluster }}.${{ parameters.location }}"
 
 trigger: none
