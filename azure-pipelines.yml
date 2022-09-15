@@ -467,7 +467,7 @@ stages:
 
   - ${{ if ne('${{ parameters.action }}', 'destroy') }}:
     - stage: ${{ parameters.env }}_bootstrap_cluster
-      dependsOn: ${{ parameters.env }}_aks
+      dependsOn: ${{ parameters.env }}_aks_mis
       jobs:
         - job: BootStrap
           variables:
