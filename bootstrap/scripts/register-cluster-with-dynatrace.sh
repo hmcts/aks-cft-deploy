@@ -46,7 +46,7 @@ fi
 generate_kubernetes_credentials() {
   cat <<EOF
     {
-      "label": "$CLUSTER_NAME",
+      "label": "$CLUSTER_NAME-2",
       "endpointUrl": "$K8S_API_URL",
       "workloadIntegrationEnabled": true,
       "authToken": "$BEARER_TOKEN",
@@ -57,12 +57,12 @@ EOF
 
 DT_OLD_CLUSTER_ID=$(curl --request GET \
  --url "https://$DYNATRACE_INSTANCE.live.dynatrace.com/api/config/v1/kubernetes/credentials" \
- --header 'Authorization: Api-Token '"$API_KEY"'' | jq .values[] | jq -r 'select(.name=="'"${CLUSTER_NAME}"'").id')
+ --header 'Authorization: Api-Token '"$API_KEY"'' | jq .values[] | jq -r 'select(.name=="'"${CLUSTER_NAME}-2"'").id')
 
 # If previously registered, ID of the AKS cluster in DT should be removed prior
 # to the registration of the rebuilt cluster.
 if [ -n "${DT_OLD_CLUSTER_ID}" ]; then
-  echo "Dynatrace old cluster ID found for $CLUSTER_NAME. This will be deleted.."
+  echo "Dynatrace old cluster ID found for $CLUSTER_NAME-2. This will be deleted.."
   curl --request DELETE \
    --url "https://$DYNATRACE_INSTANCE.live.dynatrace.com/api/config/v1/kubernetes/credentials/${DT_OLD_CLUSTER_ID}" \
    --header 'Authorization: Api-Token '"$API_KEY"''
