@@ -51,6 +51,25 @@ resource "azurerm_key_vault_access_policy" "sops-policy" {
   ]
 }
 
+locals {
+  acme_environment = var.environment == "sandbox" ? "sbox" : var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment
+}
+
+data "azurerm_resource_group" "platform-rg" {
+  name = "cft-platform-${local.acme_environment}-rg"
+}
+
+data "azurerm_key_vault" "acme" {
+  name                = "acmedcdcftapps${local.acme_environment}"
+  resource_group_name = data.azurerm_resource_group.platform-rg.name
+}
+
+resource "azurerm_role_assignment" "acme-vault-access" {
+  scope                = data.azurerm_key_vault.acme.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
+}
+
 module "ctags" {
   source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
   environment = var.environment
