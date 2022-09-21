@@ -53,16 +53,16 @@ variables:
   - name: action
     value: ${{ parameters.action }}
   - name: backendAzureRmResourceGroupName
-    ${{ if eq( parameters['environment'], 'perftest') }}:
+    ${{ if eq( parameters['env'], 'perftest') }}:
       value: 'azure-control-test-rg'
-    ${{ if eq( parameters['environment'], 'preview') }}:
+    ${{ if eq( parameters['env'], 'preview') }}:
       value: 'azure-control-dev-rg'
-    ${{ if eq( parameters['environment'], 'aat') }}:
+    ${{ if eq( parameters['env'], 'aat') }}:
       value: 'azure-control-stg-rg'
-    ${{ if eq( parameters['environment'], 'ptlsbox') }}:
+    ${{ if eq( parameters['env'], 'ptlsbox') }}:
       value: 'azure-control-sbox-rg'
-    ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox', 'preview') }}:
-      value: 'azure-control-${{ parameters.environment }}-rg'
+    ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'preview') }}:
+      value: 'azure-control-${{ parameters.env }}-rg'
 
 parameters:
 
