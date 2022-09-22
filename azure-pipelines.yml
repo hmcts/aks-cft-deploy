@@ -486,12 +486,12 @@ stages:
 
   - ${{ if ne('${{ parameters.action }}', 'destroy') }}:
     - stage: ${{ parameters.env }}_bootstrap_cluster
-      dependsOn: ${{ parameters.env }}_aks_mis
+      dependsOn: ${{ parameters.env }}_aks
       jobs:
         - job: BootStrap
           variables:
             ${{ if eq(parameters['cluster'], 'All') }}:
-              clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
+              clusters: $[ stageDependencies.${{ parameters.env }}_aks.TerraformPlanApply.outputs['setClusterNumbers.clusterNumbers'] ]
             ${{ if ne(parameters['cluster'], 'All') }}:
               clusters: ${{ parameters.cluster }}
           steps:
