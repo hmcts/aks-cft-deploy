@@ -2,19 +2,15 @@ parameters:
   environment: ''
   cluster: ''
   location: ''
-  stack: ''
+  component: ''
   project: ''
   tfInitSub: ''
   targetCommand: ''
   builtFrom: ''
   product: ''
+  action: ''
 
 steps:
-  - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
-  - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
-    parameters:
-      serviceConnection: $(serviceConnection)
-      environment: ${{ parameters.environment }}
 
   - task: AzureCLI@2
     displayName: StopStartAksCluster
@@ -38,41 +34,19 @@ steps:
         sleep 30
         echo Moving on to the Terraform destroy section.
 
-  - task: TerraformCLI@0
-    displayName: Terraform init
-    inputs:
-        command: init
-        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}'
-        backendType: azurerm
-        backendServiceArm: $(serviceconnection)
-        ${{ if eq( parameters['environment'], 'perftest') }}:
-          backendAzureRmResourceGroupName: 'azure-control-test-rg'
-        ${{ if eq( parameters['environment'], 'preview') }}:
-          backendAzureRmResourceGroupName: 'azure-control-dev-rg'
-        ${{ if eq( parameters['environment'], 'aat') }}:
-          backendAzureRmResourceGroupName: 'azure-control-stg-rg'
-        ${{ if eq( parameters['environment'], 'ptlsbox') }}:
-          backendAzureRmResourceGroupName: 'azure-control-sbox-rg'
-        ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox', 'preview') }}:
-          backendAzureRmResourceGroupName: 'azure-control-${{ parameters.environment }}-rg'
-        backendAzureRmResourceGroupLocation: ${{ parameters.location }}
-        backendAzureRmStorageAccountName: $(controlStorageAccount)
-        backendAzureRmStorageAccountSku: Standard_LRS
-        backendAzureRmContainerName: subscription-tfstate
-        backendAzureRmKey: '${{ parameters.location }}/${{ parameters.product }}/$(buildRepoSuffix)/${{ parameters.environment }}/${{ parameters.stack }}/terraform.tfstate'
-        commandOptions: '-backend-config=subscription_id=${{ parameters.tfInitSub }} -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }}'
-
-  - task: TerraformCLI@0
-    displayName: Terraform validate
-    inputs:
-        command: validate
-        workingDirectory: $(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}
-
-  - task: TerraformCLI@0
-    displayName: Terraform destroy
-    condition: and(succeeded(), eq(variables['action'], 'Destroy'))
-    inputs:
-      command: destroy
-      workingDirectory: $(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}
-      environmentServiceName: $(serviceconnection)
-      commandOptions: '-var control_vault=$(controlKeyVault) -var environment=$(env) -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }} -var project=$(project) -var-file $(System.DefaultWorkingDirectory)/environments/${{ parameters.stack }}/$(env).tfvars ${{ parameters.targetCommand }}'
+  - template: steps/terraform.yaml@cnp-azuredevops-libraries
+    parameters:
+      overrideAction: ${{ parameters.action }}
+      environment: ${{ parameters.environment }}
+      component: ${{ parameters.component }}
+      serviceConnection: $(serviceConnection)
+      terraformInitSubscription: ${{ variables.tfInitSub }}
+      product: ${{ variables.product }}
+      initCommandOptions: >
+        -backend-config resource_group_name=${{ variables.backendAzureRmResourceGroupName }}
+      destroyCommandOptions: >
+        -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+        -var project=${{ variables.project }}
+        -var environment=${{ parameters.environment }}
+        -var control_vault=$(controlKeyVault)
+        -lock=false
