@@ -63,6 +63,24 @@ variables:
       value: 'azure-control-sbox-rg'
     ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'preview') }}:
       value: 'azure-control-${{ parameters.env }}-rg'
+  - name: targetCommandForAks
+    ${{ if ne(parameters['cluster'], 'All') }}:
+      value: >
+        -target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}]
+        -target module.kubernetes[${{parameters.cluster}}]
+    ${{ if eq(parameters['cluster'], 'All') }}:
+      value: ''
+  - name: targetCommandForAksMis
+    ${{ if ne(parameters['cluster'], 'All') }}:
+      value: >
+        -target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}]
+        -target azurerm_role_assignment.preview_externaldns_read_rg[${{parameters.cluster}}]
+        -target azurerm_role_assignment.preview_externaldns_dns_zone_contributor[${{parameters.cluster}}]
+        -target azurerm_role_assignment.preview1aat_cft_rg_identity_operator[${{parameters.cluster}}]
+        -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator[${{parameters.cluster}}]
+        -target data.azurerm_kubernetes_cluster.kubernetes[${{parameters.cluster}}]
+    ${{ if eq(parameters['cluster'], 'All') }}:
+      value: ''
 
 parameters:
 
@@ -113,36 +131,42 @@ parameters:
       - deployment: 'sbox_genesis'
         environment: 'sbox'
         component: 'genesis'
+        targetCommand: ''
         dependsOn:
           - Precheck
 
       - deployment: 'sbox_network_rg'
         environment: 'sbox'
         component: 'network-rg'
+        targetCommand: ''
         dependsOn:
           - sbox_genesis
 
       - deployment: 'sbox_network'
         environment: 'sbox'
         component: 'network'
+        targetCommand: ''
         dependsOn:
           - sbox_network_rg
 
       - deployment: 'sbox_managed_identity'
         environment: 'sbox'
         component: 'managed-identity'
+        targetCommand: ''
         dependsOn:
           - sbox_network
 
       - deployment: 'sbox_aks'
         environment: 'sbox'
         component: 'aks'
+        targetCommand: $(targetCommandForAks)
         dependsOn:
           - sbox_managed_identity
 
       - deployment: 'sbox_aks_mis'
         environment: 'sbox'
         component: 'aks-mis'
+        targetCommand:  $(targetCommandForAksMis)
         dependsOn:
           - sbox_aks
 
@@ -150,36 +174,42 @@ parameters:
       - deployment: 'ithc_genesis'
         environment: 'ithc'
         component: 'genesis'
+        targetCommand: ''
         dependsOn:
           - Precheck
 
       - deployment: 'ithc_network_rg'
         environment: 'ithc'
         component: 'network-rg'
+        targetCommand: ''
         dependsOn:
           - ithc_genesis
 
       - deployment: 'ithc_network'
         environment: 'ithc'
         component: 'network'
+        targetCommand: ''
         dependsOn:
           - ithc_network_rg
 
       - deployment: 'ithc_managed_identity'
         environment: 'ithc'
         component: 'managed-identity'
+        targetCommand: ''
         dependsOn:
           - ithc_network
 
       - deployment: 'ithc_aks'
         environment: 'ithc'
         component: 'aks'
+        targetCommand: $(targetCommandForAks)
         dependsOn:
           - ithc_managed_identity
 
       - deployment: 'ithc_aks_mis'
         environment: 'ithc'
         component: 'aks-mis'
+        targetCommand:  $(targetCommandForAksMis)
         dependsOn:
           - ithc_aks
 
@@ -187,29 +217,34 @@ parameters:
       - deployment: 'preview_genesis'
         environment: 'preview'
         component: 'genesis'
+        targetCommand: ''
         dependsOn:
           - Precheck
 
       - deployment: 'preview_network_rg'
         environment: 'preview'
         component: 'network-rg'
+        targetCommand: ''
         dependsOn:
           - preview_genesis
 
       - deployment: 'preview_network'
         environment: 'preview'
         component: 'network'
+        targetCommand: ''
         dependsOn:
           - preview_network_rg
 
       - deployment: 'preview_managed_identity'
         environment: 'preview'
         component: 'managed-identity'
+        targetCommand: ''
         dependsOn:
           - preview_network
 
       - deployment: 'preview_aks'
         environment: 'preview'
+        targetCommand: $(targetCommandForAks)
         component: 'aks'
         dependsOn:
           - preview_managed_identity
@@ -217,6 +252,7 @@ parameters:
       - deployment: 'preview_aks_mis'
         environment: 'preview'
         component: 'aks-mis'
+        targetCommand:  $(targetCommandForAksMis)
         dependsOn:
           - preview_aks
 
@@ -224,36 +260,42 @@ parameters:
       - deployment: 'demo_genesis'
         environment: 'demo'
         component: 'genesis'
+        targetCommand: ''
         dependsOn:
           - Precheck
 
       - deployment: 'demo_network_rg'
         environment: 'demo'
         component: 'network-rg'
+        targetCommand: ''
         dependsOn:
           - demo_genesis
 
       - deployment: 'demo_network'
         environment: 'demo'
         component: 'network'
+        targetCommand: ''
         dependsOn:
           - demo_network_rg
 
       - deployment: 'demo_managed_identity'
         environment: 'demo'
         component: 'managed-identity'
+        targetCommand: ''
         dependsOn:
           - demo_network
 
       - deployment: 'demo_aks'
         environment: 'demo'
         component: 'aks'
+        targetCommand: $(targetCommandForAks)
         dependsOn:
           - demo_managed_identity
 
       - deployment: 'demo_aks_mis'
         environment: 'demo'
         component: 'aks-mis'
+        targetCommand:  $(targetCommandForAksMis)
         dependsOn:
           - demo_aks
 
@@ -261,36 +303,42 @@ parameters:
       - deployment: 'perftest_genesis'
         environment: 'perftest'
         component: 'genesis'
+        targetCommand: ''
         dependsOn:
           - Precheck
 
       - deployment: 'perftest_network_rg'
         environment: 'perftest'
         component: 'network-rg'
+        targetCommand: ''
         dependsOn:
           - perftest_genesis
 
       - deployment: 'perftest_network'
         environment: 'perftest'
         component: 'network'
+        targetCommand: ''
         dependsOn:
           - perftest_network_rg
 
       - deployment: 'perftest_managed_identity'
         environment: 'perftest'
         component: 'managed-identity'
+        targetCommand: ''
         dependsOn:
           - perftest_network
 
       - deployment: 'perftest_aks'
         environment: 'perftest'
         component: 'aks'
+        targetCommand: $(targetCommandForAks)
         dependsOn:
           - perftest_managed_identity
 
       - deployment: 'perftest_aks_mis'
         environment: 'perftest'
         component: 'aks-mis'
+        targetCommand:  $(targetCommandForAksMis)
         dependsOn:
           - perftest_aks
 
@@ -298,36 +346,42 @@ parameters:
       - deployment: 'aat_genesis'
         environment: 'aat'
         component: 'genesis'
+        targetCommand: ''
         dependsOn:
           - Precheck
 
       - deployment: 'aat_network_rg'
         environment: 'aat'
         component: 'network-rg'
+        targetCommand: ''
         dependsOn:
           - aat_genesis
 
       - deployment: 'aat_network'
         environment: 'aat'
         component: 'network'
+        targetCommand: ''
         dependsOn:
           - aat_network_rg
 
       - deployment: 'aat_managed_identity'
         environment: 'aat'
         component: 'managed-identity'
+        targetCommand: ''
         dependsOn:
           - aat_network
 
       - deployment: 'aat_aks'
         environment: 'aat'
         component: 'aks'
+        targetCommand: $(targetCommandForAks)
         dependsOn:
           - aat_managed_identity
 
       - deployment: 'aat_aks_mis'
         environment: 'aat'
         component: 'aks-mis'
+        targetCommand:  $(targetCommandForAksMis)
         dependsOn:
           - aat_aks
 
@@ -335,36 +389,42 @@ parameters:
       - deployment: 'ptlsbox_genesis'
         environment: 'ptlsbox'
         component: 'genesis'
+        targetCommand: ''
         dependsOn:
           - Precheck
 
       - deployment: 'ptlsbox_network_rg'
         environment: 'ptlsbox'
         component: 'network-rg'
+        targetCommand: ''
         dependsOn:
           - ptlsbox_genesis
 
       - deployment: 'ptlsbox_network'
         environment: 'ptlsbox'
         component: 'network'
+        targetCommand: ''
         dependsOn:
           - ptlsbox_network_rg
 
       - deployment: 'ptlsbox_managed_identity'
         environment: 'ptlsbox'
         component: 'managed-identity'
+        targetCommand: ''
         dependsOn:
           - ptlsbox_network
 
       - deployment: 'ptlsbox_aks'
         environment: 'ptlsbox'
         component: 'aks'
+        targetCommand: $(targetCommandForAks)
         dependsOn:
           - ptlsbox_managed_identity
 
       - deployment: 'ptlsbox_aks_mis'
         environment: 'ptlsbox'
         component: 'aks-mis'
+        targetCommand:  $(targetCommandForAksMis)
         dependsOn:
           - ptlsbox_aks
 
@@ -372,36 +432,42 @@ parameters:
       - deployment: 'ptl_genesis'
         environment: 'ptl'
         component: 'genesis'
+        targetCommand: ''
         dependsOn:
           - Precheck
 
       - deployment: 'ptl_network_rg'
         environment: 'ptl'
         component: 'network-rg'
+        targetCommand: ''
         dependsOn:
           - ptl_genesis
 
       - deployment: 'ptl_network'
         environment: 'ptl'
         component: 'network'
+        targetCommand: ''
         dependsOn:
           - ptl_network_rg
 
       - deployment: 'ptl_managed_identity'
         environment: 'ptl'
         component: 'managed-identity'
+        targetCommand: ''
         dependsOn:
           - ptl_network
 
       - deployment: 'ptl_aks'
         environment: 'ptl'
         component: 'aks'
+        targetCommand: $(targetCommandForAks)
         dependsOn:
           - ptl_managed_identity
 
       - deployment: 'ptl_aks_mis'
         environment: 'ptl'
         component: 'aks-mis'
+        targetCommand:  $(targetCommandForAksMis)
         dependsOn:
           - ptl_aks
 
@@ -409,36 +475,42 @@ parameters:
       - deployment: 'prod_genesis'
         environment: 'prod'
         component: 'genesis'
+        targetCommand: ''
         dependsOn:
           - Precheck
 
       - deployment: 'prod_network_rg'
         environment: 'prod'
         component: 'network-rg'
+        targetCommand: ''
         dependsOn:
           - prod_genesis
 
       - deployment: 'prod_network'
         environment: 'prod'
         component: 'network'
+        targetCommand: ''
         dependsOn:
           - prod_network_rg
 
       - deployment: 'prod_managed_identity'
         environment: 'prod'
         component: 'managed-identity'
+        targetCommand: ''
         dependsOn:
           - prod_network
 
       - deployment: 'prod_aks'
         environment: 'prod'
         component: 'aks'
+        targetCommand: $(targetCommandForAks)
         dependsOn:
           - prod_managed_identity
 
       - deployment: 'prod_aks_mis'
         environment: 'prod'
         component: 'aks-mis'
+        targetCommand:  $(targetCommandForAksMis)
         dependsOn:
           - prod_aks
 
@@ -483,6 +555,7 @@ stages:
                     -var environment=${{ deployment.environment }}
                     -var control_vault=$(controlKeyVault)
                     -lock=false
+                    ${{ deployment.targetCommand }}
 
   - ${{ if ne('${{ parameters.action }}', 'destroy') }}:
     - stage: ${{ parameters.env }}_bootstrap_cluster
