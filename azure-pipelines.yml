@@ -539,7 +539,7 @@ stages:
                   serviceConnection: $(serviceConnection)
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
-                  initCommandOptions: "-backend-config resource_group_name=${{ variables.backendAzureRmResourceGroupName }}"
+                  initCommandOptions: "-backend-config resource_group_name=${{ variables.backendAzureRmResourceGroupName }} -upgrade"
                   planCommandOptions: "-var subscription_id=$(ARM_SUBSCRIPTION_ID) -var project=${{ variables.project }} -var environment=${{ deployment.environment }} -var control_vault=$(controlKeyVault) -lock=false ${{ deployment.targetCommand }}"
 
   - ${{ if ne('${{ parameters.action }}', 'destroy') }}:
