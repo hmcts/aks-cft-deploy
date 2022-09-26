@@ -10,6 +10,7 @@ system_node_pool = {
   max_nodes = 10
 }
 linux_node_pool = {
+  vm_size   = "Standard_DS4_v2",
   min_nodes = 70,
   max_nodes = 120
 }
