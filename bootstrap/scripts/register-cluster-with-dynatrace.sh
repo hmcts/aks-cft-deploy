@@ -46,7 +46,7 @@ fi
 generate_kubernetes_credentials() {
   cat <<EOF
     {
-      "label": "$CLUSTER_NAME",
+      "label": "$CLUSTER_NAME-2",
       "endpointUrl": "$K8S_API_URL",
       "workloadIntegrationEnabled": true,
       "authToken": "$BEARER_TOKEN",
