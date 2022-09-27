@@ -1,5 +1,9 @@
 enable_debug = "true"
 
+################################################################################
+# Network configuration
+################################################################################
+
 network_address_space                  = "10.48.64.0/18"
 aks_00_subnet_cidr_blocks              = "10.48.64.0/20"
 aks_01_subnet_cidr_blocks              = "10.48.80.0/20"
@@ -108,6 +112,9 @@ coreinfra_subnets = [
   }
 ]
 
+################################################################################
+# Kubernetes configuration
+################################################################################
 
 cluster_count                      = 2
 kubernetes_cluster_version         = "1.23"
@@ -121,7 +128,8 @@ system_node_pool = {
   max_nodes = 4
 }
 linux_node_pool = {
-  min_nodes = 70,
+  vm_size   = "Standard_DS4_v2",
+  min_nodes = 50,
   max_nodes = 100
 }
 

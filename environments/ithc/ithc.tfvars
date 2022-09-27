@@ -1,5 +1,9 @@
 enable_debug = "true"
 
+################################################################################
+# Network configuration
+################################################################################
+
 network_address_space                  = "10.11.192.0/18"
 aks_00_subnet_cidr_blocks              = "10.11.192.0/20"
 aks_01_subnet_cidr_blocks              = "10.11.208.0/20"
@@ -108,21 +112,24 @@ coreinfra_subnets = [
   }
 ]
 
+################################################################################
+# Kubernetes configuration
+################################################################################
 
 cluster_count                      = 2
 kubernetes_cluster_version         = "1.23"
-kubernetes_cluster_agent_min_count = "25"
-kubernetes_cluster_agent_max_count = "40"
-kubernetes_cluster_ssh_key         = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUDkk4BOuQmaj4kO5PEyZ1+HR8u2AzRNkmFkICcQWJakXpNvzec+u1s8nSRaWtuZ8ubQwkTluCHY/OxCdmMOxG3K1+t2Dm0edhPTjGwRuRHzFLawEl8OSvMG97hg3aQMtjlflm05Ao2UCNG1wJLJrkiB5RIu2mBvp1hXolQsbTNUhZLDFDLJYRVoF49EzLbxVwM2jSm1hZESeB+BFgcQJQuEe9ORSldSYqK/c3mw+7EqCw3+zFvkN9fS1z9x2Zg2cnnVCLi/HE6Ul/QDD4TBb/1dFXUEZakXId8oP+W8e/2lTbGbjfW4l3ZnFRyT9B1qO5pQZXAE/CapVOVNOzoG6F"
+kubernetes_cluster_ssh_key         = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2lguwg1h0qcaPqPZutQChBAtDK9USDTKNpnY3miVD0cwtFE/Q8U9A3KAfR0wI/WOystKXKGO8e3wq8xf6Pe08aCrbi7X8zIsixKgpQiNXT3j1zRz2Ae4Sa06znSiyzadCv4gSzWsq6m7Sq3FQJ7f2/USDemm1yA0Nena8g73IjxFe0zErqtnRhzicaccxDxaoZNBrfRotV+Nz6FEegUkVnqr+5Jy4H3XvdXfDPc1UzDAn0iBptEW80tcyKZsj7l2Cl20JjnSZ2PwGX/FMzzZIeTtR+eo7/3HxiaZumYAFLcfQ+ZCzId5hA6g30hsSi17HlMco//KkfgReaxXz+gDT aks-ssh"
 enable_user_system_nodepool_split  = true
+oms_agent_enabled                  = true
 
 system_node_pool = {
   min_nodes = 2,
   max_nodes = 4
 }
 linux_node_pool = {
-  min_nodes = 25,
-  max_nodes = 40
+  vm_size   = "Standard_DS4_v2",
+  min_nodes = 50,
+  max_nodes = 100
 }
 
-availability_zones = ["1"]
+availability_zones = ["1", "2", "3"]
