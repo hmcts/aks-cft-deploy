@@ -277,19 +277,19 @@ parameters:
         dependsOn:
           - demo_network
 
-#      - deployment: 'demo_aks'
-#        environment: 'demo'
-#        component: 'aks'
-#        targetCommand: $(targetCommandForAks)
-#        dependsOn:
-#          - demo_managed_identity
+      - deployment: 'demo_aks'
+        environment: 'demo'
+        component: 'aks'
+        targetCommand: $(targetCommandForAks)
+        dependsOn:
+          - demo_managed_identity
 
       - deployment: 'demo_aks_mis'
         environment: 'demo'
         component: 'aks-mis'
         targetCommand:  $(targetCommandForAksMis)
         dependsOn:
-          - demo_network
+          - demo_aks
 
 
       - deployment: 'perftest_genesis'
@@ -542,24 +542,24 @@ stages:
                   initCommandOptions: "-backend-config resource_group_name=${{ variables.backendAzureRmResourceGroupName }} -upgrade"
                   planCommandOptions: "-var subscription_id=$(ARM_SUBSCRIPTION_ID) -var project=${{ variables.project }} -var environment=${{ deployment.environment }} -var control_vault=$(controlKeyVault) -lock=false ${{ deployment.targetCommand }}"
 
-#  - ${{ if ne('${{ parameters.action }}', 'destroy') }}:
-#    - stage: ${{ parameters.env }}_bootstrap_cluster
-#      dependsOn: ${{ parameters.env }}_aks
-#      jobs:
-#        - job: BootStrap
-#          variables:
-#            ${{ if eq(parameters['cluster'], 'All') }}:
-#              clusters: $[ stageDependencies.${{ parameters.env }}_aks.TerraformPlanApply.outputs['setClusterNumbers.clusterNumbers'] ]
-#            ${{ if ne(parameters['cluster'], 'All') }}:
-#              clusters: ${{ parameters.cluster }}
-#          steps:
-#            - template: pipeline-steps/bootstrap.yaml
-#              parameters:
-#                environment: ${{ parameters.env }}
-#                project: $(project)
-#                serviceConnection: $(serviceConnection)
-#                akskeyvault: ${{ variables.akskeyvault }}
-#                GenerateSealedSecrets: false
+  - ${{ if ne('${{ parameters.action }}', 'destroy') }}:
+    - stage: ${{ parameters.env }}_bootstrap_cluster
+      dependsOn: ${{ parameters.env }}_aks
+      jobs:
+        - job: BootStrap
+          variables:
+            ${{ if eq(parameters['cluster'], 'All') }}:
+              clusters: $[ stageDependencies.${{ parameters.env }}_aks.TerraformPlanApply.outputs['setClusterNumbers.clusterNumbers'] ]
+            ${{ if ne(parameters['cluster'], 'All') }}:
+              clusters: ${{ parameters.cluster }}
+          steps:
+            - template: pipeline-steps/bootstrap.yaml
+              parameters:
+                environment: ${{ parameters.env }}
+                project: $(project)
+                serviceConnection: $(serviceConnection)
+                akskeyvault: ${{ variables.akskeyvault }}
+                GenerateSealedSecrets: false
 
   - ${{ if eq('${{ parameters.action }}', 'destroy') }}:
     - stage: DestroyAks
