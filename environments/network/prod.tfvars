@@ -66,6 +66,12 @@ additional_routes_appgw = [
     address_prefix         = "10.96.64.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "core-prod-vnet"
+    address_prefix         = "10.13.0.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   }
 ]
 
