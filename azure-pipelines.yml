@@ -277,19 +277,19 @@ parameters:
         dependsOn:
           - demo_network
 
-      - deployment: 'demo_aks'
-        environment: 'demo'
-        component: 'aks'
-        targetCommand: $(targetCommandForAks)
-        dependsOn:
-          - demo_managed_identity
+#      - deployment: 'demo_aks'
+#        environment: 'demo'
+#        component: 'aks'
+#        targetCommand: $(targetCommandForAks)
+#        dependsOn:
+#          - demo_managed_identity
 
       - deployment: 'demo_aks_mis'
         environment: 'demo'
         component: 'aks-mis'
         targetCommand:  $(targetCommandForAksMis)
         dependsOn:
-          - demo_aks
+          - demo_network
 
 
       - deployment: 'perftest_genesis'
