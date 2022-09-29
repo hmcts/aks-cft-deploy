@@ -107,6 +107,12 @@ additional_routes_appgw = [
     address_prefix         = "10.96.128.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "ss-dev-01"
+    address_prefix         = "10.145.0.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   }
 ]
 
