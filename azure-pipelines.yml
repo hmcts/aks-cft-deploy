@@ -119,7 +119,7 @@ stages:
               location: ${{ parameters.location }}
               stack: 'genesis'
               project: $(project)
-              tfversion: $(tfversion)
+              serviceConnection: $(serviceConnection)
               tfInitSub: ${{ variables.tfInitSub }}
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}

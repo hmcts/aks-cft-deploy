@@ -4,10 +4,8 @@ parameters:
   serviceConnection: ''
   stack: ''
   project: ''
-  tfversion: ''
-  tfInitSub: ''
-  builtFrom: ''
   product: ''
+  tfInitSub: ''
   action: ''
 
 steps:
@@ -19,9 +17,9 @@ steps:
       overrideAction: ${{ parameters.action }}
       environment: ${{ parameters.environment }}
       component: ${{ parameters.stack }}
-      serviceConnection: $(serviceConnection)
-      terraformInitSubscription: ${{ variables.tfInitSub }}
-      product: ${{ variables.product }}
+      serviceConnection: ${{ parameters.serviceConnection }}
+      terraformInitSubscription: ${{ parameters.tfInitSub }}
+      product: ${{ parameters.product }}
       terraformVarFile: $(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/${{ parameters.stack }}/$(tfVarsName).tfvars
       initCommandOptions: >
         -var subscription_id=$(ARM_SUBSCRIPTION_ID)
