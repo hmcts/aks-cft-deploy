@@ -210,6 +210,7 @@ stages:
               project: $(project)
               product: ${{ variables.product }}
               tfInitSub: ${{ variables.tfInitSub }}
+              action: ${{ parameters.action }}
               setClusterNumbersEnvVar: true
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: >
@@ -229,6 +230,7 @@ stages:
               tfInitSub: ${{ variables.tfInitSub }}
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
+              action: ${{ parameters.action }}
               setClusterNumbersEnvVar: false
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: >
