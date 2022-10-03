@@ -8,6 +8,7 @@ parameters:
   tfInitSub: ''
   builtFrom: ''
   product: ''
+  action: ''
 
 steps:
 
@@ -15,7 +16,7 @@ steps:
 
   - template: steps/terraform.yaml@cnp-azuredevops-libraries
     parameters:
-      overrideAction: $(action)
+      overrideAction: ${{ parameters.action }}
       environment: ${{ parameters.environment }}
       component: ${{ parameters.stack }}
       serviceConnection: $(serviceConnection)
