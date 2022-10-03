@@ -44,17 +44,17 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'SBOX'
+    default: 'sbox'
     values:
-    - ITHC
-    - PREVIEW
-    - DEMO
-    - SBOX
-    - PERFTEST
-    - AAT
-    - PTLSBOX
-    - PTL
-    - PROD
+    - ithc
+    - preview
+    - demo
+    - sbox
+    - perftest
+    - aat
+    - ptlsbox
+    - ptl
+    - prod
 
 variables:
   - name: tfversion

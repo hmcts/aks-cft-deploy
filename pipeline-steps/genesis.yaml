@@ -22,7 +22,10 @@ steps:
       serviceConnection: $(serviceConnection)
       terraformInitSubscription: ${{ variables.tfInitSub }}
       product: ${{ variables.product }}
-      initCommandOptions: "-backend-config resource_group_name=${{ variables.backendAzureRmResourceGroupName }}"
+      terraformVarFile: $(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/$environment/$(tfVarsName).tfvars
+      initCommandOptions: >
+        -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+        -backend-config resource_group_name=${{ variables.backendAzureRmResourceGroupName }}
       planCommandOptions: >
         -var subscription_id=$(ARM_SUBSCRIPTION_ID)
         -var environment=${{ parameters.environment }}
