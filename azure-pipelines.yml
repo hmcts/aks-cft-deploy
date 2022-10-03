@@ -1,4 +1,4 @@
-name: HMCTS CFT AKS Azure Infrastructure Deployment Pipeline
+name: "${{ parameters.Action }} - ${{ parameters.env }}.${{ parameters.cluster }}.${{ parameters.location }}"
 
 trigger: none
 
