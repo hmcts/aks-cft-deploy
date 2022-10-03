@@ -2,7 +2,7 @@ resource "azurerm_user_assigned_identity" "sops-mi" {
   resource_group_name = data.azurerm_resource_group.genesis_rg.name
   location            = data.azurerm_resource_group.genesis_rg.location
 
-  name = "aks-${var.environment}-mi"
+  name = "aks-${var.env}-mi"
   tags = module.ctags.common_tags
 }
 
@@ -53,7 +53,7 @@ resource "azurerm_key_vault_access_policy" "sops-policy" {
 
 module "ctags" {
   source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
-  environment = var.environment
+  environment = var.env
   product     = var.product
   builtFrom   = var.builtFrom
 }
