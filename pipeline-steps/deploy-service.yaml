@@ -15,7 +15,7 @@ steps:
   - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
   - template: steps/terraform.yaml@cnp-azuredevops-libraries
     parameters:
-      overrideAction: ${{ parameters.action }}
+      overrideAction: $(action)
       environment: ${{ parameters.environment }}
       component: ${{ parameters.stack }}
       serviceConnection: ${{ parameters.serviceConnection }}
