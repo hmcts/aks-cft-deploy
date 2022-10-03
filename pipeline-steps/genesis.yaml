@@ -26,4 +26,3 @@ steps:
         -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
       planCommandOptions: >
         -var subscription_id=$(ARM_SUBSCRIPTION_ID)
-        -var environment=${{ parameters.environment }}
