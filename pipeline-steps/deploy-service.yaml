@@ -7,8 +7,6 @@ parameters:
   serviceConnection: ''
   tfInitSub: ''
   targetCommand: ''
-  builtFrom: ''
-  product: ''
   setClusterNumbersEnvVar: false
   action: ''
 

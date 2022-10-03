@@ -221,6 +221,7 @@ stages:
               project: $(project)
               product: ${{ variables.product }}
               tfInitSub: ${{ variables.tfInitSub }}
+              serviceConnection: $(serviceConnection)
               action: ${{ parameters.action }}
               setClusterNumbersEnvVar: true
               ${{ if ne(parameters['cluster'], 'All') }}:
@@ -239,8 +240,7 @@ stages:
               project: $(project)
               tfversion: $(tfversion)
               tfInitSub: ${{ variables.tfInitSub }}
-              builtFrom: $(Build.Repository.Name)
-              product: ${{ variables.product }}
+              serviceConnection: $(serviceConnection)
               action: ${{ parameters.action }}
               setClusterNumbersEnvVar: false
               ${{ if ne(parameters['cluster'], 'All') }}:
