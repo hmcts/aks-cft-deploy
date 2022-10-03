@@ -5,6 +5,14 @@ trigger: none
 pool:
   vmImage: 'ubuntu-latest'
 
+resources:
+  repositories:
+    - repository: cnp-azuredevops-libraries
+      type: github
+      ref: refs/heads/DTSPO-9695-make-tf-varfile-configurable
+      name: hmcts/cnp-azuredevops-libraries
+      endpoint: 'hmcts'
+
 parameters:
 
   - name: Action
@@ -74,6 +82,17 @@ variables:
     value: 'cft-platform'
   - name: action
     value: ${{ parameters.Action }}
+  - name: backendAzureRmResourceGroupName
+    ${{ if eq( parameters['env'], 'perftest') }}:
+      value: 'azure-control-test-rg'
+    ${{ if eq( parameters['env'], 'preview') }}:
+      value: 'azure-control-dev-rg'
+    ${{ if eq( parameters['env'], 'aat') }}:
+      value: 'azure-control-stg-rg'
+    ${{ if eq( parameters['env'], 'ptlsbox') }}:
+      value: 'azure-control-sbox-rg'
+    ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'preview') }}:
+      value: 'azure-control-${{ parameters.env }}-rg'
 
 stages:
 
@@ -104,141 +123,142 @@ stages:
               tfInitSub: ${{ variables.tfInitSub }}
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
-
-  - stage: Network
-    displayName: 'Network'
-    condition: ne('${{ parameters.Action }}', 'Destroy')
-    jobs:
-      - job: NetworkRg
-        steps:
-          - template: pipeline-steps/deploy-service.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              location: ${{ parameters.location }}
-              stack: 'network-rg'
-              project: $(project)
-              tfversion: $(tfversion)
-              tfInitSub: ${{ variables.tfInitSub }}
-              builtFrom: $(Build.Repository.Name)
-              product: ${{ variables.product }}
-      - job: DeployInfrastructure
-        dependsOn: NetworkRg
-        steps:
-          - template: pipeline-steps/deploy-network.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              location: ${{ parameters.location }}
-              stack: 'network'
-              project: $(project)
-              tfversion: $(tfversion)
-              terraformServiceConnection: OPS-APPROVAL-GATE-MGMT-ENVS-CNP #OPS-APPROVAL-GATE-MGMT-ENVS
-              tfInitSub: ${{ variables.tfInitSub }}
-              builtFrom: $(Build.Repository.Name)
-              product: ${{ variables.product }}
-
-  - stage: Managed_Identity
-    displayName: 'Managed_Identity'
-    condition: ne('${{ parameters.Action }}', 'Destroy')
-    dependsOn: Network
-    jobs:
-      - job: Managed_Identity
-        steps:
-          - template: pipeline-steps/managed_identity.yaml
-            parameters:
-              serviceConnection: $(serviceConnection)
-              environment: ${{ parameters.env }}
-              location: ${{ parameters.location }}
-              stack: 'managed-identity'
-              project: $(project)
-              tfversion: $(tfversion)
-              tfInitSub: ${{ variables.tfInitSub }}
-              builtFrom: $(Build.Repository.Name)
-              product: ${{ variables.product }}
-
-  - stage: Aks
-    displayName: 'Deploy AKS clusters'
-    condition: ne('${{ parameters.Action }}', 'Destroy')
-    dependsOn:
-      - Managed_Identity
-    jobs:
-      - job: DeployInfrastructure
-        steps:
-          - template: pipeline-steps/deploy-service.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              location: ${{ parameters.location }}
-              stack: 'aks'
-              project: $(project)
-              tfversion: $(tfversion)
-              tfInitSub: ${{ variables.tfInitSub }}
-              builtFrom: $(Build.Repository.Name)
-              product: ${{ variables.product }}
-              ${{ if ne(parameters['cluster'], 'All') }}:
-                targetCommand: "-target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
-      - job: DeployInfrastructuremis
-        dependsOn: DeployInfrastructure
-        steps:
-          - template: pipeline-steps/deploy-service.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              location: ${{ parameters.location }}
-              stack: 'aks-mis'
-              project: $(project)
-              tfversion: $(tfversion)
-              tfInitSub: ${{ variables.tfInitSub }}
-              builtFrom: $(Build.Repository.Name)
-              product: ${{ variables.product }}
-              ${{ if ne(parameters['cluster'], 'All') }}:
-                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_role_assignment.preview_externaldns_read_rg[${{parameters.cluster}}] -target azurerm_role_assignment.preview_externaldns_dns_zone_contributor[${{parameters.cluster}}] -target azurerm_role_assignment.preview1aat_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator[${{parameters.cluster}}] -target data.azurerm_kubernetes_cluster.kubernetes[${{parameters.cluster}}]"
-
-  - stage: BootStrapClusters
-    displayName: 'BootStrap Clusters'
-    dependsOn: Aks
-    jobs:
-      - job: BootStrap
-        variables:
-          ${{ if eq(parameters['cluster'], 'All') }}:
-            clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
-          ${{ if ne(parameters['cluster'], 'All') }}:
-            clusters: ${{ parameters.cluster }}
-        steps:
-          - template: pipeline-steps/bootstrap.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              project: $(project)
-              serviceConnection: $(serviceConnection)
-              ${{ if eq( parameters['env'], 'perftest') }}:
-                akskeyvault: "dcdcftappstestkv"
-              ${{ if eq( parameters['env'], 'aat' ) }}: 
-                akskeyvault: "dcdcftappsstgkv"
-              ${{ if eq( parameters['env'], 'ptlsbox' ) }}: 
-                akskeyvault: "dtscftptlsbox"
-              ${{ if eq( parameters['env'], 'ptl' ) }}: 
-                akskeyvault: "dtscftptl"
-              ${{ if eq( parameters['env'], 'preview' ) }}: 
-                akskeyvault: "dcdcftappsdevkv"
-              ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}: 
-                akskeyvault: dcdcftapps${{ parameters.env }}kv
-              GenerateSealedSecrets: false
-
-  - stage: DestroyAks
-    displayName: 'Destroy AKS Infrastructure'
-    condition: contains('${{ parameters.Action }}', 'Destroy')
-    jobs:
-      - job: DestroyInfrastructure
-        steps:
-          - template: pipeline-steps/destroy-service.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              cluster: ${{ parameters.cluster }}
-              location: ${{ parameters.location }}
-              stack: 'aks'
-              project: $(project)
-              tfversion: $(tfversion)
-              tfInitSub: ${{ variables.tfInitSub }}
-              builtFrom: $(Build.Repository.Name)
-              product: ${{ variables.product }}
-              ${{ or(eq( parameters['env'], 'ptl'), eq( parameters['env'], 'ptlsbox')) }}:
-                targetCommand: "-target module.kubernetes[00]"
-              ${{ if ne(parameters['cluster'], 'All') }}:
-                targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
+#
+#  - stage: Network
+#    displayName: 'Network'
+#    condition: ne('${{ parameters.Action }}', 'Destroy')
+#    jobs:
+#      - job: NetworkRg
+#        steps:
+#          - template: pipeline-steps/deploy-service.yaml
+#            parameters:
+#              environment: ${{ parameters.env }}
+#              location: ${{ parameters.location }}
+#              stack: 'network-rg'
+#              project: $(project)
+#              tfversion: $(tfversion)
+#              tfInitSub: ${{ variables.tfInitSub }}
+#              builtFrom: $(Build.Repository.Name)
+#              product: ${{ variables.product }}
+#      - job: DeployInfrastructure
+#        dependsOn: NetworkRg
+#        steps:
+#          - template: pipeline-steps/deploy-network.yaml
+#            parameters:
+#              environment: ${{ parameters.env }}
+#              location: ${{ parameters.location }}
+#              stack: 'network'
+#              project: $(project)
+#              tfversion: $(tfversion)
+#              terraformServiceConnection: OPS-APPROVAL-GATE-MGMT-ENVS-CNP #OPS-APPROVAL-GATE-MGMT-ENVS
+#              tfInitSub: ${{ variables.tfInitSub }}
+#              builtFrom: $(Build.Repository.Name)
+#              product: ${{ variables.product }}
+#
+#  - stage: Managed_Identity
+#    displayName: 'Managed_Identity'
+#    condition: ne('${{ parameters.Action }}', 'Destroy')
+#    dependsOn: Network
+#    jobs:
+#      - job: Managed_Identity
+#        steps:
+#          - template: pipeline-steps/managed_identity.yaml
+#            parameters:
+#              serviceConnection: $(serviceConnection)
+#              environment: ${{ parameters.env }}
+#              location: ${{ parameters.location }}
+#              stack: 'managed-identity'
+#              project: $(project)
+#              tfversion: $(tfversion)
+#              tfInitSub: ${{ variables.tfInitSub }}
+#              builtFrom: $(Build.Repository.Name)
+#              product: ${{ variables.product }}
+#
+#  - stage: Aks
+#    displayName: 'Deploy AKS clusters'
+#    condition: ne('${{ parameters.Action }}', 'Destroy')
+#    dependsOn:
+#      - Managed_Identity
+#    jobs:
+#      - job: DeployInfrastructure
+#        steps:
+#          - template: pipeline-steps/deploy-service.yaml
+#            parameters:
+#              environment: ${{ parameters.env }}
+#              location: ${{ parameters.location }}
+#              stack: 'aks'
+#              project: $(project)
+#              tfversion: $(tfversion)
+#              tfInitSub: ${{ variables.tfInitSub }}
+#              builtFrom: $(Build.Repository.Name)
+#              product: ${{ variables.product }}
+#              ${{ if ne(parameters['cluster'], 'All') }}:
+#                targetCommand: "-target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
+#
+#      - job: DeployInfrastructuremis
+#        dependsOn: DeployInfrastructure
+#        steps:
+#          - template: pipeline-steps/deploy-service.yaml
+#            parameters:
+#              environment: ${{ parameters.env }}
+#              location: ${{ parameters.location }}
+#              stack: 'aks-mis'
+#              project: $(project)
+#              tfversion: $(tfversion)
+#              tfInitSub: ${{ variables.tfInitSub }}
+#              builtFrom: $(Build.Repository.Name)
+#              product: ${{ variables.product }}
+#              ${{ if ne(parameters['cluster'], 'All') }}:
+#                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_role_assignment.preview_externaldns_read_rg[${{parameters.cluster}}] -target azurerm_role_assignment.preview_externaldns_dns_zone_contributor[${{parameters.cluster}}] -target azurerm_role_assignment.preview1aat_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator[${{parameters.cluster}}] -target data.azurerm_kubernetes_cluster.kubernetes[${{parameters.cluster}}]"
+#
+#  - stage: BootStrapClusters
+#    displayName: 'BootStrap Clusters'
+#    dependsOn: Aks
+#    jobs:
+#      - job: BootStrap
+#        variables:
+#          ${{ if eq(parameters['cluster'], 'All') }}:
+#            clusters: $[ stageDependencies.Aks.DeployInfrastructure.outputs['setClusterNumbers.clusterNumbers'] ]
+#          ${{ if ne(parameters['cluster'], 'All') }}:
+#            clusters: ${{ parameters.cluster }}
+#        steps:
+#          - template: pipeline-steps/bootstrap.yaml
+#            parameters:
+#              environment: ${{ parameters.env }}
+#              project: $(project)
+#              serviceConnection: $(serviceConnection)
+#              ${{ if eq( parameters['env'], 'perftest') }}:
+#                akskeyvault: "dcdcftappstestkv"
+#              ${{ if eq( parameters['env'], 'aat' ) }}:
+#                akskeyvault: "dcdcftappsstgkv"
+#              ${{ if eq( parameters['env'], 'ptlsbox' ) }}:
+#                akskeyvault: "dtscftptlsbox"
+#              ${{ if eq( parameters['env'], 'ptl' ) }}:
+#                akskeyvault: "dtscftptl"
+#              ${{ if eq( parameters['env'], 'preview' ) }}:
+#                akskeyvault: "dcdcftappsdevkv"
+#              ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}:
+#                akskeyvault: dcdcftapps${{ parameters.env }}kv
+#              GenerateSealedSecrets: false
+#
+#  - stage: DestroyAks
+#    displayName: 'Destroy AKS Infrastructure'
+#    condition: contains('${{ parameters.Action }}', 'Destroy')
+#    jobs:
+#      - job: DestroyInfrastructure
+#        steps:
+#          - template: pipeline-steps/destroy-service.yaml
+#            parameters:
+#              environment: ${{ parameters.env }}
+#              cluster: ${{ parameters.cluster }}
+#              location: ${{ parameters.location }}
+#              stack: 'aks'
+#              project: $(project)
+#              tfversion: $(tfversion)
+#              tfInitSub: ${{ variables.tfInitSub }}
+#              builtFrom: $(Build.Repository.Name)
+#              product: ${{ variables.product }}
+#              ${{ or(eq( parameters['env'], 'ptl'), eq( parameters['env'], 'ptlsbox')) }}:
+#                targetCommand: "-target module.kubernetes[00]"
+#              ${{ if ne(parameters['cluster'], 'All') }}:
+#                targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
