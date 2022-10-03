@@ -271,25 +271,25 @@ stages:
               aksKeyVault: $(aksKeyVault)
               GenerateSealedSecrets: false
 
-#
-#  - stage: DestroyAks
-#    displayName: 'Destroy AKS Infrastructure'
-#    condition: contains('${{ parameters.action }}', 'destroy')
-#    jobs:
-#      - job: DestroyInfrastructure
-#        steps:
-#          - template: pipeline-steps/destroy-service.yaml
-#            parameters:
-#              environment: ${{ parameters.env }}
-#              cluster: ${{ parameters.cluster }}
-#              location: ${{ parameters.location }}
-#              stack: 'aks'
-#              project: $(project)
-#              tfversion: $(tfversion)
-#              tfInitSub: ${{ variables.tfInitSub }}
-#              builtFrom: $(Build.Repository.Name)
-#              product: ${{ variables.product }}
-#              ${{ or(eq( parameters['env'], 'ptl'), eq( parameters['env'], 'ptlsbox')) }}:
-#                targetCommand: "-target module.kubernetes[00]"
-#              ${{ if ne(parameters['cluster'], 'All') }}:
-#                targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
+
+  - stage: DestroyAks
+    displayName: 'Destroy AKS Infrastructure'
+    condition: contains('${{ parameters.action }}', 'destroy')
+    jobs:
+      - job: DestroyInfrastructure
+        steps:
+          - template: pipeline-steps/destroy-service.yaml
+            parameters:
+              environment: ${{ parameters.env }}
+              cluster: ${{ parameters.cluster }}
+              location: ${{ parameters.location }}
+              stack: 'aks'
+              project: $(project)
+              tfversion: $(tfversion)
+              tfInitSub: ${{ variables.tfInitSub }}
+              serviceConnection: $(serviceConnection)
+              action: ${{ parameters.action }}
+              ${{ or(eq( parameters['env'], 'ptl'), eq( parameters['env'], 'ptlsbox')) }}:
+                targetCommand: "-target module.kubernetes[00]"
+              ${{ if ne(parameters['cluster'], 'All') }}:
+                targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
