@@ -36,17 +36,17 @@ steps:
         echo Moving on to the Terraform destroy section.
 
   - template: steps/terraform.yaml@cnp-azuredevops-libraries
-      parameters:
-        overrideAction: ${{ parameters.action }}
-        environment: ${{ parameters.environment }}
-        component: ${{ parameters.component }}
-        serviceConnection: ${{ parameters.serviceConnection }}
-        terraformInitSubscription: ${{ variables.tfInitSub }}
-        product: ${{ variables.product }}
-        terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/${{ parameters.stack }}/${{ parameters.environment }}.tfvars"
-        initCommandOptions: >
-          -backend-config resource_group_name=${{ variables.backendAzureRmResourceGroupName }}
-        destroyCommandOptions: >
-          -var project=${{ variables.project }}
-          -var environment=${{ parameters.environment }}
-          -var control_vault=$(controlKeyVault) ${{ parameters.targetCommand }}
+    parameters:
+      overrideAction: ${{ parameters.action }}
+      environment: ${{ parameters.environment }}
+      component: ${{ parameters.component }}
+      serviceConnection: ${{ parameters.serviceConnection }}
+      terraformInitSubscription: ${{ variables.tfInitSub }}
+      product: ${{ variables.product }}
+      terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/${{ parameters.stack }}/${{ parameters.environment }}.tfvars"
+      initCommandOptions: >
+        -backend-config resource_group_name=${{ variables.backendAzureRmResourceGroupName }}
+      destroyCommandOptions: >
+        -var project=${{ variables.project }}
+        -var environment=${{ parameters.environment }}
+        -var control_vault=$(controlKeyVault) ${{ parameters.targetCommand }}
