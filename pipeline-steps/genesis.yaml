@@ -15,7 +15,7 @@ steps:
 
   - template: steps/terraform.yaml@cnp-azuredevops-libraries
     parameters:
-      overrideAction: ${{ parameters.Action }}
+      overrideAction: ${{ variables.action }}
       environment: ${{ parameters.environment }}
       component: ${{ parameters.stack }}
       serviceConnection: $(serviceConnection)
