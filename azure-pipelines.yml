@@ -204,7 +204,6 @@ stages:
                 -var control_vault=$(controlKeyVault)
                 -var project=$(project)
 
-
   - stage: Aks
     displayName: 'Deploy AKS clusters'
     condition: ne('${{ parameters.action }}', 'destroy')
@@ -270,7 +269,6 @@ stages:
               serviceConnection: $(serviceConnection)
               aksKeyVault: $(aksKeyVault)
               GenerateSealedSecrets: false
-
 
   - stage: DestroyAks
     displayName: 'Destroy AKS Infrastructure'
