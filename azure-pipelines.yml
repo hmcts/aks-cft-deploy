@@ -135,11 +135,11 @@ stages:
             parameters:
               overrideAction: ${{ parameters.action }}
               environment: ${{ parameters.env }}
-              component: ${{ parameters.stack }}
+              component: network-rg
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
-              terraformVarFile: "$(System.DefaultWorkingDirectory)/environments/${{ parameters.stack }}/${{ parameters.env }}.tfvars"
+              terraformVarFile: "$(System.DefaultWorkingDirectory)/environments/network-rg/${{ parameters.env }}.tfvars"
               initCommandOptions: >
                 -var subscription_id=$(ARM_SUBSCRIPTION_ID)
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
@@ -179,7 +179,7 @@ stages:
             parameters:
               overrideAction: ${{ parameters.action }}
               environment: ${{ parameters.env }}
-              component: ${{ parameters.stack }}
+              component: managed-identity
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
