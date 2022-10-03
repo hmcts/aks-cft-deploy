@@ -131,15 +131,16 @@ stages:
     jobs:
       - job: NetworkRg
         steps:
+          - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
               overrideAction: ${{ parameters.action }}
               environment: ${{ parameters.env }}
-              component: network-rg
+              component: 'network-rg'
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
-              terraformVarFile: "$(System.DefaultWorkingDirectory)/environments/network-rg/${{ parameters.env }}.tfvars"
+              terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ parameters.env }}.tfvars"
               initCommandOptions: >
                 -var subscription_id=$(ARM_SUBSCRIPTION_ID)
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
@@ -151,15 +152,16 @@ stages:
       - job: DeployInfrastructure
         dependsOn: NetworkRg
         steps:
+          - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
               overrideAction: ${{ parameters.action }}
               environment: ${{ parameters.env }}
-              component: 'network-rg'
+              component: 'network'
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
-              terraformVarFile: "$(System.DefaultWorkingDirectory)/environments/network-rg/${{ parameters.env }}.tfvars"
+              terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ parameters.env }}.tfvars"
               initCommandOptions: >
                 -var subscription_id=$(ARM_SUBSCRIPTION_ID)
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
@@ -192,7 +194,7 @@ stages:
                 -var control_vault=$(controlKeyVault)
                 -var project=$(project)
 
-
+#
 #  - stage: Aks
 #    displayName: 'Deploy AKS clusters'
 #    condition: ne('${{ parameters.action }}', 'destroy')
@@ -207,10 +209,8 @@ stages:
 #              location: ${{ parameters.location }}
 #              stack: 'aks'
 #              project: $(project)
-#              tfversion: $(tfversion)
-#              tfInitSub: ${{ variables.tfInitSub }}
-#              builtFrom: $(Build.Repository.Name)
 #              product: ${{ variables.product }}
+#              tfInitSub: ${{ variables.tfInitSub }}
 #              ${{ if ne(parameters['cluster'], 'All') }}:
 #                targetCommand: "-target azurerm_resource_group.kubernetes_resource_group[${{parameters.cluster}}] -target module.kubernetes[${{parameters.cluster}}]"
 #
@@ -229,7 +229,7 @@ stages:
 #              product: ${{ variables.product }}
 #              ${{ if ne(parameters['cluster'], 'All') }}:
 #                targetCommand: "-target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_role_assignment.preview_externaldns_read_rg[${{parameters.cluster}}] -target azurerm_role_assignment.preview_externaldns_dns_zone_contributor[${{parameters.cluster}}] -target azurerm_role_assignment.preview1aat_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator[${{parameters.cluster}}] -target data.azurerm_kubernetes_cluster.kubernetes[${{parameters.cluster}}]"
-#
+
 #  - stage: BootStrapClusters
 #    displayName: 'BootStrap Clusters'
 #    dependsOn: Aks
