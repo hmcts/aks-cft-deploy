@@ -15,14 +15,14 @@ resources:
 
 parameters:
 
-  - name: Action
+  - name: action
     displayName: Action
     type: string
-    default: 'Plan'
+    default: 'plan'
     values:
-    - Plan
-    - Apply
-    - Destroy
+    - plan
+    - apply
+    - destroy
 
   - name: cluster
     displayName: Cluster
@@ -81,7 +81,7 @@ variables:
   - name: product
     value: 'cft-platform'
   - name: action
-    value: ${{ parameters.Action }}
+    value: ${{ parameters.action }}
   - name: backendAzureRmResourceGroupName
     ${{ if eq( parameters['env'], 'perftest') }}:
       value: 'azure-control-test-rg'
@@ -109,7 +109,7 @@ stages:
 
   - stage: Genesis
     displayName: 'Genesis'
-    condition: ne('${{ parameters.Action }}', 'Destroy')
+    condition: ne('${{ parameters.action }}', 'destroy')
     jobs:
       - job: Genesis
         steps:
@@ -123,11 +123,11 @@ stages:
               tfInitSub: ${{ variables.tfInitSub }}
               builtFrom: $(Build.Repository.Name)
               product: ${{ variables.product }}
-              action: ${{ parameters.Action }}
+              action: ${{ parameters.action }}
 #
 #  - stage: Network
 #    displayName: 'Network'
-#    condition: ne('${{ parameters.Action }}', 'Destroy')
+#    condition: ne('${{ parameters.action }}', 'destroy')
 #    jobs:
 #      - job: NetworkRg
 #        steps:
@@ -158,7 +158,7 @@ stages:
 #
 #  - stage: Managed_Identity
 #    displayName: 'Managed_Identity'
-#    condition: ne('${{ parameters.Action }}', 'Destroy')
+#    condition: ne('${{ parameters.action }}', 'destroy')
 #    dependsOn: Network
 #    jobs:
 #      - job: Managed_Identity
@@ -177,7 +177,7 @@ stages:
 #
 #  - stage: Aks
 #    displayName: 'Deploy AKS clusters'
-#    condition: ne('${{ parameters.Action }}', 'Destroy')
+#    condition: ne('${{ parameters.action }}', 'destroy')
 #    dependsOn:
 #      - Managed_Identity
 #    jobs:
@@ -242,9 +242,10 @@ stages:
 #                akskeyvault: dcdcftapps${{ parameters.env }}kv
 #              GenerateSealedSecrets: false
 #
+#
 #  - stage: DestroyAks
 #    displayName: 'Destroy AKS Infrastructure'
-#    condition: contains('${{ parameters.Action }}', 'Destroy')
+#    condition: contains('${{ parameters.action }}', 'destroy')
 #    jobs:
 #      - job: DestroyInfrastructure
 #        steps:
