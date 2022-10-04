@@ -17,6 +17,7 @@ steps:
       overrideAction: "${{ parameters.action }}"
       environment: ${{ parameters.environment }}
       component: ${{ parameters.stack }}
+      location: ${{ parameters.location }}
       serviceConnection: ${{ parameters.serviceConnection }}
       terraformInitSubscription: ${{ parameters.tfInitSub }}
       product: ${{ parameters.product }}

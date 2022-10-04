@@ -148,6 +148,7 @@ stages:
               overrideAction: ${{ parameters.action }}
               environment: ${{ parameters.env }}
               component: 'network-rg'
+              location: ${{ parameters.location }}
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
@@ -168,6 +169,7 @@ stages:
               overrideAction: ${{ parameters.action }}
               environment: ${{ parameters.env }}
               component: 'network'
+              location: ${{ parameters.location }}
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
@@ -192,6 +194,7 @@ stages:
               overrideAction: ${{ parameters.action }}
               environment: ${{ parameters.env }}
               component: managed-identity
+              location: ${{ parameters.location }}
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
