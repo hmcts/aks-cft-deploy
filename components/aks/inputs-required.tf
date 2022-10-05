@@ -51,3 +51,8 @@ variable "enable_user_system_nodepool_split" {
 variable "availability_zones" {
   type = list(any)
 }
+
+variable "enable_automatic_channel_upgrade_patch" {
+  default     = false
+  description = "Enable automatic patch upgrades"
+}
