@@ -49,8 +49,6 @@ parameters:
     - PROD
 
 variables:
-  - name: tfversion
-    value: 1.2.2
   - name: project
     value: cft
   - name: serviceConnection
