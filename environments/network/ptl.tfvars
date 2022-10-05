@@ -5,6 +5,7 @@ aks_00_subnet_cidr_blocks              = "10.10.72.0/23"
 aks_01_subnet_cidr_blocks              = "10.10.74.0/23"
 iaas_subnet_cidr_blocks                = "10.10.76.0/23"
 application_gateway_subnet_cidr_blocks = "10.10.78.0/25"
+postgresql_subnet_cidr_blocks          = "10.10.78.128/25"
 
 additional_subnets = [
 ]
@@ -85,7 +86,7 @@ additional_routes = [
   },
   {
     name                   = "cftdemo"
-    address_prefix         = "10.51.0.0/18"
+    address_prefix         = "10.50.64.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },

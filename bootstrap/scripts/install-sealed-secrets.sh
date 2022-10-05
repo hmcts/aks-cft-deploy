@@ -2,7 +2,7 @@
 set -e
 
 VAULT_NAME=${8}
-VERSION="1.10.3"
+VERSION="2.1.6"
 NAMESPACE="admin"
 
 if [ ! -f sealed-secrets-pki.yaml ]; then
@@ -15,6 +15,6 @@ fi
 
 kubectl apply -f sealed-secrets-pki.yaml
 
-helm repo add hmctspublic https://hmctspublic.azurecr.io/helm/v1/repo
-helm upgrade sealed-secrets hmctspublic/sealed-secrets --version 1.12.0 --install --namespace ${NAMESPACE} \
+helm repo add bitnami-labs https://bitnami-labs.github.io/sealed-secrets/
+helm upgrade sealed-secrets bitnami-labs/sealed-secrets --version ${VERSION} --install --namespace ${NAMESPACE} \
      -f  deployments/sealed-secrets/values.yaml --set secretName=sealed-secrets-pki --wait \

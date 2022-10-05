@@ -5,12 +5,17 @@ aks_00_subnet_cidr_blocks              = "10.11.192.0/20"
 aks_01_subnet_cidr_blocks              = "10.11.208.0/20"
 iaas_subnet_cidr_blocks                = "10.11.224.0/24"
 application_gateway_subnet_cidr_blocks = "10.11.225.0/25"
+postgresql_subnet_cidr_blocks          = "10.11.232.0/25"
 
 additional_subnets = [
   {
     name           = "api-management"
     address_prefix = "10.11.225.128/25"
-  }
+  },
+  {
+    name           = "private-endpoints"
+    address_prefix = "10.11.228.0/22"
+  },
 ]
 
 private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
@@ -76,6 +81,12 @@ additional_routes_coreinfra = [
     address_prefix         = "10.11.208.0/20"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "soc_prod"
+    address_prefix         = "10.146.0.0/21"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
   }
 ]
 
@@ -91,5 +102,8 @@ coreinfra_subnets = [
   },
   {
     name = "scan-storage"
+  },
+  {
+    name = "core-infra-subnet-apimgmt-ithc"
   }
 ]

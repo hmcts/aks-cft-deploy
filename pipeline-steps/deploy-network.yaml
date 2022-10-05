@@ -38,9 +38,7 @@ steps:
          backendAzureRmResourceGroupName: 'azure-control-stg-rg'
       ${{ if eq( parameters['environment'], 'ptlsbox') }}: 
          backendAzureRmResourceGroupName: 'azure-control-sbox-rg'
-      ${{ if eq( parameters['environment'], 'ptl') }}: 
-         backendAzureRmResourceGroupName: 'azure-control-prod-rg'
-      ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}: 
+      ${{ if notIn( parameters['environment'], 'aat', 'perftest', 'ptlsbox', 'preview') }}: 
          backendAzureRmResourceGroupName: 'azure-control-${{ parameters.environment }}-rg'
       backendAzureRmResourceGroupLocation: ${{ parameters.location }}
       backendAzureRmStorageAccountName: $(controlStorageAccount)
@@ -64,7 +62,8 @@ steps:
       workingDirectory: $(System.DefaultWorkingDirectory)/components/${{ parameters.stack }}
       environmentServiceName: ${{ parameters.terraformServiceConnection }}
       commandOptions: '-out=tfplan-${{ parameters.project }}-$(env)-${{ parameters.stack }} -var subscription_id=$(ARM_SUBSCRIPTION_ID) -var control_vault=$(controlKeyVault) -var environment=$(env) -var project=$(project) -var builtFrom=${{ parameters.builtFrom }} -var product=${{ parameters.product }} -var-file $(System.DefaultWorkingDirectory)/environments/${{ parameters.stack }}/$(env).tfvars'
-  
+      publishPlanResults: '${{ parameters.environment }}-${{ parameters.stack }}'
+
   - task: TerraformCLI@0
     displayName: Terraform apply
     condition: and(variables.isMain, true, eq(variables['Action'], 'Apply'))

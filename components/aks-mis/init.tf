@@ -7,7 +7,7 @@ terraform {
   required_providers {
     azurerm = {
       source                = "hashicorp/azurerm"
-      version               = "2.77.0"
+      version               = "3.12.0"
       configuration_aliases = [azurerm.hmcts-control]
     }
   }
@@ -95,4 +95,18 @@ provider "azurerm" {
   skip_provider_registration = "true"
   features {}
   subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+}
+
+provider "azurerm" {
+  alias                      = "preview"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = "8b6ea922-0862-443e-af15-6056e1c9b9a4"
+}
+
+provider "azurerm" {
+  alias                      = "dts-cftptl-intsvc"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
 }

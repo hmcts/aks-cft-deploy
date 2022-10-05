@@ -5,12 +5,17 @@ aks_00_subnet_cidr_blocks              = "10.48.64.0/20"
 aks_01_subnet_cidr_blocks              = "10.48.80.0/20"
 iaas_subnet_cidr_blocks                = "10.48.97.0/24"
 application_gateway_subnet_cidr_blocks = "10.48.96.0/25"
+postgresql_subnet_cidr_blocks          = "10.48.104.0/25"
 
 additional_subnets = [
   {
     name           = "api-management"
     address_prefix = "10.48.96.128/25"
-  }
+  },
+  {
+    name           = "private-endpoints"
+    address_prefix = "10.48.100.0/22"
+  },
 ]
 
 private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
@@ -61,6 +66,24 @@ additional_routes_appgw = [
     address_prefix         = "10.10.72.0/21"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "core-infra-vnet-perftest"
+    address_prefix         = "10.112.128.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "pet_stg_network"
+    address_prefix         = "192.170.0.0/16"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "ss-test-vnet"
+    address_prefix         = "10.141.0.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
   }
 ]
 
@@ -76,6 +99,12 @@ additional_routes_coreinfra = [
     address_prefix         = "10.48.80.0/20"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "soc_prod"
+    address_prefix         = "10.146.0.0/21"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
   }
 ]
 
@@ -85,5 +114,8 @@ coreinfra_subnets = [
   },
   {
     name = "core-infra-subnet-1-perftest"
+  },
+  {
+    name = "core-infra-subnet-apimgmt-perftest"
   }
 ]

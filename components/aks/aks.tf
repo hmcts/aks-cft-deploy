@@ -29,6 +29,8 @@ module "kubernetes" {
   environment            = var.environment
   location               = var.location
 
+  oms_agent_enabled = var.oms_agent_enabled
+
   sku_tier = var.sku_tier
   providers = {
     azurerm               = azurerm
@@ -67,7 +69,7 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = var.enable_user_system_nodepool_split == true ? true : false
 
-  additional_node_pools = contains(["demo"], var.environment) ? [] : [
+  additional_node_pools = contains([], var.environment) ? [] : [
     {
       name                = "linux"
       vm_size             = lookup(var.linux_node_pool, "vm_size", "Standard_DS3_v2")

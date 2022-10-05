@@ -1,16 +1,21 @@
 enable_debug = "true"
 
-network_address_space                  = "10.48.128.0/18"
-aks_00_subnet_cidr_blocks              = "10.48.128.0/20"
-aks_01_subnet_cidr_blocks              = "10.48.144.0/20"
-iaas_subnet_cidr_blocks                = "10.48.160.0/24"
-application_gateway_subnet_cidr_blocks = "10.48.161.0/25"
+network_address_space                  = "10.101.128.0/17"
+aks_00_subnet_cidr_blocks              = "10.101.128.0/19"
+aks_01_subnet_cidr_blocks              = "10.101.160.0/19"
+iaas_subnet_cidr_blocks                = "10.101.192.0/24"
+application_gateway_subnet_cidr_blocks = "10.101.193.0/25"
+postgresql_subnet_cidr_blocks          = "10.101.200.0/25"
 
 additional_subnets = [
   {
     name           = "api-management"
-    address_prefix = "10.48.161.128/25"
-  }
+    address_prefix = "10.101.193.128/25"
+  },
+  {
+    name           = "private-endpoints"
+    address_prefix = "10.101.196.0/22"
+  },
 ]
 
 private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
@@ -70,14 +75,14 @@ additional_routes_appgw = [
 
 additional_routes_coreinfra = [
   {
-    name                   = "aks-00"
-    address_prefix         = "10.48.128.0/20"
+    name                   = "cft-aks-00"
+    address_prefix         = "10.101.128.0/19"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "aks-01"
-    address_prefix         = "10.48.144.0/20"
+    name                   = "cft-aks-01"
+    address_prefix         = "10.101.160.0/19"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   }
