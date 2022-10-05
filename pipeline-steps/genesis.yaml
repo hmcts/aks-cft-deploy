@@ -21,7 +21,7 @@ steps:
       serviceConnection: ${{ parameters.serviceConnection }}
       terraformInitSubscription: ${{ parameters.tfInitSub }}
       product: ${{ parameters.product }}
-      terraformVarFile: none
+      terraformVarFile: NULL
       initCommandOptions: >
         -var subscription_id=$(ARM_SUBSCRIPTION_ID)
         -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
