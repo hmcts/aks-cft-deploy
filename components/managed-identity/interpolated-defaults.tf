@@ -10,7 +10,7 @@ data "azurerm_resource_group" "genesis_rg" {
 
 locals {
 
-  environment = (var.environment == "perftest") ? "test" : (var.environment == "aat") ? "stg" : (var.environment == "ptlsbox") ? "sbox" : (var.environment == "preview") ? "dev" : (var.environment == "ptl") ? "ptl" : "${var.environment}"
+  environment = (var.environment == "perftest") ? "test" : (var.environment == "aat") ? "stg" : (var.environment == "ptlsbox") ? "sbox" : (var.environment == "preview") ? "dev" : "${var.environment}"
 
 }
 
