@@ -44,7 +44,7 @@ jobs:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Updatecli in Apply mode
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: |
           yq '.environments' updatecli/values.github-action.yaml | cut -d "-" -f 2 | while read i
           do
