@@ -37,8 +37,8 @@ targets:
     scmid: default
     spec:
       file: "environments/aks/{{ $environment }}.tfvars"
-      matchpattern: 'kubernetes_version\s+=\s+"(\d+\.)?(\d+\.)?(\*|\d+)\"'
-      content: 'kubernetes_version = "{{ source `latestAksVersion` }}"'
+      matchpattern: 'kubernetes_cluster_version\s+=\s+"(\d+\.)?(\d+\.)?(\*|\d+)\"'
+      content: 'kubernetes_cluster_version         = "{{ source `latestAksVersion` }}"'
 
 pullrequests:
   default:
