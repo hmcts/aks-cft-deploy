@@ -110,3 +110,17 @@ provider "azurerm" {
   features {}
   subscription_id = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
 }
+
+provider "azurerm" {
+  alias                      = "demo"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = "d025fece-ce99-4df2-b7a9-b649d3ff2060"
+}
+
+provider "azurerm" {
+  alias                      = "reformmgmt"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = "ed302caf-ec27-4c64-a05e-85731c3ce90e"
+}
