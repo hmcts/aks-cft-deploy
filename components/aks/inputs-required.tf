@@ -56,3 +56,7 @@ variable "enable_automatic_channel_upgrade_patch" {
   default     = false
   description = "Enable automatic patch upgrades"
 }
+
+variable "workload_identity_enabled" {
+  default = false
+}
