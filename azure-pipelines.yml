@@ -123,20 +123,20 @@ stages:
       - job: Genesis
         steps:
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
-              parameters:
-                overrideAction: ${{ parameters.action }}
-                environment: ${{ parameters.env }}
-                component: 'genesis'
-                location: ${{ parameters.location }}
-                serviceConnection: $(serviceConnection)
-                terraformInitSubscription: ${{ variables.tfInitSub }}
-                product: ${{ variables.product }}
-                terraformVarFile: NULL
-                initCommandOptions: >
-                  -var subscription_id=$(ARM_SUBSCRIPTION_ID)
-                  -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
-                planCommandOptions: >
-                  -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+            parameters:
+              overrideAction: ${{ parameters.action }}
+              environment: ${{ parameters.env }}
+              component: 'genesis'
+              location: ${{ parameters.location }}
+              serviceConnection: $(serviceConnection)
+              terraformInitSubscription: ${{ variables.tfInitSub }}
+              product: ${{ variables.product }}
+              terraformVarFile: NULL
+              initCommandOptions: >
+                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+                -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
+              planCommandOptions: >
+                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
 
   - stage: Network
     displayName: 'Network'
