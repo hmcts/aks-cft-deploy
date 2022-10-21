@@ -170,7 +170,7 @@ stages:
               environment: ${{ parameters.env }}
               component: 'network'
               location: ${{ parameters.location }}
-              serviceConnection: $(serviceConnection)
+              serviceConnection: OPS-APPROVAL-GATE-MGMT-ENVS-CNP
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
               terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ parameters.env }}.tfvars"
@@ -272,25 +272,3 @@ stages:
               serviceConnection: $(serviceConnection)
               aksKeyVault: $(aksKeyVault)
               GenerateSealedSecrets: false
-
-  - stage: DestroyAks
-    displayName: 'Destroy AKS Infrastructure'
-    condition: contains('${{ parameters.action }}', 'destroy')
-    jobs:
-      - job: DestroyInfrastructure
-        steps:
-          - template: pipeline-steps/destroy-service.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              cluster: ${{ parameters.cluster }}
-              location: ${{ parameters.location }}
-              stack: 'aks'
-              project: $(project)
-              tfversion: $(tfversion)
-              tfInitSub: ${{ variables.tfInitSub }}
-              serviceConnection: $(serviceConnection)
-              action: ${{ parameters.action }}
-              ${{ or(eq( parameters['env'], 'ptl'), eq( parameters['env'], 'ptlsbox')) }}:
-                targetCommand: "-target module.kubernetes[00]"
-              ${{ if ne(parameters['cluster'], 'All') }}:
-                targetCommand: "-target module.kubernetes[${{parameters.cluster}}]"
