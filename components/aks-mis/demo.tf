@@ -1,17 +1,16 @@
-# Update -target in azure-pipelines.yaml
 
-data "azurerm_resource_group" "managed-identity-demo" {
-  provider = azurerm.cft-demo
-  name     = "managed-identities-demo-rg"
-}
+# data "azurerm_resource_group" "managed-identity-demo" {
+#   provider = azurerm.cft-demo
+#   name     = "managed-identities-demo-rg"
+# }
 
-resource "azurerm_role_assignment" "demo_cft_rg_identity_operator" {
-  count                = (contains(["demo"], var.environment) ? 1 : 0) * var.cluster_count
-  provider             = azurerm.cft-demo
-  principal_id         = data.azurerm_kubernetes_cluster.kubernetes["${count.index}"].kubelet_identity[0].object_id
-  scope                = data.azurerm_resource_group.managed-identity-demo.id
-  role_definition_name = "Managed Identity Operator"
-}
+# resource "azurerm_role_assignment" "demo_cft_rg_identity_operator" {
+#   count                = (contains(["demo"], var.environment) ? 1 : 0) * var.cluster_count
+#   provider             = azurerm.cft-demo
+#   principal_id         = data.azurerm_kubernetes_cluster.kubernetes["${count.index}"].kubelet_identity[0].object_id
+#   scope                = data.azurerm_resource_group.managed-identity-demo.id
+#   role_definition_name = "Managed Identity Operator"
+# }
 
 data "azurerm_user_assigned_identity" "sops_demo_mi" {
   name                = "aks-${var.environment}-mi"
