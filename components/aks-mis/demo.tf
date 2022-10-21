@@ -7,7 +7,7 @@ data "azurerm_resource_group" "managed-identity-demo" {
 
 resource "azurerm_role_assignment" "demo_cft_rg_identity_operator" {
   count                = (contains(["demo"], var.environment) ? 1 : 0) * var.cluster_count
-  provider             = azurerm.demo
+  provider             = azurerm.cft-demo
   principal_id         = data.azurerm_kubernetes_cluster.kubernetes["${count.index}"].kubelet_identity[0].object_id
   scope                = data.azurerm_resource_group.managed-identity-demo.id
   role_definition_name = "Managed Identity Operator"
@@ -18,7 +18,7 @@ data "azurerm_user_assigned_identity" "sops_demo_mi" {
   resource_group_name = "genesis-rg"
 }
 
-resource "azurerm_role_assignment" "demo_externaldns_read_rg" {
+resource "azurerm_role_assignment" "demo_externaldns_read_rg" { 
   count                = (contains(["demo"], var.environment) ? 1 : 0) * var.cluster_count
   provider             = azurerm.dts-cftptl-intsvc
   principal_id         = data.azurerm_user_assigned_identity.sops_demo_mi.principal_id
