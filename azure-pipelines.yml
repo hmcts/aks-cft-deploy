@@ -187,7 +187,7 @@ stages:
               tfversion: $(tfversion)
               tfInitSub: ${{ variables.tfInitSub }}
               builtFrom: $(Build.Repository.Name)
-              product: ${{ variables.product }} 
+              product: ${{ variables.product }}
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: |
                   -target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}] -target azurerm_role_assignment.preview_externaldns_read_rg[${{parameters.cluster}}]
