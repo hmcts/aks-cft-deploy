@@ -1,7 +1,7 @@
 # Update -target in azure-pipelines.yaml
 
 data "azurerm_resource_group" "managed-identity-demo" {
-  provider = azurerm.cft-demo
+  provider = azurerm.demo
   name     = "managed-identities-demo-rg"
 }
 
