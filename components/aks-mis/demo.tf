@@ -1,7 +1,7 @@
 # Update -target in azure-pipelines.yaml
 
 data "azurerm_resource_group" "managed-identity-demo" {
-  provider = azurerm.demo
+  provider = azurerm.cft-demo
   name     = "managed-identities-demo-rg"
 }
 
@@ -25,7 +25,6 @@ resource "azurerm_role_assignment" "demo_externaldns_read_rg" {
   scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg"
   role_definition_name = "Reader"
 }
-
 resource "azurerm_role_assignment" "demo_externaldns_private_dns_zone_contributor" {
   count                = (contains(["demo"], var.environment) ? 1 : 0) * var.cluster_count
   provider             = azurerm.dts-cftptl-intsvc
