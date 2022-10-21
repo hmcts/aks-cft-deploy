@@ -18,7 +18,7 @@ data "azurerm_user_assigned_identity" "sops_demo_mi" {
   resource_group_name = "genesis-rg"
 }
 
-resource "azurerm_role_assignment" "demo_externaldns_read_rg" { 
+resource "azurerm_role_assignment" "demo_externaldns_read_rg" {
   count                = (contains(["demo"], var.environment) ? 1 : 0) * var.cluster_count
   provider             = azurerm.dts-cftptl-intsvc
   principal_id         = data.azurerm_user_assigned_identity.sops_demo_mi.principal_id
