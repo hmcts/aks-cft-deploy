@@ -119,25 +119,27 @@ stages:
 
   - stage: Genesis
     displayName: 'Genesis'
-    condition: ne('${{ parameters.action }}', 'destroy')
     jobs:
       - job: Genesis
         steps:
-          - template: pipeline-steps/genesis.yaml
-            parameters:
-              environment: ${{ parameters.env }}
-              location: ${{ parameters.location }}
-              stack: 'genesis'
-              project: $(project)
-              serviceConnection: $(serviceConnection)
-              tfInitSub: ${{ variables.tfInitSub }}
-              builtFrom: $(Build.Repository.Name)
-              product: ${{ variables.product }}
-              action: ${{ parameters.action }}
+          - template: steps/terraform.yaml@cnp-azuredevops-libraries
+              parameters:
+                overrideAction: ${{ parameters.action }}
+                environment: ${{ parameters.env }}
+                component: 'genesis'
+                location: ${{ parameters.location }}
+                serviceConnection: $(serviceConnection)
+                terraformInitSubscription: ${{ variables.tfInitSub }}
+                product: ${{ variables.product }}
+                terraformVarFile: NULL
+                initCommandOptions: >
+                  -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+                  -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
+                planCommandOptions: >
+                  -var subscription_id=$(ARM_SUBSCRIPTION_ID)
 
   - stage: Network
     displayName: 'Network'
-    condition: ne('${{ parameters.action }}', 'destroy')
     jobs:
       - job: NetworkRg
         steps:
@@ -183,7 +185,6 @@ stages:
 
   - stage: Managed_Identity
     displayName: 'Managed_Identity'
-    condition: ne('${{ parameters.action }}', 'destroy')
     dependsOn: Network
     jobs:
       - job: Managed_Identity
@@ -208,7 +209,6 @@ stages:
 
   - stage: Aks
     displayName: 'Deploy AKS clusters'
-    condition: ne('${{ parameters.action }}', 'destroy')
     dependsOn:
       - Managed_Identity
     jobs:
