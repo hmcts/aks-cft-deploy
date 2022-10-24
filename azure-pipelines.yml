@@ -171,7 +171,8 @@ stages:
               environment: ${{ parameters.env }}
               component: 'network'
               location: ${{ parameters.location }}
-              serviceConnection: OPS-APPROVAL-GATE-MGMT-ENVS-CNP
+              serviceConnection: $(serviceConnection)
+              networkServiceConnection: OPS-APPROVAL-GATE-MGMT-ENVS-CNP
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
               terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ parameters.env }}.tfvars"
