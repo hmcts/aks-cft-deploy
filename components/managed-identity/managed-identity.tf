@@ -52,9 +52,10 @@ resource "azurerm_key_vault_access_policy" "sops-policy" {
 }
 
 locals {
-  acme_environment_rg = var.environment == "sandbox" ? "sbox" : var.environment == "ptlsbox" ? "sbox" : var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment
-  acme_env_kv         = var.environment == "ptl" ? "cftptlintsvc" : var.environment == "sandbox" ? "sbox" : var.environment == "ptlsbox" ? "cftsboxintsvc" : var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment
-  dpt_name            = var.environment == "ptl" || var.environment == "ptlsbox" ? "dts" : "dcd"
+  acme_environment_rg  = var.environment == "sandbox" ? "sbox" : var.environment == "ptlsbox" ? "sbox" : var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment
+  acme_environment_kv  = var.environment == "ptl" ? "cftptlintsvc" : var.environment == "sandbox" ? "sbox" : var.environment == "ptlsbox" ? "cftsboxintsvc" : var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment
+  department_name      = var.environment == "ptl" || var.environment == "ptlsbox" ? "dts" : "dcd"
+  acme_environment_app = var.environment == "ptl" || var.environment == "ptlsbox" ? "cft" : "cftapps"
 }
 
 data "azurerm_resource_group" "platform-rg" {
@@ -62,7 +63,7 @@ data "azurerm_resource_group" "platform-rg" {
 }
 
 data "azurerm_key_vault" "acme" {
-  name                = "acme${local.dpt_name}cftapps${local.acme_env_kv}"
+  name                = "acme${local.department_name}${local.acme_environment_app}${local.acme_environment_kv}"
   resource_group_name = data.azurerm_resource_group.platform-rg.name
 }
 
