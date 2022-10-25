@@ -23,7 +23,6 @@ locals {
 
 resource "azurerm_role_assignment" "externaldns-dns-zone-contributor" {
   for_each             = lookup(local.external_dns, var.environment, toset([]))
-  count                = (contains(["demo"], var.environment) ? 1 : 0) * var.cluster_count
   scope                = each.value
   role_definition_name = contains(regex("^.*/Microsoft.Network/(.*)/.*$", each.value), "privateDnsZones") ? "Private DNS Zone Contributor" : "DNS Zone Contributor"
   principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
@@ -32,7 +31,6 @@ resource "azurerm_role_assignment" "externaldns-dns-zone-contributor" {
 resource "azurerm_role_assignment" "externaldns-read-rg" {
   # Only add the reader role if there are zones configured
   for_each             = lookup(local.external_dns, var.environment, null) != null ? local.external_dns.resource_groups : toset([])
-  count                = (contains(["demo"], var.environment) ? 1 : 0) * var.cluster_count
   scope                = each.value
   role_definition_name = "Reader"
   principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
