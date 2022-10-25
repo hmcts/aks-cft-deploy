@@ -7,8 +7,8 @@ oms_agent_enabled                  = true
 enable_automatic_channel_upgrade_patch = true
 
 system_node_pool = {
-  min_nodes = 2,
-  max_nodes = 4
+  min_nodes = 4,
+  max_nodes = 6
 }
 linux_node_pool = {
   vm_size   = "Standard_DS4_v2",
