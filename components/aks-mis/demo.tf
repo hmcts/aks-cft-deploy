@@ -1,5 +1,5 @@
 # Update -target in azure-pipelines.yaml
-data "azurerm_user_assigned_identity" "sops_demo_mi" {
+data "azurerm_user_assigned_identity" "sops_mi" {
   name                = "aks-${var.environment}-mi"
   resource_group_name = "genesis-rg"
 }
@@ -25,7 +25,7 @@ resource "azurerm_role_assignment" "externaldns_dns_zone_contributor" {
   for_each             = lookup(local.external_dns, var.environment, toset([]))
   scope                = each.value
   role_definition_name = contains(regex("^.*/Microsoft.Network/(.*)/.*$", each.value), "privateDnsZones") ? "Private DNS Zone Contributor" : "DNS Zone Contributor"
-  principal_id         = data.azurerm_user_assigned_identity.sops_demo_mi.principal_id
+  principal_id         = data.azurerm_user_assigned_identity.sops_mi.principal_id
 }
 
 resource "azurerm_role_assignment" "externaldns_read_rg" {
@@ -33,5 +33,5 @@ resource "azurerm_role_assignment" "externaldns_read_rg" {
   for_each             = lookup(local.external_dns, var.environment, null) != null ? local.external_dns.resource_groups : toset([])
   scope                = each.value
   role_definition_name = "Reader"
-  principal_id         = data.azurerm_user_assigned_identity.sops_demo_mi.principal_id
+  principal_id         = data.azurerm_user_assigned_identity.sops_mi.principal_id
 }
