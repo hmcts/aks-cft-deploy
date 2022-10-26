@@ -189,7 +189,7 @@ stages:
                 echo Storage account: $STORAGE_ACCOUNT
                 echo "##vso[task.setvariable variable=controlStorageAccount]$STORAGE_ACCOUNT"
 
-                lowerCaseEnv=$(echo "${{ parameters.environment }}" | tr "[:upper:]" "[:lower:]")
+                lowerCaseEnv=$(echo "${{ parameters.env }}" | tr "[:upper:]" "[:lower:]")
                 echo "##vso[task.setvariable variable=env]$lowerCaseEnv"
                 echo Lower case env: $lowerCaseEnv
 
