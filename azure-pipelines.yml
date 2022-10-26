@@ -182,12 +182,12 @@ stages:
               product: ${{ variables.product }}
               terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ parameters.env }}.tfvars"
               initCommandOptions: >
-                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
-                -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
-                -backend-config storage_account_name=$(controlStorageAccount)
+                -var subscription_id=${{ variables.ARM_SUBSCRIPTION_ID }}
+                -backend-config resource_group_name=${{ variables.backendAzureRmResourceGroupName }}
+                -backend-config storage_account_name=${{ variables.controlStorageAccount }}
               planCommandOptions: >
-                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
-                -var control_vault=$(controlKeyVault)
+                -var subscription_id=${{ variables.ARM_SUBSCRIPTION_ID }}
+                -var control_vault=${{ variables.controlKeyVault }}
                 -var project=$(project)
 
   - stage: Managed_Identity
