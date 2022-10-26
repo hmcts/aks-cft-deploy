@@ -52,7 +52,10 @@ resource "azurerm_key_vault_access_policy" "sops-policy" {
 }
 
 locals {
-  acme_environment = var.environment == "ptl" ? "prod" : var.environment == "sandbox" ? "sbox" : var.environment == "ptlsbox" ? "sbox" : var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment
+  acme_environment_rg = var.environment == "ptl" ? "prod" : var.environment == "sandbox" ? "sbox" : var.environment == "ptlsbox" ? "sbox" : var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment
+  acme_environment_kv  = var.environment == "ptl" ? "ptlintsvc" : var.environment == "sandbox" ? "sbox" : var.environment == "ptlsbox" ? "sboxintsvc" : var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment
+  department_name      = var.environment == "ptl" || var.environment == "ptlsbox" ? "dts" : "dcd"
+  acme_environment_app = var.environment == "ptl" || var.environment == "ptlsbox" ? "cft" : "cftapps"
   external_dns = {
     # Resource Groups to add Reader permissions for external dns to
     resource_groups = toset([
@@ -70,14 +73,12 @@ locals {
 }
 
 data "azurerm_resource_group" "platform-rg" {
-  name = "cft-platform-${local.acme_environment}-rg"
+  name = "cft-platform-${local.acme_environment_rg}-rg"
 }
-
 data "azurerm_key_vault" "acme" {
-  name                = "acmedcdcftapps${local.acme_environment}"
+  name                = "acme${local.department_name}${local.acme_environment_app}${local.acme_environment_kv}"
   resource_group_name = data.azurerm_resource_group.platform-rg.name
 }
-
 resource "azurerm_role_assignment" "acme-vault-access" {
   scope                = data.azurerm_key_vault.acme.id
   role_definition_name = "Key Vault Secrets User"
