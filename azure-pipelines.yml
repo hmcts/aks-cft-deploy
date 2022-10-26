@@ -169,7 +169,7 @@ stages:
           - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
             parameters:
               serviceConnection: $(serviceConnection)
-              environment: ${{ parameters.environment }}
+              environment: ${{ parameters.env }}
 
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
