@@ -166,24 +166,10 @@ stages:
         steps:
           - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
 
-          - task: AzureCLI@2
-            displayName: Determine subscription ID & storage account
-            name: DetermineSubscriptionId
-            inputs:
-              azureSubscription: $(serviceConnection)
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                SUB_ID=$(az account show --query id -o tsv)
-                echo "##vso[task.setvariable variable=SUBSCRIPTION_ID]$SUB_ID"
-
-                FIRST=$(echo $SUB_ID | cut -c 1-8)
-                SECOND=$(echo $SUB_ID | cut -c 25-36)
-                JOINT=c${FIRST}${SECOND}
-
-                STORAGE_ACCOUNT=${JOINT}sa
-                echo Storage account: $STORAGE_ACCOUNT
-                echo "##vso[task.setvariable variable=TF_STORAGE_ACCOUNT]$STORAGE_ACCOUNT"
+          - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
+            parameters:
+              serviceConnection: $(serviceConnection)
+              environment: ${{ parameters.environment }}
 
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
@@ -196,11 +182,11 @@ stages:
               product: ${{ variables.product }}
               terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ parameters.env }}.tfvars"
               initCommandOptions: >
-                -var subscription_id=$(SUBSCRIPTION_ID)
+                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
-                -backend-config storage_account_name=$(TF_STORAGE_ACCOUNT)
+                -backend-config storage_account_name=$(controlStorageAccount)
               planCommandOptions: >
-                -var subscription_id=$(SUBSCRIPTION_ID)
+                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
                 -var control_vault=$(controlKeyVault)
                 -var project=$(project)
 
