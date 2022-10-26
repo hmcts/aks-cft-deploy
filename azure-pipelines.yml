@@ -171,7 +171,7 @@ stages:
               serviceConnection: $(serviceConnection)
               environment: ${{ parameters.env }}
               subscriptionIdVariableName: 'SUBSCRIPTION_ID'
-              storaggeAccountVariableName: 'STORAGE_ACCOUNT'
+              storageAccountVariableName: 'STORAGE_ACCOUNT'
               keyVaultVariableName: 'KEY_VAULT'
 #
 #          - task: AzureCLI@2
