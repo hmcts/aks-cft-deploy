@@ -23,7 +23,7 @@ module "loganalytics" {
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=renovate/azurerm-3.x"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.environment
@@ -85,6 +85,10 @@ module "kubernetes" {
   project_acr_enabled = var.project_acr_enabled
   availability_zones  = var.availability_zones
   depends_on          = [azurerm_resource_group.disks_resource_group]
+
+  enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
+  workload_identity_enabled              = var.workload_identity_enabled
+
 }
 
 module "ctags" {
