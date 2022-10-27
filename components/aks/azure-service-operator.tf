@@ -26,4 +26,4 @@ resource "azapi_resource" "federated_identity_credential" {
   lifecycle {
     ignore_changes = [location]
   }
-
+}
