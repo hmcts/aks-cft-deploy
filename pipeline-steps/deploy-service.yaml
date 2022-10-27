@@ -21,7 +21,7 @@ steps:
       serviceConnection: ${{ parameters.serviceConnection }}
       terraformInitSubscription: ${{ parameters.tfInitSub }}
       product: ${{ parameters.product }}
-      terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/${{ parameters.stack }}/${{ parameters.environment }}.tfvars"
+      tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/${{ parameters.stack }}/${{ parameters.environment }}.tfvars"
       initCommandOptions: "-var subscription_id=$(ARM_SUBSCRIPTION_ID) -backend-config resource_group_name=$(backendAzureRmResourceGroupName)"
       planCommandOptions: "-var control_vault=$(controlKeyVault) -var project=$(project) ${{ parameters.targetCommand }}"
 

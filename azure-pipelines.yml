@@ -134,7 +134,7 @@ stages:
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
-              terraformVarFile: NULL
+              tfVarsFile: NULL
               initCommandOptions: >
                 -var subscription_id=$(ARM_SUBSCRIPTION_ID)
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
@@ -156,7 +156,7 @@ stages:
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
-              terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ parameters.env }}.tfvars"
+              tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ parameters.env }}.tfvars"
               initCommandOptions: >
                 -var subscription_id=$(ARM_SUBSCRIPTION_ID)
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
@@ -186,7 +186,7 @@ stages:
               serviceConnection: OPS-APPROVAL-GATE-MGMT-ENVS-CNP
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
-              terraformVarFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ parameters.env }}.tfvars"
+              tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ parameters.env }}.tfvars"
               initCommandOptions: >
                 -var subscription_id=$(SUBSCRIPTION_ID)
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
@@ -211,7 +211,7 @@ stages:
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
-              terraformVarFile: NULL
+              tfVarsFile: NULL
               initCommandOptions: >
                 -var subscription_id=$(ARM_SUBSCRIPTION_ID)
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
