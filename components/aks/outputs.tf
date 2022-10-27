@@ -9,6 +9,6 @@ output "kubelet_object_ids" {
 }
 
 output "oidc_issuer_url" {
-  value     = module.kubernetes.oidc_issuer_url
+  value     = join(",", module.kubernetes[*].oidc_issuer_url)
   sensitive = false
 }
