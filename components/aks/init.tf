@@ -22,7 +22,6 @@ provider "azurerm" {
 }
 
 provider "azapi" {
-  features {}
 }
 
 locals {
