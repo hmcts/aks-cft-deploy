@@ -2,6 +2,11 @@ data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
 
+data "azurerm_user_assigned_identity" "sops_mi" {
+  name                = "aks-${var.environment}-mi"
+  resource_group_name = "genesis-rg"
+}
+
 locals {
   slug_location = lower(replace(var.location, " ", "."))
 }
