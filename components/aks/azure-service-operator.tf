@@ -10,15 +10,16 @@ resource "azurerm_role_assignment" "Contributor" {
 }
 
 resource "azapi_resource" "federated_identity_credential" {
+  count                     = var.cluster_count
   schema_validation_enabled = false
   name                      = "aso-federated-credential"
   parent_id                 = data.azurerm_user_assigned_identity.sops_mi.principal_id
   type                      = "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials@2022-01-31-preview"
-  depends_on          = [module.kubernetes]
-  location = var.location
+  depends_on                = [module.kubernetes]
+  location                  = var.location
   body = jsonencode({
     properties = {
-      issuer    = module.kubernetes[*].oidc_issuer_url
+      issuer    = module.kubernetes["0${count.index}"].oidc_issuer_url
       subject   = "system:serviceaccount:azureserviceoperator-system:azureserviceoperator-system"
       audiences = ["api://AzureADTokenExchange"]
     }
