@@ -10,18 +10,11 @@ terraform {
       version               = "3.27.0"
       configuration_aliases = [azurerm.hmcts-control]
     }
-    azapi = {
-      source  = "Azure/azapi"
-      version = "1.0.0"
-    }
   }
 }
 
 provider "azurerm" {
   features {}
-}
-
-provider "azapi" {
 }
 
 locals {
