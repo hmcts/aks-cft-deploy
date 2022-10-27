@@ -18,7 +18,7 @@ resource "azapi_resource" "federated_identity_credential" {
   location = var.location
   body = jsonencode({
     properties = {
-      issuer    = module.kubernetes[count.index].oidc_issuer_url
+      issuer    = module.kubernetes[*].oidc_issuer_url
       subject   = "system:serviceaccount:azureserviceoperator-system:azureserviceoperator-system"
       audiences = ["api://AzureADTokenExchange"]
     }
