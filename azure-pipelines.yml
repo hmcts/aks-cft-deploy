@@ -176,29 +176,6 @@ stages:
               subscriptionIdVariableName: 'SUBSCRIPTION_ID'
               storageAccountVariableName: 'STORAGE_ACCOUNT'
               keyVaultVariableName: 'KEY_VAULT'
-#
-#          - task: AzureCLI@2
-#            displayName: Determine Key Vault and Storage names
-#            inputs:
-#              azureSubscription: $(serviceConnection)
-#              scriptType: 'bash'
-#              scriptLocation: 'inlineScript'
-#              inlineScript: |
-#                SUB_ID=$(az account show --query id -o tsv)
-#                echo $SUB_ID
-#                echo "##vso[task.setvariable variable=SUBSCRIPTION_ID]$SUB_ID"
-#
-#                FIRST=$(echo $SUB_ID | cut -c 1-8)
-#                SECOND=$(echo $SUB_ID | cut -c 25-36)
-#                JOINT=c${FIRST}${SECOND}
-#
-#                KEY_VAULT=${JOINT}kv
-#                STORAGE_ACCOUNT=${JOINT}sa
-#
-#                echo KeyVault: $KEY_VAULT
-#                echo "##vso[task.setvariable variable=KEY_VAULT]$KEY_VAULT"
-#                echo Storage account: $STORAGE_ACCOUNT
-#                echo "##vso[task.setvariable variable=STORAGE_ACCOUNT]$STORAGE_ACCOUNT"
 
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
