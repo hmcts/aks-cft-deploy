@@ -17,13 +17,13 @@ resource "azurerm_resource_group" "disks_resource_group" {
 }
 
 module "loganalytics" {
-  source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=DTSPO-10591-oidc-issuer-url"
+  source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=master"
   environment = var.environment
 }
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=DTSPO-10591-oidc-issuer-url"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.environment
