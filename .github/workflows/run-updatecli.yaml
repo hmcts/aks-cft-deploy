@@ -20,7 +20,7 @@ jobs:
         with:
           client-id: b430ef1e-4e79-4e92-a152-8e5b5bc195d4 # DTS CFT AKS version checker
           tenant-id: 531ff96d-0ae9-462a-8d2d-bec7c0b42082 # HMCTS.NET
-          subscription-id: a8140a9e-f1b0-481f-a4de-09e2ee23f7ab # DTS-SHAREDSERVICES-SBOX
+          allow-no-subscriptions: true
       - name: Install Updatecli in the runner
         uses: updatecli/updatecli-action@v2
         with:
