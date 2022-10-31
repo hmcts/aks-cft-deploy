@@ -9,7 +9,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: refs/heads/DTSPO-9695-make-tf-varfile-configurable
+      ref: master
       name: hmcts/cnp-azuredevops-libraries
       endpoint: 'hmcts'
 
@@ -56,8 +56,6 @@ parameters:
     - prod
 
 variables:
-  - name: tfversion
-    value: 1.2.9
   - name: project
     value: cft
   - name: serviceConnection
@@ -252,7 +250,6 @@ stages:
               location: ${{ parameters.location }}
               stack: 'aks-mis'
               project: $(project)
-              tfversion: $(tfversion)
               tfInitSub: ${{ variables.tfInitSub }}
               serviceConnection: $(serviceConnection)
               action: ${{ parameters.action }}
