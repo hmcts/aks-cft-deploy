@@ -4,6 +4,7 @@ kubernetes_cluster_ssh_key         = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCeRw
 enable_user_system_nodepool_split  = true
 project_acr_enabled                = true
 workload_identity_enabled          = true
+aso_settings_enabled               = true
 
 enable_automatic_channel_upgrade_patch = true
 

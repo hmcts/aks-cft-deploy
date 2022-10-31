@@ -17,7 +17,7 @@ resource "azurerm_resource_group" "disks_resource_group" {
 }
 
 module "loganalytics" {
-  source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=master"
+  source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=DTSPO-10591-oidc-issuer-url"
   environment = var.environment
 }
 
@@ -88,6 +88,7 @@ module "kubernetes" {
 
   enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
   workload_identity_enabled              = var.workload_identity_enabled
+  aso_settings_enabled                   = var.aso_settings_enabled
 
 }
 
