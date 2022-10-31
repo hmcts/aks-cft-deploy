@@ -88,7 +88,6 @@ module "kubernetes" {
 
   enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
   workload_identity_enabled              = var.workload_identity_enabled
-  aso_settings_enabled                   = var.aso_settings_enabled
 
 }
 
