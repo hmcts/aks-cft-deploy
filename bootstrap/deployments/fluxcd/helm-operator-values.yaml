@@ -1,4 +1,6 @@
 workers: 3
+rbac:
+  create: false
 helm:
   versions: v3
 git:
