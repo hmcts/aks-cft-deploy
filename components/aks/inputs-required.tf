@@ -61,6 +61,6 @@ variable "workload_identity_enabled" {
   default = false
 }
 
-variable "aso_settings_enabled" {
+variable "service_operator_settings_enabled" {
   default = false
 }
