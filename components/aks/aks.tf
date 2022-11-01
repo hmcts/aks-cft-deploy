@@ -92,6 +92,7 @@ module "kubernetes" {
 
   enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
   workload_identity_enabled              = var.workload_identity_enabled
+  service_operator_settings_enabled      = var.service_operator_settings_enabled
 
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
 }
