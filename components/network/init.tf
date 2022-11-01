@@ -77,7 +77,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  subscription_id            = local.core-infra-routetable[var.environment].subscription
+  subscription_id            = local.core-infra-routetable[var.env].subscription
   skip_provider_registration = "true"
   features {}
   alias = "core-infra-routetable"
@@ -115,5 +115,5 @@ locals {
     }
   }
 
-  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : "${var.environment}"
+  environment = var.env == "sbox" ? "sandbox" : var.env == "test" ? "perftest" : "${var.env}"
 }

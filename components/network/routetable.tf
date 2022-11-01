@@ -1,8 +1,8 @@
 resource "azurerm_route_table" "route_table_coreinfra" {
-  count = contains(["ptlsbox"], var.environment) ? 0 : 1
+  count = contains(["ptlsbox"], var.env) ? 0 : 1
   name = format("%s-%s-core-infra-route-table",
     var.service_shortname,
-    var.environment
+    var.env
   )
 
   provider = azurerm.core-infra-routetable

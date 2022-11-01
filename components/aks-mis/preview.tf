@@ -6,7 +6,7 @@ data "azurerm_resource_group" "managed-identity-preview1aat" {
 }
 
 resource "azurerm_role_assignment" "preview1aat_cft_rg_identity_operator" {
-  count                = (contains(["preview"], var.environment) ? 1 : 0) * var.cluster_count
+  count                = (contains(["preview"], var.env) ? 1 : 0) * var.cluster_count
   provider             = azurerm.preview1aat
   principal_id         = data.azurerm_kubernetes_cluster.kubernetes["${count.index}"].kubelet_identity[0].object_id
   scope                = data.azurerm_resource_group.managed-identity-preview1aat.id
@@ -19,7 +19,7 @@ data "azurerm_resource_group" "managed-identity-preview2aat" {
 }
 
 resource "azurerm_role_assignment" "preview2aat_cft_rg_identity_operator" {
-  count                = (contains(["preview"], var.environment) ? 1 : 0) * var.cluster_count
+  count                = (contains(["preview"], var.env) ? 1 : 0) * var.cluster_count
   provider             = azurerm.preview2aat
   principal_id         = data.azurerm_kubernetes_cluster.kubernetes["${count.index}"].kubelet_identity[0].object_id
   scope                = data.azurerm_resource_group.managed-identity-preview2aat.id
@@ -27,12 +27,12 @@ resource "azurerm_role_assignment" "preview2aat_cft_rg_identity_operator" {
 }
 
 data "azurerm_user_assigned_identity" "sops_mi" {
-  name                = "aks-${var.environment}-mi"
+  name                = "aks-${var.env}-mi"
   resource_group_name = "genesis-rg"
 }
 
 resource "azurerm_role_assignment" "preview_externaldns_read_rg" {
-  count                = (contains(["preview"], var.environment) ? 1 : 0) * var.cluster_count
+  count                = (contains(["preview"], var.env) ? 1 : 0) * var.cluster_count
   provider             = azurerm.dts-cftptl-intsvc
   principal_id         = data.azurerm_user_assigned_identity.sops_mi.principal_id
   scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg"
@@ -40,7 +40,7 @@ resource "azurerm_role_assignment" "preview_externaldns_read_rg" {
 }
 
 resource "azurerm_role_assignment" "preview_externaldns_dns_zone_contributor" {
-  count                = (contains(["preview"], var.environment) ? 1 : 0) * var.cluster_count
+  count                = (contains(["preview"], var.env) ? 1 : 0) * var.cluster_count
   provider             = azurerm.dts-cftptl-intsvc
   principal_id         = data.azurerm_user_assigned_identity.sops_mi.principal_id
   scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-preview.internal"

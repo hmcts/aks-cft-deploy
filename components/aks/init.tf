@@ -19,11 +19,11 @@ provider "azurerm" {
 
 locals {
 
-  control_resource_environment = var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment == "ptlsbox" ? "sbox" : var.environment == "preview" ? "dev" : "${var.environment}"
+  control_resource_environment = var.env == "perftest" ? "test" : var.env == "aat" ? "stg" : var.env == "ptlsbox" ? "sbox" : var.env == "preview" ? "dev" : "${var.env}"
 
-  environment = var.environment == "sbox" ? "sandbox" : var.environment == "test" ? "perftest" : var.environment == "ptlsbox" ? "cftsbox-intsvc" : var.environment == "ptl" ? "cftptl-intsvc" : "${var.environment}"
+  environment = var.env == "sbox" ? "sandbox" : var.env == "test" ? "perftest" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : "${var.env}"
 
-  environment-mi = var.environment == "sandbox" ? "sbox" : var.environment == "test" ? "perftest" : var.environment == "aat" ? "stg" : "${var.environment}"
+  environment-mi = var.env == "sandbox" ? "sbox" : var.env == "test" ? "perftest" : var.env == "aat" ? "stg" : "${var.env}"
   acr = {
     global = {
       subscription = "8999dec3-0104-4a27-94ee-6588559729d1"
@@ -63,7 +63,7 @@ locals {
 }
 
 provider "azurerm" {
-  subscription_id            = local.mi_cft[var.environment].subscription
+  subscription_id            = local.mi_cft[var.env].subscription
   skip_provider_registration = "true"
   features {}
   alias = "acr"

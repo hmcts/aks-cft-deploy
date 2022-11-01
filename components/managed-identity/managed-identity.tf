@@ -2,7 +2,7 @@ resource "azurerm_user_assigned_identity" "sops-mi" {
   resource_group_name = data.azurerm_resource_group.genesis_rg.name
   location            = data.azurerm_resource_group.genesis_rg.location
 
-  name = "aks-${var.environment}-mi"
+  name = "aks-${var.env}-mi"
   tags = module.ctags.common_tags
 }
 
@@ -69,7 +69,7 @@ locals {
 }
 
 resource "azurerm_role_assignment" "externaldns_dns_zone_contributor" {
-  for_each             = lookup(local.external_dns, var.environment, toset([]))
+  for_each             = lookup(local.external_dns, var.env, toset([]))
   scope                = each.value
   role_definition_name = contains(regex("^.*/Microsoft.Network/(.*)/.*$", each.value), "privateDnsZones") ? "Private DNS Zone Contributor" : "DNS Zone Contributor"
   principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
@@ -77,7 +77,7 @@ resource "azurerm_role_assignment" "externaldns_dns_zone_contributor" {
 
 resource "azurerm_role_assignment" "externaldns_read_rg" {
   # Only add the reader role if there are zones configured
-  for_each             = lookup(local.external_dns, var.environment, null) != null ? local.external_dns.resource_groups : toset([])
+  for_each             = lookup(local.external_dns, var.env, null) != null ? local.external_dns.resource_groups : toset([])
   scope                = each.value
   role_definition_name = "Reader"
   principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
@@ -85,7 +85,7 @@ resource "azurerm_role_assignment" "externaldns_read_rg" {
 
 module "ctags" {
   source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
-  environment = var.environment
+  environment = var.env
   product     = var.product
   builtFrom   = var.builtFrom
 }

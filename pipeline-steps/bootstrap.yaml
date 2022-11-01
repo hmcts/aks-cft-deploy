@@ -6,7 +6,7 @@ parameters:
 
 steps:
 
-- template: keyvault-read.yaml
+- template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
   parameters:
     serviceConnection: $(serviceConnection)
     environment: ${{ parameters.environment }}
@@ -24,7 +24,7 @@ steps:
 
 - task: AzureCLI@1
   displayName: 'Bootstrap'
-  condition: and(variables.isMain, true, eq(variables['Action'], 'Apply'))
+  condition: and(variables.isMain, true, eq(variables['action'], 'apply'))
   inputs:
     azureSubscription: $(serviceConnection)
     addSpnToEnvironment: true
