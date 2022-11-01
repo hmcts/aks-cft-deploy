@@ -60,3 +60,7 @@ variable "enable_automatic_channel_upgrade_patch" {
 variable "workload_identity_enabled" {
   default = false
 }
+
+variable "service_operator_settings_enabled" {
+  default = false
+}
