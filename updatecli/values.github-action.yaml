@@ -5,12 +5,48 @@ github:
   owner: "hmcts"
   repository: "aks-cft-deploy"
 environments:
-  - aat
-  - demo
-  - ithc
-  - perftest
-  - preview
-  - prod
-  - ptl
-  - ptlsbox
-  - sbox
+  sbox:
+    enabled: true
+    aks_name: cft-sbox-00-aks
+    aks_resource_group: cft-sbox-00-rg
+    aks_subscription: DCD-CFTAPPS-SBOX
+  demo:
+    enabled: true
+    aks_name: cft-demo-00-aks
+    aks_resource_group: cft-demo-00-rg
+    aks_subscription: DCD-CFTAPPS-DEMO
+  preview:
+    enabled: true
+    aks_name: cft-preview-00-aks
+    aks_resource_group: cft-preview-00-rg
+    aks_subscription: DCD-CFTAPPS-DEV
+  ithc:
+    enabled: true
+    aks_name: cft-ithc-00-aks
+    aks_resource_group: cft-ithc-00-rg
+    aks_subscription: DCD-CFTAPPS-ITHC
+  ptlsbox:
+    enabled: true
+    aks_name: cft-ptlsbox-00-aks
+    aks_resource_group: cft-ptlsbox-00-rg
+    aks_subscription: DTS-CFTSBOX-INTSVC
+  ptl:
+    enabled: true
+    aks_name: cft-ptl-00-aks
+    aks_resource_group: cft-ptl-00-rg
+    aks_subscription: DTS-CFTPTL-INTSVC
+  aat:
+    enabled: true
+    aks_name: cft-aat-00-aks
+    aks_resource_group: cft-aat-00-rg
+    aks_subscription: DCD-CFTAPPS-STG
+  perftest:
+    enabled: true
+    aks_name: cft-perftest-00-aks
+    aks_resource_group: cft-perftest-00-rg
+    aks_subscription: DCD-CFTAPPS-TEST
+  prod:
+    enabled: true
+    aks_name: cft-prod-00-aks
+    aks_resource_group: cft-prod-00-rg
+    aks_subscription: DCD-CFTAPPS-PROD
