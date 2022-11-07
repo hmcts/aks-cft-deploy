@@ -7,6 +7,7 @@ VAULT_NAME=$8
 HELM_REPO=https://charts.fluxcd.io
 VALUES=deployments/fluxcd/values.yaml
 FLUX_HELM_CRD=https://raw.githubusercontent.com/fluxcd/helm-operator/chart-1.4.2/deploy/crds.yaml
+FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 
 FLUX_V1_CLUSTER=('ithc' 'perftest' 'aat' 'demo' 'prod')
 
@@ -20,6 +21,8 @@ if [[ " ${FLUX_V1_CLUSTER[*]} " =~ " ${ENV} " ]]; then
 
   kubectl apply -f ${FLUX_HELM_CRD}
   kubectl -n admin delete secret flux-helm-repositories || true
+  kubectl apply -f ${FLUX_CONFIG_URL}/k8s/namespaces/admin/flux-helm-operator/rbac/read-only-rbac.yaml
+  kubectl apply -f ${FLUX_CONFIG_URL}/k8s/namespaces/admin/flux-helm-operator/rbac/admin-role-binding.yaml
   helm upgrade flux-helm-operator fluxcd/helm-operator --install --namespace admin   -f  deployments/fluxcd/helm-operator-values.yaml --version 1.4.2 --wait
 
   # Change $ENV var to correct name
@@ -52,7 +55,6 @@ EOF
 fi
 
 # ------------------------Flux V2----------------------------
-FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 
 if [ ${ENV} == "ptlsbox" ]; then
   CLUSTER_ENV="sbox-intsvc"
