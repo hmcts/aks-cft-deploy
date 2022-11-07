@@ -52,10 +52,10 @@ resource "azurerm_key_vault_access_policy" "sops-policy" {
 }
 
 locals {
-  acme_environment_rg  = var.environment == "sandbox" ? "sbox" : var.environment == "ptlsbox" ? "sbox" : var.environment == "preview" ? "dev" : var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment
-  acme_environment_kv  = var.environment == "ptl" ? "ptlintsvc" : var.environment == "sandbox" ? "sbox" : var.environment == "preview" ? "dev" : var.environment == "ptlsbox" ? "sboxintsvc" : var.environment == "perftest" ? "test" : var.environment == "aat" ? "stg" : var.environment
-  department_name      = var.environment == "ptl" || var.environment == "ptlsbox" ? "dts" : "dcd"
-  acme_environment_app = var.environment == "ptl" || var.environment == "ptlsbox" ? "cft" : "cftapps"
+  acme_environment_rg  = var.env == "sandbox" ? "sbox" : var.env == "ptlsbox" ? "sbox" : var.env == "preview" ? "dev" : var.env == "perftest" ? "test" : var.env == "aat" ? "stg" : var.env
+  acme_environment_kv  = var.env == "ptl" ? "ptlintsvc" : var.env == "sandbox" ? "sbox" : var.env == "preview" ? "dev" : var.env == "ptlsbox" ? "sboxintsvc" : var.env == "perftest" ? "test" : var.env == "aat" ? "stg" : var.env
+  department_name      = var.env == "ptl" || var.env == "ptlsbox" ? "dts" : "dcd"
+  acme_environment_app = var.env == "ptl" || var.env == "ptlsbox" ? "cft" : "cftapps"
   external_dns = {
     # Resource Groups to add Reader permissions for external dns to
     resource_groups = toset([
