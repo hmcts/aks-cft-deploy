@@ -1,8 +1,6 @@
 workers: 3
 rbac:
   create: false
-serviceAccount:
-  create: false
 helm:
   versions: v3
 git:
