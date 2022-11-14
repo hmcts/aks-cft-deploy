@@ -12,8 +12,8 @@ environments:
     aks_subscription: DCD-CFTAPPS-SBOX
   demo:
     enabled: true
-    aks_name: cft-demo-00-aks
-    aks_resource_group: cft-demo-00-rg
+    aks_name: cft-demo-01-aks
+    aks_resource_group: cft-demo-01-rg
     aks_subscription: DCD-CFTAPPS-DEMO
   preview:
     enabled: true
