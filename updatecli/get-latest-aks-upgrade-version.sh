@@ -22,7 +22,7 @@ get_upgrades () {
 
 UPGRADE_VERSION=$(get_upgrades)
 
-if [[ ${UPGRADE_VERSION} == "" ]] [[ ${environment} == "demo" ]]; then
+if [[ ${UPGRADE_VERSION} == "" ]] && [[ ${environment} == "demo" ]]; then
 
   aks_name=$(echo "${aks_name}" | sed -E "s/00/01/g" )
   aks_resource_group=$(echo "${aks_resource_group}" | sed -E "s/00/01/g" )
