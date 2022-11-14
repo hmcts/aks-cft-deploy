@@ -22,7 +22,9 @@ get_upgrades () {
 
 UPGRADE_VERSION=$(get_upgrades)
 
-if [[ ${UPGRADE_VERSION} == "" ]] && [[ ${environment} == "demo" ]]; then
+# For environments usually only running one cluster at a time
+# check the second cluster if response from 00 is empty
+if [[ ${UPGRADE_VERSION} == "" ]] && [[ ${environment} =~ ^(preview|demo)$ ]]; then
 
   aks_name=$(echo "${aks_name}" | sed -E "s/00/01/g" )
   aks_resource_group=$(echo "${aks_resource_group}" | sed -E "s/00/01/g" )
@@ -30,7 +32,6 @@ if [[ ${UPGRADE_VERSION} == "" ]] && [[ ${environment} == "demo" ]]; then
   UPGRADE_VERSION=$(get_upgrades)
 
 fi
-
 
 echo "${UPGRADE_VERSION}"
 
