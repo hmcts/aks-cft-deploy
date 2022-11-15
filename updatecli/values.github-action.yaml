@@ -10,11 +10,13 @@ environments:
     aks_name: cft-sbox-00-aks
     aks_resource_group: cft-sbox-00-rg
     aks_subscription: DCD-CFTAPPS-SBOX
+  ## Do not change demo to 01
   demo:
     enabled: true
-    aks_name: cft-demo-01-aks
-    aks_resource_group: cft-demo-01-rg
+    aks_name: cft-demo-00-aks
+    aks_resource_group: cft-demo-00-rg
     aks_subscription: DCD-CFTAPPS-DEMO
+  ## Do not change preview to 01
   preview:
     enabled: true
     aks_name: cft-preview-00-aks
