@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
 
   name = format("%s-%s-%s-rg",
     var.project,
-    var.environment,
+    var.env,
     "0${count.index}"
   )
   tags = module.ctags.common_tags
@@ -12,13 +12,17 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
 
 resource "azurerm_resource_group" "disks_resource_group" {
   location = var.location
-  name     = "disks-${var.environment}-rg"
+  name     = "disks-${var.env}-rg"
   tags     = module.ctags.common_tags
 }
 
 module "loganalytics" {
   source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=master"
-  environment = var.environment
+  environment = var.env
+}
+
+data "azuread_service_principal" "version_checker" {
+  display_name = "DTS CFT AKS version checker"
 }
 
 module "kubernetes" {
@@ -26,7 +30,7 @@ module "kubernetes" {
   source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
-  environment            = var.environment
+  environment            = var.env
   location               = var.location
 
   oms_agent_enabled = var.oms_agent_enabled
@@ -69,12 +73,13 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = var.enable_user_system_nodepool_split == true ? true : false
 
-  additional_node_pools = contains([], var.environment) ? [] : [
+  additional_node_pools = contains([], var.env) ? [] : [
     {
       name                = "linux"
       vm_size             = lookup(var.linux_node_pool, "vm_size", "Standard_DS3_v2")
       min_count           = lookup(var.linux_node_pool, "min_nodes", 2)
       max_count           = lookup(var.linux_node_pool, "max_nodes", 4)
+      max_pods            = lookup(var.linux_node_pool, "max_pods", 30)
       os_type             = "Linux"
       node_taints         = []
       enable_auto_scaling = true
@@ -85,11 +90,17 @@ module "kubernetes" {
   project_acr_enabled = var.project_acr_enabled
   availability_zones  = var.availability_zones
   depends_on          = [azurerm_resource_group.disks_resource_group]
+
+  enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
+  workload_identity_enabled              = var.workload_identity_enabled
+  service_operator_settings_enabled      = var.service_operator_settings_enabled
+
+  aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
 }
 
 module "ctags" {
   source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
-  environment = var.environment
+  environment = var.env
   product     = var.product
   builtFrom   = var.builtFrom
 }

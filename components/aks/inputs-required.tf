@@ -1,5 +1,5 @@
 # General
-variable "environment" {}
+variable "env" {}
 
 variable "project" {}
 
@@ -50,4 +50,17 @@ variable "enable_user_system_nodepool_split" {
 
 variable "availability_zones" {
   type = list(any)
+}
+
+variable "enable_automatic_channel_upgrade_patch" {
+  default     = false
+  description = "Enable automatic patch upgrades"
+}
+
+variable "workload_identity_enabled" {
+  default = false
+}
+
+variable "service_operator_settings_enabled" {
+  default = false
 }

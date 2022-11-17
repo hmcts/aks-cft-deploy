@@ -27,9 +27,6 @@ Terraform code to deploy CFT AKS Cluster and underlying infrastructure.
         d) Create neuvector azure file share
         e) Generate sealed secrets [optional]
         f) Registers cluster to Dynatrace [Specific clusters only]
-        
-    5) Destroy
-        a) Optional to perform terraform destroy for AKS
 
 
 ## Scripts Information

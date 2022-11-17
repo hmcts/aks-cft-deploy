@@ -66,6 +66,12 @@ additional_routes_appgw = [
     address_prefix         = "10.96.64.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "pet_prod_network"
+    address_prefix         = "192.169.0.0/16"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   }
 ]
 
