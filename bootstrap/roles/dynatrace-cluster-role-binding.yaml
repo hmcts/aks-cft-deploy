@@ -14,6 +14,7 @@ rules:
   - batch
   - apps
   resources:
+  - services
   - nodes
   - pods
   - namespaces
