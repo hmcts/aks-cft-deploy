@@ -7,7 +7,7 @@ VAULT_NAME=$8
 HELM_REPO=https://charts.fluxcd.io
 VALUES=deployments/fluxcd/values.yaml
 FLUX_HELM_CRD=https://raw.githubusercontent.com/fluxcd/helm-operator/chart-1.4.2/deploy/crds.yaml
-FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/DTSPO-7175-patch-fluxv2
+FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 
 FLUX_V1_CLUSTER=('ithc' 'perftest' 'aat' 'demo' 'prod')
 
@@ -41,15 +41,15 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: admin
 resources:
-  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/DTSPO-7175-patch-fluxv2/k8s/namespaces/admin/flux/flux.yaml
+  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/flux.yaml
 patchesStrategicMerge:
-  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/DTSPO-7175-patch-fluxv2/k8s/namespaces/admin/flux/patches/${ENV}/flux.yaml
-  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/DTSPO-7175-patch-fluxv2/k8s/namespaces/admin/flux/patches/${ENV}/cluster-${CLUSTER_NAME}/flux.yaml
+  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/patches/${ENV}/flux.yaml
+  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/patches/${ENV}/cluster-${CLUSTER_NAME}/flux.yaml
 EOF
   ) > "${TMP_DIR}/kustomization.yaml"
   # -----------------------------------------------------------
 
-  kubectl apply -f https://raw.githubusercontent.com/hmcts/cnp-flux-config/DTSPO-7175-patch-fluxv2/k8s/$ENV/common/sealed-secrets/acr-credentials.yaml
+  kubectl apply -f https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/$ENV/common/sealed-secrets/acr-credentials.yaml
 
   ./kustomize build ${TMP_DIR} |  kubectl apply -f -
 fi
@@ -67,7 +67,7 @@ fi
 CLUSTER_NAME=$(echo ${CLUSTER_NAME} | cut -d'-' -f 2)
 
 # Install Flux
-kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components.yaml
+kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components-0.36.0.yaml
 
 #Git credentials
 kubectl apply -f ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/git-credentials.yaml
