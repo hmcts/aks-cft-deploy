@@ -9,7 +9,7 @@ VALUES=deployments/fluxcd/values.yaml
 FLUX_HELM_CRD=https://raw.githubusercontent.com/fluxcd/helm-operator/chart-1.4.2/deploy/crds.yaml
 FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 
-FLUX_V1_CLUSTER=('perftest''demo''prod')
+FLUX_V1_CLUSTER=('prod')
 
 #Install kustomize
 curl -s "https://raw.githubusercontent.com/\
