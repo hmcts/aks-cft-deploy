@@ -26,8 +26,6 @@ Terraform code to deploy CFT AKS Cluster and underlying infrastructure.
         c) Install flux and helm operator
         d) Create neuvector azure file share
         e) Generate sealed secrets [optional]
-        f) Registers cluster to Dynatrace [Specific clusters only]
-
 
 ## Scripts Information
 
