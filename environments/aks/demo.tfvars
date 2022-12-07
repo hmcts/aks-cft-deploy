@@ -12,7 +12,8 @@ system_node_pool = {
 linux_node_pool = {
   vm_size   = "Standard_DS4_v2",
   min_nodes = 20,
-  max_nodes = 30
+  max_nodes = 30,
+  max_pods  = 50,
 }
 
 availability_zones = ["1", "2", "3"]
