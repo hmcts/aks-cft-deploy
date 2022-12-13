@@ -64,3 +64,7 @@ variable "workload_identity_enabled" {
 variable "service_operator_settings_enabled" {
   default = false
 }
+
+variable "csi_driver_enabled" {
+  default = false
+}

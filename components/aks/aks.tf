@@ -33,7 +33,8 @@ module "kubernetes" {
   environment            = var.env
   location               = var.location
 
-  oms_agent_enabled = var.oms_agent_enabled
+  oms_agent_enabled  = var.oms_agent_enabled
+  csi_driver_enabled = var.csi_driver_enabled
 
   sku_tier = var.sku_tier
   providers = {
