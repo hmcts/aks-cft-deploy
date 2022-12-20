@@ -3,56 +3,11 @@ set -ex
 
 ENV=$3
 CLUSTER_NAME=$6
-VAULT_NAME=$8
-HELM_REPO=https://charts.fluxcd.io
-VALUES=deployments/fluxcd/values.yaml
-FLUX_HELM_CRD=https://raw.githubusercontent.com/fluxcd/helm-operator/chart-1.4.2/deploy/crds.yaml
 FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
-
-FLUX_V1_CLUSTER=('ithc' 'perftest' 'aat' 'demo' 'prod')
 
 #Install kustomize
 curl -s "https://raw.githubusercontent.com/\
 kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-
-# ------------------------Flux V1----------------------------
-if [[ " ${FLUX_V1_CLUSTER[*]} " =~ " ${ENV} " ]]; then
-  helm repo add fluxcd ${HELM_REPO}
-
-  kubectl apply -f ${FLUX_HELM_CRD}
-  kubectl -n admin delete secret flux-helm-repositories || true
-  kubectl apply -f ${FLUX_CONFIG_URL}/k8s/namespaces/admin/flux-helm-operator/rbac/read-only-rbac.yaml
-  kubectl apply -f ${FLUX_CONFIG_URL}/k8s/namespaces/admin/flux-helm-operator/rbac/admin-role-binding.yaml
-  helm upgrade flux-helm-operator fluxcd/helm-operator --install --namespace admin   -f  deployments/fluxcd/helm-operator-values.yaml --version 1.4.2 --wait
-
-  # Change $ENV var to correct name
-  if [ $ENV = "sbox" ]; then
-  ENV="sandbox"
-  elif [ $ENV = "test" ]; then
-  ENV="perftest"
-  fi
-
-  TMP_DIR=/tmp/flux/${ENV}/${CLUSTER_NAME}
-  mkdir -p $TMP_DIR
-  # -----------------------------------------------------------
-  (
-cat <<EOF
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: admin
-resources:
-  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/flux.yaml
-patchesStrategicMerge:
-  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/patches/${ENV}/flux.yaml
-  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/k8s/namespaces/admin/flux/patches/${ENV}/cluster-${CLUSTER_NAME}/flux.yaml
-EOF
-  ) > "${TMP_DIR}/kustomization.yaml"
-  # -----------------------------------------------------------
-
-  ./kustomize build ${TMP_DIR} |  kubectl apply -f -
-fi
-
-# ------------------------Flux V2----------------------------
 
 if [ ${ENV} == "ptlsbox" ]; then
   CLUSTER_ENV="sbox-intsvc"
