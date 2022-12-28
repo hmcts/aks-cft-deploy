@@ -6,12 +6,15 @@ enable_user_system_nodepool_split = true
 enable_automatic_channel_upgrade_patch = true
 
 system_node_pool = {
+  vm_size   = "Standard_D4ds_v5",
   min_nodes = 2,
   max_nodes = 4
 }
 linux_node_pool = {
+  vm_size   = "Standard_D8ds_v5",
   min_nodes = 25,
   max_nodes = 40
 }
 
-availability_zones = ["1"]
+availability_zones = ["1", "2", "3"]
+csi_driver_enabled = true
