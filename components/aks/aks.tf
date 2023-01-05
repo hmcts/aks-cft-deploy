@@ -90,7 +90,7 @@ module "kubernetes" {
 
   project_acr_enabled = var.project_acr_enabled
   availability_zones  = var.availability_zones
-  
+
   disks_resource_group_id = azurerm_resource_group.disks_resource_group.id
 
   enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
