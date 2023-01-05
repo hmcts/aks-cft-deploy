@@ -27,7 +27,7 @@ data "azuread_service_principal" "version_checker" {
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=DTSPO-11790_disk_resource_group_var"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.env
