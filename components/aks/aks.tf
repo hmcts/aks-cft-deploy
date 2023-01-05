@@ -27,7 +27,7 @@ data "azuread_service_principal" "version_checker" {
 
 module "kubernetes" {
   count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
+  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=DTSPO-11790_disk_resource_group_var"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.env
@@ -90,7 +90,8 @@ module "kubernetes" {
 
   project_acr_enabled = var.project_acr_enabled
   availability_zones  = var.availability_zones
-  depends_on          = [azurerm_resource_group.disks_resource_group]
+  
+  disks_resource_group_id = azurerm_resource_group.disks_resource_group.id
 
   enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
   workload_identity_enabled              = var.workload_identity_enabled
