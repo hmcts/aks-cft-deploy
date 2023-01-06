@@ -108,3 +108,7 @@ variable "additional_routes_coreinfra" {
 variable "coreinfra_subnets" {
   default = []
 }
+
+variable "expiresAfter" {
+  default = "3000-01-01"
+}

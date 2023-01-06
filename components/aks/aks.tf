@@ -111,5 +111,6 @@ module "ctags" {
   environment  = var.env
   product      = var.product
   builtFrom    = var.builtFrom
+  expiresAfter = var.expiresAfter
   autoShutdown = var.autoShutdown
 }
