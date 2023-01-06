@@ -25,6 +25,10 @@ data "azuread_service_principal" "version_checker" {
   display_name = "DTS CFT AKS version checker"
 }
 
+data "azuread_service_principal" "aks_auto_shutdown" {
+  display_name = "DTS AKS Auto-Shutdown"
+}
+
 module "kubernetes" {
   count  = var.cluster_count
   source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
@@ -98,6 +102,8 @@ module "kubernetes" {
   service_operator_settings_enabled      = var.service_operator_settings_enabled
 
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
+
+  aks_auto_shutdown_principal_id = data.azuread_service_principal.aks_auto_shutdown.object_id
 }
 
 module "ctags" {
