@@ -5,13 +5,15 @@ enable_user_system_nodepool_split = true
 oms_agent_enabled                 = true
 
 system_node_pool = {
+  vm_size   = "Standard_D4ds_v5",
   min_nodes = 4,
   max_nodes = 10
 }
 linux_node_pool = {
-  vm_size   = "Standard_DS4_v2",
+  vm_size   = "Standard_D8ds_v5",
   min_nodes = 50,
   max_nodes = 100
 }
 
-availability_zones = []
+availability_zones = ["1", "2", "3"]
+csi_driver_enabled = true
