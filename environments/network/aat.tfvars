@@ -113,6 +113,12 @@ additional_routes_appgw = [
     address_prefix         = "10.145.0.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "core_cftptl_intvsc_vnet"
+    address_prefix         = "10.10.64.0/21"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   }
 ]
 
