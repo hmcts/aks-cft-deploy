@@ -48,3 +48,7 @@ variable "product" {
 variable "application_name" {
   default = "flux"
 }
+
+variable "expiresAfter" {
+  default = "3000-01-01"
+}
