@@ -1,18 +1,16 @@
 #!/bin/bash
-set -ex
+set -e
 organization="hmcts"
-project="CNP"
+project="PlatformOperations"
+
 
 echo "This is build $thisbuild"
 IFS=$'\n'
-test=$(curl -s -u :"$azuredevopstoken" --request GET "https://dev.azure.com/$organization/$project/_apis/build/builds?api-version=5.1&definitions=$pipelinedefinition" -H "Content-Type: application/json")
-echo $test
 JSON_DATA=($(curl -s -u :"$azuredevopstoken" --request GET "https://dev.azure.com/$organization/$project/_apis/build/builds?api-version=5.1&definitions=$pipelinedefinition" -H "Content-Type: application/json" | jq  '.value[] | .status + (.id|tostring)' | sort -u | grep inProgress))
-
 buildnumber=(${JSON_DATA//[!0-9]/})
-echo $buildnumber
 
-if [ $thisbuild -eq $buildnumber ] 
+
+if [ $thisbuild -eq $buildnumber ]
 then
 
 echo "No other builds are in Progress"
