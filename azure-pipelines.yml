@@ -111,12 +111,11 @@ stages:
     jobs:
       - job: PreChecks
         steps:
-          - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
+          - template: pipeline-steps/terraform-precheck.yaml
             parameters:
-              keyvaultName: 'infra-vault-nonprod'
+              keyvaultName: infra-vault-nonprod
               keyvaultSecret: 'azure-devops-token'
               serviceConnection: azurerm-sandbox
-              overrideAction: ${{ parameters.action }}
 
   - stage: Genesis
     displayName: 'Genesis'
