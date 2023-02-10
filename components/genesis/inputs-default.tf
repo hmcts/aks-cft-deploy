@@ -13,3 +13,7 @@ variable "builtFrom" {
 variable "product" {
   default = "cft-platform"
 }
+
+variable "expiresAfter" {
+  default = "3000-01-01"
+}
