@@ -74,7 +74,7 @@ EOF
     kubectl -n flux-system wait --for condition=established --timeout=60s customresourcedefinition.apiextensions.k8s.io/gitrepositories.source.toolkit.fluxcd.io
     kubectl -n flux-system wait --for condition=established --timeout=60s customresourcedefinition.apiextensions.k8s.io/kustomizations.kustomize.toolkit.fluxcd.io
 # -----------------------------------------------------------
-
+}
 
 ############################################################
 # End_of_Functions
