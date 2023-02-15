@@ -63,8 +63,8 @@ resources:
   - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/git-credentials.yaml
   - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/aks-sops-aadpodidentity.yaml
   - ${FLUX_CONFIG_URL}/apps/flux-system/base/flux-config-gitrepo.yaml
-# patchesStrategicMerge:
-# - ${FLUX_CONFIG_URL}/apps/flux-system/base/patches/kustomize-controller-patch.yaml
+patchesStrategicMerge:
+  - ${FLUX_CONFIG_URL}/apps/flux-system/base/patches/kustomize-controller-patch.yaml
 EOF
 ) > "${TMP_DIR}/gotk/kustomization.yaml"
 # -----------------------------------------------------------
@@ -74,7 +74,7 @@ EOF
     kubectl -n flux-system wait --for condition=established --timeout=60s customresourcedefinition.apiextensions.k8s.io/gitrepositories.source.toolkit.fluxcd.io
     kubectl -n flux-system wait --for condition=established --timeout=60s customresourcedefinition.apiextensions.k8s.io/kustomizations.kustomize.toolkit.fluxcd.io
 # -----------------------------------------------------------
-
+}
 
 ############################################################
 # End_of_Functions
