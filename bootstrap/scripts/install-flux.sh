@@ -63,8 +63,8 @@ resources:
   - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/git-credentials.yaml
   - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/aks-sops-aadpodidentity.yaml
   - ${FLUX_CONFIG_URL}/apps/flux-system/base/flux-config-gitrepo.yaml
-# patchesStrategicMerge:
-# - ${FLUX_CONFIG_URL}/apps/flux-system/base/patches/kustomize-controller-patch.yaml
+patchesStrategicMerge:
+  - ${FLUX_CONFIG_URL}/apps/flux-system/base/patches/kustomize-controller-patch.yaml
 EOF
 ) > "${TMP_DIR}/gotk/kustomization.yaml"
 # -----------------------------------------------------------
