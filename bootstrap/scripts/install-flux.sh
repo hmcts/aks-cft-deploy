@@ -62,7 +62,6 @@ resources:
   - ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components.yaml
   - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/git-credentials.yaml
   - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/aks-sops-aadpodidentity.yaml
-  - ${FLUX_CONFIG_URL}/apps/flux-system/base/flux-config-gitrepo.yaml
 patchesStrategicMerge:
   - ${FLUX_CONFIG_URL}/apps/flux-system/base/patches/kustomize-controller-patch.yaml
 EOF
@@ -113,6 +112,7 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - ${FLUX_CONFIG_URL}/apps/flux-system/base/kustomize.yaml
+  - ${FLUX_CONFIG_URL}/apps/flux-system/base/flux-config-gitrepo.yaml
 patchesStrategicMerge:
   - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/${CLUSTER_NAME}/kustomize.yaml
 EOF
