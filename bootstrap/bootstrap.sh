@@ -46,6 +46,8 @@ for cluster in ${6}; do
   ./scripts/install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
   [[ $6 =~ ^(aat|ithc|perftest|prod)$ ]] && (./scripts/create-neuvector-azure-file-share.sh "$@"|| error_exit "ERROR: Unable to create Neuvector Azure File Shares")
   [ $9 == "true" ] && (./scripts/generate-sealed-secrets-pki.sh "$@" || error_exit "ERROR: Unable to generate sealed secrets")
+  echo "Cleanup"
+  ./scripts/cleanup-sshkeys.sh "$@" || error_exit "ERROR: Unable to Cleanup"
   echo "Deployment Complete"
 
 done

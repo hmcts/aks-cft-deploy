@@ -60,7 +60,7 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components.yaml
-  - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/git-credentials.yaml
+  - git-credentials.yaml
   - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/aks-sops-aadpodidentity.yaml
 patchesStrategicMerge:
   - ${FLUX_CONFIG_URL}/apps/flux-system/base/patches/kustomize-controller-patch.yaml
@@ -73,6 +73,24 @@ EOF
     kubectl -n flux-system wait --for condition=established --timeout=60s customresourcedefinition.apiextensions.k8s.io/gitrepositories.source.toolkit.fluxcd.io
     kubectl -n flux-system wait --for condition=established --timeout=60s customresourcedefinition.apiextensions.k8s.io/kustomizations.kustomize.toolkit.fluxcd.io
 # -----------------------------------------------------------
+}
+function flux_ssh_git_key {
+    echo " Kubectl Create Secret"
+    kubectl create secret generic flux-git-deploy \
+    --from-file=identity=$AGENT_BUILDDIRECTORY/flux-ssh-git-key \
+    --namespace admin \
+    --dry-run=client -o yaml | kubectl apply -f -
+}
+
+function flux_v2_ssh_git_key {
+    ssh-keyscan -t ecdsa-sha2-nistp256 github.com > $AGENT_BUILDDIRECTORY/known_hosts
+    echo " Kubectl Create Secret"
+    kubectl create secret generic git-credentials \
+    --from-file=identity=$AGENT_BUILDDIRECTORY/flux-ssh-git-key \
+    --from-file=identity.pub=$AGENT_BUILDDIRECTORY/flux-ssh-git-key.pub \
+    --from-file=known_hosts=$AGENT_BUILDDIRECTORY/known_hosts \
+    --namespace flux-system \
+    --dry-run=client -o yaml > "${TMP_DIR}/gotk/git-credentials.yaml"
 }
 
 ############################################################
@@ -98,8 +116,14 @@ mkdir -p ${TMP_DIR}
 # Create admin namespace
 create_admin_namespace
 
+#  Create secret in admin namespace 
+flux_ssh_git_key
+
 # Deploy AAD Pod Identity
 pod_identity_components
+
+# Create a secret manifest containing git credentials
+flux_v2_ssh_git_key
 
 # Install Flux
 flux_v2_installation
