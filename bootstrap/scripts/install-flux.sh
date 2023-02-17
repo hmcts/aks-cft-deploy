@@ -4,6 +4,7 @@ set -ex
 ENV=$3
 CLUSTER_NAME=$6
 FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
+AGENT_BUILDDIRECTORY=/tmp
 
 ############################################################
 # Functions
@@ -111,7 +112,7 @@ fi
 
 CLUSTER_NAME=$(echo ${CLUSTER_NAME} | cut -d'-' -f 2)
 TMP_DIR=/tmp/flux/${CLUSTER_ENV}/${CLUSTER_NAME}
-mkdir -p ${TMP_DIR}
+mkdir -p ${TMP_DIR}/gotk
 
 # Create admin namespace
 create_admin_namespace
