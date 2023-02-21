@@ -28,10 +28,8 @@ echo "Params: $@"
 chmod +x scripts/get-aks-credentials.sh
 chmod +x scripts/create-custom-namespaces.sh
 chmod +x scripts/create-cluster-admins.sh
-chmod +x scripts/install-sealed-secrets.sh
 chmod +x scripts/create-flux-githubkey-secret.sh
 chmod +x scripts/install-flux.sh
-chmod +x scripts/generate-sealed-secrets-pki.sh
 chmod +x scripts/create-neuvector-azure-file-share.sh
 chmod +x scripts/cleanup-sshkeys.sh
 
