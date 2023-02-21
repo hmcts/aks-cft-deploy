@@ -280,4 +280,3 @@ stages:
               project: $(project)
               serviceConnection: $(serviceConnection)
               aksKeyVault: $(aksKeyVault)
-              GenerateSealedSecrets: false
