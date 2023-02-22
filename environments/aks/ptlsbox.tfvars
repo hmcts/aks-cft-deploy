@@ -16,4 +16,4 @@ linux_node_pool = {
 }
 
 availability_zones = []
-autoShutdown = true
+autoShutdown       = true

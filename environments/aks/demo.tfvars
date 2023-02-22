@@ -18,4 +18,4 @@ linux_node_pool = {
 }
 
 availability_zones = ["1", "2", "3"]
-autoShutdown = true
+autoShutdown       = true
