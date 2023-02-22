@@ -66,5 +66,5 @@ variable "service_operator_settings_enabled" {
 }
 
 variable "csi_driver_enabled" {
-  default = false
+  default = true 
 }
