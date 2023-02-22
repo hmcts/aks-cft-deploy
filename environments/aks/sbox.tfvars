@@ -20,6 +20,4 @@ linux_node_pool = {
 }
 
 availability_zones = ["1"]
-csi_driver_enabled = true
-
-autoShutdown = true
+autoShutdown       = true
