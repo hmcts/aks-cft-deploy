@@ -5,6 +5,7 @@ ENV=$3
 CLUSTER_NAME=$6
 FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 AGENT_BUILDDIRECTORY=/tmp
+KUSTOMIZE_VERSION=4.5.7
 
 ############################################################
 # Functions
@@ -99,8 +100,13 @@ function flux_v2_ssh_git_key {
 ############################################################
 
 #Install kustomize
-curl -s "https://raw.githubusercontent.com/\
-kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+
+if [ -f ./kustomize ]; then
+    echo "Kustomize installed"
+else
+    #Install kustomize
+    curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash -s ${KUSTOMIZE_VERSION}
+fi
 
 if [ ${ENV} == "ptlsbox" ]; then
   CLUSTER_ENV="sbox-intsvc"

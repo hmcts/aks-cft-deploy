@@ -22,8 +22,7 @@ then
     usage
 fi
 
-echo "Params: $@"
-
+echo "Params: $*"
 
 chmod +x scripts/get-aks-credentials.sh
 chmod +x scripts/create-custom-namespaces.sh
@@ -33,10 +32,24 @@ chmod +x scripts/install-flux.sh
 chmod +x scripts/create-neuvector-azure-file-share.sh
 chmod +x scripts/cleanup-sshkeys.sh
 
-for cluster in ${6}; do 
+project=${1}
+env=${3}
+if [[ "${6}" == "All" ]]; then
+  echo "Checking for available clusters"
+  clusters=$(az aks list --output tsv --query '[].name')
+  echo -e "Clusters found:\n${clusters}"
+  cluster_numbers=$(echo "${clusters}" | sed -n "s/${project}-${env}-\([0-9][0-9]\)-aks/\1/p" )
+else
+  cluster_numbers=${6}
+fi
+
+
+for cluster in ${cluster_numbers}; do
   set -- "${@:1:5}" "$cluster" "${@:7:8}"
 
-  echo "Starting Deployment"
+  echo "################################"
+  echo -e "Starting Deployment on ${project}-${env}-${cluster}-aks\n"
+
   ./scripts/get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
   ./scripts/create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"
   ./scripts/create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
@@ -45,6 +58,7 @@ for cluster in ${6}; do
   [[ $6 =~ ^(aat|ithc|perftest|prod)$ ]] && (./scripts/create-neuvector-azure-file-share.sh "$@"|| error_exit "ERROR: Unable to create Neuvector Azure File Shares")
   echo "Cleanup"
   ./scripts/cleanup-sshkeys.sh "$@" || error_exit "ERROR: Unable to Cleanup"
-  echo "Deployment Complete"
 
+  echo "Deployment Complete for ${project}-${env}-${cluster}-aks"
+  echo "################################"
 done
