@@ -99,6 +99,22 @@ resource "azurerm_role_assignment" "externaldns_read_rg" {
   role_definition_name = "Reader"
   principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
 }
+data "azurerm_resource_group" "genesis_rg" {
+  name = "genesis-rg"
+}
+
+data "azurerm_subscription" "subscription" {}
+
+data "azurerm_user_assigned_identity" "aks" {
+  name                = "aks-${var.environment}-mi"
+  resource_group_name = data.azurerm_resource_group.genesis_rg.name
+}
+resource "azurerm_role_assignment" "service_operator" {
+  count                = var.service_operator_settings_enabled ? 1 : 0
+  principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
+  role_definition_name = "Contributor"
+  scope                = data.azurerm_subscription.subscription
+}
 
 module "ctags" {
   source       = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
