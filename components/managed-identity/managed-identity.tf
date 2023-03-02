@@ -99,9 +99,6 @@ resource "azurerm_role_assignment" "externaldns_read_rg" {
   role_definition_name = "Reader"
   principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
 }
-data "azurerm_resource_group" "genesis_rg" {
-  name = "genesis-rg"
-}
 
 data "azurerm_subscription" "subscription" {}
 
