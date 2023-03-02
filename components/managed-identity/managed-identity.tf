@@ -103,7 +103,7 @@ resource "azurerm_role_assignment" "externaldns_read_rg" {
 data "azurerm_subscription" "subscription" {}
 
 data "azurerm_user_assigned_identity" "aks" {
-  name                = "aks-${var.environment}-mi"
+  name                = "aks-${var.env}-mi"
   resource_group_name = data.azurerm_resource_group.genesis_rg.name
 }
 resource "azurerm_role_assignment" "service_operator" {
