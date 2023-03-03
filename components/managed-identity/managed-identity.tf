@@ -100,12 +100,6 @@ resource "azurerm_role_assignment" "externaldns_read_rg" {
   principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
 }
 
-data "azurerm_subscription" "subscription" {}
-
-data "azurerm_user_assigned_identity" "aks" {
-  name                = "aks-${var.env}-mi"
-  resource_group_name = data.azurerm_resource_group.genesis_rg.name
-}
 resource "azurerm_role_assignment" "service_operator" {
   count                = var.service_operator_settings_enabled ? 1 : 0
   principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
