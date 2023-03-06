@@ -52,3 +52,7 @@ variable "application_name" {
 variable "expiresAfter" {
   default = "3000-01-01"
 }
+
+variable "service_operator_settings_enabled" {
+  default = false
+}
