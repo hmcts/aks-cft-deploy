@@ -58,6 +58,8 @@ parameters:
 variables:
   - name: project
     value: cft
+  - name: timeoutInMinutes
+    value: 60
   - name: serviceConnection
     ${{ if eq( parameters['env'], 'perftest') }}: 
       value: "OPS-APPROVAL-GATE-TEST-ENVS"
