@@ -294,8 +294,8 @@ stages:
         steps:
           - template: steps/pipeline-tests-jest.yaml@cnp-azuredevops-libraries
             parameters:
-              workingDirectory: $(Pipeline.Workspace)/s/cft-sds-deploy/scripts
-              junit_output_dir: $(Pipeline.Workspace)/s/cft-sds-deploy/environments/junit
+              workingDirectory: $(Pipeline.Workspace)/s/aks-cft-deploy/scripts
+              junit_output_dir: $(Pipeline.Workspace)/s/aks-cft-deploy/environments/junit
               environment: ${{ parameters.env }}
               product: ${{ variables.product }}
               test_title: '${{ parameters.env }}_${{ parameters.cluster }}_${{ parameters.location }}'
