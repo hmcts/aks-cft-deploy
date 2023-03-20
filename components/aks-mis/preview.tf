@@ -32,7 +32,6 @@ data "azurerm_user_assigned_identity" "sops_mi" {
 }
 
 resource "azurerm_role_assignment" "preview_externaldns_read_rg" {
-  count                = (contains(["preview"], var.env) ? 1 : 0) * var.cluster_count
   provider             = azurerm.dts-cftptl-intsvc
   principal_id         = data.azurerm_user_assigned_identity.sops_mi.principal_id
   scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg"
@@ -40,7 +39,6 @@ resource "azurerm_role_assignment" "preview_externaldns_read_rg" {
 }
 
 resource "azurerm_role_assignment" "preview_externaldns_dns_zone_contributor" {
-  count                = (contains(["preview"], var.env) ? 1 : 0) * var.cluster_count
   provider             = azurerm.dts-cftptl-intsvc
   principal_id         = data.azurerm_user_assigned_identity.sops_mi.principal_id
   scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-preview.internal"
