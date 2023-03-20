@@ -25,3 +25,11 @@ variable "kubernetes_cluster_agent_max_pods" {
 variable "oms_agent_enabled" {
   default = false
 }
+
+variable "expiresAfter" {
+  default = "3000-01-01"
+}
+
+variable "autoShutdown" {
+  default = false
+}

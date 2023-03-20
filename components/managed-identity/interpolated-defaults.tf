@@ -8,6 +8,12 @@ data "azurerm_resource_group" "genesis_rg" {
   name = "genesis-rg"
 }
 
+data "azurerm_subscription" "subscription" {}
+data "azurerm_user_assigned_identity" "aks" {
+  name                = "aks-${var.env}-mi"
+  resource_group_name = data.azurerm_resource_group.genesis_rg.name
+}
+
 locals {
 
   environment = (var.env == "perftest") ? "test" : (var.env == "aat") ? "stg" : (var.env == "ptlsbox") ? "sbox" : (var.env == "preview") ? "dev" : "${var.env}"
