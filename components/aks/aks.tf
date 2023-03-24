@@ -10,12 +10,6 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
   tags = module.ctags.common_tags
 }
 
-resource "azurerm_resource_group" "disks_resource_group" {
-  location = var.location
-  name     = "disks-${var.env}-rg"
-  tags     = module.ctags.common_tags
-}
-
 module "loganalytics" {
   source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=master"
   environment = var.env
@@ -94,8 +88,6 @@ module "kubernetes" {
 
   project_acr_enabled = var.project_acr_enabled
   availability_zones  = var.availability_zones
-
-  disks_resource_group_id = azurerm_resource_group.disks_resource_group.id
 
   enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
   workload_identity_enabled              = var.workload_identity_enabled
