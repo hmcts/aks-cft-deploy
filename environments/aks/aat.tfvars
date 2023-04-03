@@ -4,12 +4,14 @@ kubernetes_cluster_ssh_key        = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfTT+
 enable_user_system_nodepool_split = true
 
 system_node_pool = {
+  vm_size   = "Standard_D4ds_v5",
   min_nodes = 4,
   max_nodes = 10
 }
 linux_node_pool = {
+  vm_size   = "Standard_D8ds_v5",
   min_nodes = 40,
   max_nodes = 80
 }
 
-availability_zones = ["1"]
+availability_zones = ["1", "2", "3"]

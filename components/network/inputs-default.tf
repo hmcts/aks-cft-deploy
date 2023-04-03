@@ -71,6 +71,7 @@ variable "private_endpoint_private_dns_zones" {
     "privatelink.datafactory.azure.net",
     "privatelink.postgres.database.azure.com",
     "privatelink.servicebus.windows.net",
+    "privatelink.redis.cache.windows.net",
     "private.postgres.database.azure.com",
     "platform.hmcts.net", # added as all envs require this currently
     "reform.hmcts.net"    # added as all envs require this currently
@@ -107,4 +108,8 @@ variable "additional_routes_coreinfra" {
 
 variable "coreinfra_subnets" {
   default = []
+}
+
+variable "expiresAfter" {
+  default = "3000-01-01"
 }

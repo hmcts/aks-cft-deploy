@@ -10,12 +10,6 @@ resource "azurerm_resource_group" "kubernetes_resource_group" {
   tags = module.ctags.common_tags
 }
 
-resource "azurerm_resource_group" "disks_resource_group" {
-  location = var.location
-  name     = "disks-${var.env}-rg"
-  tags     = module.ctags.common_tags
-}
-
 module "loganalytics" {
   source      = "git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=master"
   environment = var.env
@@ -23,6 +17,10 @@ module "loganalytics" {
 
 data "azuread_service_principal" "version_checker" {
   display_name = "DTS CFT AKS version checker"
+}
+
+data "azuread_service_principal" "aks_auto_shutdown" {
+  display_name = "DTS AKS Auto-Shutdown"
 }
 
 module "kubernetes" {
@@ -90,18 +88,21 @@ module "kubernetes" {
 
   project_acr_enabled = var.project_acr_enabled
   availability_zones  = var.availability_zones
-  depends_on          = [azurerm_resource_group.disks_resource_group]
 
   enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
   workload_identity_enabled              = var.workload_identity_enabled
   service_operator_settings_enabled      = var.service_operator_settings_enabled
 
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
+
+  aks_auto_shutdown_principal_id = data.azuread_service_principal.aks_auto_shutdown.object_id
 }
 
 module "ctags" {
-  source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
-  environment = var.env
-  product     = var.product
-  builtFrom   = var.builtFrom
+  source       = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
+  environment  = var.env
+  product      = var.product
+  builtFrom    = var.builtFrom
+  expiresAfter = var.expiresAfter
+  autoShutdown = var.autoShutdown
 }

@@ -5,12 +5,15 @@ ptl_cluster                       = true
 enable_user_system_nodepool_split = true
 
 system_node_pool = {
+  vm_size   = "Standard_D4ds_v5",
   min_nodes = 2,
   max_nodes = 4
 }
 linux_node_pool = {
+  vm_size   = "Standard_D8ds_v5",
   min_nodes = 8,
   max_nodes = 10
 }
 
 availability_zones = []
+autoShutdown       = true

@@ -100,9 +100,17 @@ resource "azurerm_role_assignment" "externaldns_read_rg" {
   principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
 }
 
+resource "azurerm_role_assignment" "service_operator" {
+  count                = var.service_operator_settings_enabled ? 1 : 0
+  principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
+  role_definition_name = "Contributor"
+  scope                = data.azurerm_subscription.subscription.id
+}
+
 module "ctags" {
-  source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
-  environment = var.env
-  product     = var.product
-  builtFrom   = var.builtFrom
+  source       = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
+  environment  = var.env
+  product      = var.product
+  builtFrom    = var.builtFrom
+  expiresAfter = var.expiresAfter
 }
