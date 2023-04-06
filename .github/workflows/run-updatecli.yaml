@@ -55,6 +55,8 @@ jobs:
           done
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+      - name: Install Pluto
+        uses: FairwindsOps/pluto/github-action@master
       - name: Run Pluto
         if: github.ref == 'refs/heads/main'
         run: |
