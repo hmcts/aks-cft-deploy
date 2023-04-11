@@ -52,7 +52,6 @@ jobs:
       - name: Install Pluto
         uses: FairwindsOps/pluto/github-action@master
       - name: Run Pluto
-        if: github.ref == 'refs/heads/main'
         run: |
            yq -r '.environments | to_entries | map(select(.value.enabled == true)) | .[].key' updatecli/values.github-action.yaml | while read i
            do
