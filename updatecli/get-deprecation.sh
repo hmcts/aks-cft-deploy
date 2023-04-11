@@ -15,17 +15,6 @@ echo "${environment}"
 
 az account set -s "${aks_subscription}"
 
-aks_name=$1
-aks_resource_group=$2
-aks_subscription=$3
-environment=$4
-
-echo "After-------"
-echo "${aks_name}"
-echo "${aks_resource_group}"
-echo "${aks_subscription}"
-echo "${environment}"
-
 echo "Trying cluster ${aks_name} in RG ${aks_resource_group}"
 az aks get-credentials \
     --resource-group "${aks_resource_group}"\
