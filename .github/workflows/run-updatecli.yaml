@@ -54,9 +54,9 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            sudo az aks install-cli
-            sudo kubectl version --client
-            sudo kubelogin --version
+            az aks install-cli
+            kubectl version --client
+            kubelogin --version
       - name: Install Pluto
         uses: FairwindsOps/pluto/github-action@master
       - name: Run Pluto
