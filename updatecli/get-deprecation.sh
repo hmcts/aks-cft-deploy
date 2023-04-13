@@ -20,5 +20,5 @@ az aks get-credentials \
     --resource-group "${aks_resource_group}"\
     --name "${aks_name}"
 #$(kubectl get pods)
-pluto detect-helm -o wide
+pluto detect-helm -o wide -v 3
 }
