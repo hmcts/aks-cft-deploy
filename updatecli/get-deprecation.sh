@@ -19,6 +19,6 @@ echo "Trying cluster ${aks_name} in RG ${aks_resource_group}"
 az aks get-credentials \
     --resource-group "${aks_resource_group}"\
     --name "${aks_name}"
-$(kubectl get pods)
+#$(kubectl get pods)
 pluto detect-helm -owide
 }
