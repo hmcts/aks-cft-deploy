@@ -10,7 +10,7 @@ echo "${aks_name}"
 echo "${aks_resource_group}"
 echo "${aks_subscription}"
 echo "${environment}"
-kubelogin --version
+/usr/local/bin/kubelogin --version
 az account set -s "${aks_subscription}"
 
 echo "Trying cluster ${aks_name} in RG ${aks_resource_group}"
