@@ -51,22 +51,14 @@ jobs:
   #        UPDATECLI_GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
       - name: Install Pluto
         uses: FairwindsOps/pluto/github-action@master
-      - name: Azure CLI script and Run Pluto
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.30.0
-          inlineScript: |
-            az aks install-cli
-            kubectl version --client
-            kubelogin --version
-            dnf install yq -y
-            
-            yq -r '.environments | to_entries | map(select(.value.enabled == true)) | .[].key' updatecli/values.github-action.yaml | while read i
-            do
-                CURRENT_ITER_ENVIRONMENT="$i" bash ./updatecli/get-deprecation.sh
-            done
+      - name: Run Pluto
+        run: |
+           yq -r '.environments | to_entries | map(select(.value.enabled == true)) | .[].key' updatecli/values.github-action.yaml | while read i
+           do
+               CURRENT_ITER_ENVIRONMENT="$i" bash ./updatecli/get-deprecation.sh > output.txt
+           done
         env:
-          UPDATECLI_GITHUB_TOKEN: $${{ steps.generate-token.outputs.token }}  
+          UPDATECLI_GITHUB_TOKEN: $${{ steps.generate-token.outputs.token }}
       - name: cat output
         uses: pCYSl5EDgo/cat@master
         id: coverage
