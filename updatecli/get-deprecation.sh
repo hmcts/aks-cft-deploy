@@ -6,18 +6,10 @@ aks_resource_group=`yq ".environments.$environment.aks_resource_group" ./updatec
 aks_subscription=`yq ".environments.$environment.aks_subscription" ./updatecli/values.github-action.yaml`
 
 # get kubelogin
-wget https://github.com/Azure/kubelogin/releases/download/v0.0.9/kubelogin-linux-amd64.zip
+wget -q https://github.com/Azure/kubelogin/releases/download/v0.0.9/kubelogin-linux-amd64.zip
 unzip kubelogin-linux-amd64.zip
 sudo mv bin/linux_amd64/kubelogin /usr/bin
 kubelogin convert-kubeconfig -l azurecli
-
-echo "Before-------"
-echo "${aks_name}"
-echo "${aks_resource_group}"
-echo "${aks_subscription}"
-echo "${environment}"
-
-kubelogin --version
 
 az account set -s "${aks_subscription}"
 
