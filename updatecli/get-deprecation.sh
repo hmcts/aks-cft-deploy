@@ -10,7 +10,10 @@ echo "${aks_name}"
 echo "${aks_resource_group}"
 echo "${aks_subscription}"
 echo "${environment}"
-/usr/local/bin/kubelogin --version
+ls /usr/local/bin
+echo $PATH
+`which kubelogin`
+#kubelogin --version
 az account set -s "${aks_subscription}"
 
 echo "Trying cluster ${aks_name} in RG ${aks_resource_group}"
