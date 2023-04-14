@@ -62,7 +62,7 @@ jobs:
       - name: Add kubelogin 
         uses: azure/use-kubelogin@v1
         env:
-          GITHUB_TOKEN: $${{ steps.generate-token.outputs.token }}
+          UPDATECLI_GITHUB_TOKEN: $${{ steps.generate-token.outputs.token }}
         with:
           kubelogin-version: 'latest'
       - name: Run Pluto
