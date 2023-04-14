@@ -54,12 +54,17 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            echo $PATH
             az aks install-cli
             kubectl version --client
             kubelogin --version
       - name: Install Pluto
         uses: FairwindsOps/pluto/github-action@master
+      - name: Add kubelogin 
+        uses: azure/use-kubelogin@v1
+        env:
+          GITHUB_TOKEN: $${{ steps.generate-token.outputs.token }}
+        with:
+          kubelogin-version: 'latest'
       - name: Run Pluto
         run: |
            yq -r '.environments | to_entries | map(select(.value.enabled == true)) | .[].key' updatecli/values.github-action.yaml | while read i
