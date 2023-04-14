@@ -24,7 +24,8 @@ az account set -s "${aks_subscription}"
 echo "Trying cluster ${aks_name} in RG ${aks_resource_group}"
 az aks get-credentials \
     --resource-group "${aks_resource_group}"\
-    --name "${aks_name}"
+    --name "${aks_name}"\
+    --admin
 
 #$(kubectl get pods)
 pluto detect-helm -o yaml -v 5 --target-versions k8s=v1.26.0
