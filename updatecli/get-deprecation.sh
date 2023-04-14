@@ -5,8 +5,6 @@ aks_name=`yq ".environments.$environment.aks_name" ./updatecli/values.github-act
 aks_resource_group=`yq ".environments.$environment.aks_resource_group" ./updatecli/values.github-action.yaml`
 aks_subscription=`yq ".environments.$environment.aks_subscription" ./updatecli/values.github-action.yaml`
 
-set -x 
-{
 echo "Before-------"
 echo "${aks_name}"
 echo "${aks_resource_group}"
@@ -21,4 +19,3 @@ az aks get-credentials \
     --name "${aks_name}"
 #$(kubectl get pods)
 pluto detect-helm -o yaml -v 5 --target-versions k8s=v1.26.0
-}
