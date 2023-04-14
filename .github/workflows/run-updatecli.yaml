@@ -54,6 +54,7 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
+            echo $PATH
             az aks install-cli
             kubectl version --client
             kubelogin --version
