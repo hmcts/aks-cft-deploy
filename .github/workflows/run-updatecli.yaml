@@ -59,6 +59,7 @@ jobs:
             az aks install-cli
             kubectl version --client
             kubelogin --version
+            apt install yq -y
             
             yq -r '.environments | to_entries | map(select(.value.enabled == true)) | .[].key' updatecli/values.github-action.yaml | while read i
             do
