@@ -23,4 +23,5 @@ az aks get-credentials \
     --admin
 
 #$(kubectl get pods)
-pluto detect-helm -o yaml --target-versions k8s=v1.26.0
+pluto detect-helm -o csv --target-versions k8s=v1.26.0
+echo "----------------"
