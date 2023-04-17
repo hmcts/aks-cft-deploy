@@ -2,7 +2,6 @@ parameters:
   environment: ''
   project: ''
   akskeyvault: ''
-  GenerateSealedSecrets: ''
 
 steps:
 
@@ -31,4 +30,4 @@ steps:
     scriptType: shell
     failOnStandardError: 'false'
     scriptPath: bootstrap/bootstrap.sh
-    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) "$(clusters)" deploy ${{ parameters.akskeyvault }} ${{ parameters.GenerateSealedSecrets }} '
+    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) "$(clusters)" deploy ${{ parameters.akskeyvault }} '
