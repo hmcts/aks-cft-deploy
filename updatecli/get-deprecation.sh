@@ -8,9 +8,8 @@ aks_subscription=`yq ".environments.$environment.aks_subscription" ./updatecli/v
 # get kubelogin
 if ! kubelogin --version  &> /dev/null
 then
-    echo "Kubelogin could not be found.. Installing"
     wget -q https://github.com/Azure/kubelogin/releases/download/v0.0.9/kubelogin-linux-amd64.zip
-    unzip kubelogin-linux-amd64.zip
+    unzip kubelogin-linux-amd64.zip &> /dev/null
     sudo mv bin/linux_amd64/kubelogin /usr/bin
     kubelogin convert-kubeconfig -l azurecli
 fi
@@ -24,4 +23,4 @@ az aks get-credentials \
     --admin
 
 #$(kubectl get pods)
-pluto detect-helm -o yaml -v 5 --target-versions k8s=v1.26.0
+pluto detect-helm -o yaml --target-versions k8s=v1.26.0
