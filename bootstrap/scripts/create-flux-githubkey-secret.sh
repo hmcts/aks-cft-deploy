@@ -1,19 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
-VAULT_NAME=$8
-NAMESPACE="admin"
+az_keyvault_name="${8}"
+AGENT_BUILDDIRECTORY=/tmp
 
-if [ ! -f flux_pk ]; then
-  az keyvault secret download \
-    --file flux_pk \
-    --name flux-github-private-key \
-    --encoding ascii \
-    --vault-name ${VAULT_NAME}
-fi
 
-kubectl -n ${NAMESPACE} delete secret flux-git-deploy || true
-
-kubectl create secret generic flux-git-deploy \
-  --from-file=identity=flux_pk \
-  --namespace ${NAMESPACE}
+private_key="$(az keyvault secret list --vault-name ${az_keyvault_name} --query "[?name=='flux-github-private-key'].name" -o tsv)"
+public_key="$(az keyvault secret list --vault-name ${az_keyvault_name} --query "[?name=='flux-github-public-key'].name" -o tsv)"
+if [[ -z $public_key ]] || [[ -z $private_key ]] 
+    then
+            echo "SSHKey Setup"
+            ssh-keygen -t ed25519 -f $AGENT_BUILDDIRECTORY/flux-ssh-git-key -q -P "" -C ""
+            az keyvault secret set --name flux-github-private-key --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-ssh-git-key
+            az keyvault secret set --name flux-github-public-key --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-ssh-git-key.pub
+    else
+            echo "SSHKey Download"
+            az keyvault secret download --name flux-github-private-key --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-ssh-git-key --encoding ascii
+            az keyvault secret download --name flux-github-public-key --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-ssh-git-key.pub --encoding ascii
+    fi
