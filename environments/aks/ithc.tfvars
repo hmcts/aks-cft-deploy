@@ -12,7 +12,7 @@ system_node_pool = {
 }
 linux_node_pool = {
   vm_size   = "Standard_D8ds_v5",
-  min_nodes = 25,
+  min_nodes = 15,
   max_nodes = 40
 }
 
