@@ -59,6 +59,7 @@ jobs:
            done
         env:
           UPDATECLI_GITHUB_TOKEN: $${{ steps.generate-token.outputs.token }}
+          K8S_VERSION: "v1.27.0"
       - name: cat output
         uses: pCYSl5EDgo/cat@master
         id: coverage
