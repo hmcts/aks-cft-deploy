@@ -22,6 +22,8 @@ az aks get-credentials \
     --name "${aks_name}"\
     --admin
 
-#$(kubectl get pods)
+current_version=$(az aks show  --resource-group ${rg} --name ${name} | grep 'currentKubernetesVersion' | grep -Eo '[0-9].[0-9][0-9]')
+K8S_VERSION=$(($current_version + 0.01))
+
 pluto detect-helm -o wide --target-versions k8s=${K8S_VERSION}
 echo "----------------"
