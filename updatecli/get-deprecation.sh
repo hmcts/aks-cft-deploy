@@ -23,9 +23,7 @@ az aks get-credentials \
     --admin
 
 current_version=$(az aks show  --resource-group "${aks_resource_group}" --name "${aks_name}" | grep 'currentKubernetesVersion' | grep -Eo '[0-9].[0-9][0-9]')
-echo $current_version
-K8S_VERSION=$(echo "$current_version + 0.01" | bc)
-K8S_VERSION=v${K8S_VERSION}
-echo $K8S_VERSION
-pluto detect-helm -o wide --target-versions k8s=${K8S_VERSION}
+aks_version=$(echo "$current_version + 0.01" | bc)
+
+pluto detect-helm -o wide --target-versions k8s=v${aks_version}
 echo "----------------"
