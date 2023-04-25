@@ -106,6 +106,13 @@ resource "azurerm_role_assignment" "service_operator" {
   role_definition_name = "Contributor"
   scope                = data.azurerm_subscription.subscription.id
 }
+resource "azurerm_role_assignment" "service_operator_workload_identity" {
+  count                = var.service_operator_settings_enabled ? 1 : 0
+  provider             = azurerm.acr
+  principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
+  role_definition_name = "Contributor"
+  scope                = data.azurerm_subscription.subscription.id
+}
 
 module "ctags" {
   source       = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
