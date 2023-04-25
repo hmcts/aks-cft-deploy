@@ -109,7 +109,7 @@ resource "azurerm_role_assignment" "service_operator" {
 resource "azurerm_role_assignment" "service_operator_workload_identity" {
   count                = var.service_operator_settings_enabled ? 1 : 0
   provider             = azurerm.wi_mapping
-  principal_id         = data.azurerm_user_assigned_identity.sops_mi.principal_id
+  principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
   role_definition_name = "Contributor"
   scope                = data.azurerm_subscription.subscription.id
 }
