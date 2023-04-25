@@ -48,7 +48,7 @@ provider "azurerm" {
   subscription_id            = local.mi_cft[var.env].subscription
   skip_provider_registration = "true"
   features {}
-  alias = "acr"
+  alias = "wi_mapping"
 }
 
 variable "subscription_id" {}
