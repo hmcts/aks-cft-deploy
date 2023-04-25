@@ -71,34 +71,34 @@ locals {
     ])
   }
 
-  # MIs for managed-identities-sandbox-rg etc - they are RPE MIs
+  # MIs for managed-identities-sandbox-rg etc - for workload identity with ASO
   mi_cft = {
     sbox = {
-      subscription = "/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783"
+      scope = "/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783/resourceGroups/managed-identities-sandbox-rg"
     }
     perftest = {
-      subscription = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+      scope = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c/resourceGroups/managed-identities-perftest-rg"
     }
     aat = {
-      subscription = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      scope = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9/resourceGroups/managed-identities-aat-rg"
     }
     ithc = {
-      subscription = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+      scope = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c/resourceGroups/managed-identities-ithc-rg"
     }
     ptlsbox = {
-      subscription = "/subscriptions/1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+      scope = "/subscriptions/1497c3d7-ab6d-4bb7-8a10-b51d03189ee3/resourceGroups/managed-identities-cftsbox-intsvc-rg"
     }
     preview = {
-      subscription = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      scope = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9/resourceGroups/managed-identities-preview-rg"
     }
     ptl = {
-      subscription = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+      scope = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/managed-identities-cftptl-intsvc-rg"
     }
     prod = {
-      subscription = "/subscriptions/8999dec3-0104-4a27-94ee-6588559729d1"
+      scope = "/subscriptions/8999dec3-0104-4a27-94ee-6588559729d1/resourceGroups/managed-identities-prod-rg"
     }
     demo = {
-      subscription = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      scope = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9/resourceGroups/managed-identities-demo-rg"
     }
   }
 }
@@ -141,7 +141,7 @@ resource "azurerm_role_assignment" "service_operator_workload_identity" {
   count                = var.service_operator_settings_enabled ? 1 : 0
   principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
   role_definition_name = "Contributor"
-  scope                = local.mi_cft[var.env].subscription
+  scope                = local.mi_cft[var.env].scope
 }
 
 module "ctags" {
