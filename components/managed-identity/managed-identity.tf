@@ -70,6 +70,37 @@ locals {
       "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-idam-demo.internal"
     ])
   }
+
+  # MIs for managed-identities-sandbox-rg etc - they are RPE MIs
+  mi_cft = {
+    sbox = {
+      subscription = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
+    }
+    perftest = {
+      subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+    }
+    aat = {
+      subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+    }
+    ithc = {
+      subscription = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+    }
+    ptlsbox = {
+      subscription = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+    }
+    preview = {
+      subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+    }
+    ptl = {
+      subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+    }
+    prod = {
+      subscription = "8999dec3-0104-4a27-94ee-6588559729d1"
+    }
+    demo = {
+      subscription = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+    }
+  }
 }
 
 data "azurerm_resource_group" "platform-rg" {
@@ -108,10 +139,9 @@ resource "azurerm_role_assignment" "service_operator" {
 }
 resource "azurerm_role_assignment" "service_operator_workload_identity" {
   count                = var.service_operator_settings_enabled ? 1 : 0
-  provider             = azurerm.wi_mapping
   principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
   role_definition_name = "Contributor"
-  scope                = data.azurerm_subscription.subscription.id
+  scope                = local.mi_cft[var.env].subscription
 }
 
 module "ctags" {
