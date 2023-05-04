@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "kubernetes_resource_group" {
-  for_each = toset([for k, v in var.clusters : k])
+  for_each = toset([for key, value in var.clusters : key])
   location = var.location
 
   name = format("%s-%s-%s-rg",
@@ -24,7 +24,7 @@ data "azuread_service_principal" "aks_auto_shutdown" {
 }
 
 module "kubernetes" {
-  for_each = toset([for k, v in var.clusters : k])
+  for_each = toset([for key, value in var.clusters : key])
   source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
