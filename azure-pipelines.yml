@@ -43,9 +43,9 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'ithc'
+    default: ''
     values:
-    - ithc
+    # - ithc
     - preview
     - demo
     # - sbox
