@@ -43,12 +43,12 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'sbox'
+    default: 'ithc'
     values:
     - ithc
     - preview
     - demo
-    - sbox
+    # - sbox
     - perftest
     - aat
     - ptlsbox
