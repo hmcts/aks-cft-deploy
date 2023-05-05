@@ -19,10 +19,10 @@ variable "clusters" {
   Map of clusters to manage. Example:
   clusters = {
     "00" = {
-      kubernetes_version = "1.22.6"
+      kubernetes_cluster_version = "1.22.6"
     },
     "01" = {
-      kubernetes_version = "1.22.6"
+      kubernetes_cluster_version = "1.22.6"
     }
   }
   EOF
