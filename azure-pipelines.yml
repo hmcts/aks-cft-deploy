@@ -43,7 +43,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: ''
+    default: 'perftest'
     values:
     # - ithc
     - preview
