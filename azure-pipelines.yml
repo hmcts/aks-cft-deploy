@@ -51,7 +51,7 @@ parameters:
     # - sbox
     - perftest
     - aat
-    - ptlsbox
+    # - ptlsbox
     - ptl
     - prod
 
