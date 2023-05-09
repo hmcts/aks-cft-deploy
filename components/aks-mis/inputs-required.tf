@@ -7,6 +7,6 @@ variable "builtFrom" {}
 
 variable "product" {}
 
-variable "cluster_count" {}
+variable "clusters" {}
 # Remote State
 variable "control_vault" {}

@@ -1,1 +1,1 @@
-cluster_count = 2
+clusters = ["00", "01"]

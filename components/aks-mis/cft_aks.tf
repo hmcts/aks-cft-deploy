@@ -4,15 +4,15 @@ data "azurerm_resource_group" "managed-identity-operator-cft-mi" {
 }
 
 resource "azurerm_role_assignment" "uami_cft_rg_identity_operator" {
-  count                = var.cluster_count
+  for_each             = toset(var.clusters)
   provider             = azurerm.acr
-  principal_id         = data.azurerm_kubernetes_cluster.kubernetes["${count.index}"].kubelet_identity[0].object_id
+  principal_id         = data.azurerm_kubernetes_cluster.kubernetes[each.key].kubelet_identity[0].object_id
   scope                = data.azurerm_resource_group.managed-identity-operator-cft-mi.id
   role_definition_name = "Managed Identity Operator"
 }
 
 data "azurerm_kubernetes_cluster" "kubernetes" {
-  count               = var.cluster_count
-  name                = "${var.project}-${var.env}-0${count.index}-${var.service_shortname}"
-  resource_group_name = "${var.project}-${var.env}-0${count.index}-rg"
+  for_each            = toset(var.clusters)
+  name                = "${var.project}-${var.env}-${each.key}-${var.service_shortname}"
+  resource_group_name = "${var.project}-${var.env}-${each.key}-rg"
 }
