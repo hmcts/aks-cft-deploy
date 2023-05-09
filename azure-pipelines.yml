@@ -43,7 +43,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'ptl'
+    default: ''
     values:
     # - ithc
     # - preview
