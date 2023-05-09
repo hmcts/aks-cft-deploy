@@ -43,14 +43,14 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'perftest'
+    default: 'PTL'
     values:
     # - ithc
-    - preview
-    - demo
+    # - preview
+    # - demo
     # - sbox
-    - perftest
-    - aat
+    # - perftest
+    # - aat
     # - ptlsbox
     - ptl
     - prod
