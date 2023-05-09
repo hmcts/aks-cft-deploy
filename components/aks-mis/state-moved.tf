@@ -12,5 +12,5 @@ moved {
 }
 moved {
   from = azurerm_role_assignment.preview2aat_cft_rg_identity_operator[1]
-  to   = azurerm_role_assignment.preview2aat_cft_rg_identity_operator["01"] 
+  to   = azurerm_role_assignment.preview2aat_cft_rg_identity_operator["01"]
 }
