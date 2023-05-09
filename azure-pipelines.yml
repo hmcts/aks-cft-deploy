@@ -260,12 +260,12 @@ stages:
               setClusterNumbersEnvVar: false
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: >
-                  -target azurerm_role_assignment.uami_cft_rg_identity_operator[${{parameters.cluster}}]
-                  -target azurerm_role_assignment.preview_externaldns_read_rg[${{parameters.cluster}}]
-                  -target azurerm_role_assignment.preview_externaldns_dns_zone_contributor[${{parameters.cluster}}]
-                  -target azurerm_role_assignment.preview1aat_cft_rg_identity_operator[${{parameters.cluster}}]
-                  -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator[${{parameters.cluster}}]
-                  -target data.azurerm_kubernetes_cluster.kubernetes[${{parameters.cluster}}]
+                  -target azurerm_role_assignment.uami_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
+                  -target azurerm_role_assignment.preview_externaldns_read_rg["\"${{parameters.cluster}}\""]
+                  -target azurerm_role_assignment.preview_externaldns_dns_zone_contributor["\"${{parameters.cluster}}\""]
+                  -target azurerm_role_assignment.preview1aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
+                  -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
+                  -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
   - stage: BootStrapClusters
     displayName: 'BootStrap Clusters'
