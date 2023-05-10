@@ -1,11 +1,11 @@
 resource "azurerm_resource_group" "kubernetes_resource_group" {
-  count    = var.cluster_count
+  for_each = toset([for key, value in var.clusters : key])
   location = var.location
 
   name = format("%s-%s-%s-rg",
     var.project,
     var.env,
-    "0${count.index}"
+    each.value
   )
   tags = module.ctags.common_tags
 }
@@ -24,8 +24,8 @@ data "azuread_service_principal" "aks_auto_shutdown" {
 }
 
 module "kubernetes" {
-  count  = var.cluster_count
-  source = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
+  for_each = toset([for key, value in var.clusters : key])
+  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.env
@@ -42,14 +42,13 @@ module "kubernetes" {
     azurerm.global_acr    = azurerm.global_acr
   }
 
-
-  resource_group_name = azurerm_resource_group.kubernetes_resource_group[count.index].name
+  resource_group_name = azurerm_resource_group.kubernetes_resource_group[each.value].name
 
   network_name                = local.network_name
   network_shortname           = local.network_shortname
   network_resource_group_name = local.network_resource_group_name
 
-  cluster_number    = "0${count.index}"
+  cluster_number    = each.value
   service_shortname = var.service_shortname
   project           = var.project
 
@@ -65,7 +64,7 @@ module "kubernetes" {
   kubernetes_cluster_agent_min_count = lookup(var.system_node_pool, "min_nodes", 2)
   kubernetes_cluster_agent_max_count = lookup(var.system_node_pool, "max_nodes", 3)
   kubernetes_cluster_agent_vm_size   = lookup(var.system_node_pool, "vm_size", "Standard_DS3_v2")
-  kubernetes_cluster_version         = var.kubernetes_cluster_version
+  kubernetes_cluster_version         = var.clusters[each.value]["kubernetes_cluster_version"]
   kubernetes_cluster_agent_max_pods  = var.kubernetes_cluster_agent_max_pods
 
   tags = module.ctags.common_tags
