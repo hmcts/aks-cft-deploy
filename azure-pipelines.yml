@@ -52,8 +52,8 @@ parameters:
     # - perftest
     # - aat
     # - ptlsbox
-    - ptl
-    - prod
+    # - ptl
+    # - prod
 
 variables:
   - name: project
