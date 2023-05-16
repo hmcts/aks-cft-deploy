@@ -161,18 +161,6 @@ additional_routes = [
     address_prefix         = "10.48.0.32/27"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
-  },
-  {
-    name                   = "mgmt-prod-bastion"
-    address_prefix         = "10.48.0.0/27"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
-  },
-  {
-    name                   = "mgmt-prod-jumpbox"
-    address_prefix         = "10.48.2.0/28"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
   }
 ]
 
