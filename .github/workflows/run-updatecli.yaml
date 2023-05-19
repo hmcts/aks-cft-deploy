@@ -49,6 +49,7 @@ jobs:
          done
         env:
          UPDATECLI_GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+      #### Temperory commentting out Pluto Run
       # - name: Install Pluto
       #   uses: FairwindsOps/pluto/github-action@master
       # - name: Run Pluto
