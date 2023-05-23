@@ -74,5 +74,6 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
+            # Pluto Report
             ${{steps.coverage.outputs.text}}
           pr_number: ${{steps.find-pull-request.outputs.number}}
