@@ -52,7 +52,7 @@ jobs:
       ### Temperory commentting out Pluto Run
   pluto-run:
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'pluto-required')
+    #if: contains(github.event.pull_request.labels.*.name, 'pluto-required')
     steps:
       - name: 'Az CLI login'
         uses: azure/login@v1
@@ -69,10 +69,11 @@ jobs:
         uses: FairwindsOps/pluto/github-action@master
       - name: Run Pluto
         run: |
-           yq -r '.environments | to_entries | map(select(.value.enabled == true)) | .[].key' updatecli/values.github-action.yaml | while read i
-           do
-               CURRENT_ITER_ENVIRONMENT="$i" bash ./updatecli/get-deprecation.sh >> output.txt
-           done
+           ${{ github.event.pull_request.labels.*.name }}
+          #  yq -r '.environments | to_entries | map(select(.value.enabled == true)) | .[].key' updatecli/values.github-action.yaml | while read i
+          #  do
+          #      CURRENT_ITER_ENVIRONMENT="$i" bash ./updatecli/get-deprecation.sh >> output.txt
+          #  done
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ steps.pluto-token.outputs.token }}
       - name: cat output
