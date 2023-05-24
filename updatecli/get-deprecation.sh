@@ -16,7 +16,6 @@ fi
 
 az account set -s "${aks_subscription}"
 
-echo "Trying cluster ${aks_name} in RG ${aks_resource_group}"
 az aks get-credentials \
     --resource-group "${aks_resource_group}"\
     --name "${aks_name}"\
@@ -25,5 +24,11 @@ az aks get-credentials \
 current_version=$(az aks show  --resource-group "${aks_resource_group}" --name "${aks_name}" | grep 'currentKubernetesVersion' | grep -Eo '[0-9].[0-9][0-9]')
 aks_version=$(echo "$current_version + 0.01" | bc)
 
+## Comment body
+echo "## (${aks_name})"
+
+echo '```'
 pluto detect-helm -o wide --target-versions k8s=v${aks_version}
-echo "----------------"
+echo '```'
+
+echo -e "\n---\n"
