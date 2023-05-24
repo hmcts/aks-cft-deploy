@@ -75,7 +75,7 @@ jobs:
             #      CURRENT_ITER_ENVIRONMENT="$i" bash ./updatecli/get-deprecation.sh >> output.txt
             #  done
         env:
-          LABELS1: ${{ github.event.pull_request.labels.name }}
+          LABELS1: "${{ github.event.pull_request.labels.*.name }}"
           UPDATECLI_GITHUB_TOKEN: ${{ steps.pluto-token.outputs.token }}
       - name: cat output
         uses: pCYSl5EDgo/cat@master
