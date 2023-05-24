@@ -48,8 +48,12 @@ jobs:
              CURRENT_ITER_ENVIRONMENT="$i" updatecli apply --config ./updatecli/updatecli.d --values ./updatecli/values.github-action.yaml
          done
         env:
-         UPDATECLI_GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+         UPDATECLI_GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }} 
       ### Temperory commentting out Pluto Run
+  pluto-run:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'pluto-required')
+    steps:
       - name: Install Pluto
         uses: FairwindsOps/pluto/github-action@master
       - name: Run Pluto
@@ -59,7 +63,7 @@ jobs:
                CURRENT_ITER_ENVIRONMENT="$i" bash ./updatecli/get-deprecation.sh >> output.txt
            done
         env:
-          UPDATECLI_GITHUB_TOKEN: $${{ steps.generate-token.outputs.token }}
+          UPDATECLI_GITHUB_TOKEN: $${{ updatecli.steps.generate-token.outputs.token }}
       - name: cat output
         uses: pCYSl5EDgo/cat@master
         id: coverage
