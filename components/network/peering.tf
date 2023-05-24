@@ -16,8 +16,8 @@ module "vnet_peer_hub_sbox" {
       vnet           = local.hub["sbox"][each.key].name
       resource_group = local.hub["sbox"][each.key].name
     }
-  
-  target = {
+
+    target = {
       name           = format("%s%s", var.project, var.env)
       vnet           = local.hub["sbox"][each.key].name
       resource_group = local.hub["sbox"][each.key].name
