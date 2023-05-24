@@ -52,7 +52,7 @@ jobs:
       ### Temperory commentting out Pluto Run
   pluto-run:
     runs-on: ubuntu-latest
-    #if: contains(github.event.pull_request.labels.*.name, 'pluto-required')
+    if: contains(github.event.pull_request.labels.*.name, 'pluto-required')
     steps:
       - name: 'Az CLI login'
         uses: azure/login@v1
