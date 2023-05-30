@@ -110,6 +110,23 @@ variables:
   - name: terraformSubscriptionID
     ${{ if eq( parameters['env'], 'sbox') }}:
       value: "b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb"
+    ${{ if eq( parameters['env'], 'ptlsbox') }}:
+      value: "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+    ${{ if eq( parameters['env'], 'perftest') }}:
+      value: "8a07fdcd-6abd-48b3-ad88-ff737a4b9e3c"
+    ${{ if eq( parameters['env'], 'ithc') }}:
+      value: "62864d44-5da9-4ae9-89e7-0cf33942fa09"
+    ${{ if eq( parameters['env'], 'demo') }}:
+      value: "d025fece-ce99-4df2-b7a9-b649d3ff2060"      
+    ${{ if eq( parameters['env'], 'ptl') }}:
+      value: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+    ${{ if eq( parameters['env'], 'preview') }}:
+      value: "8b6ea922-0862-443e-af15-6056e1c9b9a4"
+    ${{ if eq( parameters['env'], 'aat') }}:
+      value: "96c274ce-846d-4e48-89a7-d528432298a7"
+    ${{ if eq( parameters['env'], 'prod') }}:
+      value: "8cbc6f36-7c56-4963-9d36-739db5d00b27"   
+
 
 stages:
 
