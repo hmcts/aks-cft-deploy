@@ -107,6 +107,9 @@ variables:
       value: "dcdcftappsdevkv"
     ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'ptl', 'preview') }}:
       value: dcdcftapps${{ parameters.env }}kv
+  - name: terraformSubscriptionID
+    ${{ if eq( parameters['env'], 'sbox') }}:
+      value: "b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb"
 
 stages:
 
@@ -138,10 +141,10 @@ stages:
               product: ${{ variables.product }}
               tfVarsFile: NULL
               initCommandOptions: >
-                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+                -var subscription_id=${{ variables.terraformSubscriptionID }}
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
               planCommandOptions: >
-                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+                -var subscription_id=${{ variables.terraformSubscriptionID }}
 
   - stage: Network
     displayName: 'Network'
@@ -160,7 +163,7 @@ stages:
               product: ${{ variables.product }}
               tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ parameters.env }}.tfvars"
               initCommandOptions: >
-                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+                -var subscription_id=${{ variables.terraformSubscriptionID }}
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
               planCommandOptions: >
                 -var control_vault=$(controlKeyVault)
@@ -215,10 +218,10 @@ stages:
               product: ${{ variables.product }}
               tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/managed-identity/${{ parameters.env }}.tfvars"
               initCommandOptions: >
-                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+                -var subscription_id=${{ variables.terraformSubscriptionID }}
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
               planCommandOptions: >
-                -var subscription_id=$(ARM_SUBSCRIPTION_ID)
+                -var subscription_id=${{ variables.terraformSubscriptionID }}
                 -var control_vault=$(controlKeyVault)
                 -var project=$(project)
 
