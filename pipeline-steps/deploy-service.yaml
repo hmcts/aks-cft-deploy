@@ -9,6 +9,7 @@ parameters:
   targetCommand: ''
   setClusterNumbersEnvVar: false
   action: ''
+  terraformSubscriptionID: ''
 
 steps:
   - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
