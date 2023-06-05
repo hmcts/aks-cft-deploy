@@ -12,3 +12,7 @@ module "ctags" {
   builtFrom    = var.builtFrom
   expiresAfter = var.expiresAfter
 }
+
+output "project" {
+  value = module.genesis.project
+}
