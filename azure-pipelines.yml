@@ -259,17 +259,9 @@ stages:
               product: ${{ variables.product }}
               tfInitSub: ${{ variables.tfInitSub }}
               serviceConnection: $(serviceConnection)
+              terraformSubscriptionID: ${{ variables.terraformSubscriptionID }}
               action: ${{ parameters.action }}
               setClusterNumbersEnvVar: true
-              terraformInitSubscription: ${{ variables.tfInitSub }}
-              tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/aks/${{ parameters.env }}.tfvars"
-              initCommandOptions: >
-                -var subscription_id=${{ variables.terraformSubscriptionID }}
-                -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
-              planCommandOptions: >
-                -var subscription_id=${{ variables.terraformSubscriptionID }}
-                -var control_vault=$(controlKeyVault)
-                -var project=$(project)
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: >
                   -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
