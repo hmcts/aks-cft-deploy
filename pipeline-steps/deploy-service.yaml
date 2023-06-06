@@ -27,7 +27,7 @@ steps:
         -var subscription_id=${{ parameters.terraformSubscriptionID }}
         -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
       planCommandOptions: >
-        -var control_vault=$(KEY_VAULT)
+        -var control_vault=$(controlKeyVault)
         -var project=$(project)
         ${{ parameters.targetCommand }}
 
