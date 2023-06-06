@@ -259,6 +259,7 @@ stages:
               tfInitSub: ${{ variables.tfInitSub }}
               serviceConnection: $(serviceConnection)
               action: ${{ parameters.action }}
+              terraformSubscriptionID : ${{ variables.terraformSubscriptionID }}
               setClusterNumbersEnvVar: true
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: >
