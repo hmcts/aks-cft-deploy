@@ -183,6 +183,7 @@ stages:
                 -var subscription_id=${{ variables.terraformSubscriptionID }}
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
               planCommandOptions: >
+                -var subscription_id=${{ variables.terraformSubscriptionID }}
                 -var control_vault=$(controlKeyVault)
                 -var project=$(project)
 
