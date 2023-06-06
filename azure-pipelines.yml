@@ -233,7 +233,6 @@ stages:
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
-              terraformSubscriptionID : ${{ variables.terraformSubscriptionID }}
               tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/managed-identity/${{ parameters.env }}.tfvars"
               initCommandOptions: >
                 -var subscription_id=${{ variables.terraformSubscriptionID }}
@@ -302,6 +301,7 @@ stages:
               project: $(project)
               serviceConnection: $(serviceConnection)
               aksKeyVault: $(aksKeyVault)
+              terraformSubscriptionID : ${{ variables.terraformSubscriptionID }}
 
   - stage: PipelineTests
     displayName: "PipelineTests"
