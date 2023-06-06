@@ -16,3 +16,7 @@ module "ctags" {
 output "project" {
   value = module.genesis.project
 }
+
+output "sub" {
+  value = module.genesis.sub
+}
