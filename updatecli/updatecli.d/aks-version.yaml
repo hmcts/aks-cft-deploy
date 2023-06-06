@@ -30,7 +30,7 @@ sources:
         kind: semver
     transformers:
       - findsubmatch:
-          pattern: ((\d+\.)?(\d+))?(\*|\.\d+)
+          pattern: '((\d+\.)?(\d+))?(\*|\.\d+)'
           captureindex: 1
 
 targets:
