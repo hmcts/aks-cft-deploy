@@ -28,10 +28,10 @@ sources:
       command: ./updatecli/get-latest-aks-upgrade-version.sh {{ $aks_name }} {{ $aks_resource_group }} {{ $aks_subscription }} {{ $environment }}
       versionfilter:
         kind: semver
-    transformers:
-      - findsubmatch:
-          pattern: '((\d+\.)?(\d+))?(\*|\.\d+)'
-          captureindex: 1
+    # transformers:
+    #   - findsubmatch:
+    #       pattern: '((\d+\.)?(\d+))?(\*|\.\d+)'
+    #       captureindex: 1
 
 targets:
   default:
