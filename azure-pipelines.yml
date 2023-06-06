@@ -233,6 +233,7 @@ stages:
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
+              terraformSubscriptionIDL : ${{ variables.terraformSubscriptionID }}
               tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/managed-identity/${{ parameters.env }}.tfvars"
               initCommandOptions: >
                 -var subscription_id=${{ variables.terraformSubscriptionID }}

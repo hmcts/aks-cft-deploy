@@ -9,6 +9,7 @@ parameters:
   targetCommand: ''
   setClusterNumbersEnvVar: false
   action: ''
+  terraformSubscriptionID: ''
 
 steps:
   - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
@@ -22,8 +23,8 @@ steps:
       terraformInitSubscription: ${{ parameters.tfInitSub }}
       product: ${{ parameters.product }}
       tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/${{ parameters.stack }}/${{ parameters.environment }}.tfvars"
-      initCommandOptions: "-var subscription_id=$(ARM_SUBSCRIPTION_ID) -backend-config resource_group_name=$(backendAzureRmResourceGroupName)"
-      planCommandOptions: "-var control_vault=$(controlKeyVault) -var project=$(project) ${{ parameters.targetCommand }}"
+      initCommandOptions: "-var subscription_id=$(ARM_SUBSCRIPTION_ID) -backend-config resource_group_name=$(backendAzureRmResourceGroupName) -var subscription_id=${{ parameters.terraformSubscriptionID }}"
+      planCommandOptions: "-var control_vault=$(controlKeyVault) -var project=$(project) ${{ parameters.targetCommand }} -var subscription_id=${{ parameters.terraformSubscriptionID }}"
 
   - ${{ if eq(parameters.setClusterNumbersEnvVar, true) }}:
     - pwsh: |
