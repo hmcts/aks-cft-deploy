@@ -29,6 +29,7 @@ steps:
       planCommandOptions: >
         -var control_vault=$(controlKeyVault)
         -var project=$(project)
+        -var subscription_id=${{ variables.terraformSubscriptionID }}
         ${{ parameters.targetCommand }}
 
   - ${{ if eq(parameters.setClusterNumbersEnvVar, true) }}:
