@@ -35,3 +35,5 @@ fi
 
 echo "${UPGRADE_VERSION}"
 
+jq -n --arg version "${UPGRADE_VERSION}" '{version: $version}' > /tmp/aks_version.json
+

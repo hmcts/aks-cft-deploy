@@ -22,14 +22,15 @@ scms:
 
 sources:
   latestAksVersion:
-    kind: shell
+    kind: json
     name: Get latest AKS version for a given region
     spec:
-      command: ./updatecli/get-latest-aks-upgrade-version.sh {{ $aks_name }} {{ $aks_resource_group }} {{ $aks_subscription }} {{ $environment }}
-      versionfilter:
-        kind: semver
+      file: /tmp/aks_version.json
+      key: version
     transformers:
-      - semverinc: "major,minor"
+      - findsubmatch:
+          pattern: ((\d+\.)?(\d+))?(\*|\.\d+)
+          captureindex: 1
 
 targets:
   default:
