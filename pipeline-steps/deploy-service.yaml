@@ -24,12 +24,12 @@ steps:
       product: ${{ parameters.product }}
       tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/${{ parameters.stack }}/${{ parameters.environment }}.tfvars"
       initCommandOptions: >
-        -var subscription_id=${{ parameters.terraformSubscriptionID }}
+        -var subscription_id=$(terraformSubscriptionID)
         -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
       planCommandOptions: >
         -var control_vault=$(controlKeyVault)
         -var project=$(project)
-        -var subscription_id=${{ variables.terraformSubscriptionID }}
+        -var subscription_id=$(terraformSubscriptionID)
         ${{ parameters.targetCommand }}
 
   - ${{ if eq(parameters.setClusterNumbersEnvVar, true) }}:
