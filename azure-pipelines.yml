@@ -278,6 +278,7 @@ stages:
               serviceConnection: $(serviceConnection)
               action: ${{ parameters.action }}
               setClusterNumbersEnvVar: false
+              terraformSubscriptionID : ${{ variables.terraformSubscriptionID }}
               ${{ if ne(parameters['cluster'], 'All') }}:
                 targetCommand: >
                   -target azurerm_role_assignment.uami_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
@@ -301,7 +302,6 @@ stages:
               project: $(project)
               serviceConnection: $(serviceConnection)
               aksKeyVault: $(aksKeyVault)
-              terraformSubscriptionID : ${{ variables.terraformSubscriptionID }}
 
   - stage: PipelineTests
     displayName: "PipelineTests"
