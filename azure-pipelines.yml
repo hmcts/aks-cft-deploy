@@ -43,7 +43,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'aat'
+    default: 'sbox'
     values:
     - ithc
     - preview
