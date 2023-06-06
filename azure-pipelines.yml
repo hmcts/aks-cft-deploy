@@ -209,7 +209,7 @@ stages:
               overrideAction: ${{ parameters.action }}
               environment: ${{ parameters.env }}
               component: managed-identity
-              location: ${{ parameters.location }} 
+              location: ${{ parameters.location }}
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
