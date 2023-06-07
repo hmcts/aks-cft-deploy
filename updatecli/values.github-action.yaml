@@ -7,8 +7,8 @@ github:
 environments:
   sbox:
     enabled: true
-    aks_name: cft-sbox-00-aks
-    aks_resource_group: cft-sbox-00-rg
+    aks_name: cft-sbox-01-aks
+    aks_resource_group: cft-sbox-01-rg
     aks_subscription: DCD-CFTAPPS-SBOX
   ## Do not change demo to 01
   demo:
