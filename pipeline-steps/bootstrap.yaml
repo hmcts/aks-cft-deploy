@@ -2,6 +2,7 @@ parameters:
   environment: ''
   project: ''
   akskeyvault: ''
+  terraformSubscriptionID: ''
 
 steps:
 
@@ -30,4 +31,6 @@ steps:
     scriptType: shell
     failOnStandardError: 'false'
     scriptPath: bootstrap/bootstrap.sh
-    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) "$(clusters)" deploy ${{ parameters.akskeyvault }} '
+    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) "$(clusters)" deploy ${{ parameters.akskeyvault }} ${{parameters.terraformSubscriptionID}} '
+    
+     

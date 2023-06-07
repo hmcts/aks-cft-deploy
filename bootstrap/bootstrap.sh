@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-PARAM_LIST=( PROJECT SERVICE ENVIRONMENT KEYVAULT SUBSCRIPTION_NAME CLUSTER_NAMES COMMAND AKS_KEYVAULT )
+PARAM_LIST=( PROJECT SERVICE ENVIRONMENT KEYVAULT SUBSCRIPTION_NAME CLUSTER_NAMES COMMAND AKS_KEYVAULT TERRAFORMSUBSCRIPTIONID)
 
 function usage() {
     echo ""
@@ -49,6 +49,8 @@ for cluster in ${cluster_numbers}; do
 
   echo "################################"
   echo -e "Starting Deployment on ${project}-${env}-${cluster}-aks\n"
+
+  az account set --subscription ${terraformSubscriptionID}
 
   ./scripts/get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
   ./scripts/create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"

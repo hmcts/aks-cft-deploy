@@ -304,6 +304,7 @@ stages:
               project: $(project)
               serviceConnection: $(serviceConnection)
               aksKeyVault: $(aksKeyVault)
+              terraformSubscriptionID : $(terraformSubscriptionID)
 
   - stage: PipelineTests
     displayName: "PipelineTests"
