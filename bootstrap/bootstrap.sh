@@ -16,8 +16,8 @@ function error_exit {
 }
 
 
-# Make sure the 8 arguments are passed
-if [[ $# -lt 8 ]]
+# Make sure the 9 arguments are passed
+if [[ $# -lt 9 ]]
 then
     usage
 fi
