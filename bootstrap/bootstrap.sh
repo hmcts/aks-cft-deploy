@@ -50,8 +50,6 @@ for cluster in ${cluster_numbers}; do
   echo "################################"
   echo -e "Starting Deployment on ${project}-${env}-${cluster}-aks\n"
 
-  az account set --subscription ${terraformSubscriptionID}
-
   ./scripts/get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
   ./scripts/create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"
   ./scripts/create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
