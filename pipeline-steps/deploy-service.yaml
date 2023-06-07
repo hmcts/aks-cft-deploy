@@ -30,7 +30,7 @@ steps:
         -var control_vault=$(controlKeyVault)
         -var project=$(project)
         -var subscription_id=$(terraformSubscriptionID)
-        ${{ if ne(parameters.targetCommand, '') }}${{ parameters.targetCommand }}{{ end }}
+        ${{ parameters.targetCommand != '' ? parameters.targetCommand : '' }}
 
   - ${{ if eq(parameters.setClusterNumbersEnvVar, true) }}:
     - pwsh: |
