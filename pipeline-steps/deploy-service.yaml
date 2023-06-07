@@ -26,12 +26,8 @@ steps:
       initCommandOptions: >
         -var subscription_id=$(terraformSubscriptionID)
         -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
-      planCommandOptions: >
-        -var control_vault=$(controlKeyVault)
-        -var project=$(project)
-        -var subscription_id=$(terraformSubscriptionID)
-        ${{ parameters.targetCommand != '' ? parameters.targetCommand : '' }}
-
+      planCommandOptions: "-var subscription_id=$(terraformSubscriptionID) -var control_vault=$(controlKeyVault) -var project=$(project) ${{ parameters.targetCommand }}"
+      
   - ${{ if eq(parameters.setClusterNumbersEnvVar, true) }}:
     - pwsh: |
         $tfVersion = Get-Content "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/.terraform-version" -Raw
