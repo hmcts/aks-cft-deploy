@@ -9,7 +9,7 @@ TERRAFORMSUBSCRIPTIONID="${9}"
 
 echo  "Get aks credentials "
 
-az account set --subscription ${TERRAFORMSUBSCRIPTIONID}
+az account set --subscription "${TERRAFORMSUBSCRIPTIONID}"
 az aks get-credentials \
     --resource-group "${PROJECT}"-"${ENVIRONMENT}"-"${CLUSTER_NAME}"-rg \
     --name "${PROJECT}"-"${ENVIRONMENT}"-"${CLUSTER_NAME}"-"${SERVICE}" \
