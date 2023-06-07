@@ -30,8 +30,8 @@ steps:
         -var control_vault=$(controlKeyVault)
         -var project=$(project)
         -var subscription_id=$(terraformSubscriptionID)
-        ${{ parameters.targetCommand }}
-
+        ${{ if parameters.targetCommand }}-var target_command=$(targetCommand)${{ else }}${{ endif }}
+        
   - ${{ if eq(parameters.setClusterNumbersEnvVar, true) }}:
     - pwsh: |
         $tfVersion = Get-Content "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/.terraform-version" -Raw
