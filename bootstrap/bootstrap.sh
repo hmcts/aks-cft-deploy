@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-PARAM_LIST=( PROJECT SERVICE ENVIRONMENT KEYVAULT SUBSCRIPTION_NAME CLUSTER_NAMES COMMAND AKS_KEYVAULT )
+PARAM_LIST=( PROJECT SERVICE ENVIRONMENT KEYVAULT SUBSCRIPTION_NAME CLUSTER_NAMES COMMAND AKS_KEYVAULT TERRAFORMSUBSCRIPTIONID)
 
 function usage() {
     echo ""
@@ -16,8 +16,8 @@ function error_exit {
 }
 
 
-# Make sure the 8 arguments are passed
-if [[ $# -lt 8 ]]
+# Make sure the 9 arguments are passed
+if [[ $# -lt 9 ]]
 then
     usage
 fi
