@@ -3,7 +3,7 @@ locals {
   environment = (var.env == "aat") ? "stg" : (var.env == "perftest") ? "test" : (var.env == "preview") ? "dev" : var.env
 
   developers_group = "DTS Operations (env:${local.environment})"
-  
+
   business_area = "cft"
 
 }
