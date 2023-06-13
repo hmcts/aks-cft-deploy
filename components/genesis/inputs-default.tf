@@ -4,7 +4,7 @@ locals {
 
   developers_group = "DTS Operations (env:${local.environment})"
   
-  business_area = "CFT"
+  business_area = "cft"
 
 }
 
