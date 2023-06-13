@@ -4,6 +4,8 @@ locals {
 
   developers_group = "DTS Operations (env:${local.environment})"
 
+  business_area = "cft"
+
 }
 
 variable "builtFrom" {
