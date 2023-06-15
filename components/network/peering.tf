@@ -31,12 +31,12 @@ module "vnet_peer_hub_nonprod" {
 
   peerings = {
     source = {
-      name           = var.env == "ptl" ? "${local.hub["prod"][each.key].peering_name}-nonprod" : local.hub["prod"][each.key].peering_name
+      name           = var.env == "ptl" || var.env == "aat" ? "${local.hub["prod"][each.key].peering_name}-nonprod" : local.hub["prod"][each.key].peering_name
       vnet           = module.network.network_name
       resource_group = module.network.network_resource_group
     }
     target = {
-      name           = (var.env == "aat") ? "${format("%s%s", var.project, var.env)}-nonprod" : format("%s%s", var.project, var.env)
+      name           = format("%s%s", var.project, var.env)
       vnet           = local.hub["nonprod"][each.key].name
       resource_group = local.hub["nonprod"][each.key].name
     }
