@@ -12,7 +12,7 @@ module "vnet_peer_hub_prod" {
       resource_group = module.network.network_resource_group
     }
     target = {
-      name           = (var.env == "aat") ? "${format("%s%s", var.project, var.env)}-prod" : format("%s%s", var.project, var.env)
+      name           = format("%s%s", var.project, var.env)
       vnet           = local.hub["prod"][each.key].name
       resource_group = local.hub["prod"][each.key].name
     }
@@ -36,7 +36,7 @@ module "vnet_peer_hub_nonprod" {
       resource_group = module.network.network_resource_group
     }
     target = {
-      name           = format("%s%s", var.project, var.env)
+      name           = (var.env == "aat") ? "${format("%s%s", var.project, var.env)}-nonprod" : format("%s%s", var.project, var.env)
       vnet           = local.hub["nonprod"][each.key].name
       resource_group = local.hub["nonprod"][each.key].name
     }
