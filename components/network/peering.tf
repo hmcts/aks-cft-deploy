@@ -7,7 +7,7 @@ module "vnet_peer_hub_prod" {
 
   peerings = {
     source = {
-      name           = (var.env == "ptl") || (var.env == "dev") ? "${local.hub["prod"][each.key].peering_name}-prod" : local.hub["prod"][each.key].peering_name
+      name           = (var.env == "ptl") || (var.env == "dev") || (var.env == "aat") ? "${local.hub["prod"][each.key].peering_name}-prod" : local.hub["prod"][each.key].peering_name
       vnet           = module.network.network_name
       resource_group = module.network.network_resource_group
     }
@@ -31,7 +31,7 @@ module "vnet_peer_hub_nonprod" {
 
   peerings = {
     source = {
-      name           = var.env == "ptl" ? "${local.hub["prod"][each.key].peering_name}-nonprod" : local.hub["prod"][each.key].peering_name
+      name           = var.env == "ptl" || (var.env == "aat") ? "${local.hub["prod"][each.key].peering_name}-nonprod" : local.hub["prod"][each.key].peering_name
       vnet           = module.network.network_name
       resource_group = module.network.network_resource_group
     }
