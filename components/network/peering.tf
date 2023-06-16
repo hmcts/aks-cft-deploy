@@ -31,7 +31,7 @@ module "vnet_peer_hub_nonprod" {
 
   peerings = {
     source = {
-      name           = var.env == "ptl" ? "${local.hub["prod"][each.key].peering_name}-nonprod" : local.hub["prod"][each.key].peering_name
+      name           = var.env == "ptl" ? "${local.hub["prod"][each.key].peering_name}-nonprod" : var.env == "aat" ? "${local.hub["prod"][each.key].peering_name}-nonprod" : local.hub["prod"][each.key].peering_name
       vnet           = module.network.network_name
       resource_group = module.network.network_resource_group
     }
@@ -125,6 +125,7 @@ moved {
   to   = module.vnet_peer_vpn.azurerm_virtual_network_peering.target_to_initiator
 }
 
+module.vnet_peer_hub_nonprod["ukSouth"].azurerm_virtual_network_peering.initiator-To-target
 moved {
   from = module.vnet_peer_hub_nonprod["ukSouth"].azurerm_virtual_network_peering.initiator-To-target
   to   = module.vnet_peer_hub_nonprod["ukSouth"].azurerm_virtual_network_peering.initiator_to_target
