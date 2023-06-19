@@ -20,7 +20,7 @@ module "network" {
   additional_subnets                     = var.additional_subnets
   postgresql_subnet_cidr_blocks          = var.postgresql_subnet_cidr_blocks
 
-  additional_routes_appgw = var.additional_routes_appgw
+  additional_routes_application_gateway = var.additional_routes_application_gateway
 
   tags = module.ctags.common_tags
 }

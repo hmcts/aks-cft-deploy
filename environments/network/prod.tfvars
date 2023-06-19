@@ -48,7 +48,7 @@ additional_routes = [
   }
 ]
 
-additional_routes_appgw = [
+additional_routes_application_gateway = [
   {
     name                   = "core_cftptl_intvsc_vnet"
     address_prefix         = "10.10.64.0/21"

@@ -48,7 +48,7 @@ additional_routes = [
   }
 ]
 
-additional_routes_appgw = [
+additional_routes_application_gateway = [
   {
     name                   = "core_infra_vnet_idam_perftest"
     address_prefix         = "10.120.0.0/18"
