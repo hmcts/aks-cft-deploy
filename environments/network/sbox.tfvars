@@ -50,7 +50,7 @@ additional_routes = [
   }
 ]
 
-additional_routes_appgw = [
+additional_routes_application_gateway = [
   {
     name                   = "core_infra_vnet_idam_sandbox"
     address_prefix         = "10.99.128.0/18"
