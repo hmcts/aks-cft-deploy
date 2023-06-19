@@ -9,7 +9,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: master
+      ref: keyvault-read-update
       name: hmcts/cnp-azuredevops-libraries
       endpoint: 'hmcts'
 
