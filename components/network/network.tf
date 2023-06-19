@@ -1,5 +1,5 @@
 module "network" {
-  source = "git::https://github.com/hmcts/aks-module-network.git?ref=dxw/remove-dupe-appgw-route-table"
+  source = "git::https://github.com/hmcts/aks-module-network.git?ref=master"
 
   resource_group_name = local.network_resource_group_name
 
@@ -20,7 +20,7 @@ module "network" {
   additional_subnets                     = var.additional_subnets
   postgresql_subnet_cidr_blocks          = var.postgresql_subnet_cidr_blocks
 
-  additional_routes_appgw = var.additional_routes_appgw
+  additional_routes_appgw = var.additional_routes_application_gateway
 
   tags = module.ctags.common_tags
 }
