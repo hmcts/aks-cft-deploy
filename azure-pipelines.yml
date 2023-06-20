@@ -192,6 +192,14 @@ stages:
         steps:
           - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
 
+          - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
+            parameters:
+              serviceConnection: $(serviceConnection)
+              environment: ${{ parameters.env }}
+              subscriptionIdVariableName: 'SUBSCRIPTION_ID'
+              storageAccountVariableName: 'STORAGE_ACCOUNT'
+              keyVaultVariableName: 'KEY_VAULT'
+
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
               overrideAction: ${{ parameters.action }}
@@ -205,6 +213,7 @@ stages:
               initCommandOptions: >
                 -var subscription_id=${{ variables.terraformSubscriptionID }}
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
+                -backend-config storage_account_name=$(STORAGE_ACCOUNT)
               planCommandOptions: >
                 -var subscription_id=${{ variables.terraformSubscriptionID }}
                 -var control_vault=$(KEY_VAULT)
