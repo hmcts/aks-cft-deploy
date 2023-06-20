@@ -192,15 +192,6 @@ stages:
         steps:
           - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
 
-          - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
-            parameters:
-              serviceConnection: $(serviceConnection)
-              environment: ${{ parameters.env }}
-              subscriptionIdVariableName: 'SUBSCRIPTION_ID'
-              storageAccountVariableName: 'STORAGE_ACCOUNT'
-              keyVaultVariableName: 'KEY_VAULT'
-              component: 'network'
-
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
               overrideAction: ${{ parameters.action }}
