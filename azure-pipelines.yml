@@ -199,6 +199,7 @@ stages:
               subscriptionIdVariableName: 'SUBSCRIPTION_ID'
               storageAccountVariableName: 'STORAGE_ACCOUNT'
               keyVaultVariableName: 'KEY_VAULT'
+              component: 'network'
 
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
