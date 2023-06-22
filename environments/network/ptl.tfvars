@@ -8,6 +8,10 @@ application_gateway_subnet_cidr_blocks = "10.10.78.0/25"
 postgresql_subnet_cidr_blocks          = "10.10.78.128/25"
 
 additional_subnets = [
+  {
+    name           = "private-endpoints"
+    address_prefix = "10.10.79.0/22"
+  }
 ]
 
 private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
