@@ -85,6 +85,12 @@ additional_routes_application_gateway = [
     next_hop_in_ip_address = "10.11.8.36"
   },
   {
+    name                   = "core_infra_vnet_idam_aat"
+    address_prefix         = "10.98.0.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
     name                   = "cft-ptl-vnet"
     address_prefix         = "10.10.72.0/21"
     next_hop_type          = "VirtualAppliance"
