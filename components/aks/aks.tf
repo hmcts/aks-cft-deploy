@@ -28,7 +28,7 @@ module "kubernetes" {
   source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
-  environment            = var.env
+  environment            = var.env == "ptlsbox" ? "cftsbox" : var.env
   location               = var.location
 
   oms_agent_enabled  = var.oms_agent_enabled
