@@ -89,7 +89,7 @@ variable "product" {
   default = "cft-platform"
 }
 
-variable "additional_routes_appgw" {
+variable "additional_routes_application_gateway" {
   default = []
 }
 
