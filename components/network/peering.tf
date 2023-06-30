@@ -55,14 +55,14 @@ module "vnet_peer_hub_sbox" {
 
   peerings = {
     source = {
-      name           = var.env == "ptl" ? "${local.hub["prod"]["ukSouth"].peering_name}-sbox" : local.hub["prod"]["ukSouth"].peering_name
+      name           = var.env == "ptl" ? "${local.hub["prod"][each.key].peering_name}-sbox" : local.hub["prod"][each.key].peering_name
       vnet           = module.network.network_name
       resource_group = module.network.network_resource_group
     }
     target = {
       name           = format("%s%s", var.project, var.env)
-      vnet           = local.hub["sbox"]["ukSouth"].name
-      resource_group = local.hub["sbox"]["ukSouth"].name
+      vnet           = local.hub["sbox"][each.key].name
+      resource_group = local.hub["sbox"][each.key].name
     }
   }
 
