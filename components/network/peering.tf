@@ -51,7 +51,7 @@ module "vnet_peer_hub_nonprod" {
 module "vnet_peer_hub_sbox" {
   source = "github.com/hmcts/terraform-module-vnet-peering"
 
-  for_each = toset([for r in local.regions : r if contains(local.hub_to_env_mapping["sbox"], var.env)])
+  for_each = toset([for r in local.regions : r if contains(local.hub_to_env_mapping["sbox"], var.env) && r != "ukWest"])
 
   peerings = {
     source = {
