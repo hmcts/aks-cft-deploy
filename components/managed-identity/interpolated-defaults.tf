@@ -16,7 +16,7 @@ data "azurerm_user_assigned_identity" "aks" {
 
 locals {
 
-  environment = (var.env == "perftest") ? "test" : (var.env == "aat") ? "stg" : (var.env == "ptlsbox") ? "sbox" : (var.env == "preview") ? "dev" : "${var.env}"
+  environment = (var.env == "perftest") ? "test" : (var.env == "aat") ? "stg" : (var.env == "preview") ? "dev" : "${var.env}"
 
 }
 
