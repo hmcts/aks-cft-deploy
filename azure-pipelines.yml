@@ -92,7 +92,7 @@ variables:
       value: 'azure-control-stg-rg'
     ${{ if eq( parameters['env'], 'ptlsbox') }}:
       value: 'azure-control-sbox-rg'
-    ${{ if notIn( parameters['env'], 'aat', 'perftest', 'ptlsbox', 'preview') }}:
+    ${{ if notIn( parameters['env'], 'aat', 'perftest', 'preview') }}:
       value: 'azure-control-${{ parameters.env }}-rg'
   - name: aksKeyVault
     ${{ if eq( parameters['env'], 'perftest') }}:
