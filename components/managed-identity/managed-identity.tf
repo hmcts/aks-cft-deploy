@@ -52,7 +52,7 @@ resource "azurerm_key_vault_access_policy" "sops-policy" {
 }
 
 locals {
-  acme_environment_rg  = var.env == "sandbox" ? "sbox" : var.env == "ptlsbox" ? "sbox" : var.env == "preview" ? "dev" : var.env == "perftest" ? "test" : var.env == "aat" ? "stg" : var.env
+  acme_environment_rg  = var.env == "sandbox" ? "sbox" : var.env == "preview" ? "dev" : var.env == "perftest" ? "test" : var.env == "aat" ? "stg" : var.env
   acme_environment_kv  = var.env == "ptl" ? "ptlintsvc" : var.env == "sandbox" ? "sbox" : var.env == "preview" ? "dev" : var.env == "ptlsbox" ? "sboxintsvc" : var.env == "perftest" ? "test" : var.env == "aat" ? "stg" : var.env
   department_name      = var.env == "ptl" || var.env == "ptlsbox" ? "dts" : "dcd"
   acme_environment_app = var.env == "ptl" || var.env == "ptlsbox" ? "cft" : "cftapps"
