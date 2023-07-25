@@ -9,7 +9,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: master
+      ref: refs/heads/DTSPO-13833-SP-credentials-instead-of-PAT-token
       name: hmcts/cnp-azuredevops-libraries
       endpoint: 'hmcts'
 
@@ -136,7 +136,7 @@ stages:
           - template: pipeline-steps/terraform-precheck.yaml
             parameters:
               keyvaultName: infra-vault-nonprod
-              keyvaultSecret: 'azure-devops-token'
+              keyvaultSecret: 'azure-devops-sp-token'
               serviceConnection: azurerm-sandbox
 
   - stage: Genesis
