@@ -9,7 +9,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: master
+      ref: DTSPO-13833-testing-python-script
       name: hmcts/cnp-azuredevops-libraries
       endpoint: 'hmcts'
 
