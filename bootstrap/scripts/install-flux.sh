@@ -31,8 +31,9 @@ commonLabels:
   k8s-app: aad-pod-id
 resources:
   - https://raw.githubusercontent.com/Azure/aad-pod-identity/v1.8.6/deploy/infra/deployment-rbac.yaml
-patchesStrategicMerge:
-  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/apps/admin/aad-pod-id/aad-pod-id-patch.yaml
+patches:
+  - path: https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/apps/admin/aad-pod-id/nmi-patch.yaml
+  - path: https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/apps/admin/aad-pod-id/mic-patch.yaml
 EOF
 ) > "${TMP_DIR}/admin/kustomization.yaml"
 
