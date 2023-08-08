@@ -62,7 +62,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: flux-system
 resources:
-  - ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components.yaml
+  - ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components-v2.yaml
   - git-credentials.yaml
   - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/aks-sops-aadpodidentity.yaml
 patchesStrategicMerge:
