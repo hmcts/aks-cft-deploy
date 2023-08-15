@@ -160,7 +160,7 @@ kind: Kustomization
 resources:
   - https://github.com/hmcts/cnp-flux-config//apps/azureserviceoperator-system/cert-manager/?ref=asoraw
   - https://github.com/hmcts/cnp-flux-config//apps/azureserviceoperator-system/aso/?ref=asoraw
-  #- https://raw.githubusercontent.com/hmcts/cnp-flux-config/asoraw/apps/azureserviceoperator-system/sbox/base/aso-controller-settings.yaml
+  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/asoraw/apps/azureserviceoperator-system/sbox/base/aso-controller-settings.yaml
 EOF
 ) > "${TMP_DIR}/kustomization.yaml"
 # -----------------------------------------------------------
