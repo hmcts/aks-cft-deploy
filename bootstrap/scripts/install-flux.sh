@@ -3,7 +3,7 @@ set -ex
 
 ENV=$3
 CLUSTER_NAME=$6
-FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/asoraw
+FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
 AGENT_BUILDDIRECTORY=/tmp
 KUSTOMIZE_VERSION=4.5.7
 
@@ -40,19 +40,17 @@ EOF
 # -----------------------------------------------------------
 
     ./kustomize build "${TMP_DIR}/admin" |  kubectl apply -f -
-
     CRDS="azureassignedidentities.aadpodidentity.k8s.io azureidentitybindings.aadpodidentity.k8s.io azureidentities.aadpodidentity.k8s.io azurepodidentityexceptions.aadpodidentity.k8s.io"
     for crd in $(echo "${CRDS}"); do
         kubectl -n flux-system wait --for condition=established --timeout=60s "customresourcedefinition.apiextensions.k8s.io/$crd"
     done
-
     kubectl apply -f https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/apps/admin/aad-pod-id/mic-exception.yaml
     kubectl apply -f https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/apps/kube-system/aad-pod-id/mic-exception.yaml
 
 }
 
 function flux_v2_installation {
-    FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/asoraw
+    FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
      mkdir -p "${TMP_DIR}/gotk"
 
 # Deploy components and CRDs
