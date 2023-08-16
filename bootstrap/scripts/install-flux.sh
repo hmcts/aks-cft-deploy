@@ -40,12 +40,10 @@ EOF
 # -----------------------------------------------------------
 
     ./kustomize build "${TMP_DIR}/admin" |  kubectl apply -f -
-    
     CRDS="azureassignedidentities.aadpodidentity.k8s.io azureidentitybindings.aadpodidentity.k8s.io azureidentities.aadpodidentity.k8s.io azurepodidentityexceptions.aadpodidentity.k8s.io"
     for crd in $(echo "${CRDS}"); do
         kubectl -n flux-system wait --for condition=established --timeout=60s "customresourcedefinition.apiextensions.k8s.io/$crd"
     done
-    
     kubectl apply -f https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/apps/admin/aad-pod-id/mic-exception.yaml
     kubectl apply -f https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/apps/kube-system/aad-pod-id/mic-exception.yaml
 
@@ -124,7 +122,7 @@ mkdir -p ${TMP_DIR}/gotk
 # Create admin namespace
 create_admin_namespace
 
-#  Create secret in admin namespace 
+#  Create secret in admin namespace
 flux_ssh_git_key
 
 # Deploy AAD Pod Identity
@@ -152,5 +150,23 @@ EOF
 # -----------------------------------------------------------
 
 ./kustomize build ${TMP_DIR} |  kubectl apply -f -
+
+(
+cat <<EOF
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://github.com/hmcts/cnp-flux-config//apps/azureserviceoperator-system/cert-manager/
+  - https://github.com/hmcts/cnp-flux-config//apps/azureserviceoperator-system/aso/
+  - https://raw.githubusercontent.com/hmcts/cnp-flux-config/master/apps/azureserviceoperator-system/${CLUSTER_ENV}/base/aso-controller-settings.yaml
+EOF
+) > "${TMP_DIR}/kustomization.yaml"
+# -----------------------------------------------------------
+./kustomize build ${TMP_DIR} > "${TMP_DIR}/result.yaml"
+
+#retries so that CRDs apply first and then manifests
+for i in {1..3}; do
+  (kubectl apply -f ${TMP_DIR}/result.yaml && break) || sleep 15;
+done
 
 rm -rf kustomize
