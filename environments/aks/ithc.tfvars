@@ -10,6 +10,7 @@ kubernetes_cluster_ssh_key             = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ
 enable_user_system_nodepool_split      = true
 workload_identity_enabled              = true
 enable_automatic_channel_upgrade_patch = true
+service_operator_settings_enabled      = true
 
 system_node_pool = {
   vm_size   = "Standard_D4ds_v5",
