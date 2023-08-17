@@ -7,14 +7,17 @@ terraform {
   required_providers {
     azurerm = {
       source                = "hashicorp/azurerm"
-      version               = "3.35.0"
+      version               = "3.66.0"
       configuration_aliases = [azurerm.hmcts-control]
     }
   }
 }
 
+variable "subscription_id" {}
+
 provider "azurerm" {
   features {}
+  subscription_id = var.subscription_id
 }
 
 locals {

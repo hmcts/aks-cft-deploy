@@ -8,6 +8,10 @@ application_gateway_subnet_cidr_blocks = "10.10.78.0/25"
 postgresql_subnet_cidr_blocks          = "10.10.78.128/25"
 
 additional_subnets = [
+  {
+    name           = "private-endpoints"
+    address_prefix = "10.10.79.0/25"
+  }
 ]
 
 private_dns_subscription = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
@@ -159,6 +163,18 @@ additional_routes = [
   {
     name                   = "mgmt-nonprod"
     address_prefix         = "10.48.0.32/27"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "jump-box-prod"
+    address_prefix         = "10.24.250.0/26"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "jump-box-nonprod"
+    address_prefix         = "10.25.250.0/26"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   }

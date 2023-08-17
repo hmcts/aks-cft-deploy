@@ -12,7 +12,9 @@ get_upgrades () {
       --resource-group "${aks_resource_group}" \
       --subscription "${aks_subscription}" \
       | jq -r '
-      if (.controlPlaneProfile.upgrades|map(select(.isPreview == null)) == []) then
+      if (.controlPlaneProfile.upgrades == null) then 
+          .controlPlaneProfile.kubernetesVersion 
+      elif (.controlPlaneProfile.upgrades|map(select(.isPreview == null)) == []) then
           .controlPlaneProfile.kubernetesVersion
       else .controlPlaneProfile.upgrades|map(select(.isPreview == null).kubernetesVersion)
       | .[] end' \
@@ -34,4 +36,3 @@ if [[ ${UPGRADE_VERSION} == "" ]] && [[ ${environment} =~ ^(preview|demo)$ ]]; t
 fi
 
 echo "${UPGRADE_VERSION}"
-

@@ -48,10 +48,16 @@ additional_routes = [
   }
 ]
 
-additional_routes_appgw = [
+additional_routes_application_gateway = [
   {
     name                   = "core_cftptl_intvsc_vnet"
     address_prefix         = "10.10.64.0/21"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "core-idam-prod-vnet"
+    address_prefix         = "10.106.0.0/18"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
   },

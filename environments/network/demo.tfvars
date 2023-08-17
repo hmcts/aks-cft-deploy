@@ -49,7 +49,7 @@ additional_routes = [
   }
 ]
 
-additional_routes_appgw = [
+additional_routes_application_gateway = [
   {
     name                   = "cft-ptl-vnet"
     address_prefix         = "10.10.72.0/21"
