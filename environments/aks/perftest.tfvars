@@ -11,7 +11,6 @@ enable_user_system_nodepool_split = true
 oms_agent_enabled                 = true
 
 enable_automatic_channel_upgrade_patch = true
-
 system_node_pool = {
   vm_size   = "Standard_D4ds_v5",
   min_nodes = 4,
