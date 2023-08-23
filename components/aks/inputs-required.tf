@@ -48,7 +48,7 @@ variable "monitor_diagnostic_setting" {
 }
 
 variable "sku_tier" {
-  default = "Paid"
+  default = "Standard"
 }
 
 variable "ptl_cluster" {
@@ -66,14 +66,6 @@ variable "availability_zones" {
 variable "enable_automatic_channel_upgrade_patch" {
   default     = false
   description = "Enable automatic patch upgrades"
-}
-
-variable "workload_identity_enabled" {
-  default = false
-}
-
-variable "service_operator_settings_enabled" {
-  default = false
 }
 
 variable "csi_driver_enabled" {

@@ -10,7 +10,7 @@ postgresql_subnet_cidr_blocks          = "10.70.30.0/25"
 additional_subnets = [
   {
     name           = "private-endpoints"
-    address_prefix = "10.70.31.0/22"
+    address_prefix = "10.70.30.128/25"
   }
 ]
 
