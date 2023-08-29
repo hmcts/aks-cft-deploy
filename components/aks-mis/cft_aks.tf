@@ -6,7 +6,7 @@ data "azurerm_resource_group" "managed-identity-operator-cft-mi" {
 resource "azurerm_role_assignment" "uami_cft_rg_identity_operator" {
   for_each             = toset(var.clusters)
   provider             = azurerm.acr
-  principal_id         = module.kubernetes[each.key].kubelet_identity[0].object_id
+  principal_id         = module.kubernetes.kubelet_object_ids
   scope                = data.azurerm_resource_group.managed-identity-operator-cft-mi.id
   role_definition_name = "Managed Identity Operator"
 }
