@@ -103,13 +103,3 @@ module "ctags" {
   expiresAfter = var.expiresAfter
   autoShutdown = var.autoShutdown
 }
-
-moved {
-  from = module.kubernetes["01"].azapi_resource.service_operator_credential[0]
-  to   = module.kubernetes["01"].azapi_resource.service_operator_credential
-}
-
-moved {
-  from = module.kubernetes["00"].azapi_resource.service_operator_credential[0]
-  to   = module.kubernetes["00"].azapi_resource.service_operator_credential
-}
