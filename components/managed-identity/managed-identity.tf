@@ -140,6 +140,14 @@ resource "azurerm_role_assignment" "service_operator" {
   role_definition_name = "Contributor"
   scope                = data.azurerm_subscription.subscription.id
 }
+
+resource "azurerm_role_assignment" "preview_mi" {
+  for_each             = toset([for cluster in var.clusters : cluster if contains([var.env], "preview")])
+  principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
+  scope                = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
+  role_definition_name = "Contributor"
+}
+
 resource "azurerm_role_assignment" "service_operator_workload_identity" {
   count                = var.service_operator_settings_enabled ? 1 : 0
   principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
