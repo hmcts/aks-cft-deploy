@@ -142,7 +142,7 @@ resource "azurerm_role_assignment" "service_operator" {
 }
 
 resource "azurerm_role_assignment" "preview_mi" {
-  for_each             = toset([for cluster in var.clusters : cluster if contains([var.env], "preview")])
+  for_each             = var.env == "preview" ? 1 : 0
   principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
   scope                = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
   role_definition_name = "Contributor"
