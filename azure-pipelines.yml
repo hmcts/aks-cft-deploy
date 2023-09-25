@@ -290,11 +290,12 @@ stages:
 
   - stage: AutoUpdateIssuerURL
     # condition: and(variables.isMain, eq(variables['Action'], 'Apply'))
-    displayName: 'Update Issuer URL in Flux'
+    displayName: 'Update Issuer URL'
     dependsOn: Aks
     jobs:
       - job: UpdateURL
         steps:
+          - checkout: cnp-flux-config
           - task: AzureCLI@1
             displayName: 'Fetch Issuer URL'
             inputs:
@@ -305,8 +306,9 @@ stages:
                 inlineScript: |   
                   echo "##vso[task.setvariable variable=AKS_ISSUER_URL]$(az aks show -n cft-${{ parameters.env }}-${{ parameters.cluster }}-aks -g cft-${{ parameters.env }}-${{ parameters.cluster }}-rg --query "oidcIssuerProfile.issuerUrl" -otsv)"
           - task: Bash@3
+            displayName: 'Update flux-config'
             inputs:
-              arguments: ${{ parameters.env }} ${{ parameters.cluster }} $(AKS_ISSUER_URL)
+              arguments: ${{ parameters.env }} ${{ parameters.cluster }} $(AKS_ISSUER_URL) cnp-flux-config
               filePath: $(System.DefaultWorkingDirectory)/pipeline-scripts/update-issuer-url.sh
 
   - stage: BootStrapClusters
