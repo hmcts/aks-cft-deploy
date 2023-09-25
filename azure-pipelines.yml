@@ -315,7 +315,7 @@ stages:
             displayName: 'Update flux-config'
             inputs:
               arguments: ${{ parameters.env }} ${{ parameters.cluster }} $(AKS_ISSUER_URL) cnp-flux-config
-              filePath: $(System.DefaultWorkingDirectory)/pipeline-scripts/update-issuer-url.sh
+              filePath: aks-cft-deploy/pipeline-scripts/update-issuer-url.sh
 
   - stage: BootStrapClusters
     displayName: 'BootStrap Clusters'
