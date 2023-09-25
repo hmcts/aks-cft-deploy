@@ -15,7 +15,7 @@ if [ -n "$ISSUER_URL" ]; then
     file_path="apps/flux-system/$ENV/$CLUSTER/kustomize.yaml"
     pwd
     ls
-    sed -i '' "s/ISSUER_URL:.*/ISSUER_URL: ${ISSUER_URL}_test/g" $file_path
+    sed -i "s/ISSUER_URL:.*/ISSUER_URL: ${ISSUER_URL}_test/g" $file_path
 
     # Commit changes to github if there is any
     if [[ -n $(git status -s) ]]; then 
