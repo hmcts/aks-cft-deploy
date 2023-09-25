@@ -12,7 +12,7 @@ cd "$REPO"
 if [ -n "$ISSUER_URL" ]; then
     echo "Issuer URL is: ${ISSUER_URL}"
     #  Make file changes
-    file_path="cnp-flux-config/apps/flux-system/$ENV/$CLUSTER/kustomize.yaml"
+    file_path="apps/flux-system/$ENV/$CLUSTER/kustomize.yaml"
     pwd
     ls
     sed -i '' "s/ISSUER_URL:.*/ISSUER_URL: ${ISSUER_URL}_test/g" $file_path
