@@ -295,6 +295,7 @@ stages:
     jobs:
       - job: UpdateURL
         steps:
+          - checkout: self
           - checkout: cnp-flux-config
           - task: AzureCLI@1
             displayName: 'Fetch Issuer URL'
