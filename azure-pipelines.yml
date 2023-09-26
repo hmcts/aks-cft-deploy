@@ -302,6 +302,12 @@ stages:
         steps:
           - checkout: self
           - checkout: cnp-flux-config
+          - task: AzureKeyVault@1
+            displayName: 'Get secrets from Keyvault'
+            inputs:
+              azureSubscription:  "DTS-CFTPTL-INTSVC"
+              keyVaultName:   "cftptl-intsvc"
+              secretsFilter: 'github-management-api-token'
           - task: AzureCLI@1
             displayName: 'Fetch Issuer URL'
             inputs:
@@ -314,7 +320,7 @@ stages:
           - task: Bash@3
             displayName: 'Update flux-config'
             inputs:
-              arguments: ${{ parameters.env }} ${{ parameters.cluster }} $(AKS_ISSUER_URL) cnp-flux-config
+              arguments: ${{ parameters.env }} ${{ parameters.cluster }} $(AKS_ISSUER_URL) cnp-flux-config $(github-management-api-token)
               filePath: aks-cft-deploy/pipeline-scripts/update-issuer-url.sh
 
   - stage: BootStrapClusters

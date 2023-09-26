@@ -5,6 +5,7 @@ ENV=$1
 CLUSTER=$2
 ISSUER_URL=$3
 REPO=$4
+GIT_TOKEN=$5
 
 cd "$REPO"
 
@@ -13,13 +14,17 @@ if [ -n "$ISSUER_URL" ]; then
     echo "Issuer URL is: ${ISSUER_URL}"
     #  Make file changes
     file_path="apps/flux-system/${ENV}/${CLUSTER}/kustomize.yaml"
-    pwd
-    ls
     sed -i -e "s/ISSUER_URL:.*/ISSUER_URL: \"$(echo $ISSUER_URL | sed 's/[\/&]/\\&/g')_test\"/g" $file_path
 
     # Commit changes to github if there is any
     if [[ -n $(git status -s) ]]; then 
         git diff .
+        git config --global user.email github-platform-operations@HMCTS.NET
+        git config --global user.name "hmcts-platform-operations"
+        git add .
+        git commit -m "Updating OIDC Issuer URL for $CLUSTER cluster in $ENV"
+        git remote set-url origin https://hmcts-platform-operations:"${GIT_TOKEN}"@github.com/hmcts/"$REPO".git
+        git push --dry-run --set-upstream origin HEAD:test_issuer_update
     fi
 fi
 
