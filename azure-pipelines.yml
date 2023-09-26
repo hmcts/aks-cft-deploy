@@ -298,6 +298,7 @@ stages:
     dependsOn: Aks
     jobs:
       - job: BootStrap
+        condition: and(succeeded(), eq(variables['isMain'], true), eq('${{ parameters.action }}', 'apply'))
         variables:
           clusters: ${{ parameters.cluster }}
         steps:
