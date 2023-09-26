@@ -5,7 +5,8 @@ parameters:
   terraformSubscriptionID: ''
 
 steps:
-
+- checkout: self
+- checkout: cnp-flux-config
 - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
   parameters:
     serviceConnection: $(serviceConnection)
@@ -21,6 +22,20 @@ steps:
       failOnStandardError: 'true'
       inlineScript: |   
         echo "##vso[task.setvariable variable=AZURE_MI_ID]$(az identity show --resource-group genesis-rg --name aks-$(env)-mi --query="clientId" -o tsv)"
+        echo "##vso[task.setvariable variable=AKS_ISSUER_URL]$(az aks show -n cft-${{ parameters.environment }}-${{ parameters.cluster }}-aks -g cft-${{ parameters.environment }}-${{ parameters.cluster }}-rg --query "oidcIssuerProfile.issuerUrl" -otsv)"
+
+- task: AzureKeyVault@1
+  displayName: 'Get secrets from Keyvault'
+  inputs:
+    azureSubscription:  "DTS-CFTPTL-INTSVC"
+    keyVaultName:   "cftptl-intsvc"
+    secretsFilter: 'github-management-api-token'
+
+- task: Bash@3
+  displayName: 'Update flux-config'
+  inputs:
+    arguments: ${{ parameters.environment }} ${{ parameters.cluster }} $(AKS_ISSUER_URL) cnp-flux-config $(github-management-api-token)
+    filePath: aks-cft-deploy/pipeline-scripts/update-issuer-url.sh
 
 - task: AzureCLI@1
   displayName: 'Bootstrap'
