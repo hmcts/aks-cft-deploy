@@ -294,7 +294,7 @@ stages:
                   -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
   - stage: AutoUpdateIssuerURL
-    # condition: and(variables.isMain, eq(variables['Action'], 'Apply'))
+    condition: and(variables.isMain, eq(variables['Action'], 'Apply'))
     displayName: 'Update Issuer URL'
     dependsOn: Aks
     jobs:
