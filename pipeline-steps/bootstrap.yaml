@@ -45,5 +45,5 @@ steps:
     addSpnToEnvironment: true
     scriptType: shell
     failOnStandardError: 'false'
-    scriptPath: bootstrap/bootstrap.sh
+    scriptPath: aks-cft-deploy/bootstrap/bootstrap.sh
     arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) "$(clusters)" deploy ${{ parameters.akskeyvault }} ${{parameters.terraformSubscriptionID}}
