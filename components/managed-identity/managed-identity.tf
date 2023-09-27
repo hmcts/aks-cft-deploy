@@ -57,7 +57,9 @@ locals {
   department_name      = var.env == "ptl" || var.env == "ptlsbox" ? "dts" : "dcd"
   acme_environment_app = var.env == "ptl" || var.env == "ptlsbox" ? "cft" : "cftapps"
   wi_environment_rg    = var.env == "sbox" ? "sandbox" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env == "preview" ? "aat" : var.env
-
+  wi_app_name = var.env == "sbox" ? "sandbox" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env
+  wi_app_rg = var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env
+  
   external_dns = {
     # Resource Groups to add Reader permissions for external dns to
     resource_groups = toset([
@@ -109,14 +111,28 @@ data "azurerm_resource_group" "platform-rg" {
   name = "cft-platform-${local.acme_environment_rg}-rg"
 }
 
+data "azurerm_resource_group" "cftapps-mi-rg" {
+  name = "managed-identities-${local.wi_app_rg}-rg"
+}
+
 data "azurerm_key_vault" "acme" {
   name                = "acme${local.department_name}${local.acme_environment_app}${local.acme_environment_kv}"
   resource_group_name = data.azurerm_resource_group.platform-rg.name
 }
+
+resource "azurerm_user_assigned_identity" "wi-admin-mi" {
+  resource_group_name = data.azurerm_resource_group.cftapps-mi-rg.name
+  location            = data.azurerm_resource_group.cftapps-mi-rg.location
+
+  name = "admin-${local.wi_app_name}-mi"
+  tags = module.ctags.common_tags
+}
+
 resource "azurerm_role_assignment" "acme-vault-access" {
+  count                = length([azurerm_user_assigned_identity.sops-mi, azurerm_user_assigned_identity.admin-mi])
   scope                = data.azurerm_key_vault.acme.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
+  principal_id         = element([azurerm_user_assigned_identity.sops-mi, azurerm_user_assigned_identity.admin-mi].*.principal_id, count.index)
 }
 
 resource "azurerm_role_assignment" "externaldns_dns_zone_contributor" {
