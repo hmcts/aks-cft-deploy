@@ -129,10 +129,11 @@ resource "azurerm_user_assigned_identity" "wi-admin-mi" {
 }
 
 resource "azurerm_role_assignment" "acme-vault-access" {
-  count                = length([azurerm_user_assigned_identity.sops-mi, azurerm_user_assigned_identity.wi-admin-mi])
+
+  for_each = toset([azurerm_user_assigned_identity.sops-mi.principal_id, azurerm_user_assigned_identity.wi-admin-mi.principal_id])
   scope                = data.azurerm_key_vault.acme.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = element([azurerm_user_assigned_identity.sops-mi, azurerm_user_assigned_identity.wi-admin-mi].*.principal_id, count.index)
+  principal_id         = each.key
 }
 
 resource "azurerm_role_assignment" "externaldns_dns_zone_contributor" {
