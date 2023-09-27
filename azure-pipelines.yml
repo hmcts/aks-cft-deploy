@@ -12,6 +12,11 @@ resources:
       ref: master
       name: hmcts/cnp-azuredevops-libraries
       endpoint: 'hmcts'
+    - repository: cnp-flux-config
+      type: github
+      ref: refs/heads/master
+      name: hmcts/cnp-flux-config
+      endpoint: 'hmcts'
 
 parameters:
 
@@ -293,12 +298,18 @@ stages:
     dependsOn: Aks
     jobs:
       - job: BootStrap
+        condition: |
+          or(
+            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          )
         variables:
           clusters: ${{ parameters.cluster }}
         steps:
           - template: pipeline-steps/bootstrap.yaml
             parameters:
               environment: ${{ parameters.env }}
+              cluster: ${{ parameters.cluster }}
               project: $(project)
               serviceConnection: $(serviceConnection)
               aksKeyVault: $(aksKeyVault)
@@ -312,7 +323,11 @@ stages:
         pool:
           vmImage: ${{ variables.agentPool }}
         timeoutInMinutes: ${{ variables.timeoutInMinutes }}
-        condition: and(succeeded(), eq(variables['isMain'], true), eq('${{ parameters.action }}', 'apply'))
+        condition: |
+          or(
+            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          )
         steps:
           - template: steps/pipeline-tests-jest.yaml@cnp-azuredevops-libraries
             parameters:
