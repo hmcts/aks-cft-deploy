@@ -129,7 +129,7 @@ resource "azurerm_user_assigned_identity" "wi-admin-mi" {
 }
 
 resource "azurerm_role_assignment" "acme-vault-access" {
-  count                = length([azurerm_user_assigned_identity.sops-mi, azurerm_user_assigned_identity.admin-mi])
+  count                = length([azurerm_user_assigned_identity.sops-mi, azurerm_user_assigned_identity.wi-admin-mi])
   scope                = data.azurerm_key_vault.acme.id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = element([azurerm_user_assigned_identity.sops-mi, azurerm_user_assigned_identity.wi-admin-mi].*.principal_id, count.index)
