@@ -300,7 +300,7 @@ stages:
       - job: BootStrap
         condition: |
           or(
-            and(succeeded(), eq('${{ parameters.action }}', 'apply'),
+            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         variables:
@@ -325,7 +325,7 @@ stages:
         timeoutInMinutes: ${{ variables.timeoutInMinutes }}
         condition: |
           or(
-            and(succeeded(), eq('${{ parameters.action }}', 'apply'),
+            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         steps:
