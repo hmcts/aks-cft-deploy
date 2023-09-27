@@ -24,7 +24,7 @@ if [ -n "$ISSUER_URL" ]; then
         git add .
         git commit -m "Updating OIDC Issuer URL for $CLUSTER cluster in $ENV"
         git remote set-url origin https://hmcts-platform-operations:"${GIT_TOKEN}"@github.com/hmcts/"$REPO".git
-        git pull --rebase
+        git pull origin master --rebase
         git push --set-upstream origin HEAD:refs/heads/test_issuer_url
     else
         echo "No change to issuer URL, skipping git push..."
