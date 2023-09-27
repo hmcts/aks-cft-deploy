@@ -57,9 +57,9 @@ locals {
   department_name      = var.env == "ptl" || var.env == "ptlsbox" ? "dts" : "dcd"
   acme_environment_app = var.env == "ptl" || var.env == "ptlsbox" ? "cft" : "cftapps"
   wi_environment_rg    = var.env == "sbox" ? "sandbox" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env == "preview" ? "aat" : var.env
-  wi_app_name = var.env == "sbox" ? "sandbox" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env
-  wi_app_rg = var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env
-  
+  wi_app_name          = var.env == "sbox" ? "sandbox" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env
+  wi_app_rg            = var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env
+
   external_dns = {
     # Resource Groups to add Reader permissions for external dns to
     resource_groups = toset([
