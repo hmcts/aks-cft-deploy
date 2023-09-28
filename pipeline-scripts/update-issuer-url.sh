@@ -27,7 +27,8 @@ if [ -n "$ISSUER_URL" ]; then
         git pull origin master --rebase
         for i in {1..5}; do
             git push --set-upstream origin HEAD:master && break || {
-                echo "Failed to push, attempt $i of 5"
+                echo "Failed to push, attempt $i of 5 - pulling remote again"
+                git pull origin master --rebase
             }
         done
     else
