@@ -23,9 +23,10 @@ Terraform code to deploy CFT AKS Cluster and underlying infrastructure.
     4) Bootstrap
         a) Creates sshkeys for flux if required
         b) Implements RBAC
-        c) Install flux and helm operator
-        d) Create neuvector azure file share
-        e) Generate sealed secrets [optional]
+        c) Updates OIDC issuer URL in flux
+        d) Install flux and helm operator
+        e) Create neuvector azure file share
+        f) Generate sealed secrets [optional]
 
 ## Scripts Information
 
