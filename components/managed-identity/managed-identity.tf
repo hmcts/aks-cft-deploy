@@ -145,10 +145,9 @@ resource "azurerm_user_assigned_identity" "wi-admin-mi" {
 
 resource "azurerm_role_assignment" "acme-vault-access" {
 
-  for_each             = toset([azurerm_user_assigned_identity.sops-mi.principal_id, azurerm_user_assigned_identity.wi-admin-mi.principal_id])
   scope                = data.azurerm_key_vault.acme.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = each.key
+  principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
 }
 
 resource "azurerm_role_assignment" "acme-vault-reader" {
