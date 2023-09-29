@@ -20,7 +20,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  subscription_id            = local.mi_cft["${var.env}"].sub_id
+  subscription_id            = local.mi_cft[var.env].sub_id
   skip_provider_registration = "true"
   features {}
   alias = "managed_identity_infra_sub"
