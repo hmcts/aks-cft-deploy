@@ -77,45 +77,45 @@ locals {
   mi_cft = {
     # DCD-CNP-Sandbox
     sbox = {
-      scope  = "/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783"
-      sub_id = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
+      subscription_scope  = "/subscriptions/${local.mi_cft[var.env].subscription_id}"
+      subscription_id = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
     }
     # DCD-CNP-DEV
     aat = {
-      scope  = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
-      sub_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      subscription_scope  = "/subscriptions/${local.mi_cft[var.env].subscription_id}"
+      subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
     demo = {
-      scope  = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
-      sub_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      subscription_scope  = "/subscriptions/${local.mi_cft[var.env].subscription_id}"
+      subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
     preview = {
-      scope  = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
-      sub_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      subscription_scope  = "/subscriptions/${local.mi_cft[var.env].subscription_id}"
+      subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
     # DCD-CNP-QA
     ithc = {
-      scope  = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
-      sub_id = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+      subscription_scope  = "/subscriptions/${local.mi_cft[var.env].subscription_id}"
+      subscription_id = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
     perftest = {
-      scope  = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
-      sub_id = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+      subscription_scope  = "/subscriptions/${local.mi_cft[var.env].subscription_id}"
+      subscription_id = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
     # DCD-CNP-Prod
     prod = {
-      scope  = "/subscriptions/8999dec3-0104-4a27-94ee-6588559729d1"
-      sub_id = "8999dec3-0104-4a27-94ee-6588559729d1"
+      subscription_scope  = "/subscriptions/${local.mi_cft[var.env].subscription_id}"
+      subscription_id = "8999dec3-0104-4a27-94ee-6588559729d1"
     }
     # DTS-CFTSBOX-INTSVC
     ptlsbox = {
-      scope  = "/subscriptions/1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
-      sub_id = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+      subscription_scope  = "/subscriptions/${local.mi_cft[var.env].subscription_id}"
+      subscription_id = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
     }
     # DTS-CFTPTL-INTSVC
     ptl = {
-      scope  = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
-      sub_id = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+      subscription_scope  = "/subscriptions/${local.mi_cft[var.env].subscription_id}"
+      subscription_id = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
     }
   }
 }
@@ -189,7 +189,7 @@ resource "azurerm_role_assignment" "service_operator_workload_identity" {
   count                = var.service_operator_settings_enabled ? 1 : 0
   principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
   role_definition_name = "Contributor"
-  scope                = "${local.mi_cft[var.env].scope}/resourceGroups/managed-identities-${local.wi_environment_rg}-rg"
+  scope                = "${local.mi_cft[var.env].subscription_scope}/resourceGroups/managed-identities-${local.wi_environment_rg}-rg"
 }
 
 module "ctags" {
