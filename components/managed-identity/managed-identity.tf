@@ -77,44 +77,44 @@ locals {
   mi_cft = {
     # DCD-CNP-Sandbox
     sbox = {
-      scope = "/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783"
+      scope  = "/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783"
       sub_id = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
     }
     # DCD-CNP-DEV
     aat = {
-      scope = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      scope  = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
       sub_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
     demo = {
-      scope = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      scope  = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
       sub_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
     preview = {
-      scope = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      scope  = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
       sub_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
     # DCD-CNP-QA
     ithc = {
-      scope = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+      scope  = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
       sub_id = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
     perftest = {
-      scope = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+      scope  = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
       sub_id = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
     }
     # DCD-CNP-Prod
     prod = {
-      scope = "/subscriptions/8999dec3-0104-4a27-94ee-6588559729d1"
+      scope  = "/subscriptions/8999dec3-0104-4a27-94ee-6588559729d1"
       sub_id = "8999dec3-0104-4a27-94ee-6588559729d1"
     }
     # DTS-CFTSBOX-INTSVC
     ptlsbox = {
-      scope = "/subscriptions/1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+      scope  = "/subscriptions/1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
       sub_id = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
     }
     # DTS-CFTPTL-INTSVC
     ptl = {
-      scope = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+      scope  = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
       sub_id = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
     }
   }
@@ -131,7 +131,7 @@ data "azurerm_key_vault" "acme" {
 
 data "azurerm_resource_group" "cftapps-mi-rg" {
   provider = azurerm.managed_identity_infra_sub
-  name = "managed-identities-${local.wi_environment_rg}-rg"
+  name     = "managed-identities-${local.wi_environment_rg}-rg"
 }
 
 resource "azurerm_user_assigned_identity" "wi-admin-mi" {
@@ -139,8 +139,8 @@ resource "azurerm_user_assigned_identity" "wi-admin-mi" {
   resource_group_name = data.azurerm_resource_group.cftapps-mi-rg.name
   location            = data.azurerm_resource_group.cftapps-mi-rg.location
 
-  name                = "admin-${var.env}-mi"
-  tags                = module.ctags.common_tags
+  name = "admin-${var.env}-mi"
+  tags = module.ctags.common_tags
 }
 
 resource "azurerm_role_assignment" "acme-vault-access" {
