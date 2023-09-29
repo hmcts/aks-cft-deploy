@@ -139,7 +139,7 @@ resource "azurerm_user_assigned_identity" "wi-admin-mi" {
   resource_group_name = data.azurerm_resource_group.cftapps-mi-rg.name
   location            = data.azurerm_resource_group.cftapps-mi-rg.location
 
-  name = "admin-${var.env}-mi"
+  name = "admin-${local.wi_environment_rg}-mi"
   tags = module.ctags.common_tags
 }
 
