@@ -57,8 +57,6 @@ locals {
   department_name      = var.env == "ptl" || var.env == "ptlsbox" ? "dts" : "dcd"
   acme_environment_app = var.env == "ptl" || var.env == "ptlsbox" ? "cft" : "cftapps"
   wi_environment_rg    = var.env == "sbox" ? "sandbox" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env == "preview" ? "aat" : var.env
-  wi_app_name          = var.env == "sbox" ? "sandbox" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env
-  wi_app_rg            = var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env
 
   external_dns = {
     # Resource Groups to add Reader permissions for external dns to
@@ -77,32 +75,38 @@ locals {
 
   # MIs for managed-identities-sandbox-rg etc - for workload identity with ASO
   mi_cft = {
+    # DCD-CNP-Sandbox
     sbox = {
-      scope = "/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783"
+      subscription_id = "bf308a5c-0624-4334-8ff8-8dca9fd43783"
     }
-    perftest = {
-      scope = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
-    }
+    # DCD-CNP-DEV
     aat = {
-      scope = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
-    }
-    ithc = {
-      scope = "/subscriptions/7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
-    }
-    ptlsbox = {
-      scope = "/subscriptions/1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
-    }
-    preview = {
-      scope = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
-    }
-    ptl = {
-      scope = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
-    }
-    prod = {
-      scope = "/subscriptions/8999dec3-0104-4a27-94ee-6588559729d1"
+      subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
     }
     demo = {
-      scope = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
+      subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+    }
+    preview = {
+      subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+    }
+    # DCD-CNP-QA
+    ithc = {
+      subscription_id = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+    }
+    perftest = {
+      subscription_id = "7a4e3bd5-ae3a-4d0c-b441-2188fee3ff1c"
+    }
+    # DCD-CNP-Prod
+    prod = {
+      subscription_id = "8999dec3-0104-4a27-94ee-6588559729d1"
+    }
+    # DTS-CFTSBOX-INTSVC
+    ptlsbox = {
+      subscription_id = "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+    }
+    # DTS-CFTPTL-INTSVC
+    ptl = {
+      subscription_id = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
     }
   }
 }
@@ -111,29 +115,30 @@ data "azurerm_resource_group" "platform-rg" {
   name = "cft-platform-${local.acme_environment_rg}-rg"
 }
 
-data "azurerm_resource_group" "cftapps-mi-rg" {
-  name = "managed-identities-${local.wi_app_rg}-rg"
-}
-
 data "azurerm_key_vault" "acme" {
   name                = "acme${local.department_name}${local.acme_environment_app}${local.acme_environment_kv}"
   resource_group_name = data.azurerm_resource_group.platform-rg.name
 }
 
+data "azurerm_resource_group" "cftapps-mi-rg" {
+  provider = azurerm.managed_identity_infra_sub
+  name     = "managed-identities-${local.wi_environment_rg}-rg"
+}
+
 resource "azurerm_user_assigned_identity" "wi-admin-mi" {
+  provider            = azurerm.managed_identity_infra_sub
   resource_group_name = data.azurerm_resource_group.cftapps-mi-rg.name
   location            = data.azurerm_resource_group.cftapps-mi-rg.location
 
-  name = "admin-${local.wi_app_name}-mi"
+  name = "admin-${local.wi_environment_rg}-mi"
   tags = module.ctags.common_tags
 }
 
 resource "azurerm_role_assignment" "acme-vault-access" {
 
-  for_each             = toset([azurerm_user_assigned_identity.sops-mi.principal_id, azurerm_user_assigned_identity.wi-admin-mi.principal_id])
   scope                = data.azurerm_key_vault.acme.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = each.key
+  principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
 }
 
 resource "azurerm_role_assignment" "acme-vault-reader" {
@@ -175,7 +180,7 @@ resource "azurerm_role_assignment" "service_operator_workload_identity" {
   count                = var.service_operator_settings_enabled ? 1 : 0
   principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
   role_definition_name = "Contributor"
-  scope                = "${local.mi_cft[var.env].scope}/resourceGroups/managed-identities-${local.wi_environment_rg}-rg"
+  scope                = "/subscriptions/${local.mi_cft[var.env].subscription_id}/resourceGroups/managed-identities-${local.wi_environment_rg}-rg"
 }
 
 module "ctags" {
