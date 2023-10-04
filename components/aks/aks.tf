@@ -82,6 +82,17 @@ module "kubernetes" {
       node_taints         = []
       enable_auto_scaling = true
       mode                = "User"
+    },
+    {
+      name                = "cronjob"
+      vm_size             = lookup(var.cronjob, "vm_size", "Standard_DS3_v2")
+      min_count           = lookup(var.cronjob, "min_nodes", 0)
+      max_count           = lookup(var.cronjob, "max_nodes", 4)
+      max_pods            = lookup(var.cronjob, "max_pods", 30)
+      os_type             = "Linux"
+      node_taints         = ["kubernetes.io/name=cronjob:NoSchedule"]
+      enable_auto_scaling = true
+      mode                = "User"
     }
   ]
 
