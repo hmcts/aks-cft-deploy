@@ -82,6 +82,17 @@ module "kubernetes" {
       node_taints         = []
       enable_auto_scaling = true
       mode                = "User"
+    },
+    {
+      name                = "cronjob"
+      vm_size             = "Standard_D4ds_v5"
+      min_count           = 0
+      max_count           = 10
+      max_pods            = 30
+      os_type             = "Linux"
+      node_taints         = ["dedicated=jobs:NoSchedule"]
+      enable_auto_scaling = true
+      mode                = "User"
     }
   ]
 
