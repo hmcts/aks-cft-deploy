@@ -22,11 +22,6 @@ linux_node_pool = {
   min_nodes = 4,
   max_nodes = 10
 }
-cronjob = {
-  vm_size   = "Standard_D4ds_v5",
-  min_nodes = 0,
-  max_nodes = 10
-}
 
 availability_zones = ["1"]
 autoShutdown       = true
