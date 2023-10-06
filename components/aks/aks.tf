@@ -99,6 +99,8 @@ module "kubernetes" {
   project_acr_enabled = var.project_acr_enabled
   availability_zones  = var.availability_zones
 
+  azure_policy_enabled = var.env == "sbox" ? true : false
+
   enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
 
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
