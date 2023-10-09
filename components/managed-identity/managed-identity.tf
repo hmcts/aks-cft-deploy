@@ -156,25 +156,12 @@ resource "azurerm_role_assignment" "externaldns_read_rg" {
   principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
 }
 
-resource "azurerm_role_assignment" "service_operator" {
-  principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
-  role_definition_name = "Contributor"
-  scope                = data.azurerm_subscription.subscription.id
-}
-
 resource "azurerm_role_assignment" "preview_mi" {
   count                = var.env == "preview" ? 1 : 0
   principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
   scope                = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9"
   role_definition_name = "Contributor"
 }
-
-resource "azurerm_role_assignment" "service_operator_workload_identity" {
-  principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
-  role_definition_name = "Contributor"
-  scope                = "/subscriptions/${local.mi_cft[var.env].subscription_id}/resourceGroups/managed-identities-${local.wi_environment_rg}-rg"
-}
-
 module "ctags" {
   source       = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
   environment  = var.env
