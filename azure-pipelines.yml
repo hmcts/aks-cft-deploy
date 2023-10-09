@@ -237,6 +237,7 @@ stages:
               serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
+              tfVarsFile: NULL
               initCommandOptions: >
                 -var subscription_id=${{ variables.terraformSubscriptionID }}
                 -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
