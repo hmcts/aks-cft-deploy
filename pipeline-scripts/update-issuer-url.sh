@@ -13,6 +13,7 @@ cd "$REPO"
 if [ -n "$ISSUER_URL" ]; then
     echo "Issuer URL is: ${ISSUER_URL}"
     #  Make file changes
+    ENV=$([[ "$ENV" == "ptl" ]] && echo "ptl-intsvc" || ([[ "$ENV" == "ptlsbox" ]] && echo "sbox-intsvc" || echo "$ENV" ))
     file_path="apps/flux-system/${ENV}/${CLUSTER}/kustomize.yaml"
     sed -i -e "s/ISSUER_URL:.*/ISSUER_URL: \"$(echo $ISSUER_URL | sed 's/[\/&]/\\&/g')\"/g" $file_path
 
