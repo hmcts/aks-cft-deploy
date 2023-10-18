@@ -160,12 +160,13 @@ resource "azurerm_role_assignment" "service_operator_workload_identity" {
 }
 
 resource "azurerm_role_assignment" "preview_admin_mi_externaldns_read_rg" {
-  for_each             = var.env == "preview" ? toset(local.external_dns_zones) : []
+  count                = var.env == "preview" ? 1 : 0
   provider             = azurerm.dts-cftptl-intsvc
   principal_id         = local.admin_aat_mi
-  scope                = each.value["id"]
+  scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg"
   role_definition_name = "Reader"
 }
+
 resource "azurerm_role_assignment" "preview_admin_mi_externaldns_dns_zone_contributor" {
   for_each             = var.env == "preview" ? toset(local.external_dns_zones) : []
   provider             = azurerm.dts-cftptl-intsvc
