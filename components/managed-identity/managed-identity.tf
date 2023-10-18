@@ -58,6 +58,9 @@ locals {
   acme_environment_app = var.env == "ptl" || var.env == "ptlsbox" ? "cft" : "cftapps"
   wi_environment_rg    = var.env == "sbox" ? "sandbox" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env == "preview" ? "aat" : var.env
 
+  # This is needed for external DNS preview role assignments which uses aat-mi
+  admin_aat_mi = "1c09e6f2-45f5-4d09-99a2-a6a36e719239"
+
   # MIs for managed-identities-sandbox-rg etc - for workload identity with ASO
   mi_cft = {
     # DCD-CNP-Sandbox
@@ -148,7 +151,7 @@ resource "azurerm_role_assignment" "service_operator_workload_identity" {
 }
 
 resource "azurerm_role_assignment" "preview_admin_mi_externaldns_read_rg" {
-  count                = (contains(["preview"], var.env) ? 1 : 0)
+  for_each             = var.env == "preview" ? toset(local.admin_aat_mi) : []
   provider             = azurerm.dts-cftptl-intsvc
   principal_id         = azurerm_user_assigned_identity.wi-admin-mi.principal_id
   scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg"
@@ -156,7 +159,7 @@ resource "azurerm_role_assignment" "preview_admin_mi_externaldns_read_rg" {
 }
 
 resource "azurerm_role_assignment" "preview_admin_mi_externaldns_dns_zone_contributor" {
-  count                = (contains(["preview"], var.env) ? 1 : 0)
+  for_each             = var.env == "preview" ? toset(local.admin_aat_mi) : []
   provider             = azurerm.dts-cftptl-intsvc
   principal_id         = azurerm_user_assigned_identity.wi-admin-mi.principal_id
   scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-preview.internal"
