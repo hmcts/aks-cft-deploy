@@ -62,12 +62,8 @@ locals {
   admin_aat_mi = "79779e13-763e-4445-990d-a2509eb96773"
 
   external_dns_zones = {
-    preview-platform-hmcts-net = {
-      id = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/preview.platform.hmcts.net"
-    }
-    preview-internal = {
-      id = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-preview.internal"
-    }
+    preview-platform-hmcts-net =  "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/preview.platform.hmcts.net",
+    preview-internal = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-preview.internal"
   }
 
   # MIs for managed-identities-sandbox-rg etc - for workload identity with ASO
@@ -168,10 +164,10 @@ resource "azurerm_role_assignment" "preview_admin_mi_externaldns_read_rg" {
 }
 
 resource "azurerm_role_assignment" "preview_admin_mi_externaldns_dns_zone_contributor" {
-  for_each             = var.env == "preview" ? toset(local.external_dns_zones) : []
+  for_each             = var.env == "preview" ? local.external_dns_zones : {}
   provider             = azurerm.dts-cftptl-intsvc
   principal_id         = local.admin_aat_mi
-  scope                = each.value["id"]
+  scope                = each.value
   role_definition_name = "Private DNS Zone Contributor"
 }
 
