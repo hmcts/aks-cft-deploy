@@ -59,7 +59,7 @@ locals {
   wi_environment_rg    = var.env == "sbox" ? "sandbox" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env == "preview" ? "aat" : var.env
 
   # This is needed for external DNS preview role assignments which uses aat-mi
-  admin_aat_mi = "1c09e6f2-45f5-4d09-99a2-a6a36e719239"
+  admin_aat_mi = "79779e13-763e-4445-990d-a2509eb96773"
 
   # MIs for managed-identities-sandbox-rg etc - for workload identity with ASO
   mi_cft = {
