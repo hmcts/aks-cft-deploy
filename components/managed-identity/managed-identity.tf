@@ -62,8 +62,8 @@ locals {
   admin_aat_mi = "79779e13-763e-4445-990d-a2509eb96773"
 
   external_dns_zones = {
-    preview-platform-hmcts-net =  "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/preview.platform.hmcts.net",
-    preview-internal = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-preview.internal"
+    preview-platform-hmcts-net = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/preview.platform.hmcts.net",
+    preview-internal           = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-preview.internal"
   }
 
   # MIs for managed-identities-sandbox-rg etc - for workload identity with ASO
