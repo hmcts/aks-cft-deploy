@@ -147,6 +147,22 @@ resource "azurerm_role_assignment" "service_operator_workload_identity" {
   scope                = "/subscriptions/${local.mi_cft[var.env].subscription_id}/resourceGroups/managed-identities-${local.wi_environment_rg}-rg"
 }
 
+resource "azurerm_role_assignment" "preview_admin_mi_externaldns_read_rg" {
+  count                = (contains(["preview"], var.env) ? 1 : 0)
+  provider             = azurerm.dts-cftptl-intsvc
+  principal_id         = data.azurerm_user_assigned_identity.wi-admin-mi.principal_id
+  scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg"
+  role_definition_name = "Reader"
+}
+
+resource "azurerm_role_assignment" "preview_admin_mi_externaldns_dns_zone_contributor" {
+  count                = (contains(["preview"], var.env) ? 1 : 0)
+  provider             = azurerm.dts-cftptl-intsvc
+  principal_id         = data.azurerm_user_assigned_identity.wi-admin-mi.principal_id
+  scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-preview.internal"
+  role_definition_name = "Private DNS Zone Contributor"
+}
+
 module "ctags" {
   source       = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
   environment  = var.env
