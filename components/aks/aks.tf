@@ -94,7 +94,7 @@ module "kubernetes" {
       enable_auto_scaling = true
       mode                = "User"
     },
-     {
+    {
       name                = "spotinstance"
       vm_size             = "Standard_D4ds_v5"
       min_count           = 1
