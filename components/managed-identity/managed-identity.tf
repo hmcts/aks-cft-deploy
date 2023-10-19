@@ -58,19 +58,12 @@ locals {
   acme_environment_app = var.env == "ptl" || var.env == "ptlsbox" ? "cft" : "cftapps"
   wi_environment_rg    = var.env == "sbox" ? "sandbox" : var.env == "ptlsbox" ? "cftsbox-intsvc" : var.env == "ptl" ? "cftptl-intsvc" : var.env == "preview" ? "aat" : var.env
 
-  external_dns = {
-    # Resource Groups to add Reader permissions for external dns to
-    resource_groups = toset([
-      "/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/reformMgmtRG",
-      "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg"
-    ])
-    # Demo DNS zones to add "DNS Zone Contributor" premissions for external dns to
-    demo = toset([
-      "/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/reformMgmtRG/providers/Microsoft.Network/dnszones/demo.platform.hmcts.net",
-      "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/demo.platform.hmcts.net",
-      "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-demo.internal",
-      "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-idam-demo.internal"
-    ])
+  # This is needed for external DNS preview role assignments which uses aat-mi
+  admin_aat_mi = "79779e13-763e-4445-990d-a2509eb96773"
+
+  external_dns_zones = {
+    preview-platform-hmcts-net = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/preview.platform.hmcts.net",
+    preview-internal           = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/service.core-compute-preview.internal"
   }
 
   # MIs for managed-identities-sandbox-rg etc - for workload identity with ASO
@@ -141,21 +134,6 @@ resource "azurerm_role_assignment" "acme-vault-access" {
   principal_id         = each.key
 }
 
-resource "azurerm_role_assignment" "externaldns_dns_zone_contributor" {
-  for_each             = lookup(local.external_dns, var.env, toset([]))
-  scope                = each.value
-  role_definition_name = contains(regex("^.*/Microsoft.Network/(.*)/.*$", each.value), "privateDnsZones") ? "Private DNS Zone Contributor" : "DNS Zone Contributor"
-  principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
-}
-
-resource "azurerm_role_assignment" "externaldns_read_rg" {
-  # Only add the reader role if there are zones configured
-  for_each             = lookup(local.external_dns, var.env, null) != null ? local.external_dns.resource_groups : toset([])
-  scope                = each.value
-  role_definition_name = "Reader"
-  principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
-}
-
 resource "azurerm_role_assignment" "service_operator" {
   count                = var.service_operator_settings_enabled ? 1 : 0
   principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
@@ -175,6 +153,22 @@ resource "azurerm_role_assignment" "service_operator_workload_identity" {
   principal_id         = data.azurerm_user_assigned_identity.aks.principal_id
   role_definition_name = "Contributor"
   scope                = "/subscriptions/${local.mi_cft[var.env].subscription_id}/resourceGroups/managed-identities-${local.wi_environment_rg}-rg"
+}
+
+resource "azurerm_role_assignment" "preview_admin_mi_externaldns_read_rg" {
+  count                = var.env == "preview" ? 1 : 0
+  provider             = azurerm.dts-cftptl-intsvc
+  principal_id         = local.admin_aat_mi
+  scope                = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg"
+  role_definition_name = "Reader"
+}
+
+resource "azurerm_role_assignment" "preview_admin_mi_externaldns_dns_zone_contributor" {
+  for_each             = var.env == "preview" ? local.external_dns_zones : {}
+  provider             = azurerm.dts-cftptl-intsvc
+  principal_id         = local.admin_aat_mi
+  scope                = each.value
+  role_definition_name = "Private DNS Zone Contributor"
 }
 
 module "ctags" {

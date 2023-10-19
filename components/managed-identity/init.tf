@@ -20,6 +20,13 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
+  alias                      = "dts-cftptl-intsvc"
+  skip_provider_registration = "true"
+  features {}
+  subscription_id = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+}
+
+provider "azurerm" {
   subscription_id            = local.mi_cft[var.env].subscription_id
   skip_provider_registration = "true"
   features {}
