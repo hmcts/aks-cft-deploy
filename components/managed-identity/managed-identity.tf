@@ -102,6 +102,8 @@ locals {
       subscription_id = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
     }
   }
+
+  dev_acme_vault_id = "/subscriptions/8b6ea922-0862-443e-af15-6056e1c9b9a4/resourceGroups/cft-platform-dev-rg/providers/Microsoft.KeyVault/vaults/acmedcdcftappsdev"
 }
 
 data "azurerm_resource_group" "platform-rg" {
@@ -132,6 +134,13 @@ resource "azurerm_role_assignment" "acme-vault-access" {
   scope                = data.azurerm_key_vault.acme.id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = each.key
+}
+
+resource "azurerm_role_assignment" "aat-mi-preview-to-dev-acme-vault-access" {
+  count                = var.env == "preview" ? 1 : 0
+  scope                = local.dev_acme_vault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.wi-admin-mi.principal_id
 }
 
 resource "azurerm_role_assignment" "service_operator" {
