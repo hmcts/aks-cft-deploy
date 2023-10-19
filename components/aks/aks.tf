@@ -25,7 +25,7 @@ data "azuread_service_principal" "aks_auto_shutdown" {
 
 module "kubernetes" {
   for_each = toset([for key, value in var.clusters : key])
-  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
+  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=spot"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.env
@@ -71,7 +71,7 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = var.enable_user_system_nodepool_split == true ? true : false
 
-  additional_node_pools = contains([], var.env) ? [] : [
+  additional_node_pools = contains([], var.env) ? tuple([]) : [
     {
       name                = "linux"
       vm_size             = lookup(var.linux_node_pool, "vm_size", "Standard_DS3_v2")
@@ -93,6 +93,21 @@ module "kubernetes" {
       node_taints         = ["dedicated=jobs:NoSchedule"]
       enable_auto_scaling = true
       mode                = "User"
+    },
+    {
+      name                = "spotinstance"
+      vm_size             = "Standard_D4ds_v5"
+      min_count           = 1
+      max_count           = 10
+      max_pods            = 30
+      os_type             = "Linux"
+      node_taints         = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
+      enable_auto_scaling = true
+      mode                = "User"
+      priority            = "Spot"
+      eviction_policy     = "Delete"
+      spot_max_price      = "-1"
+
     }
   ]
 
