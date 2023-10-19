@@ -107,7 +107,7 @@ module "kubernetes" {
       priority            = "Spot"
       eviction_policy     = "Delete"
       spot_max_price      = "-1"
-      
+
     }
   ]
 
