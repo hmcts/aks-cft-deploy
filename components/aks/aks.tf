@@ -99,7 +99,7 @@ module "kubernetes" {
     {
       name                = "spotinstance"
       vm_size             = "Standard_D4ds_v5"
-      min_count           = 1
+      min_count           = 0
       max_count           = 10
       max_pods            = 30
       os_type             = "Linux"
