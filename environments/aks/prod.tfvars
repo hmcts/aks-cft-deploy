@@ -20,6 +20,8 @@ linux_node_pool = {
   max_nodes = 100
 }
 
-monitor_diagnostic_setting = true
+monitor_diagnostic_setting         = true
+monitor_diagnostic_setting_metrics = true
+kube_audit_admin_logs_enabled      = true
 
 availability_zones = ["1", "2", "3"]
