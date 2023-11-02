@@ -44,7 +44,15 @@ variable "project_acr_enabled" {
 }
 
 variable "monitor_diagnostic_setting" {
-  default = true
+  default = false
+}
+
+variable "kube_audit_admin_logs_enabled" {
+  default = false
+}
+
+variable "monitor_diagnostic_setting_metrics" {
+  default = false
 }
 
 variable "sku_tier" {

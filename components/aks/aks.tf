@@ -25,7 +25,7 @@ data "azuread_service_principal" "aks_auto_shutdown" {
 
 module "kubernetes" {
   for_each = toset([for key, value in var.clusters : key])
-  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=spot"
+  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.env
@@ -52,8 +52,10 @@ module "kubernetes" {
   service_shortname = var.service_shortname
   project           = var.project
 
-  log_workspace_id           = module.loganalytics.workspace_id
-  monitor_diagnostic_setting = var.monitor_diagnostic_setting
+  log_workspace_id                   = module.loganalytics.workspace_id
+  monitor_diagnostic_setting         = var.monitor_diagnostic_setting
+  monitor_diagnostic_setting_metrics = var.monitor_diagnostic_setting_metrics
+  kube_audit_admin_logs_enabled      = var.kube_audit_admin_logs_enabled
 
   control_vault = var.control_vault
 
