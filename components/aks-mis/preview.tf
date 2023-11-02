@@ -1,18 +1,4 @@
 # Update -target in azure-pipelines.yaml
-
-data "azurerm_resource_group" "managed-identity-preview1aat" {
-  for_each = toset([for cluster in var.clusters : cluster if contains([var.env], "preview")])
-  provider = azurerm.preview1aat
-  name     = "managed-identities-aat-rg"
-}
-
-resource "azurerm_role_assignment" "preview1aat_cft_rg_identity_operator" {
-  for_each             = toset([for cluster in var.clusters : cluster if contains([var.env], "preview")])
-  provider             = azurerm.preview1aat
-  principal_id         = data.azurerm_kubernetes_cluster.kubernetes[each.key].kubelet_identity[0].object_id
-  scope                = data.azurerm_resource_group.managed-identity-preview1aat[each.key].id
-  role_definition_name = "Managed Identity Operator"
-}
 resource "azurerm_role_assignment" "preview2aat_cft_rg_identity_operator" {
   for_each             = toset([for cluster in var.clusters : cluster if contains([var.env], "preview")])
   provider             = azurerm.preview2aat
