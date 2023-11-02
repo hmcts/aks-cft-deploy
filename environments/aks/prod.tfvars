@@ -20,4 +20,6 @@ linux_node_pool = {
   max_nodes = 100
 }
 
+monitor_diagnostic_setting = true
+
 availability_zones = ["1", "2", "3"]

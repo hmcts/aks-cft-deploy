@@ -44,7 +44,7 @@ variable "project_acr_enabled" {
 }
 
 variable "monitor_diagnostic_setting" {
-  default = true
+  default = false
 }
 
 variable "sku_tier" {
