@@ -6,6 +6,7 @@ aks_01_subnet_cidr_blocks              = "10.90.80.0/20"
 iaas_subnet_cidr_blocks                = "10.90.97.0/24"
 application_gateway_subnet_cidr_blocks = "10.90.96.0/25"
 postgresql_subnet_cidr_blocks          = "10.90.104.0/25"
+postgresql_subnet_expanded_cidr_blocks = "10.90.108.0/22"
 
 additional_subnets = [
   {
@@ -15,10 +16,6 @@ additional_subnets = [
   {
     name           = "private-endpoints"
     address_prefix = "10.90.100.0/22"
-  },
-  {
-    name           = "postgres-expanded"
-    address_prefix = "10.90.108.0/22"
   }
 ]
 
