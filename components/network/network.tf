@@ -19,6 +19,7 @@ module "network" {
   iaas_subnet_cidr_blocks                = var.iaas_subnet_cidr_blocks
   additional_subnets                     = var.additional_subnets
   postgresql_subnet_cidr_blocks          = var.postgresql_subnet_cidr_blocks
+  postgresql_subnet_expanded_cidr_blocks = var.postgresql_subnet_expanded_cidr_blocks
 
   additional_routes_application_gateway = var.additional_routes_application_gateway
 
