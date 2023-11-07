@@ -130,4 +130,5 @@ module "ctags" {
   builtFrom    = var.builtFrom
   expiresAfter = var.expiresAfter
   autoShutdown = var.autoShutdown
+  startupMode  = var.startupMode
 }
