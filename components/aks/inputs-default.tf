@@ -33,3 +33,7 @@ variable "expiresAfter" {
 variable "autoShutdown" {
   default = false
 }
+
+variable "startupMode" {
+  default = null
+}
