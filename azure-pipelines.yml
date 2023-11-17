@@ -9,7 +9,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: master
+      ref: /refs/heads/dtspo-15333-ado-auto-env-start
       name: hmcts/cnp-azuredevops-libraries
       endpoint: 'hmcts'
     - repository: cnp-flux-config
