@@ -1,4 +1,4 @@
-# cft-aks-deploy 
+# cft-aks-deploy
 Terraform code to deploy CFT AKS Cluster and underlying infrastructure.
 
 ## Following resources are being deployed in each stage of the pipeline
