@@ -1,1 +1,1 @@
-clusters = ["00", "01"]
+clusters = ["00"]
