@@ -60,12 +60,6 @@ additional_routes = [
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
-    name                   = "sdsptl"
-    address_prefix         = "10.147.64.0/18"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
-  },
-  {
     name                   = "dmz-ukw"
     address_prefix         = "10.49.69.0/24"
     next_hop_type          = "VirtualAppliance"
