@@ -143,6 +143,9 @@ stages:
               keyvaultName: infra-vault-nonprod
               keyvaultSecret: 'azure-devops-sp-token'
               serviceConnection: azurerm-sandbox
+              projectName: ${{ variables.project }}
+              cluster: ${{ parameters.cluster }}
+              environment: ${{ parameters.env }}
 
   - stage: Genesis
     displayName: 'Genesis'
