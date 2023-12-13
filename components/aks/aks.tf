@@ -98,10 +98,10 @@ module "kubernetes" {
     },
     {
       name                = "spotinstance"
-      vm_size             = "Standard_D4ds_v5"
-      min_count           = 0
-      max_count           = 10
-      max_pods            = 30
+      vm_size             = lookup(var.spot_node_pool, "vm_size", "Standard_D4ds_v5")
+      min_count           = lookup(var.spot_node_pool, "min_nodes", 0)
+      max_count           = lookup(var.spot_node_pool, "max_nodes", 5)
+      max_pods            = lookup(var.spot_node_pool, "max_pods", 30)
       os_type             = "Linux"
       node_taints         = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
       enable_auto_scaling = true

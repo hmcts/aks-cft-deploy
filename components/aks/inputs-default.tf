@@ -18,6 +18,11 @@ variable "linux_node_pool" {
   description = "Map to override the linux node pool config"
 }
 
+variable "spot_node_pool" {
+  description = "Map to override the spot node pool config"
+  default     = {}
+}
+
 variable "kubernetes_cluster_agent_max_pods" {
   default = "30"
 }
