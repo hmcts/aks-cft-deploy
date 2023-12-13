@@ -25,7 +25,8 @@ linux_node_pool = {
 spot_node_pool = {
   vm_size   = "Standard_D8ds_v5",
   min_nodes = 1,
-  max_nodes = 10
+  max_nodes = 30,
+  max_pods  = 50
 }
 
 availability_zones = ["1", "2", "3"]

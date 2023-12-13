@@ -25,8 +25,7 @@ linux_node_pool = {
 }
 
 spot_node_pool = {
-  min_nodes = 1,
-  max_nodes = 10
+  min_nodes = 1
 }
 
 availability_zones = ["1"]
