@@ -14,11 +14,18 @@ system_node_pool = {
   min_nodes = 4,
   max_nodes = 10
 }
+
 linux_node_pool = {
   vm_size   = "Standard_D8ds_v5",
   min_nodes = 20,
   max_nodes = 30,
   max_pods  = 50
+}
+
+spot_node_pool = {
+  vm_size   = "Standard_D8ds_v5",
+  min_nodes = 1,
+  max_nodes = 10
 }
 
 availability_zones = ["1", "2", "3"]
