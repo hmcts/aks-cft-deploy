@@ -22,9 +22,9 @@ steps:
       inlineScript: |
         if [[ "$(clusters)" == "All" ]]; then
           echo "Checking for available clusters"
-          clusters_output=$(az aks list --output tsv --query '[].name')
-          echo -e "Clusters found:\n${clusters_output}"
-          cluster_numbers=$(echo ${clusters_output} | sed -n "s/${{ parameters.project }}-${{ parameters.environment }}-\([0-9][0-9]\)-aks/\1/p" )
+          clusters=$(az aks list --output tsv --query '[].name')
+          echo -e "Clusters found:\n${clusters}"
+          cluster_numbers=$(echo ${clusters} | sed -n "s/${{ parameters.project }}-${{ parameters.environment }}-\([0-9][0-9]\)-aks/\1/p" )
           echo -e 'Cluster Numbers 1 are ${cluster_numbers}'
         else
           cluster_numbers=$(clusters)
