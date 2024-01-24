@@ -28,7 +28,7 @@ steps:
           echo -e 'Cluster Numbers 1 are ${clusters}'
         else
           cluster_numbers=${{ parameters.cluster }}
-          echo -e 'Cluster Numbers 2 are ${clusters}'
+          echo -e 'Cluster Numbers 2 are ${clusters_numbers}'
         fi
         echo -e 'Cluster Numbers 3 is ${clusters}'
         echo "##vso[task.setvariable variable=AZURE_MI_ID]$(az identity show --resource-group genesis-rg --name aks-$(env)-mi --query="clientId" -o tsv)"
