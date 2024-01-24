@@ -20,14 +20,14 @@ steps:
       scriptLocation: inlineScript
       failOnStandardError: 'true'
       inlineScript: |
-        if [[ "${{ parameters.cluster }}" == "All" ]]; then
+        if [[ "$(clusters)" == "All" ]]; then
           echo "Checking for available clusters"
           clusters=$(az aks list --output tsv --query '[].name')
           echo -e "Clusters found:\n${clusters}"
-          cluster_numbers=$(echo "${clusters}" | sed -n "s/${project}-${env}-\([0-9][0-9]\)-aks/\1/p" )
+          cluster_numbers=$(echo ${clusters} | sed -n "s/$(project)-$(environment)-\([0-9][0-9]\)-aks/\1/p" )
           echo -e 'Cluster Numbers 1 are ${clusters}'
         else
-          cluster_numbers=${{ parameters.cluster }}
+          cluster_numbers=$(clusters)
           echo -e 'Cluster Numbers 2 are ${clusters_numbers}'
         fi
         echo -e 'Cluster Numbers 3 is ${clusters}'
