@@ -25,12 +25,12 @@ steps:
           clusters=$(az aks list --output tsv --query '[].name')
           echo -e "Clusters found:\n${clusters}"
           cluster_numbers=$(echo "${clusters}" | sed -n "s/${project}-${env}-\([0-9][0-9]\)-aks/\1/p" )
-          echo 'Cluster Numbers 1 are $(cluster_numbers)'
+          echo -e 'Cluster Numbers 1 are "${clusters}"'
         else
           cluster_numbers=${{ parameters.cluster }}
-          echo 'Cluster Numbers 2 are $(cluster_numbers)'
+          echo -e 'Cluster Numbers 2 are "${clusters}"'
         fi
-        echo 'Cluster Numbers 3 is $(cluster_numbers)'
+        echo -e 'Cluster Numbers 3 is "${clusters}"'
         echo "##vso[task.setvariable variable=AZURE_MI_ID]$(az identity show --resource-group genesis-rg --name aks-$(env)-mi --query="clientId" -o tsv)"
         echo "##vso[task.setvariable variable=AKS_ISSUER_URL]$(az aks show -n cft-${{ parameters.environment }}-$(cluster_numbers)-aks -g cft-${{ parameters.environment }}-$(cluster_numbers)-rg --query "oidcIssuerProfile.issuerUrl" -otsv)"
 
