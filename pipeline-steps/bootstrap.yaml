@@ -26,13 +26,13 @@ steps:
           echo -e "Clusters found:\n${current_clusters}"
           for cluster in ${current_clusters}; do
             cluster_numbers=$(echo $cluster | sed -n "s/${{ parameters.project }}-${{ parameters.environment }}-\([0-9][0-9]\)-aks/\1/p" )
-            # echo -e "Cluster Numbers 1 are ${cluster_numbers}"
+            echo -e "Cluster Numbers 1 are ${cluster_numbers}"
           done
         else
           cluster_numbers=$(clusters)
           # echo -e "Cluster Numbers 2 are ${cluster_numbers}"
         fi
-        echo -e "Cluster Numbers 1 are ${cluster_numbers}"
+        echo -e "Cluster Numbers 2 are ${cluster_numbers}"
         for number in ${cluster_numbers}; do
           echo -e "Cluster Numbers are $number"
           echo "##vso[task.setvariable variable=AZURE_MI_ID]$(az identity show --resource-group genesis-rg --name aks-${{ parameters.environment }}-mi --query="clientId" -o tsv)"
