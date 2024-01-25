@@ -301,8 +301,8 @@ stages:
     jobs:
       - job: BootStrap
         condition: |
+          ne('${{ parameters.cluster }}', 'All'),
           or(
-            ne('${{ parameters.cluster }}', 'All'),
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
