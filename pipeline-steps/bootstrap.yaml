@@ -24,7 +24,7 @@ steps:
           echo "Checking for available clusters"
           clusters=$(az aks list --output tsv --query '[].name')
           echo -e "Clusters found:\n${clusters}"
-          for cluster in ${cluster_numbers}; do
+          for cluster in ${clusters}; do
             cluster_numbers=$(echo ${clusters} | sed -n "s/${{ parameters.project }}-${{ parameters.environment }}-\([0-9][0-9]\)-aks/\1/p" )
             echo -e "Cluster Numbers 1 are ${cluster_numbers}"
           done
