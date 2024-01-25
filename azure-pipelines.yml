@@ -304,7 +304,7 @@ stages:
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true)),
-            and(succeeded(), ne('${{ parameters.cluster }}', 'All')
+            and(succeeded(), ne('${{ parameters.cluster }}', 'All'))
           )
         variables:
           clusters: ${{ parameters.cluster }}
