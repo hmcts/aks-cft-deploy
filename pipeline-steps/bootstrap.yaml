@@ -48,12 +48,14 @@ steps:
     azureSubscription:  "DTS-CFTPTL-INTSVC"
     keyVaultName:   "cftptl-intsvc"
     secretsFilter: 'github-management-api-token'
+  condition: ne('${{ parameters.cluster }}', 'All')
 
 - task: Bash@3
   displayName: 'Update flux-config'
   inputs:
     arguments: ${{ parameters.environment }} ${{ parameters.cluster }} $(AKS_ISSUER_URL) cnp-flux-config $(github-management-api-token)
     filePath: aks-cft-deploy/pipeline-scripts/update-issuer-url.sh
+  condition: ne('${{ parameters.cluster }}', 'All')
 
 - task: AzureCLI@1
   displayName: 'Bootstrap'
@@ -64,3 +66,4 @@ steps:
     failOnStandardError: 'false'
     scriptPath: aks-cft-deploy/bootstrap/bootstrap.sh
     arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) "$(clusters)" deploy ${{ parameters.akskeyvault }} ${{parameters.terraformSubscriptionID}}
+  condition: ne('${{ parameters.cluster }}', 'All')
