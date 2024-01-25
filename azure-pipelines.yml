@@ -300,12 +300,7 @@ stages:
     # dependsOn: Aks
     jobs:
       - job: BootStrap
-        condition: |
-          ne('${{ parameters.cluster }}', 'All'),
-          # or(
-          #   and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-          #   and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-          # )
+        condition: ne('${{ parameters.cluster }}', 'All')
         variables:
           clusters: ${{ parameters.cluster }}
         steps:
