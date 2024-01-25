@@ -302,10 +302,10 @@ stages:
       - job: BootStrap
         condition: |
           ne('${{ parameters.cluster }}', 'All'),
-          or(
-            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-          )
+          # or(
+          #   and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+          #   and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          # )
         variables:
           clusters: ${{ parameters.cluster }}
         steps:
