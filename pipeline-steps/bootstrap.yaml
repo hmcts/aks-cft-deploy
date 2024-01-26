@@ -45,7 +45,7 @@ steps:
   inputs:
     arguments: ${{ parameters.environment }} ${{ parameters.cluster }} $(AKS_ISSUER_URL) cnp-flux-config $(github-management-api-token)
     filePath: aks-cft-deploy/pipeline-scripts/update-issuer-url.sh
-  condition: (ne('${{ parameters.cluster }}', 'All'))
+  condition: ne('${{ parameters.cluster }}', 'All')
 
 - task: AzureCLI@1
   displayName: 'Bootstrap'
