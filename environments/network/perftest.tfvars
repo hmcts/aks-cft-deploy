@@ -87,6 +87,12 @@ additional_routes_application_gateway = [
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
+    name                   = "ss-test-vnet-snat"
+    address_prefix         = "10.25.33.32/27"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
     name                   = "core_cftptl_intvsc_vnet"
     address_prefix         = "10.10.64.0/21"
     next_hop_type          = "VirtualAppliance"

@@ -60,6 +60,12 @@ additional_routes = [
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
+    name                   = "sdsdev-snat"
+    address_prefix         = "10.25.33.0/27"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
     name                   = "sdsptl"
     address_prefix         = "10.147.64.0/18"
     next_hop_type          = "VirtualAppliance"
@@ -156,8 +162,20 @@ additional_routes = [
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
+    name                   = "sdsithc-snat"
+    address_prefix         = "10.25.33.64/27"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
     name                   = "sdstest"
     address_prefix         = "10.141.0.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "sdstest-snat"
+    address_prefix         = "10.25.33.32/27"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
