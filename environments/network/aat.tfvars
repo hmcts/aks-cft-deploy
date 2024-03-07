@@ -41,6 +41,12 @@ additional_routes = [
     next_hop_in_ip_address = "10.11.72.36"
   },
   {
+    name                   = "glimr-app-stg"
+    address_prefix         = "10.25.246.128/28"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
     name                   = "cft_preview_vnet"
     address_prefix         = "10.48.128.0/18"
     next_hop_type          = "VirtualAppliance"
@@ -181,12 +187,6 @@ additional_routes_coreinfra = [
   {
     name                   = "cft-preview-01"
     address_prefix         = "10.101.160.0/19"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.72.36"
-  },
-  {
-    name                   = "glimr-app-stg"
-    address_prefix         = "10.25.246.128/28"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
   },
