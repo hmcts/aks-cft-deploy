@@ -3,13 +3,14 @@ parameters:
   project: ''
   akskeyvault: ''
   terraformSubscriptionID: ''
+  serviceConnection: ''
 
 steps:
 - checkout: self
 - checkout: cnp-flux-config
 - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
   parameters:
-    serviceConnection: $(serviceConnection)
+    serviceConnection: ${{ parameters.serviceConnection }}
     environment: ${{ parameters.environment }}
 
 - task: AzureCLI@1
@@ -48,4 +49,4 @@ steps:
     scriptType: shell
     failOnStandardError: 'false'
     scriptPath: aks-cft-deploy/bootstrap/bootstrap.sh
-    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) $(serviceConnection) "$(clusters)" deploy ${{ parameters.akskeyvault }} ${{parameters.terraformSubscriptionID}}
+    arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) ${{ component.serviceConnection }} "$(clusters)" deploy ${{ parameters.akskeyvault }} ${{parameters.terraformSubscriptionID}}

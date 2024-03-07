@@ -187,6 +187,7 @@ stages:
                 location: ${{ parameters.location }}
                 serviceConnection: ${{ component.serviceConnection }}
                 terraformInitSubscription: ${{ variables.tfInitSub }}
+                backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                 product: ${{ variables.product }}
                 tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ component.env }}.tfvars"
                 initCommandOptions: >
@@ -201,11 +202,11 @@ stages:
           dependsOn: NetworkRg
           steps:
             - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
-
             - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
               parameters:
                 serviceConnection: ${{ component.serviceConnection }}
                 environment: ${{ component.env }}
+                backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                 subscriptionIdVariableName: 'SUBSCRIPTION_ID'
                 storageAccountVariableName: 'STORAGE_ACCOUNT'
                 keyVaultVariableName: 'KEY_VAULT'
@@ -344,5 +345,6 @@ stages:
                 junit_output_dir: $(Pipeline.Workspace)/s/aks-cft-deploy/environments/junit
                 environment: ${{ component.env }}
                 product: ${{ variables.product }}
+                serviceConnection: ${{ component.serviceConnection }}
                 test_title: '${{ component.env }}_${{ parameters.cluster }}_${{ parameters.location }}'
                 test_pattern: pipeline.test.ts
