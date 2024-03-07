@@ -243,7 +243,6 @@ stages:
                 location: ${{ parameters.location }}  
                 serviceConnection: ${{ component.serviceConnection }}
                 terraformInitSubscription: ${{ variables.tfInitSub }}
-                backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                 product: ${{ variables.product }}
                 tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/managed-identity/${{ component.env }}.tfvars"
                 initCommandOptions: >
