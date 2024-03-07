@@ -270,7 +270,7 @@ stages:
                 tfInitSub: ${{ component.tfInitSub }}
                 serviceConnection: ${{ component.serviceConnection }}
                 action: ${{ parameters.action }}
-                terraformSubscriptionID : ${{ component.terraformSubscriptionID }}
+                terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
                 backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                 setClusterNumbersEnvVar: true
                 ${{ if ne(parameters['cluster'], 'All') }}:
@@ -291,7 +291,7 @@ stages:
                 serviceConnection: ${{ component.serviceConnection }}
                 action: ${{ parameters.action }}
                 setClusterNumbersEnvVar: false
-                terraformSubscriptionID : ${{ component.terraformSubscriptionID }}
+                terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
                 backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                 ${{ if ne(parameters['cluster'], 'All') }}:
                   targetCommand: >
