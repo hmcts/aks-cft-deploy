@@ -1,4 +1,4 @@
-name: AKS-CFT-Deploy - ${{ parameters.action }}
+name: AKS-CFT-Deploy - ${{ parameters.action }} 
 
 trigger: none
 
