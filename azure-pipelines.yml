@@ -1,4 +1,4 @@
-name: AKS-CFT-Deploy - ${{ parameters.action }} 
+name: AKS-CFT-Deploy - ${{ parameters.action }}
 
 trigger: none
 
@@ -322,7 +322,7 @@ stages:
                 project: $(project)
                 serviceConnection: ${{ component.serviceConnection }}
                 aksKeyVault: ${{ component.aksKeyVault }}
-                terraformSubscriptionID : ${{ component.terraformSubscriptionID }}
+                terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
 
     - stage: "PipelineTests_${{ component.env }}"
       displayName: "${{ upper(component.env) }}: PipelineTests"
