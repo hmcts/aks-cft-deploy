@@ -187,7 +187,6 @@ stages:
                 location: ${{ parameters.location }}
                 serviceConnection: ${{ component.serviceConnection }}
                 terraformInitSubscription: ${{ variables.tfInitSub }}
-                backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                 product: ${{ variables.product }}
                 tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ component.env }}.tfvars"
                 initCommandOptions: >
@@ -206,7 +205,6 @@ stages:
               parameters:
                 serviceConnection: ${{ component.serviceConnection }}
                 environment: ${{ component.env }}
-                backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                 subscriptionIdVariableName: 'SUBSCRIPTION_ID'
                 storageAccountVariableName: 'STORAGE_ACCOUNT'
                 keyVaultVariableName: 'KEY_VAULT'
@@ -245,6 +243,7 @@ stages:
                 location: ${{ parameters.location }}  
                 serviceConnection: ${{ component.serviceConnection }}
                 terraformInitSubscription: ${{ variables.tfInitSub }}
+                backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                 product: ${{ variables.product }}
                 tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/managed-identity/${{ component.env }}.tfvars"
                 initCommandOptions: >
@@ -273,6 +272,7 @@ stages:
                 serviceConnection: ${{ component.serviceConnection }}
                 action: ${{ parameters.action }}
                 terraformSubscriptionID : ${{ component.terraformSubscriptionID }}
+                backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                 setClusterNumbersEnvVar: true
                 ${{ if ne(parameters['cluster'], 'All') }}:
                   targetCommand: >
@@ -293,6 +293,7 @@ stages:
                 action: ${{ parameters.action }}
                 setClusterNumbersEnvVar: false
                 terraformSubscriptionID : ${{ component.terraformSubscriptionID }}
+                backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                 ${{ if ne(parameters['cluster'], 'All') }}:
                   targetCommand: >
                     -target azurerm_role_assignment.uami_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
