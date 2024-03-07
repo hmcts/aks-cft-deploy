@@ -292,7 +292,7 @@ stages:
                 serviceConnection: ${{ component.serviceConnection }}
                 action: ${{ parameters.action }}
                 setClusterNumbersEnvVar: false
-                terraformSubscriptionID : ${{ component..terraformSubscriptionID }}
+                terraformSubscriptionID : ${{ component.terraformSubscriptionID }}
                 ${{ if ne(parameters['cluster'], 'All') }}:
                   targetCommand: >
                     -target azurerm_role_assignment.uami_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
