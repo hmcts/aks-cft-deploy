@@ -267,7 +267,7 @@ stages:
                 stack: 'aks'
                 project: $(project)
                 product: ${{ variables.product }}
-                tfInitSub: ${{ component.tfInitSub }}
+                tfInitSub: ${{ variables.tfInitSub }}
                 serviceConnection: ${{ component.serviceConnection }}
                 action: ${{ parameters.action }}
                 terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
@@ -287,7 +287,7 @@ stages:
                 location: ${{ parameters.location }}
                 stack: 'aks-mis'
                 project: $(project)
-                tfInitSub: ${{ component.tfInitSub }}
+                tfInitSub: ${{ variables.tfInitSub }}
                 serviceConnection: ${{ component.serviceConnection }}
                 action: ${{ parameters.action }}
                 setClusterNumbersEnvVar: false
