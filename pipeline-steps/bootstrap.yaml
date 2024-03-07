@@ -3,7 +3,6 @@ parameters:
   project: ''
   akskeyvault: ''
   terraformSubscriptionID: ''
-  serviceConnection: ''
 
 steps:
 - checkout: self

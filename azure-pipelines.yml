@@ -345,6 +345,5 @@ stages:
                 junit_output_dir: $(Pipeline.Workspace)/s/aks-cft-deploy/environments/junit
                 environment: ${{ component.env }}
                 product: ${{ variables.product }}
-                serviceConnection: ${{ component.serviceConnection }}
                 test_title: '${{ component.env }}_${{ parameters.cluster }}_${{ parameters.location }}'
                 test_pattern: pipeline.test.ts
