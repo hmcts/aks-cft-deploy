@@ -1,6 +1,9 @@
 name: AKS-CFT-Deploy - ${{ parameters.action }}
 
-trigger: none
+trigger:
+  branches:
+    include:
+    - master
 
 pool:
   vmImage: 'ubuntu-latest'
