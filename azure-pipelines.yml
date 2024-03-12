@@ -48,7 +48,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    default: 'perftest'
+    default: 'sbox'
     values:
     - ithc
     - preview
