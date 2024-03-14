@@ -79,6 +79,12 @@ additional_routes_application_gateway = [
     address_prefix         = "192.169.0.0/16"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "dynatrace-prod-vnet"
+    address_prefix         = "10.10.81.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   }
 ]
 
