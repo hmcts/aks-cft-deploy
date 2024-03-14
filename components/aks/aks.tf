@@ -107,6 +107,7 @@ module "kubernetes" {
       enable_auto_scaling = true
       mode                = "User"
       priority            = "Spot"
+      eviction_policy     = "Delete"
       spot_max_price      = "-1"
 
     }
