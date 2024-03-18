@@ -143,9 +143,7 @@ stages:
             - checkout: self
             - script: |
                 output=$(bash checking-clusters.sh ${{ parameters.cluster }})
-                echo "##vso[task.setvariable variable=cluster]$output"
-                echo $output
-                echo "Output: $output"  # Print the output
+                echo "Cluster output: $(clusterOutput)"
               displayName: 'Checking cluster'
               workingDirectory: 'scripts'
               env:
