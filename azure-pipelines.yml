@@ -166,18 +166,15 @@ stages:
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
               overrideAction: ${{ parameters.action }}
-              environment: ${{ parameters.env }}
+              environment: ${{ component.env }}
               component: 'genesis'
               location: ${{ parameters.location }}
-              serviceConnection: $(serviceConnection)
+              serviceConnection: ${{ component.serviceConnection }}
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
               tfVarsFile: NULL
               initCommandOptions: >
-                -var subscription_id=${{ variables.terraformSubscriptionID }}
-                -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
-              planCommandOptions: >
-                -var subscription_id=${{ variables.terraformSubscriptionID }}
+                -var subscription_id=${{ component.terraformSubscriptionID }}
 
     - stage: "Network_${{ component.env }}"
       displayName: "${{ upper(component.env) }}: Network"
