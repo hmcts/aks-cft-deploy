@@ -160,7 +160,7 @@ stages:
           env:
             cluster: ${{ parameters.cluster }}
             serviceConnection: ${{ component.serviceConnection }}
-      - job: Genesis  # Now it's at the correct level
+      - job: Genesis
         steps:
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
