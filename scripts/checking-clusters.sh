@@ -12,4 +12,5 @@ else
     output="None"
 fi
 
-echo "$output" <- this echo needs replacing to output the result into ADO pipeline for use.  
+# Set the 'cluster' pipeline variable to the value of 'output'
+echo "##vso[task.setvariable variable=cluster]$output"

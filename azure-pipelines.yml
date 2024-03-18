@@ -135,7 +135,8 @@ stages:
               environment: sbox
               runManualStart: true
 
-  - stage: "CheckingClusters"
+  - stage: "Checking_Clusters"
+    dependsOn: PreCheck
     jobs:
     - job: CheckingClusters
       steps:
@@ -151,6 +152,7 @@ stages:
       condition: ne('${{ parameters.Action }}', 'Destroy')
       dependsOn: 
         - ${{ if ne(component.env, 'sbox') }}:
+          - Checking_Clusters
           - "Network_${{ component.dependsOn }}"
           - "Managed_Identity_${{ component.dependsOn }}"
           - "Aks_${{ component.dependsOn }}"
