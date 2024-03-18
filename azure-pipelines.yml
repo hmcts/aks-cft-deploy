@@ -141,7 +141,7 @@ stages:
           - job: CheckingClusters
             steps:
               - checkout: self
-              - script: |
+              - bash: |
                   bash checking-clusters.sh
                   echo "Cluster output: $(cluster_output)"
                 workingDirectory: "scripts"
