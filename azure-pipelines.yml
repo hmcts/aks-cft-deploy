@@ -142,12 +142,11 @@ stages:
             steps:
             - checkout: self
             - script: |
-                bash checking-clusters.sh ${{ parameters.cluster }}
+                bash checking-clusters.sh
                 echo "Cluster output: $(clusterOutput)"
               displayName: 'Checking cluster'
               workingDirectory: 'scripts'
               env:
-                cluster: ${{ parameters.cluster }}
                 serviceConnection: ${{ component.serviceConnection }}
                 environment: ${{ component.env }}
                 project: ${{ variables.project }}
