@@ -12,5 +12,4 @@ else
     output="None"
 fi
 
-echo "$output"
-
+echo "##vso[task.setvariable variable=clusterOutput]$output"
