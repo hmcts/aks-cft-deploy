@@ -135,16 +135,20 @@ stages:
               environment: sbox
               runManualStart: true
 
-  - stage: "Checking_Clusters"
-    dependsOn: PreCheck
-    jobs:
-    - job: CheckingClusters
-      steps:
-      - checkout: self
-      - script: |
-            output=$(bash ../scripts/checking-clusters.sh
+  - ${{ each component in parameters.environment_components }}:
+    - stage: "Checking_Clusters_${{ component.env }}"
+      dependsOn: PreCheck
+      jobs:
+      - job: CheckingClusters
+        steps:
+        - checkout: self
+        - script: |
+            output=$(bash ../scripts/checking-clusters.sh)
             echo "##vso[task.setvariable variable=cluster]$output"
-        displayName: 'Determine cluster'
+          displayName: 'Determine cluster'
+          env:
+            cluster: ${{ parameters.cluster }}
+            serviceConnection: ${{ component.serviceConnection }}
 
   - ${{ each component in parameters.environment_components }}:
     - stage: "Genesis_${{ component.env }}"
