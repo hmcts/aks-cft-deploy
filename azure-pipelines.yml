@@ -151,6 +151,8 @@ stages:
               env:
                 cluster: ${{ parameters.cluster }}
                 serviceConnection: ${{ component.serviceConnection }}
+                environment: ${{ component.env }}
+                project: variables.project
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
