@@ -155,6 +155,7 @@ stages:
         - script: |
             output=$(bash checking-clusters.sh ${{ parameters.cluster }})
             echo "##vso[task.setvariable variable=cluster]$output"
+            echo $output
           displayName: 'Determine cluster'
           workingDirectory: 'scripts'
           env:
@@ -165,15 +166,18 @@ stages:
           - template: steps/terraform.yaml@cnp-azuredevops-libraries
             parameters:
               overrideAction: ${{ parameters.action }}
-              environment: ${{ component.env }}
+              environment: ${{ parameters.env }}
               component: 'genesis'
               location: ${{ parameters.location }}
-              serviceConnection: ${{ component.serviceConnection }}
+              serviceConnection: $(serviceConnection)
               terraformInitSubscription: ${{ variables.tfInitSub }}
               product: ${{ variables.product }}
               tfVarsFile: NULL
               initCommandOptions: >
-                -var subscription_id=${{ component.terraformSubscriptionID }}
+                -var subscription_id=${{ variables.terraformSubscriptionID }}
+                -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
+              planCommandOptions: >
+                -var subscription_id=${{ variables.terraformSubscriptionID }}
 
     - stage: "Network_${{ component.env }}"
       displayName: "${{ upper(component.env) }}: Network"
