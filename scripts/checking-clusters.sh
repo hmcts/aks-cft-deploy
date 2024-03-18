@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Project: $project"
+echo "Environment: $environment"
+
 # Check if both '00' and '01' clusters exist
 if az aks list --query "[?contains(name, '${project}-${environment}-00-aks')]" &>/dev/null && \
    az aks list --query "[?contains(name, '${project}-${environment}-01-aks')]" &>/dev/null; then
@@ -13,3 +16,4 @@ else
 fi
 
 echo "$output"
+
