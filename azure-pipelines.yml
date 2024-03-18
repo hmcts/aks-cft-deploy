@@ -135,9 +135,9 @@ stages:
               environment: sbox
               runManualStart: true
 
-  - stage: DetermineCluster
+  - stage: "CheckingClusters_${{ component.env }}"
     jobs:
-    - job: DetermineCluster
+    - job: CheckingClusters
       steps:
       - checkout: self
       - script: |
