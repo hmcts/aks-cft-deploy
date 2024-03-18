@@ -149,8 +149,8 @@ stages:
                   environment: ${{ component.env }}
                   project: ${{ variables.project }}
               - script: |
-                echo "Cluster output: $(cluster_output)"
-                displayName: 'Print cluster output'
+                  echo "Cluster output: $(cluster_output)"
+                  displayName: 'Print cluster output'
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
