@@ -160,23 +160,20 @@ stages:
           env:
             cluster: ${{ parameters.cluster }}
             serviceConnection: ${{ component.serviceConnection }}
-        - job: Genesis
-          steps:
-            - template: steps/terraform.yaml@cnp-azuredevops-libraries
-              parameters:
-                overrideAction: ${{ parameters.action }}
-                environment: ${{ component.env }}
-                component: 'genesis'
-                location: ${{ parameters.location }}
-                serviceConnection: ${{ component.serviceConnection }}
-                terraformInitSubscription: ${{ variables.tfInitSub }}
-                product: ${{ variables.product }}
-                tfVarsFile: NULL
-                initCommandOptions: >
-                  -var subscription_id=${{ component.terraformSubscriptionID }}
-                  -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
-                planCommandOptions: >
-                  -var subscription_id=${{ component.terraformSubscriptionID }}
+      - job: Genesis  # Now it's at the correct level
+        steps:
+          - template: steps/terraform.yaml@cnp-azuredevops-libraries
+            parameters:
+              overrideAction: ${{ parameters.action }}
+              environment: ${{ component.env }}
+              component: 'genesis'
+              location: ${{ parameters.location }}
+              serviceConnection: ${{ component.serviceConnection }}
+              terraformInitSubscription: ${{ variables.tfInitSub }}
+              product: ${{ variables.product }}
+              tfVarsFile: NULL
+              initCommandOptions: >
+                -var subscription_id=${{ component.terraformSubscriptionID }}
 
     - stage: "Network_${{ component.env }}"
       displayName: "${{ upper(component.env) }}: Network"
