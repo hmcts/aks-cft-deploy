@@ -142,7 +142,7 @@ stages:
             steps:
               - checkout: self
               - bash: |
-                  bash checking-clusters.sh > output.txt
+                  bash checking-clusters.sh
                 workingDirectory: "scripts"
                 env:
                   serviceConnection: ${{ component.serviceConnection }}
