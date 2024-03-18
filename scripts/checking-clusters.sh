@@ -12,4 +12,4 @@ else
     output="None"
 fi
 
-echo "$output" <- this echo needs replacing to output the result into ADO pipeline for use.  
+echo "$output"
