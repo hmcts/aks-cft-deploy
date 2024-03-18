@@ -142,7 +142,7 @@ stages:
             steps:
             - checkout: self
             - script: |
-                output=$(bash checking-clusters.sh ${{ parameters.cluster }})
+                bash checking-clusters.sh ${{ parameters.cluster }}
                 echo "Cluster output: $(clusterOutput)"
               displayName: 'Checking cluster'
               workingDirectory: 'scripts'
