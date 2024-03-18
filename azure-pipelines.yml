@@ -134,6 +134,7 @@ stages:
               cluster: ${{ parameters.cluster }}
               environment: sbox
               runManualStart: true
+    - ${{ each component in parameters.environment_components }}:
       - job: CheckingClusters
         steps:
         - checkout: self
