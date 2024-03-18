@@ -3,10 +3,10 @@ name: AKS-CFT-Deploy - ${{ parameters.action }}
 trigger:
   branches:
     include:
-    - master
+      - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 resources:
   repositories:
@@ -14,121 +14,121 @@ resources:
       type: github
       ref: master
       name: hmcts/cnp-azuredevops-libraries
-      endpoint: 'hmcts'
+      endpoint: "hmcts"
     - repository: cnp-flux-config
       type: github
       ref: refs/heads/master
       name: hmcts/cnp-flux-config
-      endpoint: 'hmcts'
+      endpoint: "hmcts"
 
 parameters:
   - name: action
     displayName: Action
     type: string
-    default: 'plan'
+    default: "plan"
     values:
-    - plan
-    - apply
+      - plan
+      - apply
 
   - name: cluster
     displayName: Cluster
     type: string
-    default: 'All'
+    default: "All"
     values:
-    - 'All'
-    - '00'
-    - '01'
+      - "All"
+      - "00"
+      - "01"
 
   - name: location
     displayName: Location
     type: string
-    default: 'UK South'
+    default: "UK South"
     values:
-    - 'UK South'
+      - "UK South"
 
   - name: environment_components
     type: object
     default:
-    - env: 'sbox'
-      serviceConnection: 'DCD-CFTAPPS-SBOX'
-      backendAzureRmResourceGroupName: 'azure-control-sbox-rg'
-      aksKeyVault: 'dcdcftappssboxkv'
-      terraformSubscriptionID: 'b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb'
-    - env: 'preview'
-      dependsOn: 'sbox'
-      serviceConnection: 'DCD-CFTAPPS-DEV'
-      backendAzureRmResourceGroupName: 'azure-control-dev-rg'
-      aksKeyVault: 'dcdcftappsdevkv'
-      terraformSubscriptionID: '8b6ea922-0862-443e-af15-6056e1c9b9a4'
-    - env: 'demo'
-      dependsOn: 'sbox'
-      serviceConnection: 'DCD-CFTAPPS-DEMO'
-      backendAzureRmResourceGroupName: 'azure-control-demo-rg'
-      aksKeyVault: 'dcdcftappsdemokv'
-      terraformSubscriptionID: 'd025fece-ce99-4df2-b7a9-b649d3ff2060'
-    - env: 'ithc'
-      dependsOn: 'sbox'
-      serviceConnection: 'DCD-CFTAPPS-ITHC'
-      backendAzureRmResourceGroupName: 'azure-control-ithc-rg'
-      aksKeyVault: 'dcdcftappsithckv'
-      terraformSubscriptionID: '62864d44-5da9-4ae9-89e7-0cf33942fa09'
-    - env: 'ptlsbox'
-      dependsOn: 'sbox'
-      serviceConnection: 'DTS-CFTSBOX-INTSVC'
-      backendAzureRmResourceGroupName: 'azure-control-ptlsbox-rg'
-      aksKeyVault: 'dtscftptlsbox'
-      terraformSubscriptionID: '1497c3d7-ab6d-4bb7-8a10-b51d03189ee3'
-    - env: 'perftest'
-      dependsOn: 'sbox'
-      serviceConnection: 'DCD-CFTAPPS-TEST'
-      backendAzureRmResourceGroupName: 'azure-control-test-rg'
-      aksKeyVault: 'dcdcftappstestkv'
-      terraformSubscriptionID: '8a07fdcd-6abd-48b3-ad88-ff737a4b9e3c'
-    - env: 'aat'
-      dependsOn: 'sbox'
-      serviceConnection: 'DCD-CFTAPPS-STG'
-      backendAzureRmResourceGroupName: 'azure-control-stg-rg'
-      aksKeyVault: 'dcdcftappsstgkv'
-      terraformSubscriptionID: '96c274ce-846d-4e48-89a7-d528432298a7'
-    - env: 'ptl'
-      dependsOn: 'ptlsbox'
-      serviceConnection: 'DTS-CFTPTL-INTSVC'
-      backendAzureRmResourceGroupName: 'azure-control-ptl-rg'
-      aksKeyVault: 'dtscftptl'
-      terraformSubscriptionID: '1baf5470-1c3e-40d3-a6f7-74bfbce4b348'
-    - env: 'prod'
-      dependsOn: 'aat'
-      serviceConnection: 'DCD-CFTAPPS-PROD'
-      backendAzureRmResourceGroupName: 'azure-control-prod-rg'
-      aksKeyVault: 'dcdcftappsprodkv'
-      terraformSubscriptionID: '8cbc6f36-7c56-4963-9d36-739db5d00b27'
+      - env: "sbox"
+        serviceConnection: "DCD-CFTAPPS-SBOX"
+        backendAzureRmResourceGroupName: "azure-control-sbox-rg"
+        aksKeyVault: "dcdcftappssboxkv"
+        terraformSubscriptionID: "b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb"
+      - env: "preview"
+        dependsOn: "sbox"
+        serviceConnection: "DCD-CFTAPPS-DEV"
+        backendAzureRmResourceGroupName: "azure-control-dev-rg"
+        aksKeyVault: "dcdcftappsdevkv"
+        terraformSubscriptionID: "8b6ea922-0862-443e-af15-6056e1c9b9a4"
+      - env: "demo"
+        dependsOn: "sbox"
+        serviceConnection: "DCD-CFTAPPS-DEMO"
+        backendAzureRmResourceGroupName: "azure-control-demo-rg"
+        aksKeyVault: "dcdcftappsdemokv"
+        terraformSubscriptionID: "d025fece-ce99-4df2-b7a9-b649d3ff2060"
+      - env: "ithc"
+        dependsOn: "sbox"
+        serviceConnection: "DCD-CFTAPPS-ITHC"
+        backendAzureRmResourceGroupName: "azure-control-ithc-rg"
+        aksKeyVault: "dcdcftappsithckv"
+        terraformSubscriptionID: "62864d44-5da9-4ae9-89e7-0cf33942fa09"
+      - env: "ptlsbox"
+        dependsOn: "sbox"
+        serviceConnection: "DTS-CFTSBOX-INTSVC"
+        backendAzureRmResourceGroupName: "azure-control-ptlsbox-rg"
+        aksKeyVault: "dtscftptlsbox"
+        terraformSubscriptionID: "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+      - env: "perftest"
+        dependsOn: "sbox"
+        serviceConnection: "DCD-CFTAPPS-TEST"
+        backendAzureRmResourceGroupName: "azure-control-test-rg"
+        aksKeyVault: "dcdcftappstestkv"
+        terraformSubscriptionID: "8a07fdcd-6abd-48b3-ad88-ff737a4b9e3c"
+      - env: "aat"
+        dependsOn: "sbox"
+        serviceConnection: "DCD-CFTAPPS-STG"
+        backendAzureRmResourceGroupName: "azure-control-stg-rg"
+        aksKeyVault: "dcdcftappsstgkv"
+        terraformSubscriptionID: "96c274ce-846d-4e48-89a7-d528432298a7"
+      - env: "ptl"
+        dependsOn: "ptlsbox"
+        serviceConnection: "DTS-CFTPTL-INTSVC"
+        backendAzureRmResourceGroupName: "azure-control-ptl-rg"
+        aksKeyVault: "dtscftptl"
+        terraformSubscriptionID: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+      - env: "prod"
+        dependsOn: "aat"
+        serviceConnection: "DCD-CFTAPPS-PROD"
+        backendAzureRmResourceGroupName: "azure-control-prod-rg"
+        aksKeyVault: "dcdcftappsprodkv"
+        terraformSubscriptionID: "8cbc6f36-7c56-4963-9d36-739db5d00b27"
 
 variables:
   - name: project
     value: cft
   - name: timeoutInMinutes
-    value: '60'
+    value: "60"
   - name: agentPool
-    value: 'ubuntu-20.04'
+    value: "ubuntu-20.04"
   - name: tfInitSub
-    value: '04d27a32-7a07-48b3-95b8-3c8691e1a263'
+    value: "04d27a32-7a07-48b3-95b8-3c8691e1a263"
   - name: isMain
     value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   - name: product
-    value: 'cft-platform'
+    value: "cft-platform"
   - name: action
-    value: ${{ parameters.action }} 
+    value: ${{ parameters.action }}
 
 stages:
   - stage: PreCheck
-    displayName: 'PreChecks'
+    displayName: "PreChecks"
     jobs:
       - job: PreChecks
         steps:
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
               keyvaultName: infra-vault-nonprod
-              keyvaultSecret: 'azure-devops-sp-token'
+              keyvaultSecret: "azure-devops-sp-token"
               serviceConnection: azurerm-sandbox
               projectName: ${{ variables.project }}
               cluster: ${{ parameters.cluster }}
@@ -140,28 +140,27 @@ stages:
         jobs:
           - job: CheckingClusters
             steps:
-            - checkout: self
-            - script: |
-                bash checking-clusters.sh
-                echo "Cluster output: $(clusterOutput)"
-              displayName: 'Checking cluster'
-              workingDirectory: 'scripts'
-              env:
-                serviceConnection: ${{ component.serviceConnection }}
-                environment: ${{ component.env }}
-                project: ${{ variables.project }}
+              - checkout: self
+              - script: |
+                  bash checking-clusters.sh
+                  echo "Cluster output: $(cluster_outpout)"
+                workingDirectory: "scripts"
+                env:
+                  serviceConnection: ${{ component.serviceConnection }}
+                  environment: ${{ component.env }}
+                  project: ${{ variables.project }}
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
-        dependsOn: 
+        dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - "Network_${{ component.dependsOn }}"
-            - "Managed_Identity_${{ component.dependsOn }}"
-            - "Aks_${{ component.dependsOn }}"
-            - "PipelineTests_${{ component.dependsOn }}"
-            - "BootStrapClusters_${{ component.dependsOn }}"
+              - "Network_${{ component.dependsOn }}"
+              - "Managed_Identity_${{ component.dependsOn }}"
+              - "Aks_${{ component.dependsOn }}"
+              - "PipelineTests_${{ component.dependsOn }}"
+              - "BootStrapClusters_${{ component.dependsOn }}"
           - ${{ else }}:
-            - "Precheck"
+              - "Precheck"
         jobs:
           - job: Genesis
             steps:
@@ -169,7 +168,7 @@ stages:
                 parameters:
                   overrideAction: ${{ parameters.action }}
                   environment: ${{ component.env }}
-                  component: 'genesis'
+                  component: "genesis"
                   location: ${{ parameters.location }}
                   serviceConnection: ${{ component.serviceConnection }}
                   terraformInitSubscription: ${{ variables.tfInitSub }}
@@ -183,15 +182,15 @@ stages:
 
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
-        dependsOn: 
+        dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - "Network_${{ component.dependsOn }}"
-            - "Managed_Identity_${{ component.dependsOn }}"
-            - "Aks_${{ component.dependsOn }}"
-            - "PipelineTests_${{ component.dependsOn }}"
-            - "BootStrapClusters_${{ component.dependsOn }}"
+              - "Network_${{ component.dependsOn }}"
+              - "Managed_Identity_${{ component.dependsOn }}"
+              - "Aks_${{ component.dependsOn }}"
+              - "PipelineTests_${{ component.dependsOn }}"
+              - "BootStrapClusters_${{ component.dependsOn }}"
           - ${{ else }}:
-            - "Precheck"
+              - "Precheck"
         jobs:
           - job: NetworkRg
             steps:
@@ -200,7 +199,7 @@ stages:
                 parameters:
                   overrideAction: ${{ parameters.action }}
                   environment: ${{ component.env }}
-                  component: 'network-rg'
+                  component: "network-rg"
                   location: ${{ parameters.location }}
                   serviceConnection: ${{ component.serviceConnection }}
                   terraformInitSubscription: ${{ variables.tfInitSub }}
@@ -222,15 +221,15 @@ stages:
                 parameters:
                   serviceConnection: ${{ component.serviceConnection }}
                   environment: ${{ component.env }}
-                  subscriptionIdVariableName: 'SUBSCRIPTION_ID'
-                  storageAccountVariableName: 'STORAGE_ACCOUNT'
-                  keyVaultVariableName: 'KEY_VAULT'
+                  subscriptionIdVariableName: "SUBSCRIPTION_ID"
+                  storageAccountVariableName: "STORAGE_ACCOUNT"
+                  keyVaultVariableName: "KEY_VAULT"
 
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
                   overrideAction: ${{ parameters.action }}
                   environment: ${{ component.env }}
-                  component: 'network'
+                  component: "network"
                   location: ${{ parameters.location }}
                   serviceConnection: OPS-APPROVAL-GATE-MGMT-ENVS
                   terraformInitSubscription: ${{ variables.tfInitSub }}
@@ -247,7 +246,7 @@ stages:
 
       - stage: "Managed_Identity_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Managed_Identity"
-        dependsOn: 
+        dependsOn:
           - "Network_${{ component.env }}"
         jobs:
           - job: Managed_Identity
@@ -257,7 +256,7 @@ stages:
                   overrideAction: ${{ parameters.action }}
                   environment: ${{ component.env }}
                   component: managed-identity
-                  location: ${{ parameters.location }}  
+                  location: ${{ parameters.location }}
                   serviceConnection: ${{ component.serviceConnection }}
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
@@ -281,7 +280,7 @@ stages:
                 parameters:
                   environment: ${{ component.env }}
                   location: ${{ parameters.location }}
-                  stack: 'aks'
+                  stack: "aks"
                   project: $(project)
                   product: ${{ variables.product }}
                   tfInitSub: ${{ variables.tfInitSub }}
@@ -302,7 +301,7 @@ stages:
                 parameters:
                   environment: ${{ component.env }}
                   location: ${{ parameters.location }}
-                  stack: 'aks-mis'
+                  stack: "aks-mis"
                   project: $(project)
                   tfInitSub: ${{ variables.tfInitSub }}
                   serviceConnection: ${{ component.serviceConnection }}
@@ -320,7 +319,7 @@ stages:
 
       - stage: "BootStrapClusters_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
-        dependsOn: 
+        dependsOn:
           - "Aks_${{ component.env }}"
         jobs:
           - job: BootStrap
@@ -343,7 +342,7 @@ stages:
 
       - stage: "PipelineTests_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: PipelineTests"
-        dependsOn: 
+        dependsOn:
           - "BootStrapClusters_${{ component.env }}"
         jobs:
           - job: PipelineTests
@@ -362,5 +361,5 @@ stages:
                   junit_output_dir: $(Pipeline.Workspace)/s/aks-cft-deploy/environments/junit
                   environment: ${{ component.env }}
                   product: ${{ variables.product }}
-                  test_title: '${{ component.env }}_${{ parameters.cluster }}_${{ parameters.location }}'
+                  test_title: "${{ component.env }}_${{ parameters.cluster }}_${{ parameters.location }}"
                   test_pattern: pipeline.test.ts
