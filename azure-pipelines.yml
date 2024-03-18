@@ -151,12 +151,12 @@ stages:
             serviceConnection: ${{ component.serviceConnection }}
 
   - ${{ each component in parameters.environment_components }}:
-    - stage: "Checking_Clusters_${{ component.env }}"
+    - stage: "Genesis_${{ component.env }}"
       displayName: "${{ upper(component.env) }}: Genesis"
       condition: ne('${{ parameters.Action }}', 'Destroy')
       dependsOn: 
         - ${{ if ne(component.env, 'sbox') }}:
-          - Checking_Clusters
+          - "Checking_Clusters_${{ component.dependsOn }}"
           - "Network_${{ component.dependsOn }}"
           - "Managed_Identity_${{ component.dependsOn }}"
           - "Aks_${{ component.dependsOn }}"
