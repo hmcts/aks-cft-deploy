@@ -12,5 +12,4 @@ else
     output="None"
 fi
 
-# Set the 'cluster' pipeline variable to the value of 'output'
 echo "##vso[task.setvariable variable=cluster]$output"
