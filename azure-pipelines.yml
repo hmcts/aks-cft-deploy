@@ -135,18 +135,21 @@ stages:
               environment: sbox
               runManualStart: true
   - ${{ each component in parameters.environment_components }}:
-      - job: CheckingClusters
-        steps:
-        - checkout: self
-        - script: |
-            output=$(bash checking-clusters.sh ${{ parameters.cluster }})
-            echo "##vso[task.setvariable variable=cluster]$output"
-            echo $output
-          displayName: 'Checking cluster'
-          workingDirectory: 'scripts'
-          env:
-            cluster: ${{ parameters.cluster }}
-            serviceConnection: ${{ component.serviceConnection }}
+      - stage: "CheckingClusters_${{ component.env }}"
+        displayName: "Checking Clusters for ${{ component.env }}"
+        jobs:
+          - job: CheckingClusters
+            steps:
+            - checkout: self
+            - script: |
+                output=$(bash checking-clusters.sh ${{ parameters.cluster }})
+                echo "##vso[task.setvariable variable=cluster]$output"
+                echo $output
+              displayName: 'Checking cluster'
+              workingDirectory: 'scripts'
+              env:
+                cluster: ${{ parameters.cluster }}
+                serviceConnection: ${{ component.serviceConnection }}
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
