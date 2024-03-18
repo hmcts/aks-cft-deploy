@@ -11,3 +11,4 @@ elif az aks list --query "[?contains(name, 'a-prod-01-cluster')]" &>/dev/null; t
 else
     output="None"
 fi
+echo $output
