@@ -146,7 +146,7 @@ stages:
                 inputs:
                   scriptType: bash
                   azureSubscription: ${{ component.serviceConnection }}
-                  workingDirectory: scripts
+                  workingDirectory: "$(Build.SourcesDirectory)/scripts"
                   scriptPath: checking-clusters.sh
               - script: |
                   echo "Cluster output: $(cluster_output)"
