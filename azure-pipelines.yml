@@ -141,13 +141,12 @@ stages:
           - job: CheckingClusters
             steps:
               - checkout: self
-              - bash: |
-                  bash checking-clusters.sh
-                workingDirectory: "scripts"
-                env:
-                  serviceConnection: ${{ component.serviceConnection }}
-                  environment: ${{ component.env }}
-                  project: ${{ variables.project }}
+              - task: AzureCLI@2
+                displayName: "Checking available clusters"
+                inputs:
+                  azureSubscription: ${{ component.serviceConnection }}
+                  workingDirectory: scripts
+                  scriptPath: checking-clusters.sh
               - script: |
                   echo "Cluster output: $(cluster_output)"
                 displayName: 'Print cluster output'
