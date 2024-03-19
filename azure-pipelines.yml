@@ -144,6 +144,7 @@ stages:
               - task: AzureCLI@2
                 displayName: "Checking available clusters"
                 inputs:
+                  scriptType: bash
                   azureSubscription: ${{ component.serviceConnection }}
                   workingDirectory: scripts
                   scriptPath: checking-clusters.sh
