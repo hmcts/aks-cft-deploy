@@ -281,7 +281,7 @@ stages:
           - job: DeployInfrastructure
             condition: |
               or(
-                and(succeeded(), eq(variables['cluster_output'], 'true')),
+                and(succeeded(), eq(variables['cluster_output'])),
                 and(succeeded(), eq(variables['isAutoTriggered'], true), ne(parameters['cluster'], 'All'))
               )
             steps:
