@@ -340,15 +340,15 @@ stages:
         variables:
           existing_clusters: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
           cluster: ${{ parameters.cluster }}
+        condition: |
+          or(
+            and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true)),
+            and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
+          )
         jobs:
           - job: BootStrap
-            condition: |
-              or(
-                and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-                and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
-                and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true)),
-                and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
-              )
+            condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
             steps:
               - template: pipeline-steps/bootstrap.yaml
                 parameters:
