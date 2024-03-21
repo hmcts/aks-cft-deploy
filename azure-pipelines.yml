@@ -277,12 +277,11 @@ stages:
           - "Managed_Identity_${{ component.env }}"
         variables:
           cluster_output: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
-          cluster: ${{ parameters.cluster }}
         jobs:
           - job: DeployInfrastructure
             condition: |
               or(
-                and(succeeded(), eq(variables['cluster_output'], variables['cluster'])),  # Use variables['cluster'] here
+                and(succeeded(), eq(variables['cluster_output'], parameters['cluster'])),
                 and(succeeded(), eq(variables['isAutoTriggered'], true), ne(parameters['cluster'], 'All'))
               )
             steps:
