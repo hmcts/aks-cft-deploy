@@ -338,7 +338,7 @@ stages:
           - job: BootStrap
             condition: |
               or(
-                and(succeeded(), eq('${{ parameters.action }}', 'apply'))eq(variables['isMain'], true),
+                and(succeeded(), eq('${{ parameters.action }}', 'apply'), eq(variables['isMain'], true)),
                 and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['cluster_output'], variables['cluster'])),
                 and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['build.sourceBranch'], 'refs/heads/main')))
               )
