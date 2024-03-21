@@ -8,7 +8,7 @@ trigger:
 pr:
   branches:
     include:
-      - 'refs/heads/main'
+      - "refs/heads/main"
 
 pool:
   vmImage: "ubuntu-latest"
@@ -285,7 +285,7 @@ stages:
           cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
+            and(succeeded(), eq(variables['Build.Reason'], 'Manual'), or(eq(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['cluster']))),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true)),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
           )
@@ -342,7 +342,7 @@ stages:
           cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
+            and(succeeded(), eq(variables['Build.Reason'], 'Manual'), or(eq(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['cluster']))),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true)),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
           )
