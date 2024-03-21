@@ -5,6 +5,11 @@ trigger:
     include:
       - master
 
+pr:
+  branches:
+    include:
+      - 'refs/heads/main'
+
 pool:
   vmImage: "ubuntu-latest"
 
@@ -281,7 +286,8 @@ stages:
         condition: |
           or(
             and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true)),
+            and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
           )
         jobs:
           - job: DeployInfrastructure
@@ -340,7 +346,8 @@ stages:
               or(
                 and(succeeded(), eq('${{ parameters.action }}', 'apply')),
                 and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
-                and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
+                and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true)),
+                and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
               )
             steps:
               - template: pipeline-steps/bootstrap.yaml
