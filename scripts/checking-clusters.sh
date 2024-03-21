@@ -23,4 +23,4 @@ else
 fi
 
 #Create pipeline variable for use later in script
-echo "##vso[task.setvariable variable=cluster_output]$output"
+echo "##vso[task.setvariable variable=cluster_deploy]$output"

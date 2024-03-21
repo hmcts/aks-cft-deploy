@@ -148,8 +148,9 @@ stages:
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
               - script: |
-                  echo "Cluster output: $(cluster_output)"
+                  echo "Cluster output: $(cluster_deploy)"
                 displayName: 'Print cluster output'
+
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
@@ -274,8 +275,15 @@ stages:
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
+        variables:
+            cluster_output: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
         jobs:
           - job: DeployInfrastructure
+            condition: |
+              or(
+                and(succeeded(), eq(variables['cluster_output'], parameters['cluster'])),
+                and(succeeded(), eq(variables['isAutoTriggered'], true), ne(parameters['cluster'], 'All'))
+              )
             steps:
               - template: pipeline-steps/deploy-service.yaml
                 parameters:
