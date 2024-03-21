@@ -342,8 +342,6 @@ stages:
                 and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['cluster_output'], variables['cluster'])),
                 and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['build.sourceBranch'], 'refs/heads/main')))
               )
-            variables:
-              clusters: ${{ parameters.cluster }}
             steps:
               - template: pipeline-steps/bootstrap.yaml
                 parameters:
