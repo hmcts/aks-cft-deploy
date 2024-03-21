@@ -282,7 +282,7 @@ stages:
           - job: DeployInfrastructure
             condition: |
               or(
-                and(succeeded(), eq(variables['cluster_output'])),
+                and(succeeded(), eq(variables['cluster_output'], variables['cluster'])),
                 and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'), ne(variables['cluster'], 'All'))
               )
             steps:
