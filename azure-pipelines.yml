@@ -3,7 +3,7 @@ name: AKS-CFT-Deploy - ${{ parameters.action }}
 trigger:
   branches:
     include:
-      - master
+      - main
 
 pr:
   branches:
