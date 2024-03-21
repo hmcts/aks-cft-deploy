@@ -276,13 +276,13 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-          cluster_output: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
-          cluster: ${{ parameters.cluster }} 
+          cluster_deploy: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
+          cluster: ${{ parameters.cluster }}
         jobs:
           - job: DeployInfrastructure
             condition: |
               or(
-                and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['cluster_output'], variables['cluster'])),
+                and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['cluster_deploy'], variables['cluster'])),
                 and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['build.sourceBranch'], 'refs/heads/main')))
               )
             steps:
@@ -332,14 +332,14 @@ stages:
         dependsOn:
           - "Aks_${{ component.env }}"
         variables:
-          cluster_output: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
+          cluster_deploy: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
           cluster: ${{ parameters.cluster }}
         jobs:
           - job: BootStrap
             condition: |
               or(
                 and(succeeded(), eq('${{ parameters.action }}', 'apply'), eq(variables['isMain'], true)),
-                and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['cluster_output'], variables['cluster'])),
+                and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['cluster_deploy'], variables['cluster'])),
                 and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['build.sourceBranch'], 'refs/heads/main')))
               )
             steps:
