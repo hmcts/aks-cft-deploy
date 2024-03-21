@@ -276,15 +276,15 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-          cluster_deploy: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
+          existing_clusters: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
           cluster: ${{ parameters.cluster }}
+        condition: |
+          or(
+            and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
+          )
         jobs:
           - job: DeployInfrastructure
-            condition: |
-              or(
-                and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['cluster_deploy'], variables['cluster'])),
-                and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['build.sourceBranch'], 'refs/heads/main')))
-              )
             steps:
               - template: pipeline-steps/deploy-service.yaml
                 parameters:
@@ -332,15 +332,15 @@ stages:
         dependsOn:
           - "Aks_${{ component.env }}"
         variables:
-          cluster_deploy: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
+          existing_clusters: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
           cluster: ${{ parameters.cluster }}
         jobs:
           - job: BootStrap
             condition: |
               or(
-                and(succeeded(), eq('${{ parameters.action }}', 'apply'), eq(variables['isMain'], true)),
-                and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['cluster_deploy'], variables['cluster'])),
-                and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['build.sourceBranch'], 'refs/heads/main')))
+                and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+                and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
+                and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
               )
             steps:
               - template: pipeline-steps/bootstrap.yaml
