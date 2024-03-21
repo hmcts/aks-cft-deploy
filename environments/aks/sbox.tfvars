@@ -30,3 +30,11 @@ spot_node_pool = {
 
 availability_zones = ["1"]
 autoShutdown       = true
+
+node_os_maintenance_window_config = {
+  frequency  = "Daily"
+  interval   = 1
+  duration   = 4
+  start_time = "16:00"
+  utc_offset = "+00:00"
+}

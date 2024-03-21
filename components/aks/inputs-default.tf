@@ -42,3 +42,24 @@ variable "autoShutdown" {
 variable "startupMode" {
   default = null
 }
+
+variable "node_os_maintenance_window_config" {
+  type = object({
+    frequency   = string
+    interval    = number
+    duration    = number
+    day_of_week = optional(string)
+    start_time  = optional(string)
+    utc_offset  = optional(string)
+    start_date  = optional(string)
+  })
+  default = {
+    frequency   = "Weekly"
+    interval    = 1
+    duration    = 4
+    day_of_week = "Monday"
+    start_time  = "18:00"
+    utc_offset  = "+00:00"
+    start_date  = null
+  }
+}
