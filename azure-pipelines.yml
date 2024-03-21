@@ -277,6 +277,7 @@ stages:
           - "Managed_Identity_${{ component.env }}"
         variables:
           cluster_output: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
+          cluster: ${{ parameters.cluster }}  
         jobs:
           - job: DeployInfrastructure
             condition: |
