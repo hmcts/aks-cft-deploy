@@ -285,7 +285,7 @@ stages:
           existing_clusters: $[ stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['cluster_deploy_output.cluster_deploy'] ]
         condition: |
           or(
-            and(succeeded(), eq(variables['existing_clusters'], variables['cluster'])),
+            and(succeeded(), eq(variables['existing_clusters'], '${{ parameters.cluster }}')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
@@ -339,10 +339,9 @@ stages:
           - "Aks_${{ component.env }}"
         variables:
           existing_clusters: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
-          cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['existing_clusters'], variables['cluster'])),
+            and(succeeded(), eq(variables['existing_clusters'], '${{ parameters.cluster }}')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
