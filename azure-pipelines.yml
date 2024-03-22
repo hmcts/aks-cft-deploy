@@ -282,8 +282,8 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-        existing_clusters: $[ stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['print_variables.cluster_deploy'] ]
-        cluster: ${{ parameters.cluster }}
+          existing_clusters: $[ stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['print_variables.cluster_deploy'] ]
+          cluster: ${{ parameters.cluster }}
         condition: |
           or(
             and(succeeded(), or(eq(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['cluster']))),
