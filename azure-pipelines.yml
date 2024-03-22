@@ -286,7 +286,7 @@ stages:
           cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['existing_clusters'], variables['cluster'])),
+            and(succeeded(), eq(variables['existing_clusters'], '${{ parameters.cluster }}')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
@@ -343,7 +343,7 @@ stages:
           cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['existing_clusters'], variables['cluster'])),
+            and(succeeded(), eq(variables['existing_clusters'], '${{ parameters.cluster }}')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
