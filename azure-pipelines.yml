@@ -153,9 +153,13 @@ stages:
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
               - script: |
-                  echo "Cluster output: $(cluster_deploy)"
-                displayName: "Print cluster output"
-                name: cluster_deploy_output
+                  echo "parameters.cluster: ${{ parameters.cluster }}"
+                  if [ "${{ parameters.cluster }}" = "$(cluster_deploy)" ]; then
+                    echo "parameters.cluster equals cluster_deploy"
+                  else
+                    echo "parameters.cluster does not equal cluster_deploy"
+                  fi
+                displayName: "Print parameters.cluster and check if it equals cluster_deploy"
 
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
@@ -283,11 +287,10 @@ stages:
           - "Managed_Identity_${{ component.env }}"
         variables:
           existing_clusters: $[ stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['cluster_deploy_output.cluster_deploy'] ]
-          deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['existing_clusters'], 'All')),
-            and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster'])),
+            and(succeeded(), eq(variables['existing_clusters'], 'All'), eq(variables['Build.Reason'], 'Manual')),
+            and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual'))
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
