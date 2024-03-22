@@ -340,10 +340,10 @@ stages:
           - "Aks_${{ component.env }}"
         variables:
           existing_clusters: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
+          deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['existing_clusters'], 'All')),
-            and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], '${{ parameters.cluster }}')),
+            and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster'])),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
