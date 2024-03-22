@@ -155,7 +155,7 @@ stages:
               - script: |
                   echo "Cluster output: $(cluster_deploy)"
                 displayName: "Print cluster output"
-                name: setvarStep
+                name: print_variables
 
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
@@ -282,7 +282,7 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-        existing_clusters: $[ stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['setvarStep.cluster_deploy'] ]          
+        existing_clusters: $[ stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['print_variables.cluster_deploy'] ]
         cluster: ${{ parameters.cluster }}
         condition: |
           or(
