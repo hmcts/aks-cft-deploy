@@ -283,7 +283,6 @@ stages:
           - "Managed_Identity_${{ component.env }}"
         variables:
           existing_clusters: $[ stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['cluster_deploy_output.cluster_deploy'] ]
-          cluster: ${{ parameters.cluster }}
         jobs:
           - job: DeployInfrastructure
             steps:
