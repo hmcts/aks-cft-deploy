@@ -159,7 +159,7 @@ stages:
                   else
                     echo "Cluster parameter does not match target cluster"
                   fi
-                displayName: Verify Clustert"
+                displayName: Verify Cluster"
                 name: cluster_deploy_output
 
       - stage: "Genesis_${{ component.env }}"
