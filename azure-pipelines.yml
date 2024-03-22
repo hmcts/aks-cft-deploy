@@ -286,7 +286,7 @@ stages:
           cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
+            and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster']))
           )
         jobs:
           - job: DeployInfrastructure
