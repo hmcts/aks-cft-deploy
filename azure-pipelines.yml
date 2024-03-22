@@ -284,10 +284,6 @@ stages:
         variables:
           existing_clusters: $[ stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['cluster_deploy_output.cluster_deploy'] ]
           cluster: ${{ parameters.cluster }}
-        condition: |
-          or(
-            and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster']))
-          )
         jobs:
           - job: DeployInfrastructure
             steps:
@@ -341,7 +337,7 @@ stages:
           cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
+            and(succeeded(), or(eq(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['cluster']))),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true)),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest'))
           )
