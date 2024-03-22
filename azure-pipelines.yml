@@ -155,11 +155,11 @@ stages:
               - script: |
                   echo "Cluster Parameter: ${{ parameters.cluster }}"
                   if [ "${{ parameters.cluster }}" = "$(cluster_deploy)" ]; then
-                      echo "Cluster parameter matches target cluster name"
+                      echo "Cluster parameter matches target cluster"
                   else
-                    echo "Cluster parameter does not match target cluster name"
+                    echo "Cluster parameter does not match target cluster"
                   fi
-                displayName: Verify Cluster Parameter Matches Target"
+                displayName: Verify Clustert"
                 name: cluster_deploy_output
 
       - stage: "Genesis_${{ component.env }}"
