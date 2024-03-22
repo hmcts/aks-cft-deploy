@@ -287,7 +287,6 @@ stages:
         condition: |
           or(
             and(succeeded(), eq(variables['Build.Reason'], 'Manual'), eq(variables['existing_clusters'], variables['cluster'])),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
           - job: DeployInfrastructure
