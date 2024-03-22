@@ -153,8 +153,10 @@ stages:
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
               - script: |
-                  echo "Cluster output: $(cluster_deploy)"
+                  echo "Cluster output: $output"
+                  echo "##vso[task.setvariable variable=cluster_deploy;isOutput=true]$output"
                 displayName: "Print cluster output"
+                name: setvarStep
 
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
@@ -281,10 +283,11 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-          existing_clusters: $[ dependencies.CheckingClusters.outputs['CheckingClusters.cluster_deploy'] ]
+          existing_clusters: $[ stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['setvarStep.cluster_deploy'] ]
           cluster: ${{ parameters.cluster }}
         condition: |
           or(
+            and(succeeded(), or(eq(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['cluster']))),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
