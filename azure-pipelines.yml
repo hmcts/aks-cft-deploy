@@ -285,7 +285,6 @@ stages:
           existing_clusters: $[ stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['cluster_deploy_output.cluster_deploy'] ]
         condition: |
           or(
-            and(succeeded(), eq(variables['existing_clusters'], 'All')),
             and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], '${{ parameters.cluster }}')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
