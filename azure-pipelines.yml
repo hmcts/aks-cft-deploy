@@ -153,13 +153,13 @@ stages:
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
               - script: |
-                  echo "parameters.cluster: ${{ parameters.cluster }}"
+                  echo "Cluster Parameter: ${{ parameters.cluster }}"
                   if [ "${{ parameters.cluster }}" = "$(cluster_deploy)" ]; then
-                    echo "parameters.cluster equals cluster_deploy"
+                      echo "Cluster parameter matches target cluster name"
                   else
-                    echo "parameters.cluster does not equal cluster_deploy"
+                    echo "Cluster parameter does not match target cluster name"
                   fi
-                displayName: "Print parameters.cluster and check if it equals cluster_deploy"
+                displayName: Verify Cluster Parameter Matches Target"
 
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
