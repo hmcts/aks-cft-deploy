@@ -23,4 +23,6 @@ else
 fi
 
 #Create pipeline variable for use later in script
+echo "Before setting cluster_deploy: output=$output"
 echo "##vso[task.setvariable variable=cluster_deploy;isOutput=true]$output"
+echo "After setting cluster_deploy"
