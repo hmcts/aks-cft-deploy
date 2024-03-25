@@ -153,13 +153,17 @@ stages:
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
               - script: |
-                  echo "Cluster output: $(cluster_deploy)"
+                  echo "##vso[task.setvariable variable=cluster_deploy;isOutput=true]$(cluster_deploy)"
+                displayName: "Set cluster_deploy as output variable"
+                name: set_cluster_deploy
+              - script: |
+                  echo "Cluster output: $(set_cluster_deploy.cluster_deploy)"
                 displayName: "Print cluster output"
                 name: cluster_deploy_output
               - script: |
                   echo "Cluster Parameter: ${{ parameters.cluster }}"
-                  echo "Cluster output: $(cluster_deploy)"
-                  if [ "${{ parameters.cluster }}" = "$(cluster_deploy)" ]; then
+                  echo "Cluster output: $(set_cluster_deploy.cluster_deploy)"
+                  if [ "${{ parameters.cluster }}" = "$(set_cluster_deploy.cluster_deploy)" ]; then
                       echo "Cluster parameter matches target cluster"
                   else
                       echo "Cluster parameter does not match target cluster"
