@@ -294,7 +294,7 @@ stages:
           - "CheckingClusters_${{ component.env }}"
           - "Managed_Identity_${{ component.env }}"
         variables:
-          existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs[set_cluster_output.cluster_output']]
+          existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['cluster_output']]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual'))
