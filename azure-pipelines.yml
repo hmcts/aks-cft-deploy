@@ -292,7 +292,7 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-          existing_clusters: $[ dependencies.CheckingClusters.outputs['set_cluster_deploy.cluster_deploy'] ]
+          existing_clusters: $[ dependencies.CheckingClusters.outputs['cluster_deploy_output.cluster_deploy'] ]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
@@ -402,7 +402,3 @@ stages:
                   product: ${{ variables.product }}
                   test_title: "${{ component.env }}_${{ parameters.cluster }}_${{ parameters.location }}"
                   test_pattern: pipeline.test.ts
-
-
-
-
