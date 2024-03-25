@@ -162,7 +162,6 @@ stages:
                 name: cluster_deploy_output
               - script: |
                   echo "Cluster Parameter: ${{ parameters.cluster }}"
-                  echo "Cluster output: $(set_cluster_deploy.cluster_deploy)"
                   if [ "${{ parameters.cluster }}" = "$(set_cluster_deploy.cluster_deploy)" ]; then
                       echo "Cluster parameter matches target cluster"
                   else
