@@ -153,16 +153,12 @@ stages:
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
               - script: |
-                  echo "##vso[task.setvariable variable=cluster_deploy;isOutput=true]$(cluster_deploy)"
-                displayName: "Set cluster_deploy as output variable"
-                name: set_cluster_deploy
-              - script: |
-                  echo "Cluster output: $(set_cluster_deploy.cluster_deploy)"
+                  echo "Cluster output: $(cluster_deploy)"
                 displayName: "Print cluster output"
                 name: cluster_deploy_output
               - script: |
                   echo "Cluster Parameter: ${{ parameters.cluster }}"
-                  if [ "${{ parameters.cluster }}" = "$(set_cluster_deploy.cluster_deploy)" ]; then
+                  if [ "${{ parameters.cluster }}" = "$(cluster_deploy)" ]; then
                       echo "Cluster parameter matches target cluster"
                   else
                       echo "Cluster parameter does not match target cluster"
@@ -304,14 +300,6 @@ stages:
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
-          - job: Debug
-            steps:
-              - script: |
-                  echo "existing_clusters: $(existing_clusters)"
-                  echo "deploy_cluster: $(deploy_cluster)"
-                  echo "Build.Reason: $(Build.Reason)"
-                  echo "isAutoTriggered: $(isAutoTriggered)"
-                  echo "isMain: $(isMain)"`
           - job: DeployInfrastructure
             steps:
               - template: pipeline-steps/deploy-service.yaml
