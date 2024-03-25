@@ -161,9 +161,11 @@ stages:
               - script: |
                   echo "Cluster Parameter: ${{ parameters.cluster }}"
                   if [ "${{ parameters.cluster }}" = "$(set_cluster_deploy.cluster_deploy)" ]; then
-                      echo "Cluster parameter matches target cluster"
+                      echo "Input matches cluster"
+                      echo "##vso[task.setvariable variable=cluster_match;isOutput=true]true"
                   else
-                      echo "Cluster parameter does not match target cluster"
+                      echo "Input does not match cluster"
+                      echo "##vso[task.setvariable variable=cluster_match;isOutput=true]false"
                   fi
                 displayName: "Print cluster parameter and output"
                 name: compare_cluster_and_output
@@ -294,12 +296,14 @@ stages:
           - "Managed_Identity_${{ component.env }}"
         variables:
           existing_clusters: $[ dependencies.CheckingClusters.outputs['cluster_deploy_output.cluster_output'] ]
+          cluster_match: $[ dependencies.CheckingClusters.outputs['compare_cluster_and_output.cluster_match'] ]
           deploy_cluster: ${{ parameters.cluster }}
         jobs:
           - job: Debug
             steps:
               - script: |
                   echo "existing_clusters: $(existing_clusters)"
+                  echo "cluster_match: $(cluster_match)"
                   echo "deploy_cluster: $(deploy_cluster)"
                   echo "Build.Reason: $(Build.Reason)"
                   echo "isAutoTriggered: $(isAutoTriggered)"
