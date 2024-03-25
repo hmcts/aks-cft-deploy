@@ -292,11 +292,10 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-          existing_clusters: $[ dependencies.CheckingClusters.outputs['cluster_deploy_output.cluster_deploy'] ]
+          existing_clusters: $[ dependencies.CheckingClusters.outputs['set_cluster_deploy.cluster_deploy'] ]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
