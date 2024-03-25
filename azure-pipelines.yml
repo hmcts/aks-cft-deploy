@@ -294,7 +294,7 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-        existing_clusters: $[ dependencies.CheckingClusters.outputs['cluster_deploy_output.cluster_deploy_output'] ]
+          existing_clusters: $[ dependencies.CheckingClusters.outputs['cluster_deploy_output.cluster_deploy_output'] ]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
