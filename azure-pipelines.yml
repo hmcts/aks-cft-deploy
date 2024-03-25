@@ -154,7 +154,7 @@ stages:
                   scriptPath: "scripts/checking-clusters.sh"
                 name: check_clusters
               - script: |
-                  echo "Cluster output: $(cluster_deploy)"
+                  echo "Cluster output: $(check_clusters.cluster_deploy)"
                 displayName: "Print cluster output"
                 name: set_cluster_output
               - script: |
