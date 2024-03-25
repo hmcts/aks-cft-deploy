@@ -302,14 +302,6 @@ stages:
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
-          - job: Debug
-            steps:
-              - script: |
-                  echo "existing_clusters: $(existing_clusters)"
-                  echo "deploy_cluster: $(deploy_cluster)"
-                  echo "Build.Reason: $(Build.Reason)"
-                  echo "isAutoTriggered: $(isAutoTriggered)"
-                  echo "isMain: $(isMain)"
           - job: DeployInfrastructure
             steps:
               - template: pipeline-steps/deploy-service.yaml
