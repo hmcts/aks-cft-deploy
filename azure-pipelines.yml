@@ -154,10 +154,6 @@ stages:
                   scriptPath: "scripts/checking-clusters.sh"
                 name: check_clusters
               - script: |
-                  echo "check_clusters.cluster_deploy: $(check_clusters.cluster_deploy)"
-                displayName: "Print check_clusters.cluster_deploy"
-
-              - script: |
                   echo "Cluster output: $(check_clusters.cluster_deploy)"
                   echo "##vso[task.setvariable variable=cluster_output;isOutput=true]$(check_clusters.cluster_deploy)"
                 displayName: "Print cluster output"
@@ -297,10 +293,10 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-            existing_clusters: $[ dependencies.CheckingClusters.outputs['set_cluster_output.cluster_output'] ]
-            deploy_cluster: ${{ parameters.cluster }}
+          existing_clusters: $[ dependencies.CheckingClusters.outputs['set_cluster_output.cluster_output'] ]
+          deploy_cluster: ${{ parameters.cluster }}
         condition: |
-            and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual'))
+          and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual'))
         jobs:
           - job: Debug
             steps:
