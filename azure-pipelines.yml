@@ -158,8 +158,8 @@ stages:
                 name: cluster_deploy_output
               - script: |
                   echo "Cluster Parameter: ${{ parameters.cluster }}"
-                  echo "Cluster output: $(CheckingClusters.cluster_deploy)"
-                  if [ "${{ parameters.cluster }}" = "$(CheckingClusters.cluster_deploy)" ]; then
+                  echo "Cluster output: $(cluster_deploy)"
+                  if [ "${{ parameters.cluster }} = $(cluster_deploy)" ]; then
                       echo "Cluster parameter matches target cluster"
                   else
                       echo "Cluster parameter does not match target cluster"
