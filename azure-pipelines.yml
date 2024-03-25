@@ -296,6 +296,8 @@ stages:
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
+            and(succeeded(), eq(variables['existing_clusters'], 'All')
+            and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
@@ -400,3 +402,7 @@ stages:
                   product: ${{ variables.product }}
                   test_title: "${{ component.env }}_${{ parameters.cluster }}_${{ parameters.location }}"
                   test_pattern: pipeline.test.ts
+
+
+
+
