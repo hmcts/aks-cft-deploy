@@ -293,9 +293,12 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-          existing_clusters: $[ dependencies.CheckingClusters.outputs['set_cluster_output.cluster_output'] ]
-          cluster_match: $[ dependencies.CheckingClusters.outputs['compare_cluster_and_output.cluster_match'] ]
-          deploy_cluster: ${{ parameters.cluster }}
+            existing_clusters: $[ dependencies.CheckingClusters.outputs['set_cluster_output.cluster_output'] ]
+            deploy_cluster: ${{ parameters.cluster }}
+        condition: |
+          or(
+            and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual')),
+          )
         jobs:
           - job: Debug
             steps:
