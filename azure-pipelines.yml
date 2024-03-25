@@ -152,15 +152,15 @@ stages:
                   scriptType: bash
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
-                name: set_cluster_deploy
+                name: check_clusters
               - script: |
-                  echo "Cluster output: $(set_cluster_deploy.cluster_deploy)"
-                  echo "##vso[task.setvariable variable=cluster_output;isOutput=true]$(set_cluster_deploy.cluster_deploy)"
+                  echo "Cluster output: $(check_clusters.cluster_deploy)"
+                  echo "##vso[task.setvariable variable=cluster_output;isOutput=true]$(check_clusters.cluster_deploy)"
                 displayName: "Print cluster output"
-                name: cluster_deploy_output
+                name: set_cluster_output
               - script: |
                   echo "Cluster Parameter: ${{ parameters.cluster }}"
-                  if [ "${{ parameters.cluster }}" = "$(set_cluster_deploy.cluster_deploy)" ]; then
+                  if [ "${{ parameters.cluster }}" = "$(check_clusters.cluster_deploy)" ]; then
                       echo "Input matches cluster"
                       echo "##vso[task.setvariable variable=cluster_match;isOutput=true]true"
                   else
@@ -295,7 +295,7 @@ stages:
         dependsOn:
           - "Managed_Identity_${{ component.env }}"
         variables:
-          existing_clusters: $[ dependencies.CheckingClusters.outputs['cluster_deploy_output.cluster_output'] ]
+          existing_clusters: $[ dependencies.CheckingClusters.outputs['set_cluster_output.cluster_output'] ]
           cluster_match: $[ dependencies.CheckingClusters.outputs['compare_cluster_and_output.cluster_match'] ]
           deploy_cluster: ${{ parameters.cluster }}
         jobs:
