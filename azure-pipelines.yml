@@ -295,8 +295,7 @@ stages:
         variables:
           existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
-        condition: and(succeeded(), eq(variables['existing_clusters'], 'All'), eq(variables['deploy_cluster'], 'All'), eq(variables['Build.Reason'], 'Manual')),
-        
+        condition: and(succeeded(), eq(variables['existing_clusters'], 'All'), eq(variables['deploy_cluster'], 'All'), eq(variables['Build.Reason'], 'Manual'))        
         jobs:
           - job: DeployInfrastructure
             steps:
