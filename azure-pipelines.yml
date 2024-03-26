@@ -125,20 +125,20 @@ variables:
     value: ${{ parameters.action }}
 
 stages:
-  - stage: PreCheck
-    displayName: "PreChecks"
-    jobs:
-      - job: PreChecks
-        steps:
-          - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
-            parameters:
-              keyvaultName: infra-vault-nonprod
-              keyvaultSecret: "azure-devops-sp-token"
-              serviceConnection: azurerm-sandbox
-              projectName: ${{ variables.project }}
-              cluster: ${{ parameters.cluster }}
-              environment: sbox
-              runManualStart: true
+  # - stage: PreCheck
+  #   displayName: "PreChecks"
+  #   jobs:
+  #     - job: PreChecks
+  #       steps:
+  #         - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
+  #           parameters:
+  #             keyvaultName: infra-vault-nonprod
+  #             keyvaultSecret: "azure-devops-sp-token"
+  #             serviceConnection: azurerm-sandbox
+  #             projectName: ${{ variables.project }}
+  #             cluster: ${{ parameters.cluster }}
+  #             environment: sbox
+  #             runManualStart: true
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
