@@ -174,11 +174,11 @@ stages:
           existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
-          or(
-            eq(${{ parameters.cluster }}, 'All')
-            eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All')
-            eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], ${{ parameters.cluster }})
-          )
+            or(
+              eq(${{ parameters.cluster }}, 'All'),
+              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All'),
+              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], ${{ parameters.cluster }})
+            )
         jobs:
           - job: printVars
             steps:   
