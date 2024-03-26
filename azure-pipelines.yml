@@ -297,12 +297,18 @@ stages:
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual')),
+            and(succeeded(), eq(variables['existing_clusters'], 'All'), eq(variables['Build.Reason'], 'Manual')),
             and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
+          - job: debug
+            steps:
+              - script: |
+                  echo "Existing clusters: $(existing_clusters)"
+                  echo "Deploy cluster: $(deploy_cluster)"
+                displayName: "Debug"
           - job: DeployInfrastructure
             steps:
               - template: pipeline-steps/deploy-service.yaml
@@ -355,6 +361,7 @@ stages:
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
+            and(succeeded(), eq(variables['existing_clusters'], 'All'), eq(variables['Build.Reason'], 'Manual')),
             and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
