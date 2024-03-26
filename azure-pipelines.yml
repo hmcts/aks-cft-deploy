@@ -302,11 +302,15 @@ stages:
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
-          - script: |
-              echo "parameters.cluster: $(deploy_cluster)"
-              echo "variable script - existing_clusters: $(existing_clusters)"
-            displayName: "Print cluster output"
-            name: set_cluster_output
+          - job: DeployInfrastructure
+            steps:   
+              - script: |
+                  echo "parameters.cluster: $(deploy_cluster)"
+                  echo "variable script - existing_clusters: $(existing_clusters)"
+                  echo "parameters.cluster: variables['deploy_cluster']"
+                  echo "variable script - existing_clusters: variables['existing_clusters']"
+                displayName: "Print cluster output"
+                name: set_cluster_output
           # - job: DeployInfrastructure
           #   steps:
           #     - template: pipeline-steps/deploy-service.yaml
