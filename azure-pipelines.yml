@@ -173,7 +173,7 @@ stages:
         variables:
           existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
-        condition: eq(variables['existing_clusters'], 'All')
+        condition: eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], "All")
         jobs:
           - job: printVars
             steps:   
