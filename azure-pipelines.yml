@@ -297,8 +297,9 @@ stages:
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['existing_clusters'], 'All'), eq(variables['Build.Reason'], 'Manual')),
-            and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual')),
+            and(eq('${{ parameters.cluster }}', 'All'), eq(variables['Build.Reason'], 'Manual')),
+            and(eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All'), eq(variables['Build.Reason'], 'Manual')),
+            and(eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}'), eq(variables['Build.Reason'], 'Manual')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
@@ -361,8 +362,6 @@ stages:
       #     deploy_cluster: ${{ parameters.cluster }}
       #   condition: |
       #     or(
-      #       and(succeeded(), eq(variables['existing_clusters'], 'All'), eq(variables['Build.Reason'], 'Manual')),
-      #       and(succeeded(), ne(variables['existing_clusters'], 'All'), eq(variables['existing_clusters'], variables['deploy_cluster']), eq(variables['Build.Reason'], 'Manual')),
       #       and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
       #       and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
       #     )
