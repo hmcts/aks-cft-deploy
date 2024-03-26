@@ -177,7 +177,7 @@ stages:
             or(
               eq(${{ parameters.cluster }}, 'All'),
               eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All'),
-              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], ${{ parameters.cluster }})
+              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], "${{ parameters.cluster }}")
             )
         jobs:
           - job: printVars
