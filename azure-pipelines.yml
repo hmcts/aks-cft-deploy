@@ -166,6 +166,27 @@ stages:
                   fi
                 displayName: "Print cluster parameter and output"
                 name: compare_cluster_and_output
+      - stage: "Aks_${{ component.env }}"
+        displayName: "${{ upper(component.env) }}: AKS clusters"
+        dependsOn:
+          - "CheckingClusters_${{ component.env }}"
+        variables:
+          existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
+          deploy_cluster: ${{ parameters.cluster }}
+        condition: |
+          or(
+            and(succeeded(), eq(variables['existing_clusters'], 'All')),
+          )
+        jobs:
+          - job: printVars
+            steps:   
+              - script: |
+                  echo "parameters.cluster: $(deploy_cluster)"
+                  echo "variable script - existing_clusters: $(existing_clusters)"
+                  echo "parameters.cluster: variables['deploy_cluster']"
+                  echo "variable script - existing_clusters: variables['existing_clusters']"
+                displayName: "Print cluster output"
+                name: printoutput
 
       # - stage: "Genesis_${{ component.env }}"
       #   displayName: "${{ upper(component.env) }}: Genesis"
@@ -287,71 +308,63 @@ stages:
       #               -var control_vault=$(controlKeyVault)
       #               -var project=$(project)
 
-      - stage: "Aks_${{ component.env }}"
-        displayName: "${{ upper(component.env) }}: AKS clusters"
-        dependsOn:
-          - "CheckingClusters_${{ component.env }}"
-          - "Managed_Identity_${{ component.env }}"
-        variables:
-          existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
-          deploy_cluster: ${{ parameters.cluster }}
-        condition: |
-          or(
-            and(succeeded(), eq(variables['existing_clusters'], 'All'), ne(variables['deploy_cluster'], 'All'), eq(variables['Build.Reason'], 'Manual')),
-            and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-          )
-        jobs:
-          - job: DeployInfrastructure
-            steps:   
-              - script: |
-                  echo "parameters.cluster: $(deploy_cluster)"
-                  echo "variable script - existing_clusters: $(existing_clusters)"
-                  echo "parameters.cluster: variables['deploy_cluster']"
-                  echo "variable script - existing_clusters: variables['existing_clusters']"
-                displayName: "Print cluster output"
-                name: set_cluster_output
-          # - job: DeployInfrastructure
-          #   steps:
-          #     - template: pipeline-steps/deploy-service.yaml
-          #       parameters:
-          #         environment: ${{ component.env }}
-          #         location: ${{ parameters.location }}
-          #         stack: "aks"
-          #         project: $(project)
-          #         product: ${{ variables.product }}
-          #         tfInitSub: ${{ variables.tfInitSub }}
-          #         serviceConnection: ${{ component.serviceConnection }}
-          #         action: ${{ parameters.action }}
-          #         terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
-          #         backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
-          #         setClusterNumbersEnvVar: true
-          #         ${{ if ne(parameters['cluster'], 'All') }}:
-          #           targetCommand: >
-          #             -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
-          #             -target module.kubernetes["\"${{parameters.cluster}}\""]
-          # - job: "DeployInfrastructuremis"
-          #   dependsOn: DeployInfrastructure
-          #   steps:
-          #     - template: pipeline-steps/deploy-service.yaml
-          #       parameters:
-          #         environment: ${{ component.env }}
-          #         location: ${{ parameters.location }}
-          #         stack: "aks-mis"
-          #         project: $(project)
-          #         tfInitSub: ${{ variables.tfInitSub }}
-          #         serviceConnection: ${{ component.serviceConnection }}
-          #         action: ${{ parameters.action }}
-          #         setClusterNumbersEnvVar: false
-          #         terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
-          #         backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
-          #         ${{ if ne(parameters['cluster'], 'All') }}:
-          #           targetCommand: >
-          #             -target azurerm_role_assignment.uami_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
-          #             -target azurerm_role_assignment.preview_externaldns_read_rg["\"${{parameters.cluster}}\""]
-          #             -target azurerm_role_assignment.preview_externaldns_dns_zone_contributor["\"${{parameters.cluster}}\""]
-          #             -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
-          #             -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
+      # - stage: "Aks_${{ component.env }}"
+      #   displayName: "${{ upper(component.env) }}: AKS clusters"
+      #   dependsOn:
+      #     - "CheckingClusters_${{ component.env }}"
+      #     - "Managed_Identity_${{ component.env }}"
+      #   variables:
+      #     existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
+      #     deploy_cluster: ${{ parameters.cluster }}
+      #   condition: |
+      #     or(
+      #       and(succeeded(), eq(variables['existing_clusters'], 'All'), ne(variables['deploy_cluster'], 'All'), eq(variables['Build.Reason'], 'Manual')),
+      #       and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
+      #       and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+      #     )
+      #   jobs:
+      #     - job: DeployInfrastructure
+      #       steps:
+      #         - template: pipeline-steps/deploy-service.yaml
+      #           parameters:
+      #             environment: ${{ component.env }}
+      #             location: ${{ parameters.location }}
+      #             stack: "aks"
+      #             project: $(project)
+      #             product: ${{ variables.product }}
+      #             tfInitSub: ${{ variables.tfInitSub }}
+      #             serviceConnection: ${{ component.serviceConnection }}
+      #             action: ${{ parameters.action }}
+      #             terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
+      #             backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
+      #             setClusterNumbersEnvVar: true
+      #             ${{ if ne(parameters['cluster'], 'All') }}:
+      #               targetCommand: >
+      #                 -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
+      #                 -target module.kubernetes["\"${{parameters.cluster}}\""]
+
+      #     - job: "DeployInfrastructuremis"
+      #       dependsOn: DeployInfrastructure
+      #       steps:
+      #         - template: pipeline-steps/deploy-service.yaml
+      #           parameters:
+      #             environment: ${{ component.env }}
+      #             location: ${{ parameters.location }}
+      #             stack: "aks-mis"
+      #             project: $(project)
+      #             tfInitSub: ${{ variables.tfInitSub }}
+      #             serviceConnection: ${{ component.serviceConnection }}
+      #             action: ${{ parameters.action }}
+      #             setClusterNumbersEnvVar: false
+      #             terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
+      #             backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
+      #             ${{ if ne(parameters['cluster'], 'All') }}:
+      #               targetCommand: >
+      #                 -target azurerm_role_assignment.uami_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
+      #                 -target azurerm_role_assignment.preview_externaldns_read_rg["\"${{parameters.cluster}}\""]
+      #                 -target azurerm_role_assignment.preview_externaldns_dns_zone_contributor["\"${{parameters.cluster}}\""]
+      #                 -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
+      #                 -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
       # - stage: "BootStrapClusters_${{ component.env }}"
       #   displayName: "${{ upper(component.env) }}: BootStrap Clusters"
