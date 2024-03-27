@@ -143,7 +143,14 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
-          - PreCheck
+          - ${{ if ne(component.env, 'sbox') }}:
+              - "Network_${{ component.dependsOn }}"
+              - "Managed_Identity_${{ component.dependsOn }}"
+              - "Aks_${{ component.dependsOn }}"
+              - "PipelineTests_${{ component.dependsOn }}"
+              - "BootStrapClusters_${{ component.dependsOn }}"
+          - ${{ else }}:
+              - "Precheck"
         jobs:
           - job: CheckingClusters
             steps:
