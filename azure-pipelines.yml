@@ -172,7 +172,6 @@ stages:
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
               - "Managed_Identity_${{ component.dependsOn }}"
               - "Aks_${{ component.dependsOn }}"
@@ -203,7 +202,6 @@ stages:
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
               - "Managed_Identity_${{ component.dependsOn }}"
               - "Aks_${{ component.dependsOn }}"
