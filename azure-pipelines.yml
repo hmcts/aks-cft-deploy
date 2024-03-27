@@ -308,19 +308,13 @@ stages:
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(eq('${{ parameters.cluster }}', 'All'), eq(variables['Build.Reason'], 'Manual')),
+            and(in('${{ parameters.cluster }}', 'All', '00', '01'), eq(variables['Build.Reason'], 'Manual')),
             and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'), eq(variables['Build.Reason'], 'Manual')),
             and(eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}'), eq(variables['Build.Reason'], 'Manual')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
-          - job: debug
-            steps:
-              - script: |
-                  echo "Existing clusters: $(existing_clusters)"
-                  echo "Deploy cluster: $(deploy_cluster)"
-                displayName: "Debug"
           - job: DeployInfrastructure
             steps:
               - template: pipeline-steps/deploy-service.yaml
@@ -377,11 +371,14 @@ stages:
             and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'), eq(variables['Build.Reason'], 'Manual')),
             and(eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}'), eq(variables['Build.Reason'], 'Manual')),
             and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
           - job: BootStrap
-            condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
+            condition: |
+              or(
+                and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+                and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+              )
             steps:
               - template: pipeline-steps/bootstrap.yaml
                 parameters:
