@@ -120,6 +120,8 @@ module "kubernetes" {
 
   enable_node_os_channel_upgrade_nodeimage = contains(["sbox"], var.env) ? true : false
 
+  node_os_maintenance_window_config = var.node_os_maintenance_window_config
+
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
   aks_role_definition              = "Contributor"
   aks_auto_shutdown_principal_id   = data.azuread_service_principal.aks_auto_shutdown.object_id
