@@ -8,15 +8,9 @@ parameters:
   tfInitSub: ""
   targetCommand: ""
   setClusterNumbersEnvVar: false
-<<<<<<< HEAD
-  action: ''
-  terraformSubscriptionID: ''
-  backendAzureRmResourceGroupName: ''
-=======
   action: ""
   terraformSubscriptionID: ""
   backendAzureRmResourceGroupName: ""
->>>>>>> 9a9bf191afd9185750d4c575d7b03bb78454749a
 
 steps:
   - template: steps/terraform.yaml@cnp-azuredevops-libraries
@@ -33,11 +27,6 @@ steps:
         -var subscription_id=${{ parameters.terraformSubscriptionID }}
         -backend-config resource_group_name=${{ parameters.backendAzureRmResourceGroupName }}
       planCommandOptions: "-var subscription_id=${{ parameters.terraformSubscriptionID }} -var control_vault=$(controlKeyVault) -var project=$(project) ${{ parameters.targetCommand }}"
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> 9a9bf191afd9185750d4c575d7b03bb78454749a
   - ${{ if eq(parameters.setClusterNumbersEnvVar, true) }}:
       - pwsh: |
           $tfVersion = Get-Content "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/.terraform-version" -Raw
