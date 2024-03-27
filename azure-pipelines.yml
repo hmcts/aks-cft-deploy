@@ -142,6 +142,8 @@ stages:
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
+        dependsOn:
+          - PreCheck
         jobs:
           - job: CheckingClusters
             steps:
