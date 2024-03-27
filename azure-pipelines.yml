@@ -356,6 +356,7 @@ stages:
       - stage: "BootStrapClusters_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
+          - "CheckingClusters_${{ component.env }}"
           - "Aks_${{ component.env }}"
         variables:
           existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
