@@ -203,7 +203,7 @@ stages:
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
-          CheckingClusters_${{ component.env }}"
+          - "CheckingClusters_${{ component.env }}"
         jobs:
           - job: NetworkRg
             steps:
