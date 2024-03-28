@@ -156,12 +156,12 @@ stages:
             steps:
               - checkout: self
               - task: AzureCLI@2
+                name: check_clusters
                 displayName: "Checking available clusters"
                 inputs:
                   scriptType: bash
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
-                name: check_clusters
               - script: |
                   echo "Cluster output: $(check_clusters.cluster_deploy)"
                 displayName: "Print cluster output"
