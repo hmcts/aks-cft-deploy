@@ -310,11 +310,22 @@ stages:
           or(
             and(eq('${{ parameters.cluster }}', 'All'), eq(variables['Build.Reason'], 'Manual')),
             and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'), eq(variables['Build.Reason'], 'Manual')),
-            and(eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}'), eq(variables['Build.Reason'], 'Manual')),
-            and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+            and(eq($[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']], '${{ parameters.cluster }}'), eq(variables['Build.Reason'], 'Manual'))
           )
         jobs:
+          - job: SetClusterVariables
+            steps:
+            - script: echo "##vso[task.setvariable variable=existing_clusters;isOutput=true]value"
+              name: SetExistingClustersVariable
+            - script: echo "##vso[task.setvariable variable=deploy_cluster;isOutput=true]value"
+              name: SetDeployClusterVariable
+          - job: DeployInfrastructure
+            condition: |
+              or(
+                and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
+                and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+              )
+              jobs:
           - job: DeployInfrastructure
             steps:
               - template: pipeline-steps/deploy-service.yaml
@@ -358,13 +369,14 @@ stages:
                       -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
                       -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
+
       - stage: "BootStrapClusters_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
           - "Aks_${{ component.env }}"
         variables:
-          existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
-          deploy_cluster: ${{ parameters.cluster }}
+          existing_clusters_from_aks: $[ stageDependencies.Aks_${{ component.env }}.SetClusterVariables.outputs['SetExistingClustersVariable.existing_clusters'] ]
+          deploy_cluster_from_aks: $[ stageDependencies.Aks_${{ component.env }}.SetDeployClusterVariable.outputs['SetDeployClusterVariable.deploy_cluster'] ]
         condition: |
           or(
             and(eq('${{ parameters.cluster }}', 'All'), eq(variables['Build.Reason'], 'Manual')),
