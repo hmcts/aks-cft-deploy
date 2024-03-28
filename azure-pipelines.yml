@@ -315,17 +315,16 @@ stages:
         jobs:
           - job: SetClusterVariables
             steps:
-            - script: echo "##vso[task.setvariable variable=existing_clusters;isOutput=true]value"
-              name: SetExistingClustersVariable
-            - script: echo "##vso[task.setvariable variable=deploy_cluster;isOutput=true]value"
-              name: SetDeployClusterVariable
+              - script: echo "##vso[task.setvariable variable=existing_clusters;isOutput=true]value"
+                name: SetExistingClustersVariable
+              - script: echo "##vso[task.setvariable variable=deploy_cluster;isOutput=true]value"
+                name: SetDeployClusterVariable
           - job: DeployInfrastructure
             condition: |
               or(
                 and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
                 and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
               )
-          - job: DeployInfrastructure
             steps:
               - template: pipeline-steps/deploy-service.yaml
                 parameters:
