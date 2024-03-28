@@ -157,14 +157,14 @@ stages:
               - checkout: self
               - task: AzureCLI@2
                 name: check_clusters
-                displayName: "Checking available clusters"
+                displayName: "Run checking-clusters.sh script using Azure CLI"
                 inputs:
                   scriptType: bash
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
               - script: |
                   echo "Cluster output: $(check_clusters.cluster_deploy)"
-                displayName: "Print cluster output"
+                displayName: "Print the output of the checking-clusters.sh script"
                 name: set_cluster_output
               - script: |
                   echo "Cluster Parameter: ${{ parameters.cluster }}"
@@ -173,7 +173,7 @@ stages:
                   else
                       echo "Input does not match cluster"
                   fi
-                displayName: "Print cluster parameter and output"
+                displayName: "Compare the input parameter with the output of the checking-clusters.sh script"
                 name: compare_cluster_and_output
 
       - stage: "Genesis_${{ component.env }}"
@@ -307,16 +307,13 @@ stages:
           existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
-          and(
-            ne('${{ parameters.cluster }}', stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']),
             or(
-              and(eq('${{ parameters.cluster }}', 'All'), eq(variables['Build.Reason'], 'Manual')),
+              and(eq('${{ parameters.cluster }}', 'All'),
               and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'), eq(variables['Build.Reason'], 'Manual')),
-              and(eq(stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy'], 'All'), eq(variables['Build.Reason'], 'Manual')),
+              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}'), eq(variables['Build.Reason'], 'Manual')),
               and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
             )
-          )
         jobs:
           - job: DeployInfrastructure
             steps:
