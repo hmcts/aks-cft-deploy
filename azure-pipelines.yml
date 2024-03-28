@@ -312,7 +312,7 @@ stages:
             or(
               and(eq('${{ parameters.cluster }}', 'All'), eq(variables['Build.Reason'], 'Manual')),
               and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'), eq(variables['Build.Reason'], 'Manual')),
-              and(eq(stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy'], 'All'), eq(variables['Build.Reason'], 'Manual'))
+              and(eq(stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy'], 'All'), eq(variables['Build.Reason'], 'Manual')),
               and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
             )
@@ -361,7 +361,6 @@ stages:
                       -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
                       -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
-
       - stage: "BootStrapClusters_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
@@ -372,7 +371,7 @@ stages:
             or(
               and(eq('${{ parameters.cluster }}', 'All'), eq(variables['Build.Reason'], 'Manual')),
               and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'), eq(variables['Build.Reason'], 'Manual')),
-              and(eq(stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy'], 'All'), eq(variables['Build.Reason'], 'Manual'))
+              and(eq(stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy'], 'All'), eq(variables['Build.Reason'], 'Manual')),
               and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
             )
