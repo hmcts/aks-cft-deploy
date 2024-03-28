@@ -372,9 +372,6 @@ stages:
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
           - "Aks_${{ component.env }}"
-        variables:
-          existing_clusters_from_aks: $[ stageDependencies.Aks_${{ component.env }}.SetClusterVariables.outputs['SetExistingClustersVariable.existing_clusters'] ]
-          deploy_cluster_from_aks: $[ stageDependencies.Aks_${{ component.env }}.SetDeployClusterVariable.outputs['SetDeployClusterVariable.deploy_cluster'] ]
         condition: |
           or(
             and(eq('${{ parameters.cluster }}', 'All'), eq(variables['Build.Reason'], 'Manual')),
