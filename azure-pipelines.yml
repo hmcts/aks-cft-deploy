@@ -325,7 +325,6 @@ stages:
                 and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
                 and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
               )
-              jobs:
           - job: DeployInfrastructure
             steps:
               - template: pipeline-steps/deploy-service.yaml
