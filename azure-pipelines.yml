@@ -167,7 +167,7 @@ stages:
                 displayName: "Print cluster output"
                 name: set_cluster_output
               - script: |
-                  scripts/checking-script.sh '${{ parameters.cluster }}' $(check_clusters.cluster_deploy)
+                  scripts/checking-clusters.sh '${{ parameters.cluster }}' $(check_clusters.cluster_deploy)
                 displayName: "Print cluster parameter and output"
                 name: compare_cluster_and_output
 
