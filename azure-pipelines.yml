@@ -158,27 +158,25 @@ stages:
                 displayName: "Print the output of the checking-clusters.sh script"
                 name: set_cluster_output
 
-      - stage: Genesis
-        displayName: 'Genesis'
-        condition: ne('${{ parameters.Action }}', 'Destroy')
+      - stage:  "Genesis_${{ component.env }}"
         jobs:
           - job: Genesis
             steps:
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
                   overrideAction: ${{ parameters.action }}
-                  environment: ${{ parameters.env }}
-                  component: 'genesis'
+                  environment: ${{ component.env }}
+                  component: "genesis"
                   location: ${{ parameters.location }}
-                  serviceConnection: $(serviceConnection)
+                  serviceConnection: ${{ component.serviceConnection }}
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
                   tfVarsFile: NULL
                   initCommandOptions: >
-                    -var subscription_id=${{ variables.terraformSubscriptionID }}
-                    -backend-config resource_group_name=$(backendAzureRmResourceGroupName)
+                    -var subscription_id=${{ component.terraformSubscriptionID }}
+                    -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
                   planCommandOptions: >
-                    -var subscription_id=${{ variables.terraformSubscriptionID }}
+                    -var subscription_id=${{ component.terraformSubscriptionID }}
 
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
