@@ -173,7 +173,6 @@ stages:
                 displayName: "Print cluster output and parameter, and compare them"
                 name: print_and_compare
 
-        jobs:
           - job: Genesis
             steps:
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
