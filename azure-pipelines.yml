@@ -353,7 +353,7 @@ stages:
               eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}'), eq(variables['Build.Reason'], 'Manual')),
               and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true)),
-              and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+              and(succeeded(), eq('${{ parameters.action }}', 'apply'))
             )
         jobs:
           - job: BootStrap
