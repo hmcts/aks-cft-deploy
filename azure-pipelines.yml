@@ -142,20 +142,29 @@ stages:
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
+        dependsOn:
+          - ${{ if ne(component.env, 'sbox') }}:
+              - "Network_${{ component.dependsOn }}"
+              - "Managed_Identity_${{ component.dependsOn }}"
+              - "Aks_${{ component.dependsOn }}"
+              - "PipelineTests_${{ component.dependsOn }}"
+              - "BootStrapClusters_${{ component.dependsOn }}"
+          - ${{ else }}:
+              - "Precheck"
         jobs:
           - job: CheckingClusters
             steps:
               - checkout: self
               - task: AzureCLI@2
                 displayName: "Checking available clusters"
-                name: check_clusters
                 inputs:
                   scriptType: bash
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
+                name: check_clusters
               - script: |
                   echo "Cluster output: $(check_clusters.cluster_deploy)"
-                displayName: "Print the output of the checking-clusters.sh script"
+                displayName: "Print cluster output"
                 name: set_cluster_output
 
           - job: Genesis
