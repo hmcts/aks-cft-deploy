@@ -361,13 +361,13 @@ stages:
         dependsOn:
           - "Aks_${{ component.env }}"
         condition: |
-            or(
-              and(in('${{ parameters.cluster }}', 'All', '00', '01'),
-              and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'), eq(variables['Build.Reason'], 'Manual')),
-              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}'), eq(variables['Build.Reason'], 'Manual')),
-              and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
-              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-            )
+          or(
+            and(in('${{ parameters.cluster }}', 'All', '00', '01'),
+            and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'), eq(variables['Build.Reason'], 'Manual')),
+            eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}'), eq(variables['Build.Reason'], 'Manual')),
+            and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          )
         jobs:
           - job: BootStrap
             condition: |
