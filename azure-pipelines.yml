@@ -373,7 +373,7 @@ stages:
             condition: |
               or(
                 and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-              )
+                )
             steps:
               - template: pipeline-steps/bootstrap.yaml
                 parameters:
