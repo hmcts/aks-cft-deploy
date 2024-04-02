@@ -162,7 +162,7 @@ stages:
                   scriptType: bash
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
-              - script: ../scripts/checking_cluster_script.sh '${{ parameters.cluster }}' '$(check_clusters.cluster_deploy)'
+              - script: scripts/checking-clusters.sh '${{ parameters.cluster }}' '$(check_clusters.cluster_deploy)'
                 displayName: "Print cluster output and parameter, and compare them"
                 name: print_and_compare
 
