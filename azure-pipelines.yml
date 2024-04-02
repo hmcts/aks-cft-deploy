@@ -163,13 +163,7 @@ stages:
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
               - script: |
-                  echo "Cluster output: $(check_clusters.cluster_deploy)"
-                  echo "Cluster Parameter: ${{ parameters.cluster }}"
-                  if [ "${{ parameters.cluster }}" = "$(check_clusters.cluster_deploy)" ]; then
-                      echo "Input matches cluster"
-                  else
-                      echo "Input does not match cluster"
-                  fi
+                  echo "Cluster output: $(check_clusters.cluster_deploy), Cluster Parameter: ${{ parameters.cluster }}, Match: $([ "${{ parameters.cluster }}" = "$(check_clusters.cluster_deploy)" ] && echo "Input matches cluster" || echo "Input does not match cluster")"
                 displayName: "Print cluster output and parameter, and compare them"
                 name: print_and_compare
 
