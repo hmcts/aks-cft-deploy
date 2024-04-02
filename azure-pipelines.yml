@@ -156,6 +156,7 @@ stages:
             steps:
               - checkout: self
               - task: AzureCLI@2
+                name: check_clusters
                 displayName: "Checking available clusters"
                 inputs:
                   scriptType: bash
