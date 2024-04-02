@@ -25,16 +25,3 @@ fi
 #Create pipeline variable for use later in script
 echo "##vso[task.setvariable variable=cluster_deploy;isOutput=true]$output"
 echo "After setting cluster_deploy"
-
-
-# cluster comparison
-
-cluster_parameter=$1
-cluster_deploy=$2
-
-echo "Cluster Parameter: $cluster_parameter"
-if [ "$cluster_parameter" = "$cluster_deploy" ]; then
-    echo "Input matches cluster"
-else
-    echo "Input does not match cluster"
-fi
