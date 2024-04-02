@@ -292,7 +292,7 @@ stages:
         condition: |
             or(
               and(
-                eq('${{ parameters.cluster }}', 'All'),
+                eq('${{ parameters.cluster }}', 'All', '00', '01'),
                 in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'),
                 eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
               ),
@@ -351,7 +351,7 @@ stages:
         condition: |
             or(
               and(
-                eq('${{ parameters.cluster }}', 'All'),
+                eq('${{ parameters.cluster }}', 'All', '00', '01'),
                 in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'),
                 eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
               ),
