@@ -395,7 +395,7 @@ stages:
             condition: |
               or(
                 and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-                and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+                and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))   
               )
             steps:
               - template: steps/pipeline-tests-jest.yaml@cnp-azuredevops-libraries
