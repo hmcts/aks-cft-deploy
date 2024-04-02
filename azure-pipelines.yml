@@ -142,6 +142,15 @@ stages:
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
+        dependsOn:
+          - ${{ if ne(component.env, 'sbox') }}:
+              - "Network_${{ component.dependsOn }}"
+              - "Managed_Identity_${{ component.dependsOn }}"
+              - "Aks_${{ component.dependsOn }}"
+              - "PipelineTests_${{ component.dependsOn }}"
+              - "BootStrapClusters_${{ component.dependsOn }}"
+          - ${{ else }}:
+              - "Precheck"
         jobs:
           - job: CheckingClusters
             steps:
@@ -160,16 +169,17 @@ stages:
 
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
+        condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - "CheckingClusters_${{ component.env }}"
-            - "Network_${{ component.dependsOn }}"
-            - "Managed_Identity_${{ component.dependsOn }}"
-            - "Aks_${{ component.dependsOn }}"
-            - "PipelineTests_${{ component.dependsOn }}"
-            - "BootStrapClusters_${{ component.dependsOn }}"
+              - "CheckingClusters_${{ component.env }}"
+              - "Network_${{ component.dependsOn }}"
+              - "Managed_Identity_${{ component.dependsOn }}"
+              - "Aks_${{ component.dependsOn }}"
+              - "PipelineTests_${{ component.dependsOn }}"
+              - "BootStrapClusters_${{ component.dependsOn }}"
           - ${{ else }}:
-            - "Precheck"
+              - "Precheck"
         jobs:
           - job: Genesis
             steps:
