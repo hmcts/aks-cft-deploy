@@ -164,17 +164,14 @@ stages:
                   scriptPath: "scripts/checking-clusters.sh"
               - script: |
                   echo "Cluster output: $(check_clusters.cluster_deploy)"
-                displayName: "Print the output of the checking-clusters.sh script"
-                name: set_cluster_output
-              - script: |
                   echo "Cluster Parameter: ${{ parameters.cluster }}"
                   if [ "${{ parameters.cluster }}" = "$(check_clusters.cluster_deploy)" ]; then
                       echo "Input matches cluster"
                   else
                       echo "Input does not match cluster"
                   fi
-                displayName: "Compare the input parameter with the output of the checking-clusters.sh script"
-                name: compare_cluster_and_output
+                displayName: "Print cluster output and parameter, and compare them"
+                name: print_and_compare
 
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
@@ -368,6 +365,7 @@ stages:
               and(eq('${{ parameters.cluster }}', 'All'),
               and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'), eq(variables['Build.Reason'], 'Manual')),
               and(eq(stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy'], 'All'), eq(variables['Build.Reason'], 'Manual')),
+              and(succeeded(), eq('${{ parameters.action }}', 'apply')),
               and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
             )
@@ -375,8 +373,6 @@ stages:
           - job: BootStrap
             condition: |
               or(
-                and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-                and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
                 and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
               )
             steps:
