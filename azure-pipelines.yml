@@ -156,16 +156,25 @@ stages:
             steps:
               - checkout: self
               - task: AzureCLI@2
-                name: check_clusters
-                displayName: "Run checking-clusters.sh script using Azure CLI"
+                displayName: "Checking available clusters"
                 inputs:
                   scriptType: bash
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
+                name: check_clusters
               - script: |
-                  echo "Cluster output: $(check_clusters.cluster_deploy), Cluster Parameter: ${{ parameters.cluster }}, Match: $([ "${{ parameters.cluster }}" = "$(check_clusters.cluster_deploy)" ] && echo "Input matches cluster" || echo "Input does not match cluster")"
-                displayName: "Print cluster output and parameter, and compare them"
-                name: print_and_compare
+                  echo "Cluster output: $(check_clusters.cluster_deploy)"
+                displayName: "Print cluster output"
+                name: set_cluster_output
+              - script: |
+                  echo "Cluster Parameter: ${{ parameters.cluster }}"
+                  if [ "${{ parameters.cluster }}" = "$(check_clusters.cluster_deploy)" ]; then
+                      echo "Input matches cluster"
+                  else
+                      echo "Input does not match cluster"
+                  fi
+                displayName: "Print cluster parameter and output"
+                name: compare_cluster_and_output
 
           - job: Genesis
             steps:
