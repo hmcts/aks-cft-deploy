@@ -287,8 +287,13 @@ stages:
             or(
               and(
                 eq(variables['Build.Reason'], 'Manual'),
-                ne('${{ parameters.cluster }}', 'All'),
-                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+                or(
+                  and(
+                    eq('${{ parameters.cluster }}', 'All'),
+                    eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All')
+                  ),
+                  eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+                )
               ),
               and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
@@ -346,8 +351,13 @@ stages:
             or(
               and(
                 eq(variables['Build.Reason'], 'Manual'),
-                ne('${{ parameters.cluster }}', 'All'),
-                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+                or(
+                  and(
+                    eq('${{ parameters.cluster }}', 'All'),
+                    eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All')
+                  ),
+                  eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+                )
               ),
               and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
