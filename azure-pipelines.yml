@@ -291,9 +291,11 @@ stages:
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
             or(
-              and(eq('${{ parameters.cluster }}', 'All'),
-              and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'),
-              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}'),
+              and(
+                eq('${{ parameters.cluster }}', 'All'),
+                in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'),
+                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+              ),
               and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
             )
@@ -348,12 +350,13 @@ stages:
           - "Aks_${{ component.env }}"
         condition: |
             or(
-              and(eq('${{ parameters.cluster }}', 'All'),
-              and(in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'),
-              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}'),
+              and(
+                eq('${{ parameters.cluster }}', 'All'),
+                in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All', '00', '01'),
+                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+              ),
               and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-              and(succeeded(), eq('${{ parameters.action }}', 'apply'))
             )
         jobs:
           - job: BootStrap
