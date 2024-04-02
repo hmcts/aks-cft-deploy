@@ -167,12 +167,7 @@ stages:
                 displayName: "Print cluster output"
                 name: set_cluster_output
               - script: |
-                  echo "Cluster Parameter: ${{ parameters.cluster }}"
-                  if [ "${{ parameters.cluster }}" = "$(check_clusters.cluster_deploy)" ]; then
-                      echo "Input matches cluster"
-                  else
-                      echo "Input does not match cluster"
-                  fi
+                  scripts/checking-script.sh '${{ parameters.cluster }}' $(check_clusters.cluster_deploy)
                 displayName: "Print cluster parameter and output"
                 name: compare_cluster_and_output
 
