@@ -154,8 +154,9 @@ stages:
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
               - script: |
-                  echo "Cluster output: $(cluster_deploy)"
-                displayName: 'Print cluster output'
+                  echo "Cluster output: $(check_clusters.cluster_deploy)"
+                displayName: "Print the output of the checking-clusters.sh script"
+                name: set_cluster_output
 
           - job: Genesis
             steps:
