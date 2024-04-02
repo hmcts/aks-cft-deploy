@@ -156,7 +156,6 @@ stages:
             steps:
               - checkout: self
               - task: AzureCLI@2
-                name: check_clusters
                 displayName: "Checking available clusters"
                 inputs:
                   scriptType: bash
@@ -165,7 +164,6 @@ stages:
               - script: |
                   echo "Cluster output: $(cluster_deploy)"
                 displayName: "Print cluster output"
-                name: set_cluster_output
 
           - job: Genesis
             steps:
