@@ -162,10 +162,6 @@ stages:
                   scriptType: bash
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
-              - script: |
-                  echo "Cluster output: $(check_clusters.cluster_deploy)"
-                displayName: "Print the output of the checking-clusters.sh script"
-                name: set_cluster_output
 
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
