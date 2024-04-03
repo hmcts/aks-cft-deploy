@@ -297,7 +297,7 @@ stages:
           or (
             and(
               eq(variables['Build.Reason'], 'Manual'),
-              in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}', '00', '01'),
+              in('${{ parameters.cluster }}', '00', '01')
               eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
             ),
             and(succeeded(), eq(variables['isAutoTriggered'], true)),
@@ -355,7 +355,7 @@ stages:
           or (
             and(
               eq(variables['Build.Reason'], 'Manual'),
-              in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}', '00', '01'),
+              in('${{ parameters.cluster }}', '00', '01')
               eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
             ),
             and(succeeded(), eq(variables['isAutoTriggered'], true)),
