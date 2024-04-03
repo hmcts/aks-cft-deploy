@@ -294,14 +294,15 @@ stages:
           existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
-            or (
-              and(
-                eq(variables['Build.Reason'], 'Manual'),
-                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
-              ),
-              and(succeeded(), eq(variables['isAutoTriggered'], true)),
-              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-            )
+          or (
+            and(
+              eq(variables['Build.Reason'], 'Manual'),
+              in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '00', '01'),
+              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+            ),
+            and(succeeded(), eq(variables['isAutoTriggered'], true)),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          )
         jobs:
           - job: DeployInfrastructure
             steps:
@@ -346,21 +347,21 @@ stages:
                       -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
                       -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
-
       - stage: "BootStrapClusters_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
           - "Aks_${{ component.env }}"
         condition: |
-            or (
-              and(
-                eq(variables['Build.Reason'], 'Manual'),
-                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
-              ),
-              and(succeeded(), eq(variables['isAutoTriggered'], true)),
-              and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-            )
+          or (
+            and(
+              eq(variables['Build.Reason'], 'Manual'),
+              in(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '00', '01'),
+              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+            ),
+            and(succeeded(), eq(variables['isAutoTriggered'], true)),
+            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          )
         variables:
           clusters: ${{ parameters.cluster }}
         jobs:
