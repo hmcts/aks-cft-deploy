@@ -143,8 +143,6 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
-          - ${{ if ne(component.env, 'prod') }}:
-              - "CheckingClusters_prod"
           - ${{ if ne(component.env, 'sbox') }}:
               - "Network_${{ component.dependsOn }}"
               - "Managed_Identity_${{ component.dependsOn }}"
@@ -169,8 +167,6 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
-          - ${{ if ne(component.env, 'prod') }}:
-              - "Genesis_prod"
           - ${{ if ne(component.env, 'sbox') }}:
               - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
@@ -202,8 +198,6 @@ stages:
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
-          - ${{ if ne(component.env, 'prod') }}:
-              - "Network_prod"
           - ${{ if ne(component.env, 'sbox') }}:
               - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
@@ -270,8 +264,6 @@ stages:
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
           - "Network_${{ component.env }}"
-          - ${{ if ne(component.env, 'prod') }}:
-              - "Managed_Identity_prod"
         jobs:
           - job: Managed_Identity
             steps:
