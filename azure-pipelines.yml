@@ -102,12 +102,7 @@ parameters:
         aksKeyVault: "dtscftptl"
         terraformSubscriptionID: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
       - env: "prod"
-        dependsOn:
-          - "aat"
-          - "perftest"
-          - "ithc"
-          - "demo"
-          - "ptl"
+        dependsOn: "aat"
         serviceConnection: "DCD-CFTAPPS-PROD"
         backendAzureRmResourceGroupName: "azure-control-prod-rg"
         aksKeyVault: "dcdcftappsprodkv"
