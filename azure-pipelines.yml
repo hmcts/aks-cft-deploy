@@ -102,7 +102,7 @@ parameters:
         aksKeyVault: "dtscftptl"
         terraformSubscriptionID: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
       - env: "prod"
-        dependsOn: "aat"
+        dependsOn:  "aat"
         serviceConnection: "DCD-CFTAPPS-PROD"
         backendAzureRmResourceGroupName: "azure-control-prod-rg"
         aksKeyVault: "dcdcftappsprodkv"
@@ -167,10 +167,12 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
-          - ${{ if ne(component.env, 'prod') }}:
-              - "Genesis_prod"
           - ${{ if eq(component.env, 'prod') }}:
-              - "Precheck"
+              - "CheckingClusters_aat"
+              - "CheckingClusters_perftest"
+              - "CheckingClusters_ithc"
+              - "CheckingClusters_demo"
+              - "CheckingClusters_ptl"
           - ${{ if ne(component.env, 'sbox') }}:
               - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
@@ -178,6 +180,8 @@ stages:
               - "Aks_${{ component.dependsOn }}"
               - "PipelineTests_${{ component.dependsOn }}"
               - "BootStrapClusters_${{ component.dependsOn }}"
+          - ${{ else }}:
+              - "Precheck"
         jobs:
           - job: Genesis
             steps:
