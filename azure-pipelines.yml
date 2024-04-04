@@ -172,6 +172,12 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
+          - ${{ if eq(component.env, 'prod') }}:
+              - "CheckingClusters_aat"
+              - "CheckingClusters_perftest"
+              - "CheckingClusters_ithc"
+              - "CheckingClusters_demo"
+              - "CheckingClusters_ptl"
           - ${{ if ne(component.env, 'sbox') }}:
               - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
