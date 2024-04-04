@@ -271,7 +271,7 @@ stages:
         dependsOn:
           - "Network_${{ component.env }}"
           - ${{ if ne(component.env, 'prod') }}:
-          - "Managed_Identity_prod"
+              - "Managed_Identity_prod"
         jobs:
           - job: Managed_Identity
             steps:
