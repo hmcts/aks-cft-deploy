@@ -167,12 +167,10 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
+          - ${{ if ne(component.env, 'prod') }}:
+              - "Genesis_prod"
           - ${{ if eq(component.env, 'prod') }}:
-              - "CheckingClusters_aat"
-              - "CheckingClusters_perftest"
-              - "CheckingClusters_ithc"
-              - "CheckingClusters_demo"
-              - "CheckingClusters_ptl"
+              - "Precheck"
           - ${{ if ne(component.env, 'sbox') }}:
               - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
@@ -180,8 +178,6 @@ stages:
               - "Aks_${{ component.dependsOn }}"
               - "PipelineTests_${{ component.dependsOn }}"
               - "BootStrapClusters_${{ component.dependsOn }}"
-          - ${{ else }}:
-              - "Precheck"
         jobs:
           - job: Genesis
             steps:
