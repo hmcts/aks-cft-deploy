@@ -104,7 +104,6 @@ parameters:
       - env: "prod"
         dependsOn:
           - "sbox"
-          - "nonprod"
           - "aat"
         serviceConnection: "DCD-CFTAPPS-PROD"
         backendAzureRmResourceGroupName: "azure-control-prod-rg"
