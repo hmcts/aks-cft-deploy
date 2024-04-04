@@ -104,7 +104,10 @@ parameters:
       - env: "prod"
         dependsOn:
         - "aat"
-        - "sbox"
+        - "perftest"
+        - "ithc"
+        - "demo"
+        - "ptl"
         serviceConnection: "DCD-CFTAPPS-PROD"
         backendAzureRmResourceGroupName: "azure-control-prod-rg"
         aksKeyVault: "dcdcftappsprodkv"
