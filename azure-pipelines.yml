@@ -102,14 +102,7 @@ parameters:
         aksKeyVault: "dtscftptl"
         terraformSubscriptionID: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
       - env: "prod"
-        dependsOn:
-          - preview
-          - demo
-          - ithc
-          - ptlsbox
-          - perftest
-          - aat
-          - ptl
+        dependsOn:  "aat"
         serviceConnection: "DCD-CFTAPPS-PROD"
         backendAzureRmResourceGroupName: "azure-control-prod-rg"
         aksKeyVault: "dcdcftappsprodkv"
@@ -150,6 +143,8 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
+          - ${{ if ne(component.env, 'prod') }}:
+              - "CheckingClusters_prod"
           - ${{ if ne(component.env, 'sbox') }}:
               - "Network_${{ component.dependsOn }}"
               - "Managed_Identity_${{ component.dependsOn }}"
@@ -174,6 +169,8 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
+          - ${{ if ne(component.env, 'prod') }}:
+              - "Genesis_prod"
           - ${{ if ne(component.env, 'sbox') }}:
               - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
@@ -205,6 +202,8 @@ stages:
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
+          - ${{ if ne(component.env, 'prod') }}:
+              - "Network_prod"
           - ${{ if ne(component.env, 'sbox') }}:
               - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
@@ -298,19 +297,19 @@ stages:
           - "CheckingClusters_${{ component.env }}"
           - "Managed_Identity_${{ component.env }}"
         condition: |
-          or (
-            and(
-              eq(variables['Build.Reason'], 'Manual'),
-              in('${{ parameters.cluster }}', '00', '01'),
-              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
-            ),
-            and(
-              eq(variables['Build.Reason'], 'Manual'),
-              eq('${{ parameters.cluster }}', 'All')
-            ),
-            and(succeeded(), eq(variables['isAutoTriggered'], true)),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-          )
+            or (
+              and(
+                eq(variables['Build.Reason'], 'Manual'),
+                in('${{ parameters.cluster }}', '00', '01'),
+                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+              ),
+              and(
+                eq(variables['Build.Reason'], 'Manual'),
+                eq('${{ parameters.cluster }}', 'All')
+              ),
+              and(succeeded(), eq(variables['isAutoTriggered'], true)),
+              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+            )
         jobs:
           - job: DeployInfrastructure
             steps:
@@ -360,18 +359,18 @@ stages:
         dependsOn:
           - "Aks_${{ component.env }}"
         condition: |
-          or (
-            and(
-              eq(variables['Build.Reason'], 'Manual'),
-              in('${{ parameters.cluster }}', '00', '01'),
-              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
-            ),
-            and(
-              eq(variables['Build.Reason'], 'Manual'),
-              eq('${{ parameters.cluster }}', 'All')
-            ),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-          )
+            or (
+              and(
+                eq(variables['Build.Reason'], 'Manual'),
+                in('${{ parameters.cluster }}', '00', '01'),
+                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+              ),
+              and(
+                eq(variables['Build.Reason'], 'Manual'),
+                eq('${{ parameters.cluster }}', 'All')
+              ),
+              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+            )
         variables:
           clusters: ${{ parameters.cluster }}
         jobs:
