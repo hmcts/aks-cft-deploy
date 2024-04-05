@@ -174,11 +174,11 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}: "Network_${{ component.dependsOn }}"
-          - ${{ if ne(component.env, 'sbox') }}: "Managed_Identity_${{ component.dependsOn }}"
-          - ${{ if ne(component.env, 'sbox') }}: "Aks_${{ component.dependsOn }}"
-          - ${{ if ne(component.env, 'sbox') }}: "PipelineTests_${{ component.dependsOn }}"
-          - ${{ if ne(component.env, 'sbox') }}: "BootStrapClusters_${{ component.dependsOn }}"
+          - ${{ if ne(component.env, 'sbox') }}: "Network_${{ component.env }}"
+          - ${{ if ne(component.env, 'sbox') }}: "Managed_Identity_${{ component.env }}"
+          - ${{ if ne(component.env, 'sbox') }}: "Aks_${{ component.env }}"
+          - ${{ if ne(component.env, 'sbox') }}: "PipelineTests_${{ component.env }}"
+          - ${{ if ne(component.env, 'sbox') }}: "BootStrapClusters_${{ component.env }}"
           - ${{ if eq(component.env, 'sbox') }}: "Precheck"
         jobs:
           - job: Genesis
