@@ -103,12 +103,10 @@ parameters:
         terraformSubscriptionID: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
       - env: "prod"
         dependsOn:
-          - "preview"
-          - "demo"
-          - ithc"
-          - "ptlsbox"
-          - "perftest"
           - "aat"
+          - "perftest"
+          - "ithc"
+          - "demo"
           - "ptl"
         serviceConnection: "DCD-CFTAPPS-PROD"
         backendAzureRmResourceGroupName: "azure-control-prod-rg"
@@ -173,13 +171,16 @@ stages:
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
-        dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}: "Network_${{ component.env }}"
-          - ${{ if ne(component.env, 'sbox') }}: "Managed_Identity_${{ component.env }}"
-          - ${{ if ne(component.env, 'sbox') }}: "Aks_${{ component.env }}"
-          - ${{ if ne(component.env, 'sbox') }}: "PipelineTests_${{ component.env }}"
-          - ${{ if ne(component.env, 'sbox') }}: "BootStrapClusters_${{ component.env }}"
-          - ${{ if eq(component.env, 'sbox') }}: "Precheck"
+        # dependsOn:
+        #   - ${{ if ne(component.env, 'sbox') }}:
+        #       - "CheckingClusters_${{ component.env }}"
+        #       - "Network_${{ component.dependsOn }}"
+        #       - "Managed_Identity_${{ component.dependsOn }}"
+        #       - "Aks_${{ component.dependsOn }}"
+        #       - "PipelineTests_${{ component.dependsOn }}"
+        #       - "BootStrapClusters_${{ component.dependsOn }}"
+        #   - ${{ else }}:
+        #       - "Precheck"
         jobs:
           - job: Genesis
             steps:
@@ -201,13 +202,16 @@ stages:
 
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
-        dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}: "Network_${{ component.dependsOn }}"
-          - ${{ if ne(component.env, 'sbox') }}: "Managed_Identity_${{ component.dependsOn }}"
-          - ${{ if ne(component.env, 'sbox') }}: "Aks_${{ component.dependsOn }}"
-          - ${{ if ne(component.env, 'sbox') }}: "PipelineTests_${{ component.dependsOn }}"
-          - ${{ if ne(component.env, 'sbox') }}: "BootStrapClusters_${{ component.dependsOn }}"
-          - ${{ if eq(component.env, 'sbox') }}: "Precheck"
+        # dependsOn:
+        #   - ${{ if ne(component.env, 'sbox') }}:
+        #       - "CheckingClusters_${{ component.env }}"
+        #       - "Network_${{ component.dependsOn }}"
+        #       - "Managed_Identity_${{ component.dependsOn }}"
+        #       - "Aks_${{ component.dependsOn }}"
+        #       - "PipelineTests_${{ component.dependsOn }}"
+        #       - "BootStrapClusters_${{ component.dependsOn }}"
+        #   - ${{ else }}:
+        #       - "Precheck"
         jobs:
           - job: NetworkRg
             steps:
