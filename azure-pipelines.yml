@@ -102,7 +102,8 @@ parameters:
         aksKeyVault: "dtscftptl"
         terraformSubscriptionID: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
       - env: "prod"
-        dependsOn:  "aat"
+        dependsOn:
+         
         serviceConnection: "DCD-CFTAPPS-PROD"
         backendAzureRmResourceGroupName: "azure-control-prod-rg"
         aksKeyVault: "dcdcftappsprodkv"
@@ -353,18 +354,10 @@ stages:
         dependsOn:
           - "Aks_${{ component.env }}"
         condition: |
-            or (
-              and(
-                eq(variables['Build.Reason'], 'Manual'),
-                in('${{ parameters.cluster }}', '00', '01'),
-                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
-              ),
-              and(
-                eq(variables['Build.Reason'], 'Manual'),
-                eq('${{ parameters.cluster }}', 'All')
-              ),
-              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-            )
+          or(
+            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          )
         variables:
           clusters: ${{ parameters.cluster }}
         jobs:
