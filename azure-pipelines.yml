@@ -30,7 +30,7 @@ parameters:
   - name: action
     displayName: Action
     type: string
-    default: "plan"
+    default: plan
     values:
       - plan
       - apply
