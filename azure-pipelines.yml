@@ -126,7 +126,7 @@ variables:
 
 stages:
   - stage: PreCheck
-    displayName: "PreChecks"
+    displayName: PreChecks
     jobs:
       - job: PreChecks
         steps:
@@ -140,7 +140,7 @@ stages:
               environment: sbox
               runManualStart: true
   - ${{ each component in parameters.environment_components }}:
-      - stage: "CheckingClusters_${{ component.env }}"
+      - stage: CheckingClusters_${{ component.env }}
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
@@ -150,7 +150,7 @@ stages:
               - "PipelineTests_${{ component.dependsOn }}"
               - "BootStrapClusters_${{ component.dependsOn }}"
           - ${{ else }}:
-              - "Precheck"
+              - Precheck
         jobs:
           - job: CheckingClusters
             steps:
@@ -163,7 +163,7 @@ stages:
                   azureSubscription: ${{ component.serviceConnection }}
                   scriptPath: "scripts/checking-clusters.sh"
 
-      - stage: "Genesis_${{ component.env }}"
+      - stage: Genesis_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
@@ -175,7 +175,7 @@ stages:
               - "PipelineTests_${{ component.dependsOn }}"
               - "BootStrapClusters_${{ component.dependsOn }}"
           - ${{ else }}:
-              - "Precheck"
+              - Precheck
         jobs:
           - job: Genesis
             steps:
@@ -195,7 +195,7 @@ stages:
                   planCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
 
-      - stage: "Network_${{ component.env }}"
+      - stage: Network_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
@@ -206,7 +206,7 @@ stages:
               - "PipelineTests_${{ component.dependsOn }}"
               - "BootStrapClusters_${{ component.dependsOn }}"
           - ${{ else }}:
-              - "Precheck"
+              - Precheck
         jobs:
           - job: NetworkRg
             steps:
@@ -260,7 +260,7 @@ stages:
                     -var control_vault=$(KEY_VAULT)
                     -var project=$(project)
 
-      - stage: "Managed_Identity_${{ component.env }}"
+      - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
           - "Network_${{ component.env }}"
@@ -285,7 +285,7 @@ stages:
                     -var control_vault=$(controlKeyVault)
                     -var project=$(project)
 
-      - stage: "Aks_${{ component.env }}"
+      - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
           - "CheckingClusters_${{ component.env }}"
@@ -325,7 +325,7 @@ stages:
                       -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
                       -target module.kubernetes["\"${{parameters.cluster}}\""]
 
-          - job: "DeployInfrastructuremis"
+          - job: DeployInfrastructuremis
             dependsOn: DeployInfrastructure
             steps:
               - template: pipeline-steps/deploy-service.yaml
@@ -348,7 +348,7 @@ stages:
                       -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
                       -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
-      - stage: "BootStrapClusters_${{ component.env }}"
+      - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
           - "Aks_${{ component.env }}"
@@ -371,7 +371,7 @@ stages:
                   aksKeyVault: ${{ component.aksKeyVault }}
                   terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
 
-      - stage: "PipelineTests_${{ component.env }}"
+      - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
           - "BootStrapClusters_${{ component.env }}"
