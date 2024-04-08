@@ -8,7 +8,7 @@ trigger:
 pr:
   branches:
     include:
-      - "refs/heads/main"
+      - refs/heads/main
 
 pool:
   vmImage: "ubuntu-latest"
