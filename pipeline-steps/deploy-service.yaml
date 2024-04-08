@@ -1,16 +1,16 @@
 parameters:
-  environment: ""
-  location: ""
-  stack: ""
-  project: ""
-  tfvars: ""
-  serviceConnection: ""
-  tfInitSub: ""
-  targetCommand: ""
+  environment: ''
+  location: ''
+  stack: ''
+  project: ''
+  tfvars: ''
+  serviceConnection: ''
+  tfInitSub: ''
+  targetCommand: ''
   setClusterNumbersEnvVar: false
-  action: ""
-  terraformSubscriptionID: ""
-  backendAzureRmResourceGroupName: ""
+  action: ''
+  terraformSubscriptionID: ''
+  backendAzureRmResourceGroupName: ''
 
 steps:
   - template: steps/terraform.yaml@cnp-azuredevops-libraries
