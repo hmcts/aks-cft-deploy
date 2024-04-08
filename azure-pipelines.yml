@@ -19,12 +19,12 @@ resources:
       type: github
       ref: master
       name: hmcts/cnp-azuredevops-libraries
-      endpoint: "hmcts"
+      endpoint: 'hmcts'
     - repository: cnp-flux-config
       type: github
       ref: refs/heads/master
       name: hmcts/cnp-flux-config
-      endpoint: "hmcts"
+      endpoint: 'hmcts'
 
 parameters:
   - name: action
