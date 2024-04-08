@@ -263,7 +263,7 @@ stages:
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
-          - "Network_${{ component.env }}"
+          - Network_${{ component.env }}
         jobs:
           - job: Managed_Identity
             steps:
@@ -288,8 +288,8 @@ stages:
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
-          - "CheckingClusters_${{ component.env }}"
-          - "Managed_Identity_${{ component.env }}"
+          - CheckingClusters_${{ component.env }}
+          - Managed_Identity_${{ component.env }}
         condition: |
             or (
               and(
@@ -351,7 +351,7 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - "Aks_${{ component.env }}"
+          - Aks_${{ component.env }}
         condition: |
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
