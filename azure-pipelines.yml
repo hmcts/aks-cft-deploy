@@ -342,7 +342,7 @@ stages:
         condition: |
           or(
             and(
-              eq(variables['Build.Reason'], 'PullRequest'),
+              eq(variables['Build.Reason'], 'IndividualCI'),
               ne('${{ parameters.action }}', 'plan')
             ),
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
