@@ -342,6 +342,7 @@ stages:
         condition: |
           and(
             ne(variables['Build.Reason'], 'PullRequest'),
+            ne('${{ parameters.action }}', 'plan'),
             or (
               and(
                 eq(variables['Build.Reason'], 'Manual'),
@@ -352,7 +353,6 @@ stages:
                 eq(variables['Build.Reason'], 'Manual'),
                 eq('${{ parameters.cluster }}', 'All')
               ),
-              and(succeeded(), eq('${{ parameters.action }}', 'apply')),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
             )
           )
