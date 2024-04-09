@@ -341,7 +341,6 @@ stages:
           - Aks_${{ component.env }}
         condition: |
           and(
-            eq(variables['Build.Reason'], 'PullRequest'),
             ne('${{ parameters.action }}', 'plan'),
             or (
               and(
