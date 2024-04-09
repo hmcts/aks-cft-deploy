@@ -340,13 +340,21 @@ stages:
         dependsOn:
           - Aks_${{ component.env }}
         condition: |
-          or(
-            and(
-              eq(variables['Build.Reason'], 'IndividualCI'),
-              ne('${{ parameters.action }}', 'plan')
-            ),
-            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          and(
+            eq(variables['Build.SourceBranchName'], 'main'),
+            ne('${{ parameters.action }}', 'plan'),
+            or (
+              and(
+                eq(variables['Build.Reason'], 'Manual'),
+                in('${{ parameters.cluster }}', '00', '01'),
+                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+              ),
+              and(
+                eq(variables['Build.Reason'], 'Manual'),
+                eq('${{ parameters.cluster }}', 'All')
+              ),
+              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+            )
           )
         variables:
           clusters: ${{ parameters.cluster }}
