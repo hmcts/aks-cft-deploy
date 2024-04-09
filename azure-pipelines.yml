@@ -159,7 +159,6 @@ stages:
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
               - "Managed_Identity_${{ component.dependsOn }}"
               - "Aks_${{ component.dependsOn }}"
@@ -189,7 +188,6 @@ stages:
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
               - "Managed_Identity_${{ component.dependsOn }}"
               - "Aks_${{ component.dependsOn }}"
@@ -342,12 +340,10 @@ stages:
         dependsOn:
           - Aks_${{ component.env }}
         condition: |
-          and(
-            succeeded(),
-            eq('${{ parameters.action }}', 'apply'),
-            eq(variables['Build.Reason'], 'IndividualCI'),
-            eq(variables['Build.SourceBranchName'], 'main')
-          )
+          or(
+              and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+            )
         variables:
           clusters: ${{ parameters.cluster }}
         jobs:
