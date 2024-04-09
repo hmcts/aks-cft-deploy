@@ -342,9 +342,11 @@ stages:
         dependsOn:
           - Aks_${{ component.env }}
         condition: |
-          or(
-            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          and(
+            succeeded(),
+            eq('${{ parameters.action }}', 'apply'),
+            eq(variables['Build.Reason'], 'IndividualCI'),
+            eq(variables['Build.SourceBranchName'], 'main')
           )
         variables:
           clusters: ${{ parameters.cluster }}
