@@ -365,6 +365,7 @@ stages:
                 eq(variables['Build.Reason'], 'Manual'),
                 eq('${{ parameters.cluster }}', 'All')
               ),
+              and(succeeded(), eq(variables['isAutoTriggered'], true)),
               and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
             )
           )
