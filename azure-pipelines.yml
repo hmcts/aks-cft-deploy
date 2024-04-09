@@ -159,12 +159,10 @@ stages:
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
               - "Managed_Identity_${{ component.dependsOn }}"
               - "Aks_${{ component.dependsOn }}"
               - "PipelineTests_${{ component.dependsOn }}"
-              - "BootStrapClusters_${{ component.dependsOn }}"
           - ${{ else }}:
               - Precheck
         jobs:
@@ -190,12 +188,10 @@ stages:
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - "CheckingClusters_${{ component.env }}"
               - "Network_${{ component.dependsOn }}"
               - "Managed_Identity_${{ component.dependsOn }}"
               - "Aks_${{ component.dependsOn }}"
               - "PipelineTests_${{ component.dependsOn }}"
-              - "BootStrapClusters_${{ component.dependsOn }}"
           - ${{ else }}:
               - Precheck
         jobs:
@@ -345,8 +341,10 @@ stages:
           - Aks_${{ component.env }}
         condition: |
           and(
-            ne(variables['Build.Reason'], 'PullRequest'),
-            ne('${{ parameters.action }}', 'plan'),
+            or(
+              ne(variables['Build.Reason'], 'PullRequest'),
+              ne('${{ parameters.action }}', 'plan')
+            ),
             or (
               and(
                 eq(variables['Build.Reason'], 'Manual'),
