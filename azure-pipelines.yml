@@ -341,6 +341,10 @@ stages:
           - Aks_${{ component.env }}
         condition: |
           or(
+            and(
+              eq(variables['Build.Reason'], 'PullRequest'),
+              ne('${{ parameters.action }}', 'plan')
+            ),
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
