@@ -349,7 +349,6 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - PipelineTests_sbox
           - Aks_${{ component.env }}
         condition: |
           and(
