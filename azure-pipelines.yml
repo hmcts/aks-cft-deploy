@@ -147,7 +147,6 @@ stages:
               - Network_${{ component.dependsOn }}
               - Managed_Identity_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
-              - PipelineTests_sbox
           - ${{ else }}:
               - Precheck
         jobs:
@@ -383,8 +382,6 @@ stages:
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
           - BootStrapClusters_${{ component.env }}
-          - ${{ if ne(component.env, 'sbox') }}:
-              - PipelineTests_sbox
         jobs:
           - job: PipelineTests
             pool:
