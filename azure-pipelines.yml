@@ -259,6 +259,7 @@ stages:
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
+          - PipelineTests_sbox
           - Network_${{ component.env }}
         jobs:
           - job: Managed_Identity
@@ -286,6 +287,7 @@ stages:
         dependsOn:
           - CheckingClusters_${{ component.env }}
           - Managed_Identity_${{ component.env }}
+          - PipelineTests_sbox
         condition: |
           or (
             and(
@@ -347,6 +349,7 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
+          - PipelineTests_sbox
           - Aks_${{ component.env }}
         condition: |
           and(
@@ -381,6 +384,7 @@ stages:
       - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
+          - PipelineTests_sbox
           - BootStrapClusters_${{ component.env }}
         jobs:
           - job: PipelineTests
