@@ -199,6 +199,7 @@ stages:
               - CheckingClusters_${{ component.env }}
               - Managed_Identity_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
+              - Genesis_${{ component.dependsOn }}
               - PipelineTests_sbox
           - ${{ else }}:
               - Precheck
@@ -259,8 +260,6 @@ stages:
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
           - Network_${{ component.env }}
-          - ${{ if ne(component.env, 'sbox') }}:
-              - PipelineTests_sbox
         jobs:
           - job: Managed_Identity
             steps:
