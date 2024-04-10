@@ -259,7 +259,6 @@ stages:
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
-          - PipelineTests_sbox
           - Network_${{ component.env }}
         jobs:
           - job: Managed_Identity
