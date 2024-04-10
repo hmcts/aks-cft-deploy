@@ -287,7 +287,6 @@ stages:
         dependsOn:
           - CheckingClusters_${{ component.env }}
           - Managed_Identity_${{ component.env }}
-          - PipelineTests_sbox
         condition: |
           or (
             and(
