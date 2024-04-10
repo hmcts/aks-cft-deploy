@@ -165,12 +165,12 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
+          - PipelineTests_sbox
           - ${{ if ne(component.env, 'sbox') }}:
               - CheckingClusters_${{ component.env }}
               - Network_${{ component.dependsOn }}
               - Managed_Identity_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
-              - PipelineTests_sbox
           - ${{ else }}:
               - Precheck
         jobs:
@@ -195,12 +195,12 @@ stages:
       - stage: Network_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
+          - PipelineTests_sbox
           - ${{ if ne(component.env, 'sbox') }}:
               - CheckingClusters_${{ component.env }}
               - Managed_Identity_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
               - Genesis_${{ component.dependsOn }}
-              - PipelineTests_sbox
           - ${{ else }}:
               - Precheck
         jobs:
@@ -286,8 +286,7 @@ stages:
         dependsOn:
           - CheckingClusters_${{ component.env }}
           - Managed_Identity_${{ component.env }}
-          - ${{ if ne(component.env, 'sbox') }}:
-              - PipelineTests_sbox
+          - PipelineTests_sbox
         condition: |
           or (
             and(
@@ -350,8 +349,7 @@ stages:
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
           - Aks_${{ component.env }}
-          - ${{ if ne(component.env, 'sbox') }}:
-              - PipelineTests_sbox
+          - PipelineTests_sbox
         condition: |
           and(
             eq('${{ parameters.action }}', 'apply'),
