@@ -199,6 +199,7 @@ stages:
           - ${{ if ne(component.env, 'sbox') }}:
               - CheckingClusters_${{ component.env }}
               - Managed_Identity_${{ component.dependsOn }}
+              - Network_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
               - Genesis_${{ component.dependsOn }}
           - ${{ else }}:
