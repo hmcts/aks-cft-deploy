@@ -310,7 +310,7 @@ stages:
               eq('${{ parameters.cluster }}', 'All')
             ),
             and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
-            and(succeeded(), eq(variables['isMain'], true))
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
           - job: DeployInfrastructure
