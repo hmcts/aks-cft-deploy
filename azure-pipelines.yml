@@ -124,6 +124,22 @@ variables:
   - name: action
     value: ${{ parameters.action }}
 
+variables:
+  - name: project
+    value: cft
+  - name: timeoutInMinutes
+    value: "60"
+  - name: agentPool
+    value: ubuntu-20.04
+  - name: tfInitSub
+    value: "04d27a32-7a07-48b3-95b8-3c8691e1a263"
+  - name: isMain
+    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  - name: product
+    value: cft-platform
+  - name: action
+    value: ${{ parameters.action }}
+
 stages:
   - stage: PreCheck
     displayName: PreChecks
@@ -143,7 +159,7 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
-          - Precheck
+          - "Precheck"
         jobs:
           - job: CheckingClusters
             steps:
@@ -161,8 +177,8 @@ stages:
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - PipelineTests_${{ component.dependsOn }}
-              - CheckingClusters_${{ component.env }}
+              - "PipelineTests_${{ component.dependsOn }}"
+              - "CheckingClusters_${{ component.env }}"
           - ${{ else }}:
               - Precheck
         jobs:
@@ -188,7 +204,7 @@ stages:
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - Genesis_${{ component.env }}
+              - "Genesis_${{ component.env }}"
           - ${{ else }}:
               - Precheck
         jobs:
@@ -248,7 +264,7 @@ stages:
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - Network_${{ component.env }}
+              - "Network_${{ component.env }}"
           - ${{ else }}:
               - Precheck
         jobs:
@@ -276,7 +292,7 @@ stages:
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - Managed_Identity_${{ component.env }}
+              - "Managed_Identity_${{ component.env }}"
           - ${{ else }}:
               - Precheck
         condition: |
@@ -346,7 +362,7 @@ stages:
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - Aks_${{ component.env }}
+              - "Aks_${{ component.env }}"
           - ${{ else }}:
               - Precheck
         condition: |
@@ -372,7 +388,7 @@ stages:
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - BootStrapClusters_${{ component.env }}
+              - "BootStrapClusters_${{ component.env }}"
           - ${{ else }}:
               - Precheck
         jobs:
