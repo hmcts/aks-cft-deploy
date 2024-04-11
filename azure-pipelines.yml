@@ -388,8 +388,8 @@ stages:
             timeoutInMinutes: ${{ variables.timeoutInMinutes }}
             condition: |
               or(
-                and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-                and(succeeded(), eq(variables['Build.Reason'], 'Manual')
+                and(succeeded(), eq(variables['Build.Reason'], 'Manual'),
+                and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
                 and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
               )
             steps:
