@@ -290,6 +290,7 @@ stages:
                     -var control_vault=$(controlKeyVault)
                     -var project=$(project)
 
+
       - stage: "Aks_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
