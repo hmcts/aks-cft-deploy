@@ -289,10 +289,17 @@ stages:
           existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
-          or(
-            and(eq('${{ parameters.cluster }}', 'All'), eq(variables['Build.Reason'], 'Manual')),
-            and(eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], 'All'), eq(variables['Build.Reason'], 'Manual')),
-            and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
+          or (
+            and(
+              eq(variables['Build.Reason'], 'Manual'),
+              in('${{ parameters.cluster }}', '00', '01'),
+              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+            ),
+            and(
+              eq(variables['Build.Reason'], 'Manual'),
+              eq('${{ parameters.cluster }}', 'All')
+            ),
+            and(succeeded(), eq(variables['isAutoTriggered'], true)),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
