@@ -143,7 +143,7 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
-              - "Precheck"
+          - "Precheck"
         jobs:
           - job: CheckingClusters
             steps:
@@ -368,7 +368,7 @@ stages:
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
+            and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
@@ -399,7 +399,7 @@ stages:
             condition: |
               or(
                 and(succeeded(), eq(variables['Build.Reason'], 'Manual')),
-                and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
+                and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
                 and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
               )
             steps:
