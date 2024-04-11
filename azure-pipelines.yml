@@ -282,17 +282,21 @@ stages:
         condition: |
           or (
             and(
-              eq(variables['Build.Reason'], 'Manual'),
+              or(
+                eq(variables['Build.Reason'], 'Manual'),
+                eq(variables['Build.Reason'], 'PullRequest')
+              ),
               in('${{ parameters.cluster }}', '00', '01'),
               eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
             ),
             and(
-              eq(variables['Build.Reason'], 'Manual'),
+              or(
+                eq(variables['Build.Reason'], 'Manual'),
+                eq(variables['Build.Reason'], 'PullRequest')
+              ),
               eq('${{ parameters.cluster }}', 'All')
             ),
-            and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-          )
         jobs:
           - job: DeployInfrastructure
             steps:
@@ -345,20 +349,9 @@ stages:
           - ${{ else }}:
             - Precheck
         condition: |
-          and(
-            eq('${{ parameters.action }}', 'apply'),
-            or(
-              and(
-                eq(variables['Build.Reason'], 'Manual'),
-                in('${{ parameters.cluster }}', '00', '01'),
-                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
-              ),
-              and(
-                eq(variables['Build.Reason'], 'Manual'),
-                eq('${{ parameters.cluster }}', 'All')
-              ),
-              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-            )
+          or(
+            and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.Reason'], 'Manual'))),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         variables:
           clusters: ${{ parameters.cluster }}
