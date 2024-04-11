@@ -143,18 +143,7 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
-        - ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'apply')) }}:
-            - Network_${{ component.dependsOn }}
-            - Managed_Identity_${{ component.dependsOn }}
-            - Aks_${{ component.dependsOn }}
-            - Bootstrap_${{ component.dependsOn }}
-            - PipelineTests_${{ component.dependsOn }}
-        - ${{ if and(ne(component.env, 'sbox'), ne(parameters.action, 'apply')) }}:
-            - Network_${{ component.dependsOn }}
-            - Managed_Identity_${{ component.dependsOn }}
-            - Aks_${{ component.dependsOn }}
-        - ${{ else }}:
-            - Precheck
+              - "Precheck"
         jobs:
           - job: CheckingClusters
             steps:
@@ -171,7 +160,11 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
-          - CheckingClusters_${{ component.env }}
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "PipelineTests_${{ component.dependsOn }}"
+            - "CheckingClusters_${{ component.env }}"
+          - ${{ else }}:
+              - Precheck
         jobs:
           - job: Genesis
             steps:
@@ -194,7 +187,10 @@ stages:
       - stage: Network_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
-          - Genesis_${{ component.env }}
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "Genesis_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         jobs:
           - job: NetworkRg
             steps:
@@ -251,7 +247,10 @@ stages:
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
-          - Network_${{ component.env }}
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "Network_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         jobs:
           - job: Managed_Identity
             steps:
@@ -276,8 +275,10 @@ stages:
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
-          - CheckingClusters_${{ component.env }}
-          - Managed_Identity_${{ component.env }}
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "Managed_Identity_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         condition: |
           or (
             and(
@@ -289,7 +290,7 @@ stages:
               eq(variables['Build.Reason'], 'Manual'),
               eq('${{ parameters.cluster }}', 'All')
             ),
-            and(succeeded(), eq(variables['isAutoTriggered'], true)),
+            and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
@@ -339,7 +340,10 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - Aks_${{ component.env }}
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "Aks_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         condition: |
           and(
             eq('${{ parameters.action }}', 'apply'),
@@ -373,7 +377,10 @@ stages:
       - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
-          - BootStrapClusters_${{ component.env }}
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "BootStrapClusters_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         jobs:
           - job: PipelineTests
             pool:
