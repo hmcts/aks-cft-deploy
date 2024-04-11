@@ -54,65 +54,65 @@ parameters:
   - name: environment_components
     type: object
     default:
-      - env: 'sbox'
-        serviceConnection: 'DCD-CFTAPPS-SBOX'
-        backendAzureRmResourceGroupName: 'azure-control-sbox-rg'
-        aksKeyVault: 'dcdcftappssboxkv'
-        terraformSubscriptionID: 'b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb'
-      - env: 'preview'
-        dependsOn: 'sbox'
-        serviceConnection: 'DCD-CFTAPPS-DEV'
-        backendAzureRmResourceGroupName: 'azure-control-dev-rg'
-        aksKeyVault: 'dcdcftappsdevkv'
-        terraformSubscriptionID: '8b6ea922-0862-443e-af15-6056e1c9b9a4'
-      - env: 'demo'
-        dependsOn: 'sbox'
-        serviceConnection: 'DCD-CFTAPPS-DEMO'
-        backendAzureRmResourceGroupName: 'azure-control-demo-rg'
-        aksKeyVault: 'dcdcftappsdemokv'
-        terraformSubscriptionID: 'd025fece-ce99-4df2-b7a9-b649d3ff2060'
-      - env: 'ithc'
-        dependsOn: 'sbox'
-        serviceConnection: 'DCD-CFTAPPS-ITHC'
-        backendAzureRmResourceGroupName: 'azure-control-ithc-rg'
-        aksKeyVault: 'dcdcftappsithckv'
-        terraformSubscriptionID: '62864d44-5da9-4ae9-89e7-0cf33942fa09'
-      - env: 'ptlsbox'
-        dependsOn: 'sbox'
-        serviceConnection: 'DTS-CFTSBOX-INTSVC'
-        backendAzureRmResourceGroupName: 'azure-control-ptlsbox-rg'
-        aksKeyVault: 'dtscftptlsbox'
-        terraformSubscriptionID: '1497c3d7-ab6d-4bb7-8a10-b51d03189ee3'
-      - env: 'perftest'
-        dependsOn: 'sbox'
-        serviceConnection: 'DCD-CFTAPPS-TEST'
-        backendAzureRmResourceGroupName: 'azure-control-test-rg'
-        aksKeyVault: 'dcdcftappstestkv'
-        terraformSubscriptionID: '8a07fdcd-6abd-48b3-ad88-ff737a4b9e3c'
-      - env: 'aat'
-        dependsOn: 'sbox'
-        serviceConnection: 'DCD-CFTAPPS-STG'
-        backendAzureRmResourceGroupName: 'azure-control-stg-rg'
-        aksKeyVault: 'dcdcftappsstgkv'
-        terraformSubscriptionID: '96c274ce-846d-4e48-89a7-d528432298a7'
-      - env: 'ptl'
-        dependsOn: 'ptlsbox'
-        serviceConnection: 'DTS-CFTPTL-INTSVC'
-        backendAzureRmResourceGroupName: 'azure-control-ptl-rg'
-        aksKeyVault: 'dtscftptl'
-        terraformSubscriptionID: '1baf5470-1c3e-40d3-a6f7-74bfbce4b348'
-      - env: 'prod'
+      - env: "sbox"
+        serviceConnection: "DCD-CFTAPPS-SBOX"
+        backendAzureRmResourceGroupName: "azure-control-sbox-rg"
+        aksKeyVault: "dcdcftappssboxkv"
+        terraformSubscriptionID: "b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb"
+      - env: "preview"
+        dependsOn: "sbox"
+        serviceConnection: "DCD-CFTAPPS-DEV"
+        backendAzureRmResourceGroupName: "azure-control-dev-rg"
+        aksKeyVault: "dcdcftappsdevkv"
+        terraformSubscriptionID: "8b6ea922-0862-443e-af15-6056e1c9b9a4"
+      - env: "demo"
+        dependsOn: "sbox"
+        serviceConnection: "DCD-CFTAPPS-DEMO"
+        backendAzureRmResourceGroupName: "azure-control-demo-rg"
+        aksKeyVault: "dcdcftappsdemokv"
+        terraformSubscriptionID: "d025fece-ce99-4df2-b7a9-b649d3ff2060"
+      - env: "ithc"
+        dependsOn: "sbox"
+        serviceConnection: "DCD-CFTAPPS-ITHC"
+        backendAzureRmResourceGroupName: "azure-control-ithc-rg"
+        aksKeyVault: "dcdcftappsithckv"
+        terraformSubscriptionID: "62864d44-5da9-4ae9-89e7-0cf33942fa09"
+      - env: "ptlsbox"
+        dependsOn: "sbox"
+        serviceConnection: "DTS-CFTSBOX-INTSVC"
+        backendAzureRmResourceGroupName: "azure-control-ptlsbox-rg"
+        aksKeyVault: "dtscftptlsbox"
+        terraformSubscriptionID: "1497c3d7-ab6d-4bb7-8a10-b51d03189ee3"
+      - env: "perftest"
+        dependsOn: "sbox"
+        serviceConnection: "DCD-CFTAPPS-TEST"
+        backendAzureRmResourceGroupName: "azure-control-test-rg"
+        aksKeyVault: "dcdcftappstestkv"
+        terraformSubscriptionID: "8a07fdcd-6abd-48b3-ad88-ff737a4b9e3c"
+      - env: "aat"
+        dependsOn: "sbox"
+        serviceConnection: "DCD-CFTAPPS-STG"
+        backendAzureRmResourceGroupName: "azure-control-stg-rg"
+        aksKeyVault: "dcdcftappsstgkv"
+        terraformSubscriptionID: "96c274ce-846d-4e48-89a7-d528432298a7"
+      - env: "ptl"
+        dependsOn: "ptlsbox"
+        serviceConnection: "DTS-CFTPTL-INTSVC"
+        backendAzureRmResourceGroupName: "azure-control-ptl-rg"
+        aksKeyVault: "dtscftptl"
+        terraformSubscriptionID: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+      - env: "prod"
         dependsOn: "aat"
-        serviceConnection: 'DCD-CFTAPPS-PROD'
-        backendAzureRmResourceGroupName: 'azure-control-prod-rg'
-        aksKeyVault: 'dcdcftappsprodkv'
-        terraformSubscriptionID: '8cbc6f36-7c56-4963-9d36-739db5d00b27'
+        serviceConnection: "DCD-CFTAPPS-PROD"
+        backendAzureRmResourceGroupName: "azure-control-prod-rg"
+        aksKeyVault: "dcdcftappsprodkv"
+        terraformSubscriptionID: "8cbc6f36-7c56-4963-9d36-739db5d00b27"
 
 variables:
   - name: project
     value: cft
   - name: timeoutInMinutes
-    value: '60'
+    value: "60"
   - name: agentPool
     value: ubuntu-20.04
   - name: tfInitSub
@@ -143,7 +143,7 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
-              - "Precheck"
+          - "Precheck"
         jobs:
           - job: CheckingClusters
             steps:
@@ -161,8 +161,8 @@ stages:
         condition: ne('${{ parameters.Action }}', 'Destroy')
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - "PipelineTests_${{ component.dependsOn }}"
-            - "CheckingClusters_${{ component.env }}"
+              - "PipelineTests_${{ component.dependsOn }}"
+              - "CheckingClusters_${{ component.env }}"
           - ${{ else }}:
               - Precheck
         jobs:
@@ -188,9 +188,9 @@ stages:
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - "Genesis_${{ component.env }}"
+              - "Genesis_${{ component.env }}"
           - ${{ else }}:
-            - Precheck
+              - Precheck
         jobs:
           - job: NetworkRg
             steps:
@@ -248,9 +248,9 @@ stages:
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - "Network_${{ component.env }}"
+              - "Network_${{ component.env }}"
           - ${{ else }}:
-            - Precheck
+              - Precheck
         jobs:
           - job: Managed_Identity
             steps:
@@ -276,9 +276,9 @@ stages:
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - "Managed_Identity_${{ component.env }}"
+              - "Managed_Identity_${{ component.env }}"
           - ${{ else }}:
-            - Precheck
+              - Precheck
         condition: |
           or (
             and(
@@ -297,6 +297,7 @@ stages:
               eq('${{ parameters.cluster }}', 'All')
             ),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          )
         jobs:
           - job: DeployInfrastructure
             steps:
@@ -345,9 +346,9 @@ stages:
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - "Aks_${{ component.env }}"
+              - "Aks_${{ component.env }}"
           - ${{ else }}:
-            - Precheck
+              - Precheck
         condition: |
           or(
             and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.Reason'], 'Manual'))),
@@ -371,9 +372,9 @@ stages:
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - "BootStrapClusters_${{ component.env }}"
+              - "BootStrapClusters_${{ component.env }}"
           - ${{ else }}:
-            - Precheck
+              - Precheck
         jobs:
           - job: PipelineTests
             pool:
