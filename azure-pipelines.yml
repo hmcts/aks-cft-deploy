@@ -177,8 +177,11 @@ stages:
             succeeded()
           )
         dependsOn:
-          - "PipelineTests_${{ component.dependsOn }}"
-          - "CheckingClusters_${{ component.env }}"
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "PipelineTests_${{ component.dependsOn }}"
+            - "CheckingClusters_${{ component.env }}"
+          - ${{ else }}:
+              - Precheck
         jobs:
           - job: Genesis
             steps:
@@ -201,7 +204,10 @@ stages:
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
-          - "Genesis_${{ component.env }}"
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "Genesis_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         jobs:
           - job: NetworkRg
             steps:
@@ -259,7 +265,10 @@ stages:
       - stage: "Managed_Identity_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
-          - "Network_${{ component.env }}"
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "Network_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         jobs:
           - job: Managed_Identity
             steps:
@@ -284,7 +293,10 @@ stages:
       - stage: "Aks_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
-          - "Managed_Identity_${{ component.env }}"
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "Managed_Identity_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         variables:
           existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
@@ -355,7 +367,10 @@ stages:
       - stage: "BootStrapClusters_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - "Aks_${{ component.env }}"
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "Aks_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         variables:
           existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
@@ -380,7 +395,10 @@ stages:
       - stage: "PipelineTests_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
-          - "BootStrapClusters_${{ component.env }}"
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "BootStrapClusters_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         jobs:
           - job: PipelineTests
             pool:
