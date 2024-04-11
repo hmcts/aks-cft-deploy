@@ -10,7 +10,7 @@ kubernetes_cluster_ssh_key        = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCeRwS
 enable_user_system_nodepool_split = true
 project_acr_enabled               = true
 
-enable_automatic_channel_upgrade_patch = true
+enable_automatic_channel_upgrade_patch = false
 
 system_node_pool = {
   vm_size   = "Standard_D4ds_v5",
@@ -32,7 +32,7 @@ availability_zones = ["1"]
 autoShutdown       = true
 
 node_os_maintenance_window_config = {
-  frequency   = "Daily"
-  start_time  = "16:00"
-  is_prod     = false
+  frequency  = "Daily"
+  start_time = "16:00"
+  is_prod    = false
 }
