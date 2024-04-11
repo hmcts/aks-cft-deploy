@@ -143,13 +143,6 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}:
-              - "Network_${{ component.dependsOn }}"
-              - "Managed_Identity_${{ component.dependsOn }}"
-              - "Aks_${{ component.dependsOn }}"
-              - "PipelineTests_${{ component.dependsOn }}"
-              - "BootStrapClusters_${{ component.dependsOn }}"
-          - ${{ else }}:
               - "Precheck"
         jobs:
           - job: CheckingClusters
@@ -178,8 +171,13 @@ stages:
 
       - stage: "Genesis_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Genesis"
-        condition: ne('${{ parameters.Action }}', 'Destroy')
+        condition: |
+          and(
+            ne('${{ parameters.Action }}', 'Destroy'),
+            succeeded()
+          )
         dependsOn:
+          - "PipelineTests_${{ component.dependsOn }}"
           - "CheckingClusters_${{ component.env }}"
         jobs:
           - job: Genesis
@@ -203,7 +201,7 @@ stages:
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
-          - "CheckingClusters_${{ component.env }}"
+          - "Genesis_${{ component.env }}"
         jobs:
           - job: NetworkRg
             steps:
@@ -387,6 +385,7 @@ stages:
             condition: |
               or(
                 and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+                and(succeeded(), eq(variables['Build.Reason'], 'Manual')
                 and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
               )
             steps:
