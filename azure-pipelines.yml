@@ -129,8 +129,8 @@ stages:
     displayName: "Test"
     condition: |
       or(
-        and(succeeded(), eq(variables['isAutoTriggered'], true), eq(variables['Build.Reason'], 'PullRequest')),
-        and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+        and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
+        and(succeeded(), eq(variables['isMain'], true))
       )
     jobs:
       - job: CheckingClusters
