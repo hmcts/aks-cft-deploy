@@ -368,10 +368,13 @@ stages:
           - ${{ else }}:
               - Precheck
         condition: |
-          or(
-            and(succeeded(), eq(variables['Build.Reason'], 'Manual')),
-            and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          and(
+            eq('${{ parameters.action }}', 'apply'),
+            or(
+              and(succeeded(), eq(variables['Build.Reason'], 'Manual')),
+              and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
+              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+            )
           )
         jobs:
           - job: PipelineTests
@@ -385,5 +388,4 @@ stages:
                   junit_output_dir: $(Pipeline.Workspace)/s/aks-cft-deploy/environments/junit
                   environment: ${{ component.env }}
                   product: ${{ variables.product }}
-                  test_title: "${{ component.env }}_${{ parameters.cluster }}_${{ parameters.location }}"
-                  test_pattern: pipeline.test.ts
+                  test_title: "${{ component.env }}_${{ parameters.cluster
