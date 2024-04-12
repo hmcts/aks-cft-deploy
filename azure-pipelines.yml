@@ -160,11 +160,7 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded())
         dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}:
-            - PipelineTests_${{ component.dependsOn }}
-            - CheckingClusters_${{ component.env }}
-          - ${{ else }}:
-              - Precheck
+          - Genesis_${{ component.env }}
         jobs:
           - job: Genesis
             steps:
@@ -349,12 +345,12 @@ stages:
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
+            condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
             and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.Reason'], 'Manual'))),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
           - job: BootStrap
-            condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
             steps:
               - template: pipeline-steps/bootstrap.yaml
                 parameters:
@@ -372,17 +368,17 @@ stages:
             - BootStrapClusters_${{ component.env }}
           - ${{ else }}:
             - Precheck
+        condition: |
+          or(
+            and(succeeded(), eq(variables['Build.Reason'], 'Manual')),
+            and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          )
         jobs:
           - job: PipelineTests
             pool:
               vmImage: ${{ variables.agentPool }}
             timeoutInMinutes: ${{ variables.timeoutInMinutes }}
-            condition: |
-              or(
-                and(succeeded(), eq(variables['Build.Reason'], 'Manual')),
-                and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
-                and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-              )
             steps:
               - template: steps/pipeline-tests-jest.yaml@cnp-azuredevops-libraries
                 parameters:
