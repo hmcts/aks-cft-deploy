@@ -160,7 +160,8 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded())
         dependsOn:
-          - Genesis_${{ component.env }}
+          - ${{ if ne(component.env, 'sbox') }}:
+              - CheckingClusters_${{ component.env }}
         jobs:
           - job: Genesis
             steps:
