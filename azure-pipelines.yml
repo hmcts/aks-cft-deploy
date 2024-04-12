@@ -158,11 +158,7 @@ stages:
 
       - stage: Genesis_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Genesis"
-        condition: |
-          and(
-            ne('${{ parameters.Action }}', 'Destroy'),
-            succeeded()
-          )
+        condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded())
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
             - PipelineTests_${{ component.dependsOn }}
