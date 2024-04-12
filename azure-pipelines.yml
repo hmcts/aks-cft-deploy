@@ -140,7 +140,7 @@ stages:
               environment: sbox
               runManualStart: true
   - ${{ each component in parameters.environment_components }}:
-      - stage: "CheckingClusters_${{ component.env }}"
+      - stage: CheckingClusters_${{ component.env }}
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
           - "Precheck"
@@ -158,11 +158,7 @@ stages:
                 
       - stage: Genesis_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Genesis"
-        condition: |
-          and(
-            ne('${{ parameters.Action }}', 'Destroy'),
-            succeeded()
-          )
+        condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded())
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
             - PipelineTests_${{ component.dependsOn }}
@@ -192,9 +188,9 @@ stages:
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - Genesis_${{ component.env }}
+            - Genesis_${{ component.env }}
           - ${{ else }}:
-              - Precheck
+            - Precheck
         jobs:
           - job: NetworkRg
             steps:
@@ -252,9 +248,9 @@ stages:
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - "Network_${{ component.env }}"
+            - Network_${{ component.env }}
           - ${{ else }}:
-              - Precheck
+            - Precheck
         jobs:
           - job: Managed_Identity
             steps:
@@ -280,9 +276,9 @@ stages:
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - "Managed_Identity_${{ component.env }}"
+            - Managed_Identity_${{ component.env }}
           - ${{ else }}:
-              - Precheck
+            - Precheck
         condition: |
           or (
             and(
@@ -346,15 +342,15 @@ stages:
                       -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
                       -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
-      - stage: "BootStrapClusters_${{ component.env }}"
+      - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - "Aks_${{ component.env }}"
+            - Aks_${{ component.env }}
           - ${{ else }}:
             - Precheck
         variables:
-          # existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
+          existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
@@ -378,9 +374,9 @@ stages:
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - "BootStrapClusters_${{ component.env }}"
+            - BootStrapClusters_${{ component.env }}
           - ${{ else }}:
-              - Precheck
+            - Precheck
         jobs:
           - job: PipelineTests
             pool:
