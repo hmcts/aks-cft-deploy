@@ -354,7 +354,7 @@ stages:
           - ${{ else }}:
             - Precheck
         variables:
-          existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
+          # existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
@@ -363,6 +363,7 @@ stages:
           )
         jobs:
           - job: BootStrap
+            condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
             steps:
               - template: pipeline-steps/bootstrap.yaml
                 parameters:
