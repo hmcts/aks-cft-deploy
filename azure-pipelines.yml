@@ -364,11 +364,10 @@ stages:
           - ${{ else }}:
             - Precheck
         variables:
-          existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
+            and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.Reason'], 'Manual'))),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
