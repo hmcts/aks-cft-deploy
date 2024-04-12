@@ -345,7 +345,7 @@ stages:
           deploy_cluster: ${{ parameters.cluster }}
         condition: |
           or(
-            condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
+            and(succeeded(), eq('plan', 'apply')),
             and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.Reason'], 'Manual'))),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
