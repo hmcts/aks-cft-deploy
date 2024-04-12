@@ -368,13 +368,9 @@ stages:
           - ${{ else }}:
               - Precheck
         condition: |
-          and(
-            eq('${{ parameters.action }}', 'apply'),
-            or(
-              and(succeeded(), eq(variables['Build.Reason'], 'Manual')),
-              and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
-              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-            )
+          or(
+            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
           - job: PipelineTests
