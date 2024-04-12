@@ -162,6 +162,8 @@ stages:
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
               - CheckingClusters_${{ component.env }}
+          - ${{ else }}:
+              - Precheck
         jobs:
           - job: Genesis
             steps:
