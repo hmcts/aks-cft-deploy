@@ -388,4 +388,4 @@ stages:
                   junit_output_dir: $(Pipeline.Workspace)/s/aks-cft-deploy/environments/junit
                   environment: ${{ component.env }}
                   product: ${{ variables.product }}
-                  test_title: "${{ component.env }}_${{ parameters.cluster
+                  test_title: "${{ component.env }}_${{ parameters.cluster"
