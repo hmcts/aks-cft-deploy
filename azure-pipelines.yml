@@ -348,7 +348,6 @@ stages:
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
             and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
-            and(succeeded(), eq(variables['Build.Reason'], 'Manual')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
