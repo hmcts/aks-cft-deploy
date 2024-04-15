@@ -369,9 +369,8 @@ stages:
               - PipelineTests_AAT
           - ${{ if eq(component.env, 'PTL') }}:
               - PipelineTests_PTLSBOX
-          - ${{ else }}:
+          - ${{ if and(ne(component.env, 'Production'), ne(component.env, 'PTL')) }}:
               - BootStrapClusters_${{ component.env }}
-          - ${{ else }}:
               - Precheck
         condition: |
           or(
