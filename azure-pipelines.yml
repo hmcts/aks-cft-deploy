@@ -343,7 +343,7 @@ stages:
           - ${{ else }}:
               - Precheck
         variables:
-          deploy_cluster: ${{ parameters.cluster }}
+          clusters: ${{ parameters.cluster }}
         condition: |
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
@@ -369,8 +369,8 @@ stages:
               - PipelineTests_AAT
           - ${{ if eq(component.env, 'PTL') }}:
               - PipelineTests_PTLSBOX
-          - ${{ if and(ne(component.env, 'Production'), ne(component.env, 'PTL')) }}:
-              - BootStrapClusters_${{ component.env }}
+          - ? ${{ if and(ne(component.env, 'Production'), ne(component.env, 'PTL')) }}
+            : - BootStrapClusters_${{ component.env }}
               - Precheck
         condition: |
           or(
