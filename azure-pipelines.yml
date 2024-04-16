@@ -366,7 +366,7 @@ stages:
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
           - ${{ if eq(component.env, 'prod') }}:
-              - BootStrapClusters_aat
+              - PipelineTests_aat
           - ${{ if eq(component.env, 'ptl') }}:
               - PipelineTests_ptlsbox
           - ${{ else }}:
