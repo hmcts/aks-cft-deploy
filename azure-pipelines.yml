@@ -274,9 +274,13 @@ stages:
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}:
+          - ${{ if eq(component.env, 'prod') }}:
+              - Aks_AAT
+          - ${{ if eq(component.env, 'ptl') }}:
+              - Aks_PTLSBOX
+          - ${{ if and(ne(component.env, 'prod'), ne(component.env, 'ptl'), ne(component.env, 'sbox')) }}:
               - Managed_Identity_${{ component.env }}
-          - ${{ else }}:
+          - ${{ if eq(component.env, 'sbox') }}:
               - Precheck
         condition: |
           or (
@@ -365,13 +369,10 @@ stages:
       - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
-          - ${{ if eq(component.env, 'Production') }}:
-              - PipelineTests_AAT
-          - ${{ if eq(component.env, 'PTL') }}:
-              - PipelineTests_PTLSBOX
-          - ? ${{ if and(ne(component.env, 'Production'), ne(component.env, 'PTL')) }}
-            : - BootStrapClusters_${{ component.env }}
-              - Precheck
+          - ${{ if ne(component.env, 'sbox') }}:
+            - "Aks_${{ component.env }}"
+          - ${{ else }}:
+            - Precheck
         condition: |
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
