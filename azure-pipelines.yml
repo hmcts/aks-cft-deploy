@@ -186,9 +186,13 @@ stages:
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}:
-              - Genesis_${{ component.env }}
+          - ${{ if eq(component.env, 'prod') }}:
+              - Genesis_aat
           - ${{ else }}:
+              - ${{ if eq(component.env, 'ptl') }}:
+                  - Aks_ptlsbox
+              - ${{ if ne(component.env, 'sbox') }}:
+                  - Genesis_${{ component.env }}
               - Precheck
         jobs:
           - job: NetworkRg
@@ -246,9 +250,13 @@ stages:
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}:
-              - "Network_${{ component.env }}"
+          - ${{ if eq(component.env, 'prod') }}:
+              - Network_aat
           - ${{ else }}:
+              - ${{ if eq(component.env, 'ptl') }}:
+                  - Aks_ptlsbox
+              - ${{ if ne(component.env, 'sbox') }}:
+                  - Network_${{ component.env }}
               - Precheck
         jobs:
           - job: Managed_Identity
@@ -274,9 +282,13 @@ stages:
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}:
-              - Managed_Identity_${{ component.env }}
+          - ${{ if eq(component.env, 'prod') }}:
+              - Managed_Identity_aat
           - ${{ else }}:
+              - ${{ if eq(component.env, 'ptl') }}:
+                  - Aks_ptlsbox
+              - ${{ if ne(component.env, 'sbox') }}:
+                  - Managed_Identity_${{ component.env }}
               - Precheck
         condition: |
           or (
@@ -338,9 +350,13 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}:
-              - Aks_${{ component.env }}
+          - ${{ if eq(component.env, 'prod') }}:
+              - aks_aat
           - ${{ else }}:
+              - ${{ if eq(component.env, 'ptl') }}:
+                  - Aks_ptlsbox
+              - ${{ if ne(component.env, 'sbox') }}:
+                  - Aks_${{ component.env }}
               - Precheck
         variables:
           clusters: ${{ parameters.cluster }}
