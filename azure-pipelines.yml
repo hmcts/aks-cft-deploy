@@ -160,13 +160,9 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded())
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - Genesis_AAT
-          - ${{ if eq(component.env, 'ptl') }}:
-              - Genesis_PTLSBOX
-          - ${{ if and(ne(component.env, 'prod'), ne(component.env, 'ptl'), ne(component.env, 'sbox')) }}:
+          - ${{ if ne(component.env, 'sbox') }}:
               - CheckingClusters_${{ component.env }}
-          - ${{ if eq(component.env, 'sbox') }}:
+          - ${{ else }}:
               - Precheck
         jobs:
           - job: Genesis
@@ -190,13 +186,9 @@ stages:
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - Network_AAT
-          - ${{ if eq(component.env, 'ptl') }}:
-              - Network_PTLSBOX
-          - ${{ if and(ne(component.env, 'prod'), ne(component.env, 'ptl'), ne(component.env, 'sbox')) }}:
+          - ${{ if ne(component.env, 'sbox') }}:
               - Genesis_${{ component.env }}
-          - ${{ if eq(component.env, 'sbox') }}:
+          - ${{ else }}:
               - Precheck
         jobs:
           - job: NetworkRg
@@ -254,13 +246,9 @@ stages:
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - Managed_Identity_AAT
-          - ${{ if eq(component.env, 'ptl') }}:
-              - Managed_Identity_PTLSBOX
-          - ${{ if and(ne(component.env, 'prod'), ne(component.env, 'ptl'), ne(component.env, 'sbox')) }}:
-              - Network_${{ component.env }}
-          - ${{ if eq(component.env, 'sbox') }}:
+          - ${{ if ne(component.env, 'sbox') }}:
+              - "Network_${{ component.env }}"
+          - ${{ else }}:
               - Precheck
         jobs:
           - job: Managed_Identity
@@ -286,13 +274,9 @@ stages:
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - Aks_AAT
-          - ${{ if eq(component.env, 'ptl') }}:
-              - Aks_PTLSBOX
-          - ${{ if and(ne(component.env, 'prod'), ne(component.env, 'ptl'), ne(component.env, 'sbox')) }}:
+          - ${{ if ne(component.env, 'sbox') }}:
               - Managed_Identity_${{ component.env }}
-          - ${{ if eq(component.env, 'sbox') }}:
+          - ${{ else }}:
               - Precheck
         condition: |
           or (
@@ -354,13 +338,9 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - BootStrapClusters_AAT
-          - ${{ if eq(component.env, 'ptl') }}:
-              - BootStrapClusters_PTLSBOX
-          - ${{ if and(ne(component.env, 'prod'), ne(component.env, 'ptl'), ne(component.env, 'sbox')) }}:
+          - ${{ if ne(component.env, 'sbox') }}:
               - Aks_${{ component.env }}
-          - ${{ if eq(component.env, 'sbox') }}:
+          - ${{ else }}:
               - Precheck
         variables:
           clusters: ${{ parameters.cluster }}
@@ -385,13 +365,9 @@ stages:
       - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - PipelineTests_AAT
-          - ${{ if eq(component.env, 'ptl') }}:
-              - PipelineTests_PTLSBOX
-          - ${{ if and(ne(component.env, 'prod'), ne(component.env, 'ptl'), ne(component.env, 'sbox')) }}:
-              - Aks_${{ component.env }}
-          - ${{ if eq(component.env, 'sbox') }}:
+          - ${{ if ne(component.env, 'sbox') }}:
+              - BootStrapClusters_${{ component.env }}
+          - ${{ else }}:
               - Precheck
         condition: |
           or(
