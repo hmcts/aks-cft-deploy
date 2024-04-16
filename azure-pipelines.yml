@@ -367,6 +367,10 @@ stages:
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
               - BootStrapClusters_${{ component.env }}
+          - ${{ elseif (component.env, 'prod') }}:
+              - BootStrapClusters_aat
+          - ${{ elseif (component.env, 'ptl') }}:
+              - Aks_ptlsbox
           - ${{ else }}:
               - Precheck
         condition: |
