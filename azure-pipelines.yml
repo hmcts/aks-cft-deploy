@@ -338,13 +338,9 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - BootStrapClusters_aat
+          - ${{ if ne(component.env, 'sbox') }}:
+              - Aks_${{ component.env }}
           - ${{ else }}:
-              - ${{ if eq(component.env, 'ptl') }}:
-                  - Aks_ptlsbox
-              - ${{ if ne(component.env, 'sbox') }}:
-                  - Aks_${{ component.env }}
               - Precheck
         variables:
           clusters: ${{ parameters.cluster }}
@@ -371,8 +367,8 @@ stages:
         dependsOn:
           - ${{ if eq(component.env, 'prod') }}:
               - BootStrapClusters_aat
-          - ${{ if eq(component.env, 'ptlsbox') }}:
-              - PipelineTests_ptl
+          - ${{ if eq(component.env, 'ptl') }}:
+              - PipelineTests_ptlsbox
           - ${{ else }}:
               - ${{ if ne(component.env, 'sbox') }}:
                   - BootStrapClusters_${{ component.env }}
