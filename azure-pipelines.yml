@@ -365,14 +365,11 @@ stages:
       - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}:
-              - BootStrapClusters_${{ component.env }}
-          - ${{ elseif (component.env, 'prod') }}:
+          - ${{ if eq(component.env, 'prod') }}:
               - BootStrapClusters_aat
-          - ${{ elseif (component.env, 'ptl') }}:
-              - Aks_ptlsbox
           - ${{ else }}:
-              - Precheck
+              - ${{ if eq(component.env, 'ptl') }}:
+                  - Aks_ptlsbox
         condition: |
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
