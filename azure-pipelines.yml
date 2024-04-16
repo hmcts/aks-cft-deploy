@@ -371,9 +371,11 @@ stages:
         dependsOn:
           - ${{ if eq(component.env, 'prod') }}:
               - BootStrapClusters_aat
+          - ${{ if eq(component.env, 'aat') }}:
+              - PipelineTests_prod
+          - ${{ if eq(component.env, 'ptlsbox') }}:
+              - PipelineTests_ptl
           - ${{ else }}:
-              - ${{ if eq(component.env, 'ptl') }}:
-                  - Aks_ptlsbox
               - ${{ if ne(component.env, 'sbox') }}:
                   - BootStrapClusters_${{ component.env }}
               - Precheck
