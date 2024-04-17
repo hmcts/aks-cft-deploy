@@ -160,8 +160,6 @@ stages:
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded())
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - "Genesis_aat"
           - ${{ if ne(component.env, 'sbox') }}:
               - CheckingClusters_${{ component.env }}
           - ${{ else }}:
@@ -188,8 +186,6 @@ stages:
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - "Network_aat"
           - ${{ if ne(component.env, 'sbox') }}:
               - Genesis_${{ component.env }}
           - ${{ else }}:
@@ -250,8 +246,6 @@ stages:
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - "Managed_Identity_aat"
           - ${{ if ne(component.env, 'sbox') }}:
               - "Network_${{ component.env }}"
           - ${{ else }}:
@@ -280,8 +274,6 @@ stages:
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - "Aks_aat"
           - ${{ if ne(component.env, 'sbox') }}:
               - Managed_Identity_${{ component.env }}
           - ${{ else }}:
@@ -346,8 +338,6 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - "BootStrapClusters_aat"
           - ${{ if ne(component.env, 'sbox') }}:
               - Aks_${{ component.env }}
           - ${{ else }}:
