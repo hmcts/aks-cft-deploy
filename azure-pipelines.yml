@@ -254,9 +254,13 @@ stages:
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
-          - ${{ if ne(component.env, 'sbox') }}:
-              - "Network_${{ component.env }}"
+          - ${{ if eq(component.env, 'prod') }}:
+              - Managed_Identity_aat
+          - ${{ if eq(component.env, 'ptl') }}:
+              - Managed_Identity_ptlsbox
           - ${{ else }}:
+              - ${{ if ne(component.env, 'sbox') }}:
+                  - "Network_${{ component.env }}"
               - Precheck
         jobs:
           - job: Managed_Identity
