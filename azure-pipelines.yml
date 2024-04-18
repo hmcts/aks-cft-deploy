@@ -156,16 +156,17 @@ stages:
             - Aks_${{ component.dependsOn }}
         - ${{ else }}:
             - Precheck
-        - job: CheckingClusters
-          steps:
-            - checkout: self
-            - task: AzureCLI@2
-              displayName: "Checking available clusters"
-              name: check_clusters
-              inputs:
-                scriptType: bash
-                azureSubscription: ${{ component.serviceConnection }}
-                scriptPath: "scripts/checking-clusters.sh"
+        jobs:
+          - job: CheckingClusters
+            steps:
+              - checkout: self
+              - task: AzureCLI@2
+                displayName: "Checking available clusters"
+                name: check_clusters
+                inputs:
+                  scriptType: bash
+                  azureSubscription: ${{ component.serviceConnection }}
+                  scriptPath: "scripts/checking-clusters.sh"
 
       - stage: Genesis_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Genesis"
@@ -362,7 +363,11 @@ stages:
       - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
-          - BootStrapClusters_${{ component.env }}
+          - BootStrapClusters_${{ component.env }}/azure-pipelines.yml (Line: 159, Col: 11): A mapping was not expected
+561508
+/azure-pipelines.yml (Line: 161, Col: 13): A sequence was not expected
+561508
+/azure-pipelines.yml: Expected a scalar value, a sequence, or a mapping
         condition: |
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
