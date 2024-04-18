@@ -339,17 +339,21 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - Aks_${{ component.env }}
+          - ${{ if ne(component.env, 'sbox') }}:
+              - Network_${{ component.dependsOn }}
+              - Managed_Identity_${{ component.dependsOn }}
+              - Aks_${{ component.dependsOn }}
+              - BootStrapClusters_${{ component.dependsOn }}
+              - PipelineTests_${{ component.dependsOn }}
+          - ${{ else }}:
+              - Precheck
         variables:
           clusters: ${{ parameters.cluster }}
         condition: |
-          and(
-            succeeded(),
-            eq('${{ parameters.action }}', 'apply'),
-            or(
-              eq(variables['Build.Reason'], 'PullRequest'),
-              and(eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-            )
+          or(
+            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+            and(succeeded(), eq(variables['Build.Reason'], 'PullRequest')),
+            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
           - job: BootStrap
