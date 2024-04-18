@@ -339,7 +339,14 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - Aks_${{ component.env }}
+          - ${{ if ne(component.env, 'sbox') }}
+            - Network_${{ component.dependsOn }}
+            - Managed_Identity_${{ component.dependsOn }}
+            - Aks_${{ component.dependsOn }}
+            - Bootstrap_${{ component.dependsOn }}
+            - PipelineTests_${{ component.dependsOn }}
+          - ${{ else }}:
+              - Precheck
         variables:
           clusters: ${{ parameters.cluster }}
         condition: |
