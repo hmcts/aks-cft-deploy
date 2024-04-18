@@ -148,8 +148,6 @@ stages:
               - Network_${{ component.dependsOn }}
               - Managed_Identity_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
-              - BootStrapClusters_${{ component.dependsOn }}
-              - PipelineTests_${{ component.dependsOn }}
           - ${{ else }}:
               - Precheck
         jobs:
@@ -337,7 +335,6 @@ stages:
         dependsOn:
           - Aks_${{ component.env }}
         variables:
-          existing_clusters: $[stageDependencies.CheckingClusters_${{ component.env }}.CheckingClusters.outputs['check_clusters.cluster_deploy']]
           clusters: ${{ parameters.cluster }}
         condition: |
           or(
