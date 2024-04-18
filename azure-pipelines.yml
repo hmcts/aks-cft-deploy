@@ -145,11 +145,11 @@ stages:
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-            - Network_${{ component.dependsOn }}
-            - Managed_Identity_${{ component.dependsOn }}
-            - Aks_${{ component.dependsOn }}
-            - BootStrapClusters_${{ component.dependsOn }}
-            - PipelineTests_${{ component.dependsOn }}
+              - Network_${{ component.dependsOn }}
+              - Managed_Identity_${{ component.dependsOn }}
+              - Aks_${{ component.dependsOn }}
+              - BootStrapClusters_${{ component.dependsOn }}
+              - PipelineTests_${{ component.dependsOn }}
           - ${{ else }}:
               - Precheck
         jobs:
@@ -277,14 +277,15 @@ stages:
         condition: |
           or (
             and(
-              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
+              eq(variables['Build.Reason'], 'Manual'),
               in('${{ parameters.cluster }}', '00', '01'),
               eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
             ),
             and(
-              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
+              eq(variables['Build.Reason'], 'Manual'),
               eq('${{ parameters.cluster }}', 'All')
             ),
+            and(succeeded(), eq(variables['Build.Reason'], 'PullRequest', 'Manual')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
