@@ -363,11 +363,7 @@ stages:
       - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
-          - BootStrapClusters_${{ component.env }}/azure-pipelines.yml (Line: 159, Col: 11): A mapping was not expected
-561508
-/azure-pipelines.yml (Line: 161, Col: 13): A sequence was not expected
-561508
-/azure-pipelines.yml: Expected a scalar value, a sequence, or a mapping
+          - BootStrapClusters_${{ component.env }}
         condition: |
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
