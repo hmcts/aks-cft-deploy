@@ -335,7 +335,7 @@ stages:
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
           - ${{ if ne(component.env, 'sbox') }}:
-              - Aks_${{ component.dependsOn }}
+              - Aks_${{ component.env }}
           - ${{ else }}:
               - Precheck
         variables:
