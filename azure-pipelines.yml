@@ -285,7 +285,7 @@ stages:
               eq(variables['Build.Reason'], 'Manual'),
               eq('${{ parameters.cluster }}', 'All')
             ),
-            and(succeeded(), eq(variables['Build.Reason'], 'PullRequest', 'Manual')),
+            and(succeeded(), in(variables['Build.Reason'], 'PullRequest', 'Manual')),
             and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
           )
         jobs:
