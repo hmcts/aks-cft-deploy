@@ -345,9 +345,8 @@ stages:
         condition: |
           and(
             succeeded(),
-            ne('${{ parameters.action }}', 'plan'),
+            eq('${{ parameters.action }}', 'apply'),
             or(
-              eq('${{ parameters.action }}', 'apply'),
               eq(variables['Build.Reason'], 'PullRequest'),
               and(eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
             )
