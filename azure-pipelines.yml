@@ -59,6 +59,7 @@ parameters:
         backendAzureRmResourceGroupName: "azure-control-sbox-rg"
         aksKeyVault: "dcdcftappssboxkv"
         terraformSubscriptionID: "b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb"
+
       - env: "preview"
         dependsOn: "sbox"
         serviceConnection: "DCD-CFTAPPS-DEV"
@@ -143,31 +144,34 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
-          - Precheck
-        jobs:
-          - job: CheckingClusters
-            steps:
-              - checkout: self
-              - task: AzureCLI@2
-                displayName: "Checking available clusters"
-                name: check_clusters
-                inputs:
-                  scriptType: bash
-                  azureSubscription: ${{ component.serviceConnection }}
-                  scriptPath: "scripts/checking-clusters.sh"
+        - ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'apply')) }}:
+            - Network_${{ component.dependsOn }}
+            - Managed_Identity_${{ component.dependsOn }}
+            - Aks_${{ component.dependsOn }}
+            - Bootstrap_${{ component.dependsOn }}
+            - PipelineTests_${{ component.dependsOn }}
+        - ${{ if and(ne(component.env, 'sbox'), ne(parameters.action, 'apply')) }}:
+            - Network_${{ component.dependsOn }}
+            - Managed_Identity_${{ component.dependsOn }}
+            - Aks_${{ component.dependsOn }}
+        - ${{ else }}:
+            - Precheck
+        - job: CheckingClusters
+          steps:
+            - checkout: self
+            - task: AzureCLI@2
+              displayName: "Checking available clusters"
+              name: check_clusters
+              inputs:
+                scriptType: bash
+                azureSubscription: ${{ component.serviceConnection }}
+                scriptPath: "scripts/checking-clusters.sh"
 
       - stage: Genesis_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Genesis"
         condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded())
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - Genesis_aat
-          - ${{ if eq(component.env, 'ptl') }}:
-              - Network_ptlsbox
-          - ${{ else }}:
-              - ${{ if ne(component.env, 'sbox') }}:
-                  - CheckingClusters_${{ component.env }}
-              - Precheck
+          - CheckingClusters_${{ component.env }}
         jobs:
           - job: Genesis
             steps:
@@ -190,14 +194,7 @@ stages:
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - Network_aat
-          - ${{ if eq(component.env, 'ptl') }}:
-              - Network_ptlsbox
-          - ${{ else }}:
-              - ${{ if ne(component.env, 'sbox') }}:
-                  - Genesis_${{ component.env }}
-              - Precheck
+          - Genesis_${{ component.env }}
         jobs:
           - job: NetworkRg
             steps:
@@ -254,14 +251,7 @@ stages:
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - Managed_Identity_aat
-          - ${{ if eq(component.env, 'ptl') }}:
-              - Managed_Identity_ptlsbox
-          - ${{ else }}:
-              - ${{ if ne(component.env, 'sbox') }}:
-                  - "Network_${{ component.env }}"
-              - Precheck
+          - Network_${{ component.env }}
         jobs:
           - job: Managed_Identity
             steps:
@@ -286,14 +276,8 @@ stages:
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - Aks_aat
-          - ${{ if eq(component.env, 'ptl') }}:
-              - Aks_ptlsbox
-          - ${{ else }}:
-              - ${{ if ne(component.env, 'sbox') }}:
-                  - Managed_Identity_${{ component.env }}
-              - Precheck
+          - CheckingClusters_${{ component.env }}
+          - Managed_Identity_${{ component.env }}
         condition: |
           or (
             and(
@@ -354,14 +338,7 @@ stages:
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - BootStrapClusters_aat
-          - ${{ if eq(component.env, 'ptl') }}:
-              - BootStrapClusters_ptlsbox
-          - ${{ else }}:
-              - ${{ if ne(component.env, 'sbox') }}:
-                  - Aks_${{ component.env }}
-              - Precheck
+          - Aks_${{ component.env }}
         variables:
           clusters: ${{ parameters.cluster }}
         condition: |
@@ -385,14 +362,7 @@ stages:
       - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
-          - ${{ if eq(component.env, 'prod') }}:
-              - PipelineTests_aat
-          - ${{ if eq(component.env, 'ptl') }}:
-              - PipelineTests_ptlsbox
-          - ${{ else }}:
-              - ${{ if ne(component.env, 'sbox') }}:
-                  - BootStrapClusters_${{ component.env }}
-              - Precheck
+          - BootStrapClusters_${{ component.env }}
         condition: |
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
