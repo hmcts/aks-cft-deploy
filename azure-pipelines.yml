@@ -30,7 +30,7 @@ parameters:
   - name: action
     displayName: Action
     type: string
-    default: "plan"
+    default: plan
     values:
       - plan
       - apply
@@ -59,7 +59,6 @@ parameters:
         backendAzureRmResourceGroupName: "azure-control-sbox-rg"
         aksKeyVault: "dcdcftappssboxkv"
         terraformSubscriptionID: "b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb"
-
       - env: "preview"
         dependsOn: "sbox"
         serviceConnection: "DCD-CFTAPPS-DEV"
@@ -144,18 +143,18 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
-        - ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'apply')) }}:
-            - Network_${{ component.dependsOn }}
-            - Managed_Identity_${{ component.dependsOn }}
-            - Aks_${{ component.dependsOn }}
-            - BootStrapClusters_${{ component.dependsOn }}
-            - PipelineTests_${{ component.dependsOn }}
-        - ${{ if and(ne(component.env, 'sbox'), ne(parameters.action, 'apply')) }}:
-            - Network_${{ component.dependsOn }}
-            - Managed_Identity_${{ component.dependsOn }}
-            - Aks_${{ component.dependsOn }}
-        - ${{ else }}:
-            - Precheck
+          - ? ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'apply')) }}
+            : - Network_${{ component.dependsOn }}
+              - Managed_Identity_${{ component.dependsOn }}
+              - Aks_${{ component.dependsOn }}
+              - BootStrapClusters_${{ component.dependsOn }}
+              - PipelineTests_${{ component.dependsOn }}
+          - ? ${{ if and(ne(component.env, 'sbox'), ne(parameters.action, 'apply')) }}
+            : - Network_${{ component.dependsOn }}
+              - Managed_Identity_${{ component.dependsOn }}
+              - Aks_${{ component.dependsOn }}
+          - ${{ else }}:
+              - Precheck
         jobs:
           - job: CheckingClusters
             steps:
