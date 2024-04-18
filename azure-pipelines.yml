@@ -364,6 +364,12 @@ stages:
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
           - BootStrapClusters_${{ component.env }}
+          - ${{ if eq(component.env, 'prod') }}:
+              - PipelineTests_aat
+          - ${{ if eq(component.env, 'ptl') }}:
+              - PipelineTests_ptlsbox
+          - ${{ else }}:
+              - Precheck
         condition: |
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
