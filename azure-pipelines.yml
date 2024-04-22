@@ -114,7 +114,7 @@ variables:
   - name: timeoutInMinutes
     value: "60"
   - name: agentPool
-    value: ubuntu-20.04
+    value: ubuntu-latest
   - name: tfInitSub
     value: "04d27a32-7a07-48b3-95b8-3c8691e1a263"
   - name: isMain
