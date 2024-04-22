@@ -10,8 +10,6 @@ pr:
     include:
       - refs/heads/main
 
-pool:
-  vmImage: ubuntu-latest
 
 resources:
   repositories:
