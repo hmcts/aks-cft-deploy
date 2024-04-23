@@ -1,9 +1,9 @@
 name: AKS-CFT-Deploy - ${{ parameters.action }}
 
-trigger:
-  branches:
-    include:
-      - main
+# trigger:
+#   branches:
+#     include:
+#       - main
 
 pr:
   branches:
