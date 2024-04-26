@@ -27,7 +27,7 @@ parameters:
   - name: action
     displayName: Action
     type: string
-    default: apply
+    default: plan
     values:
       - plan
       - apply
