@@ -239,7 +239,7 @@ stages:
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
                   ${{ if eq(variables['isMain'], true) }}:
-                    overrideAction: ${{ parameters.actionOnmain }}
+                    overrideAction: ${{ parameters.actionOnMain }}
                   ${{ else }}:
                     overrideAction: ${{ parameters.action }}
                   environment: ${{ component.env }}
@@ -268,7 +268,7 @@ stages:
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
                   ${{ if eq(variables['isMain'], true) }}:
-                    overrideAction: ${{ parameters.actionOnmain }}
+                    overrideAction: ${{ parameters.actionOnMain }}
                   ${{ else }}:
                     overrideAction: ${{ parameters.action }}      
                   environment: ${{ component.env }}
