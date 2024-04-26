@@ -176,7 +176,7 @@ stages:
                   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
                     overrideAction: 'apply'
                   ${{ else }}:
-                    overrideAction: 'plan'
+                    overrideAction: '${{ parameters.action }}'
                   environment: ${{ component.env }}
                   component: "genesis"
                   location: ${{ parameters.location }}
@@ -203,7 +203,7 @@ stages:
                   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
                     overrideAction: 'apply'
                   ${{ else }}:
-                    overrideAction: 'plan'
+                    overrideAction: '${{ parameters.action }}'
                   environment: ${{ component.env }}
                   component: "network-rg"
                   location: ${{ parameters.location }}
@@ -236,7 +236,7 @@ stages:
                   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
                     overrideAction: 'apply'
                   ${{ else }}:
-                    overrideAction: 'plan'
+                    overrideAction: '${{ parameters.action }}'
                   environment: ${{ component.env }}
                   component: "network"
                   location: ${{ parameters.location }}
@@ -265,7 +265,7 @@ stages:
                   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
                     overrideAction: 'apply'
                   ${{ else }}:
-                    overrideAction: 'plan'                 
+                    overrideAction: '${{ parameters.action }}'         
                   environment: ${{ component.env }}
                   component: managed-identity
                   location: ${{ parameters.location }}
@@ -314,7 +314,7 @@ stages:
                   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
                     action: 'apply'
                   ${{ else }}:
-                    action: 'plan'   
+                    action: '${{ parameters.action }}'   
                   terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
                   backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                   setClusterNumbersEnvVar: true
@@ -337,7 +337,7 @@ stages:
                   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
                     action: 'apply'
                   ${{ else }}:
-                    action: 'plan'  
+                    action: '${{ parameters.action }}'  
                   setClusterNumbersEnvVar: false
                   terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
                   backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
