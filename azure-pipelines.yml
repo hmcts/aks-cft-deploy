@@ -24,7 +24,7 @@ resources:
       endpoint: "hmcts"
 
 parameters:
-  - name: actionOnmain
+  - name: actionOnMain
     default: apply
 
   - name: action
@@ -179,7 +179,7 @@ stages:
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
                   ${{ if eq(variables['isMain'], true) }}:
-                    overrideAction: ${{ parameters.actionOnmain }}
+                    overrideAction: ${{ parameters.actionOnMain }}
                   ${{ else }}:
                     overrideAction: ${{ parameters.action }}
                   environment: ${{ component.env }}
@@ -206,7 +206,7 @@ stages:
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
                   ${{ if eq(variables['isMain'], true) }}:
-                    overrideAction: ${{ parameters.actionOnmain }}
+                    overrideAction: ${{ parameters.actionOnMain }}
                   ${{ else }}:
                     overrideAction: ${{ parameters.action }}
                   environment: ${{ component.env }}
@@ -317,7 +317,7 @@ stages:
                   tfInitSub: ${{ variables.tfInitSub }}
                   serviceConnection: ${{ component.serviceConnection }}
                   ${{ if eq(variables['isMain'], true) }}:
-                    overrideAction: ${{ parameters.actionOnmain }}
+                    overrideAction: ${{ parameters.actionOnMain }}
                   ${{ else }}:
                     action: ${{ parameters.action }}
                   terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
@@ -340,7 +340,7 @@ stages:
                   tfInitSub: ${{ variables.tfInitSub }}
                   serviceConnection: ${{ component.serviceConnection }}
                   ${{ if eq(variables['isMain'], true) }}:
-                    action: ${{ parameters.actionOnmain }}
+                    action: ${{ parameters.actionOnMain }}
                   ${{ else }}:
                     action: ${{ parameters.action }} 
                   setClusterNumbersEnvVar: false
