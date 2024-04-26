@@ -173,7 +173,7 @@ stages:
             steps:
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
-                  overrideAction: ${{ parameters.action }}
+                  overrideAction: ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main'), 'apply', 'plan' }}                  
                   environment: ${{ component.env }}
                   component: "genesis"
                   location: ${{ parameters.location }}
@@ -197,7 +197,7 @@ stages:
               - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
-                  overrideAction: ${{ parameters.action }}
+                  overrideAction: ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main'), 'apply', 'plan' }}                  
                   environment: ${{ component.env }}
                   component: "network-rg"
                   location: ${{ parameters.location }}
@@ -227,7 +227,7 @@ stages:
 
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
-                  overrideAction: ${{ parameters.action }}
+                  overrideAction: ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main'), 'apply', 'plan' }}                  
                   environment: ${{ component.env }}
                   component: "network"
                   location: ${{ parameters.location }}
@@ -253,7 +253,7 @@ stages:
             steps:
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
-                  overrideAction: ${{ parameters.action }}
+                  overrideAction: ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main'), 'apply', 'plan' }}                  
                   environment: ${{ component.env }}
                   component: managed-identity
                   location: ${{ parameters.location }}
@@ -276,12 +276,12 @@ stages:
         condition: |
           or (
             and(
-              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
+              in(variables['Build.Reason'], 'Manual', 'IndividualCI'),
               in('${{ parameters.cluster }}', '00', '01'),
               eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
             ),
             and(
-              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
+              in(variables['Build.Reason'], 'Manual', 'IndividualCI'),
               eq('${{ parameters.cluster }}', 'All')
             ),
             and(succeeded(), in(variables['Build.Reason'], 'PullRequest', 'Manual')),
@@ -299,7 +299,7 @@ stages:
                   product: ${{ variables.product }}
                   tfInitSub: ${{ variables.tfInitSub }}
                   serviceConnection: ${{ component.serviceConnection }}
-                  action: ${{ parameters.action }}
+                  action: ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main'), 'apply', 'plan' }}
                   terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
                   backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                   setClusterNumbersEnvVar: true
@@ -319,7 +319,7 @@ stages:
                   project: $(project)
                   tfInitSub: ${{ variables.tfInitSub }}
                   serviceConnection: ${{ component.serviceConnection }}
-                  action: ${{ parameters.action }}
+                  action: ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main'), 'apply', 'plan' }}
                   setClusterNumbersEnvVar: false
                   terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
                   backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
