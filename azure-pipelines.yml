@@ -122,7 +122,6 @@ variables:
     value: ${{ parameters.action }}
   - template: vars/input-variables.yaml@cnp-azuredevops-libraries
 
-
 stages:
   - stage: PreCheck
     displayName: PreChecks
@@ -255,7 +254,7 @@ stages:
             steps:
               - template: steps/terraform.yaml@cnp-azuredevops-libraries
                 parameters:
-                  overrideAction: ${{ parameters.action }}      
+                  overrideAction: ${{ parameters.action }}
                   environment: ${{ component.env }}
                   component: managed-identity
                   location: ${{ parameters.location }}
@@ -278,12 +277,12 @@ stages:
         condition: |
           or (
             and(
-              in(variables['Build.Reason'], 'Manual')
+              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
               in('${{ parameters.cluster }}', '00', '01'),
               eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
             ),
             and(
-              in(variables['Build.Reason'], 'Manual')
+              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
               eq('${{ parameters.cluster }}', 'All')
             ),
             and(succeeded(), in(variables['Build.Reason'], 'PullRequest', 'Manual')),
@@ -321,7 +320,7 @@ stages:
                   project: $(project)
                   tfInitSub: ${{ variables.tfInitSub }}
                   serviceConnection: ${{ component.serviceConnection }}
-                  action: ${{ parameters.action }} 
+                  action: ${{ parameters.action }}
                   setClusterNumbersEnvVar: false
                   terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
                   backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
