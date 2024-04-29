@@ -24,9 +24,6 @@ resources:
       endpoint: "hmcts"
 
 parameters:
-  - name: actionOnMain
-    default: apply
-
   - name: action
     displayName: Action
     type: string
