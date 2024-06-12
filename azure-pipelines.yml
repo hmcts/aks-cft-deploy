@@ -31,6 +31,9 @@ parameters:
     values:
       - plan
       - apply
+  - name: components
+    type: object
+    default: ['aks', 'aks-mis', 'genesis', 'managed-identity', 'network', 'network-rg']
 
   - name: cluster
     displayName: Cluster
@@ -136,7 +139,7 @@ stages:
               projectName: ${{ variables.project }}
               cluster: ${{ parameters.cluster }}
               environment: sbox
-              environment_components: ${{ parameters.environment_components }}
+              environment_components: ${{ parameters.components }}
               
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
