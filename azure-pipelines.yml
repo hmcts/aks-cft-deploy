@@ -50,7 +50,12 @@ parameters:
   
   - name: components
     type: object
-    default: []
+    default: ["aks",
+    "aks-mis",
+    "genesis",
+    "managed-identity",
+    "network",
+    "network-rg"]
 
   - name: environment_components
     type: object
@@ -132,11 +137,6 @@ stages:
     jobs:
       - job: PreChecks
         steps:
-          - script: |
-              for dir in $(ls -d components/*/); do
-                ${{ parameters.components }}+=( $(basename $dir) )
-              done
-            displayName: 'Populate Components'
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
               keyvaultName: infra-vault-nonprod
