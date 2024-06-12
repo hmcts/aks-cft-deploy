@@ -147,7 +147,7 @@ stages:
               projectName: ${{ variables.project }}
               cluster: ${{ parameters.cluster }}
               environment: sbox
-              environment_components: $[ dependencies.PreChecks.outputs['PreChecks.PreChecks.components'] ]
+              environment_components: ${{ components }}
               
   # - ${{ each component in parameters.environment_components }}:
   #     - stage: "CheckingClusters_${{ component.env }}"
