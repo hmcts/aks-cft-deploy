@@ -133,11 +133,9 @@ stages:
       - job: PreChecks
         steps:
           - script: |
-              components=()
               for dir in $(ls -d components/*/); do
-                components+=("$(basename $dir)")
+                ${{ parameters.components }}+=("$(basename $dir)")
               done
-              echo "##vso[task.setvariable variable=components;isOutput=true]${components[*]}"
             displayName: 'Populate Components'
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
@@ -147,7 +145,7 @@ stages:
               projectName: ${{ variables.project }}
               cluster: ${{ parameters.cluster }}
               environment: sbox
-              environment_components: ${{ components }}
+              environment_components: ${{ parameters.components }}
               
   # - ${{ each component in parameters.environment_components }}:
   #     - stage: "CheckingClusters_${{ component.env }}"
