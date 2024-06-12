@@ -132,11 +132,12 @@ stages:
     jobs:
       - job: PreChecks
         steps:
+          - script: |
+              for dir in $(ls -d components/*/); do
+                ${{ parameters.components }}+=("$(basename $dir)")
+              done
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
-              keyvaultName: infra-vault-nonprod
-              keyvaultSecret: "azure-devops-sp-token"
-              serviceConnection: azurerm-sandbox
               projectName: ${{ variables.project }}
               cluster: ${{ parameters.cluster }}
               environment: sbox
