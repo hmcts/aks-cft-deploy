@@ -14,7 +14,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: master
+      ref: dtspo-17345-reinstate-nagger-jg
       name: hmcts/cnp-azuredevops-libraries
       endpoint: "hmcts"
     - repository: cnp-flux-config
@@ -136,6 +136,8 @@ stages:
               projectName: ${{ variables.project }}
               cluster: ${{ parameters.cluster }}
               environment: sbox
+              environment_components: ${{ parameters.environment_components }}
+              
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
