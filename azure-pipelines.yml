@@ -31,9 +31,6 @@ parameters:
     values:
       - plan
       - apply
-  - name: components
-    type: object
-    default: ['aks', 'aks-mis', 'genesis', 'managed-identity', 'network', 'network-rg']
 
   - name: cluster
     displayName: Cluster
@@ -50,6 +47,10 @@ parameters:
     default: "UK South"
     values:
       - "UK South"
+  
+  - name: components
+    type: object
+    default: ['aks', 'aks-mis', 'genesis', 'managed-identity', 'network', 'network-rg']
 
   - name: environment_components
     type: object
