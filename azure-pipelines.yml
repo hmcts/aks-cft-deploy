@@ -134,7 +134,7 @@ stages:
         steps:
           - script: |
               for dir in $(ls -d components/*/); do
-                ${{ parameters.components }}+=($(basename $dir))
+                ${{ parameters.components }}+=( $(basename $dir) )
               done
             displayName: 'Populate Components'
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
