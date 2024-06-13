@@ -156,7 +156,7 @@ stages:
               projectName: ${{ variables.project }}
               cluster: ${{ parameters.cluster }}
               environment: sbox
-              environment_components: ${{ variable.components }}
+              environment_components: ${{ variables.components }}
               
   # - ${{ each component in parameters.environment_components }}:
   #     - stage: "CheckingClusters_${{ component.env }}"
