@@ -131,20 +131,7 @@ stages:
       - job: FindComponents
         steps:
             - script: |
-                # Python script to list subdirectories in the 'components' directory and output them
-                import os
-
-                # Define the path to the components directory
-                components_dir = 'components'
-
-                # List all subdirectories in the components directory
-                subdirs = [name for name in os.listdir(components_dir) if os.path.isdir(os.path.join(components_dir, name))]
-
-                # Convert the list of subdirectories to a single string with each enclosed in quotes and separated by commas
-                components_str = ','.join(f'"{subdir}"' for subdir in subdirs)
-
-                # Set the variable with the list of components
-                print(f"##vso[task.setvariable variable=components]{components_str}")
+                  python -c "import os; components_dir = 'components'; subdirs = [name for name in os.listdir(components_dir) if os.path.isdir(os.path.join(components_dir, name))]; components_str = ','.join(f'\"{subdir}\"' for subdir in subdirs); print(f'##vso[task.setvariable variable=components;isOutput=true]{components_str}')"
               displayName: 'Find Components'
       - job: PreChecks
         steps:
