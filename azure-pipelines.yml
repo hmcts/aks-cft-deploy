@@ -120,19 +120,12 @@ variables:
     value: cft-platform
   - name: action
     value: ${{ parameters.action }}
-  - name: components
-    value: ""
   - template: vars/input-variables.yaml@cnp-azuredevops-libraries
 
 stages:
   - stage: PreCheck
     displayName: PreChecks
     jobs:
-      - job: FindComponents
-        steps:
-            - script: |
-                  python -c "import os; components_dir = 'components'; subdirs = [name for name in os.listdir(components_dir) if os.path.isdir(os.path.join(components_dir, name))]; components_str = ','.join(f'\"{subdir}\"' for subdir in subdirs); print(f'##vso[task.setvariable variable=components;isOutput=true]{components_str}')"
-              displayName: 'Find Components'
       - job: PreChecks
         steps:
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
