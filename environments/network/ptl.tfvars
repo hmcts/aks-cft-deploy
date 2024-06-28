@@ -226,7 +226,31 @@ additional_routes = [
     address_prefix         = "10.225.251.0/24"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
-  }
+  },
+  {
+    name                   = "idam-demo"
+    address_prefix         = "10.97.128.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "idam-ithc"
+    address_prefix         = "10.120.64.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "idam-perftest"
+    address_prefix         = "10.120.0.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "idam-preview"
+    address_prefix         = "10.97.64.0/18"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
 ]
 
 additional_routes_coreinfra = [
