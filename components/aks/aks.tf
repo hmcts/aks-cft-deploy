@@ -118,7 +118,7 @@ module "kubernetes" {
 
   enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
 
-  enable_node_os_channel_upgrade_nodeimage = contains(["sbox", "ithc", "aat", "demo", "perftest", "preview", "ptlsbox"], var.env) ? true : false
+  enable_node_os_channel_upgrade_nodeimage = true
 
   node_os_maintenance_window_config = var.node_os_maintenance_window_config
 
