@@ -114,7 +114,7 @@ module "kubernetes" {
     ],
     var.env == "sbox" ? [
       {
-        name                = "LinuxAzureImage"
+        name                = "azurelinux"
         vm_size             = "Standard_DS3_v2"
         min_count           = 1
         max_count           = 1
