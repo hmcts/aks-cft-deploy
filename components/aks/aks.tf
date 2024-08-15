@@ -119,7 +119,7 @@ module "kubernetes" {
         min_count           = 1
         max_count           = 1
         max_pods            = 30
-        os_type             = "Linux"
+        os_type             = "Windows"
         os_sku              = "AzureLinux"
         node_taints         = []
         enable_auto_scaling = true
