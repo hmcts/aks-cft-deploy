@@ -114,13 +114,13 @@ module "kubernetes" {
     ],
     var.env == "sbox" ? [
       {
-        name      = "azurelinux"
-        vm_size   = "Standard_DS3_v2"
-        min_count = 1
-        max_count = 1
-        max_pods  = 30
-        os_type   = "Linux"
-        os_sku    = "AzureLinux"
+        name                = "azurelinux"
+        vm_size             = "Standard_DS3_v2"
+        min_count           = 1
+        max_count           = 1
+        max_pods            = 30
+        os_type             = "Linux"
+        os_sku              = "AzureLinux"
         node_taints         = ["custom.azurelinux=true:NoSchedule"]
         enable_auto_scaling = true
         mode                = "User"
