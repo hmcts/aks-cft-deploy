@@ -121,7 +121,7 @@ module "kubernetes" {
         max_pods            = 30
         os_type             = "Linux"
         os_sku              = "AzureLinux"
-        node_taints         = []
+        node_taints         = ["custom.azurelinux=true:NoSchedule"]
         enable_auto_scaling = true
         mode                = "User"
       }
