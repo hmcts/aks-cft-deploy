@@ -112,7 +112,7 @@ module "kubernetes" {
         spot_max_price      = "-1"
       }
     ],
-    var.env == "sbox" ? [
+    (var.env == "sbox" || var.env == "ptlsbox") ? [
       {
         name                = "azurelinux"
         vm_size             = "Standard_DS3_v2"
