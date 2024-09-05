@@ -73,60 +73,44 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = var.enable_user_system_nodepool_split == true ? true : false
 
-  additional_node_pools = contains([], var.env) ? tuple([]) : concat(
-    [
-      {
-        name                = "linux"
-        vm_size             = lookup(var.linux_node_pool, "vm_size", "Standard_DS3_v2")
-        min_count           = lookup(var.linux_node_pool, "min_nodes", 2)
-        max_count           = lookup(var.linux_node_pool, "max_nodes", 4)
-        max_pods            = lookup(var.linux_node_pool, "max_pods", 30)
-        os_type             = "Linux"
-        node_taints         = []
-        enable_auto_scaling = true
-        mode                = "User"
-      },
-      {
-        name                = "cronjob"
-        vm_size             = "Standard_D4ds_v5"
-        min_count           = 0
-        max_count           = 10
-        max_pods            = 30
-        os_type             = "Linux"
-        node_taints         = ["dedicated=jobs:NoSchedule"]
-        enable_auto_scaling = true
-        mode                = "User"
-      },
-      {
-        name                = "spotinstance"
-        vm_size             = lookup(var.spot_node_pool, "vm_size", "Standard_D4ds_v5")
-        min_count           = lookup(var.spot_node_pool, "min_nodes", 0)
-        max_count           = lookup(var.spot_node_pool, "max_nodes", 5)
-        max_pods            = lookup(var.spot_node_pool, "max_pods", 30)
-        os_type             = "Linux"
-        node_taints         = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
-        enable_auto_scaling = true
-        mode                = "User"
-        priority            = "Spot"
-        eviction_policy     = "Delete"
-        spot_max_price      = "-1"
-      }
-    ],
-    (var.env == "sbox" || var.env == "ptlsbox") ? [
-      {
-        name                = "azurelinux"
-        vm_size             = "Standard_DS3_v2"
-        min_count           = 1
-        max_count           = 1
-        max_pods            = 30
-        os_type             = "Linux"
-        os_sku              = "AzureLinux"
-        node_taints         = ["custom.azurelinux=true:NoSchedule"]
-        enable_auto_scaling = true
-        mode                = "User"
-      }
-    ] : []
-  )
+  additional_node_pools = contains([], var.env) ? tuple([]) : [
+    {
+      name                = "linux"
+      vm_size             = lookup(var.linux_node_pool, "vm_size", "Standard_DS3_v2")
+      min_count           = lookup(var.linux_node_pool, "min_nodes", 2)
+      max_count           = lookup(var.linux_node_pool, "max_nodes", 4)
+      max_pods            = lookup(var.linux_node_pool, "max_pods", 30)
+      os_type             = "Linux"
+      node_taints         = []
+      enable_auto_scaling = true
+      mode                = "User"
+    },
+    {
+      name                = "cronjob"
+      vm_size             = "Standard_D4ds_v5"
+      min_count           = 0
+      max_count           = 10
+      max_pods            = 30
+      os_type             = "Linux"
+      node_taints         = ["dedicated=jobs:NoSchedule"]
+      enable_auto_scaling = true
+      mode                = "User"
+    },
+    {
+      name                = "spotinstance"
+      vm_size             = lookup(var.spot_node_pool, "vm_size", "Standard_D4ds_v5")
+      min_count           = lookup(var.spot_node_pool, "min_nodes", 0)
+      max_count           = lookup(var.spot_node_pool, "max_nodes", 5)
+      max_pods            = lookup(var.spot_node_pool, "max_pods", 30)
+      os_type             = "Linux"
+      node_taints         = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
+      enable_auto_scaling = true
+      mode                = "User"
+      priority            = "Spot"
+      eviction_policy     = "Delete"
+      spot_max_price      = "-1"
+    }
+  ]
 
   project_acr_enabled = var.project_acr_enabled
   availability_zones  = var.availability_zones
