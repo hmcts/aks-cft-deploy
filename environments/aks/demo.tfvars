@@ -12,7 +12,7 @@ enable_user_system_nodepool_split = true
 system_node_pool = {
   vm_size   = "Standard_D4ds_v5",
   min_nodes = 4,
-  max_nodes = 10
+  max_nodes = 11
 }
 
 linux_node_pool = {
