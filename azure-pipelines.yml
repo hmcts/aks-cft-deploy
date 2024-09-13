@@ -14,7 +14,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: tfcmt-update
+      ref: master
       name: hmcts/cnp-azuredevops-libraries
       endpoint: "hmcts"
     - repository: cnp-flux-config
