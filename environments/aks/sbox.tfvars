@@ -19,7 +19,7 @@ system_node_pool = {
 }
 
 linux_node_pool = {
-  vm_size   = "Standard_D4ds_v5",
+  vm_size   = "Standard_D2ds_v5",
   min_nodes = 4,
   max_nodes = 10
 }
