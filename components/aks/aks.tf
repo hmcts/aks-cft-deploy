@@ -25,7 +25,7 @@ data "azuread_service_principal" "aks_auto_shutdown" {
 
 module "kubernetes" {
   for_each = toset([for key, value in var.clusters : key])
-  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
+  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=feat/add-additional-node-pool-disk-size"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.env
