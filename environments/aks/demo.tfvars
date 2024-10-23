@@ -16,11 +16,20 @@ system_node_pool = {
 }
 
 linux_node_pool = {
-  vm_size   = "Standard_D8ds_v5",
-  min_nodes = 5, #Original value was 20, reducing to 5 due to spot instances being enabled
-  max_nodes = 30,
-  max_pods  = 50
+  "00" = {
+    vm_size   = "Standard_D8ds_v5",
+    min_nodes = 5,
+    max_nodes = 30,
+    max_pods  = 50
+  },
+  "01" = {
+    vm_size   = "Standard_D8ds_v5",
+    min_nodes = 5,
+    max_nodes = 30,
+    max_pods  = 50
+  }
 }
+
 
 spot_node_pool = {
   vm_size   = "Standard_D8ds_v5",
