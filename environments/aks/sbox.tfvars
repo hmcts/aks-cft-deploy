@@ -19,9 +19,16 @@ system_node_pool = {
 }
 
 linux_node_pool = {
-  vm_size   = "Standard_D4ds_v5",
-  min_nodes = 4,
-  max_nodes = 10
+  "00" = {
+    vm_size   = "Standard_D8ds_v5",
+    min_nodes = 4,
+    max_nodes = 10,
+  },
+  "01" = {
+    vm_size   = "Standard_D8ds_v5",
+    min_nodes = 4,
+    max_nodes = 10,
+  }
 }
 
 spot_node_pool = {

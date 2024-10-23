@@ -13,10 +13,18 @@ system_node_pool = {
   min_nodes = 2,
   max_nodes = 4
 }
+
 linux_node_pool = {
-  vm_size   = "Standard_D8ds_v5",
-  min_nodes = 15,
-  max_nodes = 40
+  "00" = {
+    vm_size   = "Standard_D8ds_v5",
+    min_nodes = 15,
+    max_nodes = 40,
+  },
+  "01" = {
+    vm_size   = "Standard_D8ds_v5",
+    min_nodes = 15,
+    max_nodes = 40,
+  }
 }
 
 availability_zones = ["1", "2", "3"]
