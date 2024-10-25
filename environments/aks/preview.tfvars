@@ -1,7 +1,7 @@
 clusters = {
-  "00" = {
-    kubernetes_cluster_version = "1.30"
-  },
+  //"00" = {
+  //  kubernetes_cluster_version = "1.30"
+  //},
 
    "01" = {
      kubernetes_cluster_version = "1.30"
@@ -21,7 +21,7 @@ linux_node_pool = {
     vm_size   = "Standard_D8ds_v5",
     min_nodes = 30,
     max_nodes = 180,
-    max_pods  = 60
+    max_pods  = 30
   },
   "01" = {
     vm_size   = "Standard_D8ds_v5",
