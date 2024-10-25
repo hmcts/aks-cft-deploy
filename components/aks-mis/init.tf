@@ -7,7 +7,7 @@ terraform {
   required_providers {
     azurerm = {
       source                = "hashicorp/azurerm"
-      version               = "3.35.0"
+      version = "4.5"
       configuration_aliases = [azurerm.hmcts-control]
     }
   }
@@ -67,49 +67,49 @@ locals {
 
 provider "azurerm" {
   subscription_id            = local.mi_cft[var.env].subscription
-  skip_provider_registration = "true"
+  resource_provider_registrations = "none"
   features {}
   alias = "acr"
 }
 
 provider "azurerm" {
   subscription_id            = local.acr["global"].subscription
-  skip_provider_registration = "true"
+  resource_provider_registrations = "none"
   features {}
   alias = "global_acr"
 }
 
 provider "azurerm" {
   alias                      = "hmcts-control"
-  skip_provider_registration = "true"
+  resource_provider_registrations = "none"
   features {}
   subscription_id = "04d27a32-7a07-48b3-95b8-3c8691e1a263"
 }
 
 provider "azurerm" {
   alias                      = "preview1aat"
-  skip_provider_registration = "true"
+  resource_provider_registrations = "none"
   features {}
   subscription_id = "96c274ce-846d-4e48-89a7-d528432298a7"
 }
 
 provider "azurerm" {
   alias                      = "preview2aat"
-  skip_provider_registration = "true"
+  resource_provider_registrations = "none"
   features {}
   subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
 }
 
 provider "azurerm" {
   alias                      = "preview"
-  skip_provider_registration = "true"
+  resource_provider_registrations = "none"
   features {}
   subscription_id = "8b6ea922-0862-443e-af15-6056e1c9b9a4"
 }
 
 provider "azurerm" {
   alias                      = "dts-cftptl-intsvc"
-  skip_provider_registration = "true"
+  resource_provider_registrations = "none"
   features {}
   subscription_id = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
 }

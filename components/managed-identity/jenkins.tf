@@ -17,7 +17,7 @@ locals {
 
 provider "azurerm" {
   alias                      = "jenkins-mi"
-  skip_provider_registration = "true"
+  resource_provider_registrations = "none"
   features {}
   subscription_id = local.jenkins[local.jenkins-mi].subscription
 }
