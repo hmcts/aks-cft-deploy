@@ -134,7 +134,6 @@ stages:
               keyvaultSecret: "azure-devops-sp-token"
               serviceConnection: azurerm-sandbox
               projectName: ${{ variables.project }}
-              cluster: ${{ parameters.cluster }}
               environment: sbox
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
