@@ -46,7 +46,7 @@ steps:
   inputs:
     azureSubscription: ${{ parameters.serviceConnection }}
     addSpnToEnvironment: true
-    scriptType: shell
+    scriptType: bash
     failOnStandardError: 'false'
     scriptPath: aks-cft-deploy/bootstrap/bootstrap.sh
     arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) ${{ parameters.serviceConnection }} "$(clusters)" deploy ${{ parameters.akskeyvault }} ${{parameters.terraformSubscriptionID}}

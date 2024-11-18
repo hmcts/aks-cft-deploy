@@ -50,14 +50,14 @@ for cluster in ${cluster_numbers}; do
   echo "################################"
   echo -e "Starting Deployment on ${project}-${env}-${cluster}-aks\n"
 
-  ./scripts/get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
-  ./scripts/create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"
-  ./scripts/create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
-  ./scripts/create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
-  ./scripts/install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
+  ./aks-cft-deploy/bootstrap/scripts/get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
+  ./aks-cft-deploy/bootstrap/scripts/create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"
+  ./aks-cft-deploy/bootstrap/scripts/create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
+  ./aks-cft-deploy/bootstrap/scripts/create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
+  ./aks-cft-deploy/bootstrap/scripts/install-flux.sh "$@"|| error_exit "ERROR: Unable to install flux"
   [[ $6 =~ ^(aat|ithc|perftest|prod)$ ]] && (./scripts/create-neuvector-azure-file-share.sh "$@"|| error_exit "ERROR: Unable to create Neuvector Azure File Shares")
   echo "Cleanup"
-  ./scripts/cleanup-sshkeys.sh "$@" || error_exit "ERROR: Unable to Cleanup"
+  ./aks-cft-deploy/bootstrap/scripts/cleanup-sshkeys.sh "$@" || error_exit "ERROR: Unable to Cleanup"
 
   echo "Deployment Complete for ${project}-${env}-${cluster}-aks"
   echo "################################"
