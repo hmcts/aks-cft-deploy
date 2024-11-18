@@ -18,6 +18,7 @@ steps:
       azureSubscription: ${{ parameters.serviceConnection }}
       addSpnToEnvironment: true
       scriptLocation: inlineScript
+      scriptType: bash
       failOnStandardError: 'true'
       inlineScript: |
         echo "##vso[task.setvariable variable=AZURE_MI_ID]$(az identity show --resource-group genesis-rg --name aks-${{ parameters.environment }}-mi --query="clientId" -o tsv)"
@@ -46,7 +47,6 @@ steps:
     azureSubscription: ${{ parameters.serviceConnection }}
     addSpnToEnvironment: true
     workingDirectory: ask-cft-deploy/bootstrap
-    scriptType: bash
     failOnStandardError: 'false'
     scriptType: bash
     scriptPath: aks-cft-deploy/bootstrap/bootstrap.sh
