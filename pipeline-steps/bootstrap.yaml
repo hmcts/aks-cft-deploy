@@ -12,7 +12,7 @@ steps:
     serviceConnection: ${{ parameters.serviceConnection }}
     environment: ${{ parameters.environment }}
 
-- task: AzureCLI@1
+- task: AzureCLI@2
   displayName: 'Setup Authentication'
   inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
@@ -40,12 +40,14 @@ steps:
     filePath: aks-cft-deploy/pipeline-scripts/update-issuer-url.sh
   condition: ne('${{ parameters.cluster }}', 'All')
 
-- task: AzureCLI@1
+- task: AzureCLI@2
   displayName: 'Bootstrap'
   inputs:
     azureSubscription: ${{ parameters.serviceConnection }}
     addSpnToEnvironment: true
-    scriptType: shell
+    workingDirectory: ask-cft-deploy/bootstrap
+    scriptType: bash
     failOnStandardError: 'false'
+    scriptType: bash
     scriptPath: aks-cft-deploy/bootstrap/bootstrap.sh
     arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) ${{ parameters.serviceConnection }} "$(clusters)" deploy ${{ parameters.akskeyvault }} ${{parameters.terraformSubscriptionID}}
