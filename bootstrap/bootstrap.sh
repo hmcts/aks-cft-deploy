@@ -24,14 +24,6 @@ fi
 
 echo "Params: $*"
 
-chmod +x scripts/get-aks-credentials.sh
-chmod +x scripts/create-custom-namespaces.sh
-chmod +x scripts/create-cluster-admins.sh
-chmod +x scripts/create-flux-githubkey-secret.sh
-chmod +x scripts/install-flux.sh
-chmod +x scripts/create-neuvector-azure-file-share.sh
-chmod +x scripts/cleanup-sshkeys.sh
-
 project=${1}
 env=${3}
 if [[ "${6}" == "All" ]]; then
@@ -50,7 +42,7 @@ for cluster in ${cluster_numbers}; do
   echo "################################"
   echo -e "Starting Deployment on ${project}-${env}-${cluster}-aks\n"
 
-  ./scripts/get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
+  ./aks-cft-deploy/bootstrap/scripts/get-aks-credentials.sh "$@" || error_exit "ERROR: Unable to get AKS credentials"
   ./aks-cft-deploy/bootstrap/scripts/create-custom-namespaces.sh "$@" || error_exit "ERROR: Unable to create custom namespaces"
   ./aks-cft-deploy/bootstrap/scripts/create-cluster-admins.sh "$@" || error_exit "ERROR: Unable to create cluster admins"
   ./aks-cft-deploy/bootstrap/scripts/create-flux-githubkey-secret.sh "$@"|| error_exit "ERROR: Unable to create flux githubkey secret"
