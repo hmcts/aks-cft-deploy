@@ -47,6 +47,7 @@ steps:
   inputs:
     azureSubscription: ${{ parameters.serviceConnection }}
     addSpnToEnvironment: true
+    workingDirectory: aks-cft-deploy/bootstrap
     scriptType: bash
     failOnStandardError: 'false'
     scriptPath: aks-cft-deploy/bootstrap/bootstrap.sh
