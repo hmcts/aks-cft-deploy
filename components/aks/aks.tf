@@ -23,6 +23,10 @@ data "azuread_service_principal" "aks_auto_shutdown" {
   display_name = "DTS AKS Auto-Shutdown"
 }
 
+variable "drain_timeout_time" {
+  default = 30
+}
+
 module "kubernetes" {
   for_each = toset([for key, value in var.clusters : key])
   source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=4.x"
