@@ -159,9 +159,6 @@ variable "enable_user_system_nodepool_split" {
   default = false
 }
 
-variable "availability_zones" {
-  type = list(any)
-}
 
 variable "enable_automatic_channel_upgrade_patch" {
   default     = false
