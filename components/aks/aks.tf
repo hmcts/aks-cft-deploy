@@ -63,9 +63,9 @@ module "kubernetes" {
 
   kubernetes_cluster_ssh_key = var.clusters[each.value]["kubernetes_cluster_ssh_key"]
 
-  kubernetes_cluster_agent_min_count = lookup(var.system_node_pool, "min_nodes", 2)
-  kubernetes_cluster_agent_max_count = lookup(var.system_node_pool, "max_nodes", 3)
-  kubernetes_cluster_agent_vm_size   = lookup(var.system_node_pool, "vm_size", "Standard_DS3_v2")
+  kubernetes_cluster_agent_min_count = lookup(var.clusters, "min_nodes", 2)
+  kubernetes_cluster_agent_max_count = lookup(var.clusters, "max_nodes", 3)
+  kubernetes_cluster_agent_vm_size   = lookup(var.clusters, "vm_size", "Standard_DS3_v2")
   kubernetes_cluster_version         = var.clusters[each.value]["kubernetes_cluster_version"]
   kubernetes_cluster_agent_max_pods  = var.kubernetes_cluster_agent_max_pods
 
