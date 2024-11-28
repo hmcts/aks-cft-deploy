@@ -113,7 +113,6 @@ module "kubernetes" {
   ]
 
   project_acr_enabled = var.project_acr_enabled
-  availability_zones  = var.availability_zones
 
   enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
 
