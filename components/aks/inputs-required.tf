@@ -11,7 +11,7 @@ variable "product" {}
 variable "control_vault" {}
 
 # Kubernetes
-variable "kubernetes_cluster_ssh_key" {}
+# variable "kubernetes_cluster_ssh_key" {}
 
 variable "clusters" {
   description = <<-EOF
