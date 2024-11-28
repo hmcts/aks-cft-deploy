@@ -76,10 +76,10 @@ module "kubernetes" {
   additional_node_pools = contains([], var.env) ? tuple([]) : [
     {
       name                = "linux"
-      vm_size             = lookup(var.linux_node_pool[each.key], "vm_size", "Standard_DS3_v2")
-      min_count           = lookup(var.linux_node_pool[each.key], "min_nodes", 2)
-      max_count           = lookup(var.linux_node_pool[each.key], "max_nodes", 4)
-      max_pods            = lookup(var.linux_node_pool[each.key], "max_pods", 30)
+      vm_size             = lookup(var.clusters[each.value], "linux_node_pool[each.key].vm_size", "Standard_DS3_v2")
+      min_count           = lookup(var.clusters[each.value], "linux_node_pool"[each.key], "min_nodes", 2)
+      max_count           = lookup(var.clusters[each.value], "linux_node_pool"[each.key], "max_nodes", 4)
+      max_pods            = lookup(var.clusters[each.value], "linux_node_pool"[each.key], "max_pods", 30)
       os_type             = "Linux"
       node_taints         = []
       enable_auto_scaling = true
