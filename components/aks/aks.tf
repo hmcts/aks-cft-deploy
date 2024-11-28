@@ -23,9 +23,6 @@ data "azuread_service_principal" "aks_auto_shutdown" {
   display_name = "DTS AKS Auto-Shutdown"
 }
 
-variable "drain_timeout_time" {
-  default = 30
-}
 
 module "kubernetes" {
   for_each = toset([for key, value in var.clusters : key])
@@ -128,6 +125,7 @@ module "kubernetes" {
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
   aks_role_definition              = "Contributor"
   aks_auto_shutdown_principal_id   = data.azuread_service_principal.aks_auto_shutdown.object_id
+  drain_timeout_time               = var.drain_timeout_time
 }
 
 module "ctags" {

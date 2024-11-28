@@ -35,7 +35,7 @@ kube_audit_admin_logs_enabled      = true
 availability_zones = ["1", "2", "3"]
 
 node_os_maintenance_window_config = {
-  frequency   = "Daily"
-  start_time  = "23:00"
-  is_prod     = true
+  frequency  = "Daily"
+  start_time = "23:00"
+  is_prod    = true
 }
