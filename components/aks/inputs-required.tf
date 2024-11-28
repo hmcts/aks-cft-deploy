@@ -86,9 +86,9 @@ variable "clusters" {
 
   type = map(object({
     kubernetes_cluster_version             = string
-    kubernetes_cluster_ssh_key            = string
-    enable_user_system_nodepool_split     = bool
-    project_acr_enabled                   = bool
+    kubernetes_cluster_ssh_key             = string
+    enable_user_system_nodepool_split      = bool
+    project_acr_enabled                    = bool
     enable_automatic_channel_upgrade_patch = bool
 
     system_node_pool = object({
