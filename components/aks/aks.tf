@@ -61,7 +61,7 @@ module "kubernetes" {
 
   ptl_cluster = var.ptl_cluster
 
-  kubernetes_cluster_ssh_key = var.kubernetes_cluster_ssh_key
+  kubernetes_cluster_ssh_key = var.clusters[each.value]["kubernetes_cluster_ssh_key"]
 
   kubernetes_cluster_agent_min_count = lookup(var.system_node_pool, "min_nodes", 2)
   kubernetes_cluster_agent_max_count = lookup(var.system_node_pool, "max_nodes", 3)
@@ -113,12 +113,13 @@ module "kubernetes" {
   ]
 
   project_acr_enabled = var.project_acr_enabled
+  availability_zones  = var.clusters[each.value]["availability_zones"]
 
-  enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
+  enable_automatic_channel_upgrade_patch = var.clusters[each.value]["enable_automatic_channel_upgrade_patch"]
 
   enable_node_os_channel_upgrade_nodeimage = true
 
-  node_os_maintenance_window_config = var.node_os_maintenance_window_config
+  node_os_maintenance_window_config = var.clusters[each.value]["node_os_maintenance_window_config"]
 
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
   aks_role_definition              = "Contributor"
