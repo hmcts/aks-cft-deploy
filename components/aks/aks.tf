@@ -63,9 +63,9 @@ module "kubernetes" {
 
   kubernetes_cluster_ssh_key = each.value.kubernetes_cluster_ssh_key
 
-  kubernetes_cluster_agent_min_count = each.value.system_node_pool.min_nodes
-  kubernetes_cluster_agent_max_count = each.value.system_node_pool.max_count
-  kubernetes_cluster_agent_vm_size   = each.value.system_node_pool.vm_size
+  kubernetes_cluster_agent_min_count = lookup(var.clusters[each.value], "min_nodes", 2)
+  kubernetes_cluster_agent_max_count = lookup(var.clusters[each.value], "max_nodes", 3)
+  kubernetes_cluster_agent_vm_size   = lookup(var.clusters[each.value], "vm_size", "Standard_DS3_v2")
   kubernetes_cluster_version         = var.clusters[each.value]["kubernetes_cluster_version"]
   kubernetes_cluster_agent_max_pods  = var.kubernetes_cluster_agent_max_pods
 
@@ -76,7 +76,7 @@ module "kubernetes" {
   additional_node_pools = contains([], var.env) ? tuple([]) : [
     {
       name                = "linux"
-      vm_size             = lookup(var.clusters[each.value], "linux_node_pool[each.key].vm_size", "Standard_DS3_v2")
+      vm_size             = each.value.linux_node_pool.vm_size
       min_count           = lookup(var.clusters[each.value], "linux_node_pool" [each.key], "min_nodes", 2)
       max_count           = lookup(var.clusters[each.value], "linux_node_pool" [each.key], "max_nodes", 4)
       max_pods            = lookup(var.clusters[each.value], "linux_node_pool" [each.key], "max_pods", 30)
