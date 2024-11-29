@@ -112,14 +112,14 @@ module "kubernetes" {
     }
   ]
 
-  project_acr_enabled = each.value.project_acr_enabled 
+  project_acr_enabled = each.value.project_acr_enabled
   availability_zones  = each.value.availability_zones
 
-  enable_automatic_channel_upgrade_patch = each.value.enable_automatic_channel_upgrade_patch  # Direct access
+  enable_automatic_channel_upgrade_patch = each.value.enable_automatic_channel_upgrade_patch # Direct access
 
   enable_node_os_channel_upgrade_nodeimage = true
 
-  node_os_maintenance_window_config = each.value.node_os_maintenance_window_config  # Direct access
+  node_os_maintenance_window_config = each.value.node_os_maintenance_window_config # Direct access
 
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
   aks_role_definition              = "Contributor"
