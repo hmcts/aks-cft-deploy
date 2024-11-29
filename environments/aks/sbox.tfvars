@@ -55,7 +55,10 @@ clusters = {
     }
 
     spot_node_pool = {
+      vm_size   = "Standard_D4ds_v5"
       min_nodes = 1
+      max_nodes = 5
+      max_pods  = 30
     }
 
     availability_zones = ["1"]
