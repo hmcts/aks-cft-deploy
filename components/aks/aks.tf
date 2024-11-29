@@ -76,10 +76,10 @@ module "kubernetes" {
   additional_node_pools = contains([], var.env) ? tuple([]) : [
     {
       name                = "linux"
-      vm_size             = each.value.linux_node_pool.vm_size
-      min_count           = each.value.linux_node_pool.min_nodes
-      max_count           = each.value.linux_node_pool.max_nodes
-      max_pods            = each.value.linux_node_pool.max_pods
+      vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_DS3_v2")
+      min_count           = lookup(each.value.linux_node_pool, "min_count", "2")
+      max_count           = lookup(each.value.linux_node_pool, "max_count", "4")
+      max_pods            = lookup(each.value.linux_node_pool, "max_pods", "30")
       os_type             = "Linux"
       node_taints         = []
       enable_auto_scaling = true
@@ -98,10 +98,10 @@ module "kubernetes" {
     },
     {
       name                = "spotinstance"
-      vm_size             = each.value.spot_node_pool.vm_size
-      min_count           = each.value.spot_node_pool.min_nodes
-      max_count           = each.value.spot_node_pool.max_nodes
-      max_pods            = each.value.spot_node_pool.max_pods
+      vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_D4ds_v5")
+      min_count           = lookup(each.value.linux_node_pool, "min_count", "0")
+      max_count           = lookup(each.value.linux_node_pool, "max_count", "5")
+      max_pods            = lookup(each.value.linux_node_pool, "max_pods", "30")
       os_type             = "Linux"
       node_taints         = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
       enable_auto_scaling = true
