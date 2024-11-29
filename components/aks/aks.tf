@@ -61,11 +61,11 @@ module "kubernetes" {
 
   ptl_cluster = var.ptl_cluster
 
-  kubernetes_cluster_ssh_key = var.clusters[each.value]["kubernetes_cluster_ssh_key"]
+  kubernetes_cluster_ssh_key = each.value.kubernetes_cluster_ssh_key
 
-  kubernetes_cluster_agent_min_count = lookup(var.clusters, "min_nodes", 2)
-  kubernetes_cluster_agent_max_count = lookup(var.clusters, "max_nodes", 3)
-  kubernetes_cluster_agent_vm_size   = lookup(var.clusters, "vm_size", "Standard_DS3_v2")
+  kubernetes_cluster_agent_min_count = each.value.system_node_pool.min_nodes
+  kubernetes_cluster_agent_max_count = each.value.system_node_pool.max_count
+  kubernetes_cluster_agent_vm_size   = each.value.system_node_pool.vm_size
   kubernetes_cluster_version         = var.clusters[each.value]["kubernetes_cluster_version"]
   kubernetes_cluster_agent_max_pods  = var.kubernetes_cluster_agent_max_pods
 
@@ -98,10 +98,10 @@ module "kubernetes" {
     },
     {
       name                = "spotinstance"
-      vm_size             = lookup(var.spot_node_pool, "vm_size", "Standard_D4ds_v5")
-      min_count           = lookup(var.spot_node_pool, "min_nodes", 0)
-      max_count           = lookup(var.spot_node_pool, "max_nodes", 5)
-      max_pods            = lookup(var.spot_node_pool, "max_pods", 30)
+      vm_size             = lookup(var.clusters, "vm_size", "Standard_D4ds_v5")
+      min_count           = lookup(var.clusters, "min_nodes", 0)
+      max_count           = lookup(var.clusters, "max_nodes", 5)
+      max_pods            = lookup(var.clusters, "max_pods", 30)
       os_type             = "Linux"
       node_taints         = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
       enable_auto_scaling = true
