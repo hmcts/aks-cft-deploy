@@ -24,7 +24,7 @@ data "azuread_service_principal" "aks_auto_shutdown" {
 }
 
 module "kubernetes" {
-  for_each = toset([for key, value in var.clusters : key])
+  for_each = var.clusters
   source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
@@ -48,7 +48,7 @@ module "kubernetes" {
   network_shortname           = local.network_shortname
   network_resource_group_name = local.network_resource_group_name
 
-  cluster_number    = each.value
+  cluster_number    = each.key
   service_shortname = var.service_shortname
   project           = var.project
 
@@ -112,14 +112,14 @@ module "kubernetes" {
     }
   ]
 
-  project_acr_enabled = var.project_acr_enabled
-  availability_zones  = var.clusters[each.value]["availability_zones"]
+  project_acr_enabled = each.value.project_acr_enabled 
+  availability_zones  = each.value.availability_zones
 
-  enable_automatic_channel_upgrade_patch = var.clusters[each.value]["enable_automatic_channel_upgrade_patch"]
+  enable_automatic_channel_upgrade_patch = each.value.enable_automatic_channel_upgrade_patch  # Direct access
 
   enable_node_os_channel_upgrade_nodeimage = true
 
-  node_os_maintenance_window_config = var.clusters[each.value]["node_os_maintenance_window_config"]
+  node_os_maintenance_window_config = each.value.node_os_maintenance_window_config  # Direct access
 
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
   aks_role_definition              = "Contributor"
