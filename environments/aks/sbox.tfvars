@@ -14,12 +14,6 @@ clusters = {
     }
 
     linux_node_pool = {
-      "00" = {
-        vm_size   = "Standard_D4ds_v5",
-        min_nodes = 4,
-        max_nodes = 10,
-      },
-      "01" = {
         vm_size   = "Standard_D4ds_v5",
         min_nodes = 4,
         max_nodes = 10,
@@ -56,11 +50,6 @@ clusters = {
     }
 
     linux_node_pool = {
-      "00" = {
-        vm_size   = "Standard_D4ds_v5",
-        min_nodes = 4,
-        max_nodes = 10,
-      },
       "01" = {
         vm_size   = "Standard_D4ds_v5",
         min_nodes = 4,
