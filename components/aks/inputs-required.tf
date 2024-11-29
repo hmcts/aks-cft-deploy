@@ -101,10 +101,14 @@ variable "clusters" {
       vm_size   = string
       min_nodes = number
       max_nodes = number
+      max_pods  = number
     })
 
     spot_node_pool = object({
+      vm_size   = string
       min_nodes = number
+      max_nodes = number
+      max_pods  = number
     })
 
     availability_zones = list(string)

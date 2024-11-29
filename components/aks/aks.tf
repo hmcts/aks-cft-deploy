@@ -42,7 +42,7 @@ module "kubernetes" {
     azurerm.global_acr    = azurerm.global_acr
   }
 
-  resource_group_name = azurerm_resource_group.kubernetes_resource_group[each.value].name
+  resource_group_name = azurerm_resource_group.kubernetes_resource_group[each.key].name
 
   network_name                = local.network_name
   network_shortname           = local.network_shortname
@@ -115,11 +115,11 @@ module "kubernetes" {
   project_acr_enabled = each.value.project_acr_enabled
   availability_zones  = each.value.availability_zones
 
-  enable_automatic_channel_upgrade_patch = each.value.enable_automatic_channel_upgrade_patch # Direct access
+  enable_automatic_channel_upgrade_patch = each.value.enable_automatic_channel_upgrade_patch
 
   enable_node_os_channel_upgrade_nodeimage = true
 
-  node_os_maintenance_window_config = each.value.node_os_maintenance_window_config # Direct access
+  node_os_maintenance_window_config = each.value.node_os_maintenance_window_config
 
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
   aks_role_definition              = "Contributor"
