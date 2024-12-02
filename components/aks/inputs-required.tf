@@ -111,6 +111,25 @@ variable "clusters" {
   }))
 }
 
+variable "additional_node_pools" {
+  description = "List of additional node pools for the Kubernetes cluster."
+  type = list(object({
+    name                = string
+    vm_size             = string
+    min_count           = number
+    max_count           = number
+    max_pods            = number
+    os_type             = string
+    node_taints         = list(string)
+    enable_auto_scaling = bool
+    mode                = string
+    priority            = optional(string)
+    eviction_policy     = optional(string)
+    spot_max_price      = optional(string)
+  }))
+  default = []
+}
+
 variable "kubernetes_cluster_agent_min_count" {
   default = 1
 }
