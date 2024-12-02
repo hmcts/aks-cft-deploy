@@ -1,6 +1,3 @@
-
-# Ensure your `sbox.tfvars` defines `clusters` as a map with all required attributes
-
 clusters = {
   "00" = {
     kubernetes_cluster_version        = "1.30"
@@ -64,8 +61,6 @@ clusters = {
     spot_node_pool = {
       vm_size   = "Standard_D4ds_v5"
       min_nodes = 1
-      max_nodes = 5
-      max_pods  = 30
     }
 
     availability_zones = ["1"]
