@@ -71,7 +71,7 @@ module "kubernetes" {
 
   tags = module.ctags.common_tags
 
-  enable_user_system_nodepool_split = var.enable_user_system_nodepool_split ? true : false
+  enable_user_system_nodepool_split = each.value.enable_user_system_nodepool_split
 
   additional_node_pools = contains([], var.env) ? tuple([]) : [
     {
@@ -98,10 +98,10 @@ module "kubernetes" {
     },
     {
       name                = "spotinstance"
-      vm_size             = lookup(each.value.spot_node_pool, "vm_size", "Standard_D4ds_v5")
-      min_count           = lookup(each.value.spot_node_pool, "min_nodes", 0)
-      max_count           = lookup(each.value.spot_node_pool, "max_nodes", 5)
-      max_pods            = lookup(each.value.spot_node_pool, "max_pods", 30)
+      vm_size             = lookup(var.spot_node_pool, "vm_size", "Standard_D4ds_v5")
+      min_count           = lookup(var.spot_node_pool, "min_nodes", 0)
+      max_count           = lookup(var.spot_node_pool, "max_nodes", 5)
+      max_pods            = lookup(var.spot_node_pool, "max_pods", 30)
       os_type             = "Linux"
       node_taints         = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
       enable_auto_scaling = true

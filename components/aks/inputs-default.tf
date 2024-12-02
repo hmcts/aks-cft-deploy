@@ -6,6 +6,11 @@ variable "location" {
   default = "uksouth"
 }
 
+variable "spot_node_pool" {
+  description = "Map to override the spot node pool config"
+  default     = {}
+}
+
 variable "service_shortname" {
   default = "aks"
 }
@@ -43,3 +48,4 @@ variable "node_os_maintenance_window_config" {
   })
   default = {}
 }
+
