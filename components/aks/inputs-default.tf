@@ -43,6 +43,10 @@ variable "startupMode" {
   default = null
 }
 
+variable "drain_timeout_time" {
+  default = 0
+}
+
 variable "node_os_maintenance_window_config" {
   type = object({
     frequency   = optional(string, "Weekly")
