@@ -25,7 +25,6 @@ clusters = {
     }
 
     availability_zones = ["1"]
-    autoShutdown       = true
 
     node_os_maintenance_window_config = {
       frequency  = "Daily"
@@ -60,7 +59,6 @@ clusters = {
     }
 
     availability_zones = ["1"]
-    autoShutdown       = true
 
     node_os_maintenance_window_config = {
       frequency  = "Daily"
@@ -73,3 +71,5 @@ clusters = {
 spot_node_pool = {
   min_nodes = 1
 }
+
+autoShutdown   = true

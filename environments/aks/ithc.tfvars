@@ -17,7 +17,6 @@ clusters = {
       max_nodes = 40
     }
     availability_zones = ["1", "2", "3"]
-    autoShutdown       = true
 
     node_os_maintenance_window_config = {
       frequency  = "Daily"
@@ -44,7 +43,6 @@ clusters = {
   #   }
 
   #   availability_zones = ["1", "2", "3"]
-  #   autoShutdown       = true
 
   #   node_os_maintenance_window_config = {
   #     frequency  = "Daily"
@@ -53,3 +51,5 @@ clusters = {
   #   }
   # }
 }
+
+    autoShutdown       = true

@@ -16,9 +16,8 @@ clusters = {
       max_pods  = 50
     }
 
-    availability_zones = []
-    autoShutdown       = true
-
+    availability_zones = ["1", "2", "3"]
+    
     node_os_maintenance_window_config = {
       frequency  = "Daily"
       start_time = "16:00"
@@ -44,7 +43,6 @@ clusters = {
     }
 
     availability_zones = ["1", "2", "3"]
-    autoShutdown       = true
 
     node_os_maintenance_window_config = {
       frequency  = "Daily"
@@ -59,5 +57,6 @@ clusters = {
       max_nodes = 30,
       max_pods  = 50
     }
-  
+    
+    autoShutdown       = true
     drain_timeout_time = 30

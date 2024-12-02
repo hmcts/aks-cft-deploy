@@ -53,6 +53,6 @@ clusters = {
     }
 
     availability_zones = []
-    autoShutdown       = true
   }
 }
+    autoShutdown       = true

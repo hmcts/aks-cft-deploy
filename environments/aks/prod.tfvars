@@ -52,7 +52,6 @@ clusters = {
     kube_audit_admin_logs_enabled      = true
 
     availability_zones = ["1", "2", "3"]
-    autoShutdown       = false
 
     node_os_maintenance_window_config = {
       frequency  = "Daily"

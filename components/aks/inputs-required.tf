@@ -85,7 +85,6 @@ variable "clusters" {
     kubernetes_cluster_version             = string
     kubernetes_cluster_ssh_key             = string
     enable_user_system_nodepool_split      = bool
-    autoShutdown                           = bool
     project_acr_enabled                    = optional(bool, false)
     enable_automatic_channel_upgrade_patch = optional(bool, false)
 
