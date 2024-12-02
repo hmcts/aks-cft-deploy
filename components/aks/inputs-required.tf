@@ -85,32 +85,36 @@ variable "clusters" {
     kubernetes_cluster_version             = string
     kubernetes_cluster_ssh_key             = string
     enable_user_system_nodepool_split      = bool
+    autoShutdown                           = bool
     project_acr_enabled                    = bool
     enable_automatic_channel_upgrade_patch = bool
+
     system_node_pool = object({
       vm_size   = string
       min_nodes = number
       max_nodes = number
     })
+
     linux_node_pool = object({
       vm_size   = string
       min_nodes = number
       max_nodes = number
-      max_pods  = number
     })
-    spot_node_pool = object({
+
+    spot_node_pool = optional(object({
       vm_size   = string
       min_nodes = number
       max_nodes = number
       max_pods  = number
-    })
-    availability_zones = list(string)
-    autoShutdown       = bool
+    }))
+
     node_os_maintenance_window_config = object({
       frequency  = string
       start_time = string
       is_prod    = bool
     })
+
+    availability_zones = list(string)
   }))
 }
 

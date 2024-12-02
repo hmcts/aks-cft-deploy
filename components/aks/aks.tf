@@ -1,11 +1,11 @@
 resource "azurerm_resource_group" "kubernetes_resource_group" {
-  for_each = toset([for key, value in var.clusters : key])
+  for_each = var.clusters
   location = var.location
 
   name = format("%s-%s-%s-rg",
     var.project,
     var.env,
-    each.value
+    each.key
   )
   tags = module.ctags.common_tags
 }

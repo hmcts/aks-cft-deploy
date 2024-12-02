@@ -1,3 +1,4 @@
+
 # Ensure your `sbox.tfvars` defines `clusters` as a map with all required attributes
 
 clusters = {
