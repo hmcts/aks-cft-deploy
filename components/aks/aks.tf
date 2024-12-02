@@ -25,7 +25,7 @@ data "azuread_service_principal" "aks_auto_shutdown" {
 
 
 module "kubernetes" {
-  for_each = toset([for key, value in var.clusters : key])
+  for_each = var.clusters
   source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=4.x"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
