@@ -10,9 +10,6 @@ variable "product" {}
 # Remote State
 variable "control_vault" {}
 
-# Kubernetes
-# variable "kubernetes_cluster_ssh_key" {}
-
 variable "clusters" {
   description = <<-EOF
     Map of clusters to manage. Example:
