@@ -71,15 +71,15 @@ module "kubernetes" {
 
   tags = module.ctags.common_tags
 
-  enable_user_system_nodepool_split = var.enable_user_system_nodepool_split == true ? true : false
+  enable_user_system_nodepool_split = var.enable_user_system_nodepool_split ? true : false
 
   additional_node_pools = contains([], var.env) ? tuple([]) : [
     {
       name                = "linux"
       vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_DS3_v2")
-      min_count           = lookup(each.value.linux_node_pool, "min_count", "2")
-      max_count           = lookup(each.value.linux_node_pool, "max_count", "4")
-      max_pods            = lookup(each.value.linux_node_pool, "max_pods", "30")
+      min_count           = lookup(each.value.linux_node_pool, "min_nodes", 2)
+      max_count           = lookup(each.value.linux_node_pool, "max_nodes", 4)
+      max_pods            = lookup(each.value.linux_node_pool, "max_pods", 30)
       os_type             = "Linux"
       node_taints         = []
       enable_auto_scaling = true
@@ -98,10 +98,10 @@ module "kubernetes" {
     },
     {
       name                = "spotinstance"
-      vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_D4ds_v5")
-      min_count           = lookup(each.value.linux_node_pool, "min_count", "0")
-      max_count           = lookup(each.value.linux_node_pool, "max_count", "5")
-      max_pods            = lookup(each.value.linux_node_pool, "max_pods", "30")
+      vm_size             = lookup(each.value.spot_node_pool, "vm_size", "Standard_D4ds_v5")
+      min_count           = lookup(each.value.spot_node_pool, "min_nodes", 0)
+      max_count           = lookup(each.value.spot_node_pool, "max_nodes", 5)
+      max_pods            = lookup(each.value.spot_node_pool, "max_pods", 30)
       os_type             = "Linux"
       node_taints         = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
       enable_auto_scaling = true
@@ -125,6 +125,7 @@ module "kubernetes" {
   aks_role_definition              = "Contributor"
   aks_auto_shutdown_principal_id   = data.azuread_service_principal.aks_auto_shutdown.object_id
 }
+
 
 module "ctags" {
   source       = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"

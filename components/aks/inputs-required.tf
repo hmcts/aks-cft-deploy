@@ -10,6 +10,7 @@ variable "product" {}
 # Remote State
 variable "control_vault" {}
 
+# Kubernetes
 variable "clusters" {
   description = <<-EOF
     Map of clusters to manage. Example:
@@ -80,41 +81,37 @@ variable "clusters" {
       }
     }
   EOF
-
   type = map(object({
     kubernetes_cluster_version             = string
     kubernetes_cluster_ssh_key             = string
     enable_user_system_nodepool_split      = bool
     project_acr_enabled                    = bool
     enable_automatic_channel_upgrade_patch = bool
-
     system_node_pool = object({
       vm_size   = string
       min_nodes = number
       max_nodes = number
     })
-
     linux_node_pool = object({
       vm_size   = string
       min_nodes = number
       max_nodes = number
+      max_pods  = number
     })
-
     spot_node_pool = object({
+      vm_size   = string
       min_nodes = number
+      max_nodes = number
+      max_pods  = number
     })
-
     availability_zones = list(string)
     autoShutdown       = bool
-
     node_os_maintenance_window_config = object({
       frequency  = string
       start_time = string
       is_prod    = bool
     })
   }))
-
-  default = {}
 }
 
 variable "kubernetes_cluster_agent_min_count" {
@@ -155,7 +152,6 @@ variable "ptl_cluster" {
 variable "enable_user_system_nodepool_split" {
   default = false
 }
-
 
 variable "enable_automatic_channel_upgrade_patch" {
   default     = false
