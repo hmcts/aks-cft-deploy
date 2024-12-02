@@ -23,9 +23,10 @@ data "azuread_service_principal" "aks_auto_shutdown" {
   display_name = "DTS AKS Auto-Shutdown"
 }
 
+
 module "kubernetes" {
-  for_each = var.clusters
-  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=master"
+  for_each = toset([for key, value in var.clusters : key])
+  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=4.x"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.env
@@ -124,6 +125,7 @@ module "kubernetes" {
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
   aks_role_definition              = "Contributor"
   aks_auto_shutdown_principal_id   = data.azuread_service_principal.aks_auto_shutdown.object_id
+  drain_timeout_time               = var.drain_timeout_time
 }
 
 module "ctags" {
