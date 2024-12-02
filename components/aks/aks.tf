@@ -71,9 +71,46 @@ module "kubernetes" {
 
   tags = module.ctags.common_tags
 
-  enable_user_system_nodepool_split = var.enable_user_system_nodepool_split
+  enable_user_system_nodepool_split = var.enable_user_system_nodepool_split ? true : false
 
-  additional_node_pools = var.additional_node_pools
+  additional_node_pools = contains([], var.env) ? tuple([]) : [
+    {
+      name                = "linux"
+      vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_DS3_v2")
+      min_count           = lookup(each.value.linux_node_pool, "min_nodes", 2)
+      max_count           = lookup(each.value.linux_node_pool, "max_nodes", 4)
+      max_pods            = lookup(each.value.linux_node_pool, "max_pods", 30)
+      os_type             = "Linux"
+      node_taints         = []
+      enable_auto_scaling = true
+      mode                = "User"
+    },
+    {
+      name                = "cronjob"
+      vm_size             = "Standard_D4ds_v5"
+      min_count           = 0
+      max_count           = 10
+      max_pods            = 30
+      os_type             = "Linux"
+      node_taints         = ["dedicated=jobs:NoSchedule"]
+      enable_auto_scaling = true
+      mode                = "User"
+    },
+    {
+      name                = "spotinstance"
+      vm_size             = lookup(each.value.spot_node_pool, "vm_size", "Standard_D4ds_v5")
+      min_count           = lookup(each.value.spot_node_pool, "min_nodes", 0)
+      max_count           = lookup(each.value.spot_node_pool, "max_nodes", 5)
+      max_pods            = lookup(each.value.spot_node_pool, "max_pods", 30)
+      os_type             = "Linux"
+      node_taints         = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
+      enable_auto_scaling = true
+      mode                = "User"
+      priority            = "Spot"
+      eviction_policy     = "Delete"
+      spot_max_price      = "-1"
+    }
+  ]
 
   project_acr_enabled = each.value.project_acr_enabled
   availability_zones  = each.value.availability_zones
@@ -88,7 +125,6 @@ module "kubernetes" {
   aks_role_definition              = "Contributor"
   aks_auto_shutdown_principal_id   = data.azuread_service_principal.aks_auto_shutdown.object_id
 }
-
 
 module "ctags" {
   source       = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
