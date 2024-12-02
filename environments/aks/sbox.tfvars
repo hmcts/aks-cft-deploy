@@ -1,3 +1,5 @@
+# Ensure your `sbox.tfvars` defines `clusters` as a map with all required attributes
+
 clusters = {
   "00" = {
     kubernetes_cluster_version        = "1.30"
@@ -21,9 +23,9 @@ clusters = {
     }
 
     spot_node_pool = {
-      vm_size   = "Standard_D4ds_v5",
-      min_nodes = 1,
-      max_nodes = 5,
+      vm_size   = "Standard_D4ds_v5"
+      min_nodes = 1
+      max_nodes = 5
       max_pods  = 30
     }
 
@@ -46,8 +48,8 @@ clusters = {
     enable_automatic_channel_upgrade_patch = true
 
     system_node_pool = {
-      vm_size   = "Standard_D4ds_v5",
-      min_nodes = 2,
+      vm_size   = "Standard_D4ds_v5"
+      min_nodes = 2
       max_nodes = 4
     }
 
@@ -59,9 +61,9 @@ clusters = {
     }
 
     spot_node_pool = {
-      vm_size   = "Standard_D4ds_v5",
-      min_nodes = 1,
-      max_nodes = 5,
+      vm_size   = "Standard_D4ds_v5"
+      min_nodes = 1
+      max_nodes = 5
       max_pods  = 30
     }
 
