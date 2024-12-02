@@ -6,7 +6,7 @@ clusters = {
 
     system_node_pool = {
       vm_size   = "Standard_D4ds_v5"
-      min_nodes = 2
+      min_nodes = 4
       max_nodes = 10
     }
     linux_node_pool = {

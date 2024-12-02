@@ -10,19 +10,19 @@ clusters = {
       max_nodes = 10
     }
     linux_node_pool = {
-      vm_size   = "Standard_D4ds_v5"
-      min_nodes = 30
+      vm_size   = "Standard_D8ds_v5"
+      min_nodes = 5
       max_nodes = 80
     }
-  }
 
-  availability_zones = ["1"]
-  autoShutdown       = true
+    availability_zones = ["1", "2", "3"]
+    autoShutdown       = true
 
-  node_os_maintenance_window_config = {
-    frequency  = "Daily"
-    start_time = "16:00"
-    is_prod    = false
+    node_os_maintenance_window_config = {
+      frequency  = "Daily"
+      start_time = "16:00"
+      is_prod    = false
+    }
   },
   "01" = {
     kubernetes_cluster_version        = "1.30"
@@ -36,7 +36,7 @@ clusters = {
     }
 
     linux_node_pool = {
-      vm_size   = "Standard_D4ds_v5"
+      vm_size   = "Standard_D8ds_v5"
       min_nodes = 30
       max_nodes = 80
     }
