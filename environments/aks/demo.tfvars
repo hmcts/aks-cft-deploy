@@ -29,7 +29,6 @@ clusters = {
       start_time = "16:00"
       is_prod    = false
     }
-    autoShutdown       = true
   },
   "01" = {
     kubernetes_cluster_version        = "1.30"
@@ -63,7 +62,6 @@ clusters = {
       is_prod    = false
     }
   }
-    autoShutdown       = true
 }
-
+    autoShutdown       = true
     drain_timeout_time = 30

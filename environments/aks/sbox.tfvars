@@ -31,7 +31,6 @@ clusters = {
       start_time = "16:00"
       is_prod    = false
     }
-    autoShutdown   = true
   },
 
   "01" = {
@@ -67,5 +66,5 @@ clusters = {
       is_prod    = false
     }
   }
-    autoShutdown   = true
 }
+    autoShutdown   = true

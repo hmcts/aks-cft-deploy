@@ -23,10 +23,9 @@ clusters = {
     }
 
     availability_zones = []
-    autoShutdown       = true
-
   }
 }
+    autoShutdown       = true
 
 #   "01" = {
 #     kubernetes_cluster_version        = "1.30"

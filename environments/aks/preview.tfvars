@@ -54,5 +54,5 @@ clusters = {
       is_prod    = false
     }
   }
-      autoShutdown       = true
 }
+      autoShutdown       = true

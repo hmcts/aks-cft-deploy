@@ -88,7 +88,6 @@ variable "clusters" {
     project_acr_enabled                    = optional(bool, false)
     enable_automatic_channel_upgrade_patch = optional(bool, false)
     oms_agent_enabled                      = optional(bool, false)
-    autoShutdown                           = optional(bool, false)
 
     system_node_pool = object({
       vm_size   = string
