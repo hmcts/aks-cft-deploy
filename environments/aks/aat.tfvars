@@ -49,4 +49,4 @@ clusters = {
     }
   }
 }
-    autoShutdown       = true
+autoShutdown = true
