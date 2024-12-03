@@ -15,12 +15,6 @@ clusters = {
       max_nodes = 30
       max_pods  = 50
     }
-    spot_node_pool = {
-      vm_size   = "Standard_D8ds_v5",
-      min_nodes = 1,
-      max_nodes = 30,
-      max_pods  = 50
-    }
 
     availability_zones = ["1", "2", "3"]
 
@@ -47,12 +41,6 @@ clusters = {
       max_nodes = 30
       max_pods  = 50
     }
-    spot_node_pool = {
-      vm_size   = "Standard_D8ds_v5",
-      min_nodes = 1,
-      max_nodes = 30,
-      max_pods  = 50
-    }
 
     availability_zones = ["1", "2", "3"]
 
@@ -63,5 +51,11 @@ clusters = {
     }
   }
 }
+    spot_node_pool = {
+      vm_size   = "Standard_D8ds_v5",
+      min_nodes = 1,
+      max_nodes = 30,
+      max_pods  = 50
+    }
     autoShutdown       = true
     drain_timeout_time = 30
