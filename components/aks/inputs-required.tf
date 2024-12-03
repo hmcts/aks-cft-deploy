@@ -98,6 +98,7 @@ variable "clusters" {
       vm_size   = string
       min_nodes = number
       max_nodes = number
+      max_pods  = optional(number, 30)
     })
 
     node_os_maintenance_window_config = object({
