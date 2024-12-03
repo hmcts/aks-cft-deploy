@@ -1,4 +1,3 @@
-
 clusters = {
   "00" = {
     kubernetes_cluster_version        = "1.30"
@@ -73,4 +72,4 @@ spot_node_pool = {
   min_nodes = 1
 }
 
-autoShutdown   = true
+autoShutdown = true
