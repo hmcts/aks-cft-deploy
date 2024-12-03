@@ -15,6 +15,12 @@ clusters = {
       max_nodes = 30
       max_pods  = 50
     }
+    spot_node_pool = {
+      vm_size   = "Standard_D8ds_v5",
+      min_nodes = 1,
+      max_nodes = 30,
+      max_pods  = 50
+    }
 
     availability_zones = ["1", "2", "3"]
 
@@ -23,6 +29,7 @@ clusters = {
       start_time = "16:00"
       is_prod    = false
     }
+    autoShutdown       = true
   },
   "01" = {
     kubernetes_cluster_version        = "1.30"
@@ -41,6 +48,12 @@ clusters = {
       max_nodes = 30
       max_pods  = 50
     }
+    spot_node_pool = {
+      vm_size   = "Standard_D8ds_v5",
+      min_nodes = 1,
+      max_nodes = 30,
+      max_pods  = 50
+    }
 
     availability_zones = ["1", "2", "3"]
 
@@ -50,13 +63,7 @@ clusters = {
       is_prod    = false
     }
   }
-}
-spot_node_pool = {
-  vm_size   = "Standard_D8ds_v5",
-  min_nodes = 1,
-  max_nodes = 30,
-  max_pods  = 50
+    autoShutdown       = true
 }
 
-autoShutdown       = true
-drain_timeout_time = 30
+    drain_timeout_time = 30

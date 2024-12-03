@@ -87,6 +87,8 @@ variable "clusters" {
     enable_user_system_nodepool_split      = bool
     project_acr_enabled                    = optional(bool, false)
     enable_automatic_channel_upgrade_patch = optional(bool, false)
+    oms_agent_enabled                      = optional(bool, false)
+    autoShutdown                           = optional(bool, false)
 
     system_node_pool = object({
       vm_size   = string
@@ -99,6 +101,13 @@ variable "clusters" {
       min_nodes = number
       max_nodes = number
     })
+
+    spot_node_pool = optional(object({
+      vm_size   = string
+      min_nodes = number
+      max_nodes = number
+      max_pods  = optional(number, 50)
+    }))
 
     node_os_maintenance_window_config = object({
       frequency  = string

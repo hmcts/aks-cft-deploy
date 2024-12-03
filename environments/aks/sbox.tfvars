@@ -31,6 +31,7 @@ clusters = {
       start_time = "16:00"
       is_prod    = false
     }
+    autoShutdown   = true
   },
 
   "01" = {
@@ -66,10 +67,5 @@ clusters = {
       is_prod    = false
     }
   }
+    autoShutdown   = true
 }
-
-spot_node_pool = {
-  min_nodes = 1
-}
-
-autoShutdown   = true
