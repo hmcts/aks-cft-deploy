@@ -6,12 +6,12 @@ clusters = {
     enable_user_system_nodepool_split = true
 
     system_node_pool = {
-      vm_size   = "Standard_D4ds_v5"
-      min_nodes = 4
+      vm_size   = "Standard_D4ds_v5",
+      min_nodes = 4,
       max_nodes = 10
     }
     linux_node_pool = {
-      vm_size   = "Standard_D8ds_v5"
+      vm_size   = "Standard_D8ds_v5",
       min_nodes = 30
       max_nodes = 100
     }
@@ -32,13 +32,13 @@ clusters = {
     enable_user_system_nodepool_split = true
 
     system_node_pool = {
-      vm_size   = "Standard_D4ds_v5"
-      min_nodes = 4
+      vm_size   = "Standard_D4ds_v5",
+      min_nodes = 4,
       max_nodes = 10
     }
 
     linux_node_pool = {
-      vm_size   = "Standard_D8ds_v5"
+      vm_size   = "Standard_D8ds_v5",
       min_nodes = 30
       max_nodes = 100
     }
@@ -55,3 +55,4 @@ clusters = {
     monitor_diagnostic_setting         = true
     monitor_diagnostic_setting_metrics = true
     kube_audit_admin_logs_enabled      = true
+    

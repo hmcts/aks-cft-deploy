@@ -84,7 +84,7 @@ variable "clusters" {
   type = map(object({
     kubernetes_cluster_version             = string
     kubernetes_cluster_ssh_key             = string
-    enable_user_system_nodepool_split      = bool
+    enable_user_system_nodepool_split      = optional(bool, false)
     project_acr_enabled                    = optional(bool, false)
     enable_automatic_channel_upgrade_patch = optional(bool, false)
 
@@ -143,10 +143,6 @@ variable "sku_tier" {
 }
 
 variable "ptl_cluster" {
-  default = false
-}
-
-variable "enable_user_system_nodepool_split" {
   default = false
 }
 
