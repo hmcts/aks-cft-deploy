@@ -20,10 +20,6 @@ clusters = {
       max_pods  = 30
     }
 
-    spot_node_pool = {
-      min_nodes = 1
-    }
-
     availability_zones = ["1"]
 
     node_os_maintenance_window_config = {
@@ -52,10 +48,6 @@ clusters = {
       min_nodes = 4
       max_nodes = 10
       max_pods  = 30
-    }
-
-    spot_node_pool = {
-      min_nodes = 1
     }
 
     availability_zones = ["1"]
