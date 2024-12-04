@@ -1,11 +1,11 @@
 resource "azurerm_resource_group" "kubernetes_resource_group" {
-  for_each = toset([for key, value in var.clusters : key])
+  for_each = var.clusters
   location = var.location
 
   name = format("%s-%s-%s-rg",
     var.project,
     var.env,
-    each.value
+    each.key
   )
   tags = module.ctags.common_tags
 }
@@ -25,7 +25,7 @@ data "azuread_service_principal" "aks_auto_shutdown" {
 
 
 module "kubernetes" {
-  for_each = toset([for key, value in var.clusters : key])
+  for_each = var.clusters
   source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=4.x"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
@@ -43,13 +43,13 @@ module "kubernetes" {
     azurerm.global_acr    = azurerm.global_acr
   }
 
-  resource_group_name = azurerm_resource_group.kubernetes_resource_group[each.value].name
+  resource_group_name = azurerm_resource_group.kubernetes_resource_group[each.key].name
 
   network_name                = local.network_name
   network_shortname           = local.network_shortname
   network_resource_group_name = local.network_resource_group_name
 
-  cluster_number    = each.value
+  cluster_number    = each.key
   service_shortname = var.service_shortname
   project           = var.project
 
@@ -62,25 +62,25 @@ module "kubernetes" {
 
   ptl_cluster = var.ptl_cluster
 
-  kubernetes_cluster_ssh_key = var.kubernetes_cluster_ssh_key
+  kubernetes_cluster_ssh_key = each.value.kubernetes_cluster_ssh_key
 
-  kubernetes_cluster_agent_min_count = lookup(var.system_node_pool, "min_nodes", 2)
-  kubernetes_cluster_agent_max_count = lookup(var.system_node_pool, "max_nodes", 3)
-  kubernetes_cluster_agent_vm_size   = lookup(var.system_node_pool, "vm_size", "Standard_DS3_v2")
-  kubernetes_cluster_version         = var.clusters[each.value]["kubernetes_cluster_version"]
+  kubernetes_cluster_agent_min_count = lookup(each.value.system_node_pool, "min_nodes", 2)
+  kubernetes_cluster_agent_max_count = lookup(each.value.system_node_pool, "max_nodes", 3)
+  kubernetes_cluster_agent_vm_size   = lookup(each.value.system_node_pool, "vm_size", "Standard_DS3_v2")
+  kubernetes_cluster_version         = each.value.kubernetes_cluster_version
   kubernetes_cluster_agent_max_pods  = var.kubernetes_cluster_agent_max_pods
 
   tags = module.ctags.common_tags
 
-  enable_user_system_nodepool_split = var.enable_user_system_nodepool_split == true ? true : false
+  enable_user_system_nodepool_split = each.value.enable_user_system_nodepool_split
 
   additional_node_pools = contains([], var.env) ? tuple([]) : [
     {
       name                = "linux"
-      vm_size             = lookup(var.linux_node_pool[each.key], "vm_size", "Standard_DS3_v2")
-      min_count           = lookup(var.linux_node_pool[each.key], "min_nodes", 2)
-      max_count           = lookup(var.linux_node_pool[each.key], "max_nodes", 4)
-      max_pods            = lookup(var.linux_node_pool[each.key], "max_pods", 30)
+      vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_DS3_v2")
+      min_count           = lookup(each.value.linux_node_pool, "min_nodes", 2)
+      max_count           = lookup(each.value.linux_node_pool, "max_nodes", 4)
+      max_pods            = lookup(each.value.linux_node_pool, "max_pods", 30)
       os_type             = "Linux"
       node_taints         = []
       enable_auto_scaling = true
@@ -113,14 +113,14 @@ module "kubernetes" {
     }
   ]
 
-  project_acr_enabled = var.project_acr_enabled
-  availability_zones  = var.availability_zones
+  project_acr_enabled = each.value.project_acr_enabled
+  availability_zones  = each.value.availability_zones
 
-  enable_automatic_channel_upgrade_patch = var.enable_automatic_channel_upgrade_patch
+  enable_automatic_channel_upgrade_patch = each.value.enable_automatic_channel_upgrade_patch
 
   enable_node_os_channel_upgrade_nodeimage = true
 
-  node_os_maintenance_window_config = var.node_os_maintenance_window_config
+  node_os_maintenance_window_config = each.value.node_os_maintenance_window_config
 
   aks_version_checker_principal_id = data.azuread_service_principal.version_checker.object_id
   aks_role_definition              = "Contributor"

@@ -6,21 +6,13 @@ variable "location" {
   default = "uksouth"
 }
 
-variable "service_shortname" {
-  default = "aks"
-}
-
-variable "system_node_pool" {
-  description = "Map to override the system node pool config"
-}
-
-variable "linux_node_pool" {
-  description = "Map to override the linux node pool config"
-}
-
 variable "spot_node_pool" {
   description = "Map to override the spot node pool config"
   default     = {}
+}
+
+variable "service_shortname" {
+  default = "aks"
 }
 
 variable "kubernetes_cluster_agent_max_pods" {
@@ -60,3 +52,4 @@ variable "node_os_maintenance_window_config" {
   })
   default = {}
 }
+
