@@ -104,7 +104,7 @@ provider "azurerm" {
   alias                      = "preview"
   skip_provider_registration = "true"
   features {}
-  subscription_id = "8b6ea922-0862-443e-af15-6056e1c9b9a4"
+  subscription_id = var.env == "preview" ? "8b6ea922-0862-443e-af15-6056e1c9b9a4" : "04d27a32-7a07-48b3-95b8-3c8691e1a263"
 }
 
 provider "azurerm" {
