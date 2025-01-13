@@ -16,6 +16,10 @@ additional_subnets = [
   {
     name           = "private-endpoints"
     address_prefix = "10.48.100.0/22"
+  },
+  {
+    name           = "infra-appgws"
+    address_prefix = "10.48.98.0/25"
   }
 ]
 
