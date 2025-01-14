@@ -3,7 +3,7 @@ enable_debug = "true"
 network_address_space                  = "10.2.0.0/19"
 aks_00_subnet_cidr_blocks              = "10.2.8.0/23"
 aks_01_subnet_cidr_blocks              = "10.2.10.0/23"
-iaas_subnet_cidr_blocks                = "10.2.12.0/24"
+iaas_subnet_cidr_blocks                = "10.2.12.0/25"
 application_gateway_subnet_cidr_blocks = "10.2.13.0/25"
 postgresql_subnet_cidr_blocks          = "10.2.14.128/25"
 postgresql_subnet_expanded_cidr_blocks = "10.2.13.128/25"
@@ -19,7 +19,7 @@ additional_subnets = [
   },
   {
     name           = "infra-appgws"
-    address_prefix = "10.2.16.0/25"
+    address_prefix = "10.2.12.128/25"
   }
 ]
 
