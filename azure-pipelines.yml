@@ -314,7 +314,7 @@ stages:
             condition: |
               or(
                 eq('${{ component.env }}', 'sbox'),
-                eq('${{ component.env }}', 'demo'),
+                eq('${{ component.env }}', 'demo')
               )
             steps:
             - template: pipeline-steps/deploy-service.yaml
