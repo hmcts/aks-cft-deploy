@@ -309,48 +309,30 @@ stages:
                       -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
                       -target module.kubernetes["\"${{parameters.cluster}}\""]
 
-              
-      - stage: AksTest_${{ component.env }}
-        displayName: "${{ upper(component.env) }}: AKS Test Component"
-        pool: hmcts-cftptl-agent-pool
-        dependsOn:
-          - Managed_Identity_${{ component.env }}
-        condition: |
-          or (
-            and(
-              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
-              in('${{ parameters.cluster }}', '00', '01'),
-              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
-            ),
-            and(
-              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
-              eq('${{ parameters.cluster }}', 'All')
-            ),
-            and(succeeded(), in(variables['Build.Reason'], 'PullRequest', 'Manual')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
-          )
-        jobs:
-          - job: DeployAksTest
-            displayName: "Deploy AKS Test Infrastructure"
-            steps:
-              - template: pipeline-steps/deploy-service.yaml
-                parameters:
-                  environment: ${{ component.env }}
-                  location: ${{ parameters.location }}
-                  stack: "aks-test"
-                  project: $(project)
-                  product: ${{ variables.product }}
-                  tfInitSub: ${{ variables.tfInitSub }}
-                  serviceConnection: ${{ component.serviceConnection }}
-                  action: ${{ parameters.action }}
-                  terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
-                  backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
-                  setClusterNumbersEnvVar: true
-                  ${{ if ne(parameters['cluster'], 'All') }}:
-                    targetCommand: >
-                      -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
-                      -target module.kubernetes["\"${{parameters.cluster}}\""]
-
+          - job: DeployInfrastructure
+          condition: |
+            or(
+              eq('${{ component.env }}', 'sbox'),
+              eq('${{ component.env }}', 'demo'),
+            )
+          steps:
+            - template: pipeline-steps/deploy-service.yaml
+              parameters:
+                environment: ${{ component.env }}
+                location: ${{ parameters.location }}
+                stack: "aks-test"
+                project: $(project)
+                product: ${{ variables.product }}
+                tfInitSub: ${{ variables.tfInitSub }}
+                serviceConnection: ${{ component.serviceConnection }}
+                action: ${{ parameters.action }}
+                terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
+                backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
+                setClusterNumbersEnvVar: true
+                ${{ if ne(parameters['cluster'], 'All') }}:
+                  targetCommand: >
+                    -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
+                    -target module.kubernetes["\"${{parameters.cluster}}\""]
 
           - job: DeployInfrastructuremis
             dependsOn: DeployInfrastructure
