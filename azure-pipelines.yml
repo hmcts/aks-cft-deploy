@@ -309,18 +309,19 @@ stages:
                       -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
                       -target module.kubernetes["\"${{parameters.cluster}}\""]
 
-          - job: DeployInfrastructure
-          condition: |
-            or(
-              eq('${{ component.env }}', 'sbox'),
-              eq('${{ component.env }}', 'demo'),
-            )
-          steps:
+          - job: DeployAKSTEST
+            displayName: "Deploy AKS Test Infrastructure"
+            condition: |
+              or(
+                eq('${{ component.env }}', 'sbox'),
+                eq('${{ component.env }}', 'demo'),
+              )
+            steps:
             - template: pipeline-steps/deploy-service.yaml
               parameters:
                 environment: ${{ component.env }}
                 location: ${{ parameters.location }}
-                stack: "aks-test"
+                stack: "aks"
                 project: $(project)
                 product: ${{ variables.product }}
                 tfInitSub: ${{ variables.tfInitSub }}
@@ -333,7 +334,7 @@ stages:
                   targetCommand: >
                     -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
                     -target module.kubernetes["\"${{parameters.cluster}}\""]
-
+        
           - job: DeployInfrastructuremis
             dependsOn: DeployInfrastructure
             steps:
