@@ -244,11 +244,6 @@ stages:
                     -var control_vault=$(KEY_VAULT)
                     -var project=$(project)
 
-
-
-
-
-
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
