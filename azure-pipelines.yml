@@ -244,6 +244,11 @@ stages:
                     -var control_vault=$(KEY_VAULT)
                     -var project=$(project)
 
+
+
+
+
+
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
         dependsOn:
@@ -291,11 +296,29 @@ stages:
         jobs:
           - job: DeployInfrastructure
             steps:
+          #     - template: pipeline-steps/deploy-service.yaml
+          #       parameters:
+          #         environment: ${{ component.env }}
+          #         location: ${{ parameters.location }}
+          #         stack: "aks"
+          #         project: $(project)
+          #         product: ${{ variables.product }}
+          #         tfInitSub: ${{ variables.tfInitSub }}
+          #         serviceConnection: ${{ component.serviceConnection }}
+          #         action: ${{ parameters.action }}
+          #         terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
+          #         backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
+          #         setClusterNumbersEnvVar: true
+          #         ${{ if ne(parameters['cluster'], 'All') }}:
+          #           targetCommand: >
+          #             -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
+          #             -target module.kubernetes["\"${{parameters.cluster}}\""]
+
               - template: pipeline-steps/deploy-service.yaml
                 parameters:
                   environment: ${{ component.env }}
                   location: ${{ parameters.location }}
-                  stack: "aks"
+                  stack: "aks-test"
                   project: $(project)
                   product: ${{ variables.product }}
                   tfInitSub: ${{ variables.tfInitSub }}
@@ -308,6 +331,7 @@ stages:
                     targetCommand: >
                       -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
                       -target module.kubernetes["\"${{parameters.cluster}}\""]
+        
 
           - job: DeployInfrastructuremis
             dependsOn: DeployInfrastructure
