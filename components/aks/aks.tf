@@ -126,7 +126,10 @@ module "kubernetes" {
   aks_role_definition              = "Contributor"
   aks_auto_shutdown_principal_id   = data.azuread_service_principal.aks_auto_shutdown.object_id
   drain_timeout_time               = var.drain_timeout_time
+
+  aks_mi = data.azurerm_user_assigned_identity.aks.id
 }
+
 
 module "ctags" {
   source       = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
