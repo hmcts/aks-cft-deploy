@@ -178,3 +178,11 @@ module "ctags" {
   builtFrom    = var.builtFrom
   expiresAfter = var.expiresAfter
 }
+
+# Gives perftest, ithc, aat and prod access to genesis resource group for WI
+resource "azurerm_role_assignment" "genesis_rg_contributor" {
+  count                = var.env == "perftest" || var.env == "ithc" || var.env == "aat" || var.env == "prod" ? 1 : 0
+  principal_id         = azurerm_user_assigned_identity.sops-mi.principal_id
+  role_definition_name = "Contributor"
+  scope                = data.azurerm_resource_group.genesis_rg.id
+}
