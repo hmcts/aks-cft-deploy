@@ -26,7 +26,7 @@ data "azuread_service_principal" "aks_auto_shutdown" {
 
 module "kubernetes" {
   for_each = var.clusters
-  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=4.x"
+  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=DTSPO-22075_1"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.env
@@ -126,6 +126,8 @@ module "kubernetes" {
   aks_role_definition              = "Contributor"
   aks_auto_shutdown_principal_id   = data.azuread_service_principal.aks_auto_shutdown.object_id
   drain_timeout_time               = var.drain_timeout_time
+
+  aks_mi_resource_group_name = data.azurerm_resource_group.genesis_rg.name
 }
 
 module "ctags" {
