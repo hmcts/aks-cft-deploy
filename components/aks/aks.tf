@@ -126,6 +126,8 @@ module "kubernetes" {
   aks_role_definition              = "Contributor"
   aks_auto_shutdown_principal_id   = data.azuread_service_principal.aks_auto_shutdown.object_id
   drain_timeout_time               = var.drain_timeout_time
+
+  aks_mi_resource_group_name = data.azurerm_resource_group.genesis_rg.name
 }
 
 module "ctags" {
