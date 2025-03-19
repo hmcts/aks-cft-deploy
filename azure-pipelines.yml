@@ -86,24 +86,24 @@ parameters:
         backendAzureRmResourceGroupName: "azure-control-test-rg"
         aksKeyVault: "dcdcftappstestkv"
         terraformSubscriptionID: "8a07fdcd-6abd-48b3-ad88-ff737a4b9e3c"
-      - env: "aat"
-        dependsOn: "sbox"
-        serviceConnection: "DCD-CFTAPPS-STG"
-        backendAzureRmResourceGroupName: "azure-control-stg-rg"
-        aksKeyVault: "dcdcftappsstgkv"
-        terraformSubscriptionID: "96c274ce-846d-4e48-89a7-d528432298a7"
-      - env: "ptl"
-        dependsOn: "ptlsbox"
-        serviceConnection: "DTS-CFTPTL-INTSVC"
-        backendAzureRmResourceGroupName: "azure-control-ptl-rg"
-        aksKeyVault: "dtscftptl"
-        terraformSubscriptionID: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
-      - env: "prod"
-        dependsOn: "aat"
-        serviceConnection: "DCD-CFTAPPS-PROD"
-        backendAzureRmResourceGroupName: "azure-control-prod-rg"
-        aksKeyVault: "dcdcftappsprodkv"
-        terraformSubscriptionID: "8cbc6f36-7c56-4963-9d36-739db5d00b27"
+      # - env: "aat"
+      #   dependsOn: "sbox"
+      #   serviceConnection: "DCD-CFTAPPS-STG"
+      #   backendAzureRmResourceGroupName: "azure-control-stg-rg"
+      #   aksKeyVault: "dcdcftappsstgkv"
+      #   terraformSubscriptionID: "96c274ce-846d-4e48-89a7-d528432298a7"
+      # - env: "ptl"
+      #   dependsOn: "ptlsbox"
+      #   serviceConnection: "DTS-CFTPTL-INTSVC"
+      #   backendAzureRmResourceGroupName: "azure-control-ptl-rg"
+      #   aksKeyVault: "dtscftptl"
+      #   terraformSubscriptionID: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+      # - env: "prod"
+      #   dependsOn: "aat"
+      #   serviceConnection: "DCD-CFTAPPS-PROD"
+      #   backendAzureRmResourceGroupName: "azure-control-prod-rg"
+      #   aksKeyVault: "dcdcftappsprodkv"
+      #   terraformSubscriptionID: "8cbc6f36-7c56-4963-9d36-739db5d00b27"
 
 variables:
   - name: project
@@ -309,34 +309,6 @@ stages:
                       -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
                       -target module.kubernetes["\"${{parameters.cluster}}\""]
 
-          - job: DeployAKSTEST
-            displayName: "Deploy AKS Test Infrastructure"
-            condition: |
-              or(
-                eq('${{ component.env }}', 'sbox'),
-                eq('${{ component.env }}', 'demo'),
-                eq('${{ component.env }}', 'preview'),
-                eq('${{ component.env }}', 'ithc')
-              )
-            steps:
-            - template: pipeline-steps/deploy-service.yaml
-              parameters:
-                environment: ${{ component.env }}
-                location: ${{ parameters.location }}
-                stack: "aks"
-                project: $(project)
-                product: ${{ variables.product }}
-                tfInitSub: ${{ variables.tfInitSub }}
-                serviceConnection: ${{ component.serviceConnection }}
-                action: ${{ parameters.action }}
-                terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
-                backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
-                setClusterNumbersEnvVar: true
-                ${{ if ne(parameters['cluster'], 'All') }}:
-                  targetCommand: >
-                    -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
-                    -target module.kubernetes["\"${{parameters.cluster}}\""]
-        
           - job: DeployInfrastructuremis
             dependsOn: DeployInfrastructure
             steps:
