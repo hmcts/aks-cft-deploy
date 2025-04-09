@@ -8,7 +8,7 @@ CLUSTER_NAME="${6}"
 AGENT_BUILDDIRECTORY=/tmp
 KUSTOMIZE_VERSION=5.6.0
 TMP_DIR=/tmp/flux/${ENVIRONMENT}/${CLUSTER_NAME}
-FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/master
+FLUX_CONFIG_URL=https://raw.githubusercontent.com/hmcts/cnp-flux-config/refs/heads/master
 ISSUER_URL=$(az aks show -n cft-${ENVIRONMENT}-${CLUSTER_NAME}-aks -g cft-${ENVIRONMENT}-${CLUSTER_NAME}-rg --query "oidcIssuerProfile.issuerUrl" -otsv)
 
 # In these cases ENVIRONMENT input var does not match directory name in flux config
@@ -115,8 +115,13 @@ function install_aso {
 
   # Wait for ASO to be ready
   echo "Waiting for Azure Service Operator to be ready..." 
-  aso_pod="$(kubectl get pod -n azureserviceoperator-system --no-headers=true | awk '/azureserviceoperator-controller-manager/{print $1}')"
-  wait_for_k8s_resource "pod" "$aso_pod" "azureserviceoperator-system" "Ready" 150
+  aso_pods="$(kubectl get pod -n azureserviceoperator-system --no-headers=true | awk '/azureserviceoperator-controller-manager/{print $1}')"
+  for pod in $aso_pods; do
+  echo "$pod" 
+  done
+  for pod in $aso_pods; do
+  wait_for_k8s_resource "pod" "$pod" "azureserviceoperator-system" "Ready" 150
+  done
   wait_for_k8s_resource "svc" "azureserviceoperator-webhook-service" "azureserviceoperator-system" ""
   wait_for_k8s_resource "mutatingwebhookconfiguration" "azureserviceoperator-mutating-webhook-configuration" "" ""
 }
@@ -158,7 +163,7 @@ resources:
   - workload-identity-ua-identity.yaml
   - workload-identity-rg.yaml
 patches:
-  - path: ${FLUX_CONFIG_URL}/apps/flux-system/base/patches/workload-identity-deployment.yaml
+  - path: ${FLUX_CONFIG_URL}/apps/flux-system/base/patches/workload-identity-deployment-patch.yaml
   - path: ${FLUX_CONFIG_URL}/apps/flux-system/serviceaccount/${CLUSTER_ENV}.yaml
 EOF
  ) > "${TMP_DIR}/gotk/kustomization.yaml"
