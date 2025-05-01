@@ -96,20 +96,6 @@ module "kubernetes" {
       node_taints         = ["dedicated=jobs:NoSchedule"]
       enable_auto_scaling = true
       mode                = "User"
-    },
-    {
-      name                = "spotinstance"
-      vm_size             = lookup(var.spot_node_pool, "vm_size", "Standard_D4ds_v5")
-      min_count           = lookup(var.spot_node_pool, "min_nodes", 0)
-      max_count           = lookup(var.spot_node_pool, "max_nodes", 5)
-      max_pods            = lookup(var.spot_node_pool, "max_pods", 30)
-      os_type             = "Linux"
-      node_taints         = ["kubernetes.azure.com/scalesetpriority=spot:NoSchedule"]
-      enable_auto_scaling = true
-      mode                = "User"
-      priority            = "Spot"
-      eviction_policy     = "Delete"
-      spot_max_price      = "-1"
     }
   ]
 
