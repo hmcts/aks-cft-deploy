@@ -60,8 +60,4 @@ clusters = {
   }
 }
 
-spot_node_pool = {
-  min_nodes = 1
-}
-
 autoShutdown = true
