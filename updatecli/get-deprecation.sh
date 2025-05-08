@@ -4,7 +4,7 @@ environment="$CURRENT_ITER_ENVIRONMENT"
 aks_name=`yq ".environments.$environment.aks_name" ./updatecli/values.github-action.yaml`
 aks_resource_group=`yq ".environments.$environment.aks_resource_group" ./updatecli/values.github-action.yaml`
 aks_subscription=`yq ".environments.$environment.aks_subscription" ./updatecli/values.github-action.yaml`
-
+echo "test"
 # get kubelogin
 if ! kubelogin --version  &> /dev/null
 then
