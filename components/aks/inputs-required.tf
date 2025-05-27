@@ -34,10 +34,6 @@ variable "clusters" {
           max_nodes = 10
         }
 
-        spot_node_pool = {
-          min_nodes = 1
-        }
-
         availability_zones = ["1"]
         autoShutdown       = true
 
@@ -64,10 +60,6 @@ variable "clusters" {
           vm_size   = "Standard_D4ds_v5"
           min_nodes = 4
           max_nodes = 10
-        }
-
-        spot_node_pool = {
-          min_nodes = 1
         }
 
         availability_zones = ["1"]
