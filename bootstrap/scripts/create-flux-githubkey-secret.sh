@@ -4,17 +4,16 @@ set -e
 az_keyvault_name="${8}"
 AGENT_BUILDDIRECTORY=/tmp
 
-
-private_key="$(az keyvault secret list --vault-name ${az_keyvault_name} --query "[?name=='flux-github-private-key'].name" -o tsv)"
-public_key="$(az keyvault secret list --vault-name ${az_keyvault_name} --query "[?name=='flux-github-public-key'].name" -o tsv)"
-if [[ -z $public_key ]] || [[ -z $private_key ]] 
+flux_github_app_id="$(az keyvault secret list --vault-name ${az_keyvault_name} --query "[?name=='flux-github-app-id'].name" -o tsv)"
+flux_github_app_installation_id="$(az keyvault secret list --vault-name ${az_keyvault_name} --query "[?name=='flux-github-app-installation-id'].name" -o tsv)"
+flux_github_app_private_key="$(az keyvault secret list --vault-name ${az_keyvault_name} --query "[?name=='flux-github-app-priv-key'].name" -o tsv)"
+if [[ -z $flux_github_app_id ]] || [[ -z $flux_github_app_installation_id ]] || [[ -z $flux_github_app_private_key ]]
     then
-            echo "SSHKey Setup"
-            ssh-keygen -t ed25519 -f $AGENT_BUILDDIRECTORY/flux-ssh-git-key -q -P "" -C ""
-            az keyvault secret set --name flux-github-private-key --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-ssh-git-key
-            az keyvault secret set --name flux-github-public-key --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-ssh-git-key.pub
-    else
-            echo "SSHKey Download"
-            az keyvault secret download --name flux-github-private-key --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-ssh-git-key --encoding ascii
-            az keyvault secret download --name flux-github-public-key --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-ssh-git-key.pub --encoding ascii
+            echo "GitHub App secrets not found in Key Vault, please ensure GitHub App secrets for this environment are set in its Key Vault"
+            exit 1
+    else            
+            echo "Flux GitHub App secrets Download"
+            az keyvault secret download --name flux-github-app-id --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-github-app-id --encoding ascii
+            az keyvault secret download --name flux-github-app-installation-id --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-github-app-installation-id --encoding ascii
+            az keyvault secret download --name flux-github-app-priv-key --vault-name ${az_keyvault_name} --file $AGENT_BUILDDIRECTORY/flux-github-app-private-key --encoding ascii
     fi
