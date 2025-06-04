@@ -127,7 +127,7 @@ function install_aso {
 }
 
 
-function flux_ssh_git_key {
+function flux_github_app_secret {
     echo " Kubectl Create GitHub App Secret"
     kubectl create secret generic github-app-credentials \
     --from-file=githubAppID=$AGENT_BUILDDIRECTORY/flux-github-app-id \
@@ -209,7 +209,7 @@ install_kustomize
 install_aadpodidentity
 install_aso
 # Install flux components
-flux_ssh_git_key
+flux_github_app_secret
 install_flux
 
 # Cleanup
