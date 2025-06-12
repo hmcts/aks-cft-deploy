@@ -127,19 +127,17 @@ function install_aso {
 }
 
 
-function flux_github_app_secret {
-    echo " Kubectl Create GitHub App Secret"
-    kubectl create secret generic github-app-credentials \
-    --from-file=githubAppID=$AGENT_BUILDDIRECTORY/flux-github-app-id \
-    --from-file=githubAppInstallationID=$AGENT_BUILDDIRECTORY/flux-github-app-installation-id \
-    --from-file=githubAppPrivateKey=$AGENT_BUILDDIRECTORY/flux-github-app-private-key \
+function flux_ssh_git_key {
+    ssh-keyscan -t ecdsa-sha2-nistp256 github.com > $AGENT_BUILDDIRECTORY/known_hosts
+    echo " Kubectl Create Secret"
+    kubectl create secret generic git-credentials \
+    --from-file=identity=$AGENT_BUILDDIRECTORY/flux-ssh-git-key \
+    --from-file=identity.pub=$AGENT_BUILDDIRECTORY/flux-ssh-git-key.pub \
+    --from-file=known_hosts=$AGENT_BUILDDIRECTORY/known_hosts \
     --namespace flux-system \
-    --dry-run=client -o yaml > "${TMP_DIR}/gotk/github-app-credentials.yaml"
-    # Clean up these secret files - they are not needed anymore and to avoid conflicts on subsequent runs on the same agent
-    rm -f $AGENT_BUILDDIRECTORY/flux-github-app-id
-    rm -f $AGENT_BUILDDIRECTORY/flux-github-app-installation-id
-    rm -f $AGENT_BUILDDIRECTORY/flux-github-app-private-key
+    --dry-run=client -o yaml > "${TMP_DIR}/gotk/git-credentials.yaml"
 }
+
 
 # Installs flux components using workload identity
 function install_flux {
@@ -160,7 +158,7 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - ${FLUX_CONFIG_URL}/apps/flux-system/base/gotk-components.yaml
-  - github-app-credentials.yaml
+  - git-credentials.yaml 
   - workload-identity-federated-credential.yaml
   - workload-identity-ua-identity.yaml
   - workload-identity-rg.yaml
@@ -213,7 +211,7 @@ install_kustomize
 install_aadpodidentity
 install_aso
 # Install flux components
-flux_github_app_secret
+flux_ssh_git_key
 install_flux
 
 # Cleanup
