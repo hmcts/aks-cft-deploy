@@ -134,5 +134,8 @@ coreinfra_subnets = [
   },
   {
     name = "core-infra-subnet-apimgmt-prod"
+  },
+  {
+    name = "postgresql"
   }
 ]

@@ -229,5 +229,8 @@ coreinfra_subnets = [
   },
   {
     name = "core-infra-subnet-apimgmt-aat"
+  },
+  {
+    name = "postgresql"
   }
 ]
