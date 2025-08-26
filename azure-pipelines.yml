@@ -125,7 +125,7 @@ variables:
     ${{ else }}:
       value: ${{ parameters.action }}
 
-name: AKS-CFT-Deploy - $(finalAction)
+name: "AKS-CFT-Deploy - $(finalAction)"
 
 stages:
   - stage: PreCheck
