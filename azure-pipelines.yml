@@ -103,8 +103,6 @@ parameters:
         aksKeyVault: "dcdcftappsprodkv"
         terraformSubscriptionID: "8cbc6f36-7c56-4963-9d36-739db5d00b27"
 
-name: AKS-CFT-Deploy - ${{ parameters.finalAction }}
-
 variables:
   - name: project
     value: cft
@@ -126,6 +124,8 @@ variables:
     ${{ else }}:
       value: ${{ parameters.action }}
   - template: vars/input-variables.yaml@cnp-azuredevops-libraries
+
+name: AKS-CFT-Deploy - ${{ parameters.finalAction }}
 
 stages:
   - stage: PreCheck
