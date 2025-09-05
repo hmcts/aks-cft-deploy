@@ -83,6 +83,13 @@ clusters = {
     }
 
     availability_zones = ["1"]
+
+
+    node_os_maintenance_window_config = {
+      frequency  = "Daily"
+      start_time = "18:00"
+      is_prod    = false
+    }
   }
 }
 
