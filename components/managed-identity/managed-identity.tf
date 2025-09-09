@@ -17,7 +17,7 @@ resource "azurerm_role_assignment" "MI-Operator-azure-policy-manager" {
   count                = var.env == "prod" ? 1 : 0
   scope                = azurerm_user_assigned_identity.sops-mi.id
   role_definition_name = "Managed Identity Operator"
-  principal_id         = var.azure_policy_manager_object_id
+  principal_id         = data.azuread_service_principal.azure_policy_manager.object_id
 }
 
 resource "azurerm_role_assignment" "Reader" {
