@@ -56,3 +56,9 @@ variable "expiresAfter" {
 variable "service_operator_settings_enabled" {
   default = false
 }
+
+variable "azure_policy_manager_object_id" {
+  description = "Object ID of the azure-policy-manager service principal"
+  type        = string
+  default     = ""
+}
