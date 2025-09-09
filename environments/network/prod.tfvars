@@ -139,3 +139,5 @@ coreinfra_subnets = [
     name = "postgresql"
   }
 ]
+
+azure_policy_manager_object_id = "386b3bd7-de44-4ab1-b496-69a84d506572"
