@@ -12,7 +12,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: master
+      ref: tf-plan-json
       name: hmcts/cnp-azuredevops-libraries
       endpoint: "hmcts"
     - repository: cnp-flux-config
