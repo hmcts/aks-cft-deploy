@@ -337,16 +337,6 @@ stages:
                       -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
                       -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
-      - stage: Analyse_plans
-        displayName: "Analyse terraform plan"
-        condition: and(eq('${{ parameters.Action }}', 'Plan'), succeeded())
-        dependsOn:
-          - DeployInfrastructuremis
-        jobs:
-          - job: AnalysePlans
-            steps:
-              - template: steps/terraform-plan-analyse.yaml@cnp-azuredevops-libraries
-
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
@@ -392,3 +382,13 @@ stages:
                   environment: ${{ component.env }}
                   product: ${{ variables.product }}
                   test_title: "${{ component.env }}_${{ parameters.cluster }}"
+
+  - stage: Analyse_plans
+    displayName: "Analyse terraform plan"
+    condition: and(eq('${{ parameters.Action }}', 'Plan'), succeeded())
+    dependsOn:
+      - DeployInfrastructuremis
+    jobs:
+      - job: AnalysePlans
+        steps:
+          - template: steps/terraform-plan-analyse.yaml@cnp-azuredevops-libraries
