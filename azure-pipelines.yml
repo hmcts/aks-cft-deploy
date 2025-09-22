@@ -387,7 +387,7 @@ stages:
     displayName: "Analyse terraform plan"
     condition: and(eq('${{ parameters.Action }}', 'Plan'), succeeded())
     dependsOn:
-      - DeployInfrastructuremis
+      - PipelineTests_SBOX
     jobs:
       - job: AnalysePlans
         steps:
