@@ -129,33 +129,33 @@ stages:
               serviceConnection: azurerm-sandbox
               projectName: ${{ variables.project }}
               environment: sbox
-  - ${{ each component in parameters.environment_components }}:
-      - stage: "CheckingClusters_${{ component.env }}"
-        displayName: "Checking Clusters for ${{ component.env }}"
-        dependsOn:
-          - ? ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'apply')) }}
-            : - Network_${{ component.dependsOn }}
-              - Managed_Identity_${{ component.dependsOn }}
-              - Aks_${{ component.dependsOn }}
-              - BootStrapClusters_${{ component.dependsOn }}
-              - PipelineTests_${{ component.dependsOn }}
-          - ? ${{ if and(ne(component.env, 'sbox'), ne(parameters.action, 'apply')) }}
-            : - Network_${{ component.dependsOn }}
-              - Managed_Identity_${{ component.dependsOn }}
-              - Aks_${{ component.dependsOn }}
-          - ${{ else }}:
-              - Precheck
-        jobs:
-          - job: CheckingClusters
-            steps:
-              - checkout: self
-              - task: AzureCLI@2
-                displayName: "Checking available clusters"
-                name: check_clusters
-                inputs:
-                  scriptType: bash
-                  azureSubscription: ${{ component.serviceConnection }}
-                  scriptPath: "scripts/checking-clusters.sh"
+  # - ${{ each component in parameters.environment_components }}:
+  #     - stage: "CheckingClusters_${{ component.env }}"
+  #       displayName: "Checking Clusters for ${{ component.env }}"
+  #       dependsOn:
+  #         - ? ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'apply')) }}
+  #           : - Network_${{ component.dependsOn }}
+  #             - Managed_Identity_${{ component.dependsOn }}
+  #             - Aks_${{ component.dependsOn }}
+  #             - BootStrapClusters_${{ component.dependsOn }}
+  #             - PipelineTests_${{ component.dependsOn }}
+  #         - ? ${{ if and(ne(component.env, 'sbox'), ne(parameters.action, 'apply')) }}
+  #           : - Network_${{ component.dependsOn }}
+  #             - Managed_Identity_${{ component.dependsOn }}
+  #             - Aks_${{ component.dependsOn }}
+  #         - ${{ else }}:
+  #             - Precheck
+        # jobs:
+          # - job: CheckingClusters
+          #   steps:
+          #     - checkout: self
+          #     - task: AzureCLI@2
+          #       displayName: "Checking available clusters"
+          #       name: check_clusters
+          #       inputs:
+          #         scriptType: bash
+          #         azureSubscription: ${{ component.serviceConnection }}
+          #         scriptPath: "scripts/checking-clusters.sh"
 
       # - stage: Genesis_${{ component.env }}
       #   displayName: "${{ upper(component.env) }}: Genesis"
