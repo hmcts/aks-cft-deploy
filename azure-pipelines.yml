@@ -384,5 +384,4 @@ stages:
           - template: steps/terraform-plan-analyse.yaml@cnp-azuredevops-libraries
             parameters:
               ${{ each component in parameters.environment_components }}:
-                environment: 
-                  ${{ component.env }}
+                environment: ${{ component.env }}
