@@ -181,93 +181,94 @@ stages:
                   planCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
 
-      - stage: "Network_${{ component.env }}"
-        displayName: "${{ upper(component.env) }}: Network"
-        dependsOn:
-          - Genesis_${{ component.env }}
-        jobs:
-          - job: NetworkRg
-            steps:
-              - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
-              - template: steps/terraform.yaml@cnp-azuredevops-libraries
-                parameters:
-                  overrideAction: ${{ parameters.action }}
-                  environment: ${{ component.env }}
-                  component: "network-rg"
-                  location: ${{ parameters.location }}
-                  serviceConnection: ${{ component.serviceConnection }}
-                  terraformInitSubscription: ${{ variables.tfInitSub }}
-                  product: ${{ variables.product }}
-                  tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ component.env }}.tfvars"
-                  initCommandOptions: >
-                    -var subscription_id=${{ component.terraformSubscriptionID }}
-                    -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
-                  planCommandOptions: >
-                    -var subscription_id=${{ component.terraformSubscriptionID }}
-                    -var control_vault=$(controlKeyVault)
-                    -var project=$(project)
+      # - stage: "Network_${{ component.env }}"
+      #   displayName: "${{ upper(component.env) }}: Network"
+      #   dependsOn:
+      #     - Genesis_${{ component.env }}
+      #   jobs:
+      #     - job: NetworkRg
+      #       steps:
+      #         - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
+      #         - template: steps/terraform.yaml@cnp-azuredevops-libraries
+      #           parameters:
+      #             overrideAction: ${{ parameters.action }}
+      #             environment: ${{ component.env }}
+      #             component: "network-rg"
+      #             location: ${{ parameters.location }}
+      #             serviceConnection: ${{ component.serviceConnection }}
+      #             terraformInitSubscription: ${{ variables.tfInitSub }}
+      #             product: ${{ variables.product }}
+      #             tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ component.env }}.tfvars"
+      #             initCommandOptions: >
+      #               -var subscription_id=${{ component.terraformSubscriptionID }}
+      #               -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
+      #             planCommandOptions: >
+      #               -var subscription_id=${{ component.terraformSubscriptionID }}
+      #               -var control_vault=$(controlKeyVault)
+      #               -var project=$(project)
 
-          - job: DeployInfrastructure
-            dependsOn: NetworkRg
-            steps:
-              - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
-              - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
-                parameters:
-                  serviceConnection: ${{ component.serviceConnection }}
-                  environment: ${{ component.env }}
-                  subscriptionIdVariableName: "SUBSCRIPTION_ID"
-                  storageAccountVariableName: "STORAGE_ACCOUNT"
-                  keyVaultVariableName: "KEY_VAULT"
+      #     - job: DeployInfrastructure
+      #       dependsOn: NetworkRg
+      #       steps:
+      #         - template: steps/set-build-repo-suffix-env-var.yaml@cnp-azuredevops-libraries
+      #         - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
+      #           parameters:
+      #             serviceConnection: ${{ component.serviceConnection }}
+      #             environment: ${{ component.env }}
+      #             subscriptionIdVariableName: "SUBSCRIPTION_ID"
+      #             storageAccountVariableName: "STORAGE_ACCOUNT"
+      #             keyVaultVariableName: "KEY_VAULT"
 
-              - template: steps/terraform.yaml@cnp-azuredevops-libraries
-                parameters:
-                  overrideAction: ${{ parameters.action }}
-                  environment: ${{ component.env }}
-                  component: "network"
-                  location: ${{ parameters.location }}
-                  serviceConnection: OPS-APPROVAL-GATE-MGMT-ENVS
-                  terraformInitSubscription: ${{ variables.tfInitSub }}
-                  product: ${{ variables.product }}
-                  tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ component.env }}.tfvars"
-                  initCommandOptions: >
-                    -var subscription_id=${{ component.terraformSubscriptionID }}
-                    -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
-                    -backend-config storage_account_name=$(STORAGE_ACCOUNT)
-                  planCommandOptions: >
-                    -var subscription_id=${{ component.terraformSubscriptionID }}
-                    -var control_vault=$(KEY_VAULT)
-                    -var project=$(project)
+      #         - template: steps/terraform.yaml@cnp-azuredevops-libraries
+      #           parameters:
+      #             overrideAction: ${{ parameters.action }}
+      #             environment: ${{ component.env }}
+      #             component: "network"
+      #             location: ${{ parameters.location }}
+      #             serviceConnection: OPS-APPROVAL-GATE-MGMT-ENVS
+      #             terraformInitSubscription: ${{ variables.tfInitSub }}
+      #             product: ${{ variables.product }}
+      #             tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ component.env }}.tfvars"
+      #             initCommandOptions: >
+      #               -var subscription_id=${{ component.terraformSubscriptionID }}
+      #               -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
+      #               -backend-config storage_account_name=$(STORAGE_ACCOUNT)
+      #             planCommandOptions: >
+      #               -var subscription_id=${{ component.terraformSubscriptionID }}
+      #               -var control_vault=$(KEY_VAULT)
+      #               -var project=$(project)
 
-      - stage: Managed_Identity_${{ component.env }}
-        displayName: "${{ upper(component.env) }}: Managed_Identity"
-        dependsOn:
-          - Network_${{ component.env }}
-        jobs:
-          - job: Managed_Identity
-            steps:
-              - template: steps/terraform.yaml@cnp-azuredevops-libraries
-                parameters:
-                  overrideAction: ${{ parameters.action }}
-                  environment: ${{ component.env }}
-                  component: managed-identity
-                  location: ${{ parameters.location }}
-                  serviceConnection: ${{ component.serviceConnection }}
-                  terraformInitSubscription: ${{ variables.tfInitSub }}
-                  product: ${{ variables.product }}
-                  tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/managed-identity/${{ component.env }}.tfvars"
-                  initCommandOptions: >
-                    -var subscription_id=${{ component.terraformSubscriptionID }}
-                    -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
-                  planCommandOptions: >
-                    -var subscription_id=${{ component.terraformSubscriptionID }}
-                    -var control_vault=$(controlKeyVault)
-                    -var project=$(project)
+      # - stage: Managed_Identity_${{ component.env }}
+      #   displayName: "${{ upper(component.env) }}: Managed_Identity"
+      #   dependsOn:
+      #     - Network_${{ component.env }}
+      #   jobs:
+      #     - job: Managed_Identity
+      #       steps:
+      #         - template: steps/terraform.yaml@cnp-azuredevops-libraries
+      #           parameters:
+      #             overrideAction: ${{ parameters.action }}
+      #             environment: ${{ component.env }}
+      #             component: managed-identity
+      #             location: ${{ parameters.location }}
+      #             serviceConnection: ${{ component.serviceConnection }}
+      #             terraformInitSubscription: ${{ variables.tfInitSub }}
+      #             product: ${{ variables.product }}
+      #             tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/managed-identity/${{ component.env }}.tfvars"
+      #             initCommandOptions: >
+      #               -var subscription_id=${{ component.terraformSubscriptionID }}
+      #               -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
+      #             planCommandOptions: >
+      #               -var subscription_id=${{ component.terraformSubscriptionID }}
+      #               -var control_vault=$(controlKeyVault)
+      #               -var project=$(project)
 
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
         pool: hmcts-cftptl-agent-pool
         dependsOn:
-          - Managed_Identity_${{ component.env }}
+          # - Managed_Identity_${{ component.env }}
+          - Precheck
         condition: |
           or (
             and(
