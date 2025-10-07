@@ -13,7 +13,7 @@ clusters = {
     linux_node_pool = {
       vm_size   = "Standard_D8ds_v5"
       min_nodes = 30
-      max_nodes = 100
+      max_nodes = 140
     }
     availability_zones = ["1", "2", "3"]
 
@@ -39,7 +39,7 @@ clusters = {
     linux_node_pool = {
       vm_size   = "Standard_D8ds_v5"
       min_nodes = 30
-      max_nodes = 100
+      max_nodes = 120
     }
 
     availability_zones = ["1", "2", "3"]
