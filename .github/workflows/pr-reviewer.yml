@@ -100,7 +100,6 @@ jobs:
           echo "$comment_url" >> $GITHUB_ENV
 
       - uses: actions/github-script@v6
-        env:
         with:
           script: |
             github.rest.issues.updateComment({
