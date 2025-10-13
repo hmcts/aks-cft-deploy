@@ -42,7 +42,7 @@ clusters = {
     linux_node_pool = {
       vm_size   = "Standard_D8ds_v5"
       min_nodes = 30
-      max_nodes = 180
+      max_nodes = 250
       max_pods  = 30
     }
 
