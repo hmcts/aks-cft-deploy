@@ -97,6 +97,18 @@ additional_routes = [
     address_prefix         = "10.25.33.0/27"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "dlrm_data_aria_sbox1"
+    address_prefix         = "10.247.3.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "dlrm_data_aria_sbox2"
+    address_prefix         = "10.247.4.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
   }
 ]
 
