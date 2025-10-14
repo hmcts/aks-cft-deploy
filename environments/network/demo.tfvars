@@ -108,8 +108,4 @@ additional_routes_coreinfra = [
   },
 ]
 
-coreinfra_subnets = [
-  {
-    name = "core-infra-subnet-apimgmt-demo"
-  }
-]
+coreinfra_subnets = []
