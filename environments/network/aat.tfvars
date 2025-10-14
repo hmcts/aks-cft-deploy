@@ -228,9 +228,6 @@ coreinfra_subnets = [
     name = "scan-storage"
   },
   {
-    name = "core-infra-subnet-apimgmt-aat"
-  },
-  {
     name = "postgresql"
   }
 ]

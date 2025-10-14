@@ -145,9 +145,6 @@ coreinfra_subnets = [
     name = "core-infra-subnet-1-perftest"
   },
   {
-    name = "core-infra-subnet-apimgmt-perftest"
-  },
-  {
     name = "core-infra-subnet-2-perftest"
   }
 ]
