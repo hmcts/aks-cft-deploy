@@ -11,7 +11,7 @@ parameters:
   action: ''
   terraformSubscriptionID: ''
   backendAzureRmResourceGroupName: ''
-  publishPlanResults: ''
+  publishPlanResults: true
 
 steps:
   - template: steps/terraform.yaml@cnp-azuredevops-libraries
