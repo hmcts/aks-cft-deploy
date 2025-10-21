@@ -124,6 +124,8 @@ variables:
       value: 'apply'
     ${{ else }}:
       value: ${{ parameters.action }}
+  - name: publishPlanResults
+    value: false
 
 name: "AKS-CFT-Deploy - $(finalAction)"
 
@@ -185,6 +187,7 @@ stages:
                   serviceConnection: ${{ component.serviceConnection }}
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
+                  publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: NULL
                   initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
@@ -209,6 +212,7 @@ stages:
                   serviceConnection: ${{ component.serviceConnection }}
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
+                  publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ component.env }}.tfvars"
                   initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
@@ -239,6 +243,7 @@ stages:
                   serviceConnection: OPS-APPROVAL-GATE-MGMT-ENVS
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
+                  publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ component.env }}.tfvars"
                   initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
@@ -265,6 +270,7 @@ stages:
                   serviceConnection: ${{ component.serviceConnection }}
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
+                  publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/managed-identity/${{ component.env }}.tfvars"
                   initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
@@ -303,6 +309,7 @@ stages:
                   stack: "aks"
                   project: $(project)
                   product: ${{ variables.product }}
+                  publishPlanResults: ${{ variables.publishPlanResults }}
                   tfInitSub: ${{ variables.tfInitSub }}
                   serviceConnection: ${{ component.serviceConnection }}
                   action: ${{ parameters.action }}
@@ -382,3 +389,16 @@ stages:
                   environment: ${{ component.env }}
                   product: ${{ variables.product }}
                   test_title: "${{ component.env }}_${{ parameters.cluster }}"
+
+  - stage: Analyse_plans
+    displayName: "Analyse terraform plan"
+    condition: and(eq('${{ parameters.Action }}', 'Plan'), succeededOrFailed())
+    dependsOn:
+      - ${{ each component in parameters.environment_components }}:
+        - Aks_${{ component.env }}
+    jobs:
+      - job: AnalysePlans
+        steps:
+          - template: steps/terraform-plan-analyse.yaml@cnp-azuredevops-libraries
+            parameters:
+              serviceConnection: DTS-CFTPTL-INTSVC
