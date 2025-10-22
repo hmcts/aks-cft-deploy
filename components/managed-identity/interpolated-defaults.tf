@@ -36,3 +36,8 @@ data "azurerm_key_vault_secret" "kubernetes_cluster_client_id" {
   name         = "sp-object-id"
   key_vault_id = data.azurerm_key_vault.hmcts_access_vault.id
 }
+
+data "azuread_service_principal" "azure_policy_manager" {
+  count        = var.env == "prod" ? 1 : 0
+  display_name = "azure-policy-manager"
+}
