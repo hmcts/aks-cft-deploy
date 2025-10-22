@@ -10,14 +10,14 @@ clusters = {
     system_node_pool = {
       vm_size   = "Standard_D4ds_v5"
       min_nodes = 2
-      max_nodes = 10
+      max_nodes = 4
     }
 
     linux_node_pool = {
       vm_size   = "Standard_D4ds_v5"
       min_nodes = 4
       max_nodes = 10
-      max_pods  = 100
+      max_pods  = 30
     }
 
     availability_zones = ["1"]
@@ -40,14 +40,14 @@ clusters = {
     system_node_pool = {
       vm_size   = "Standard_D4ds_v5"
       min_nodes = 2
-      max_nodes = 10
+      max_nodes = 4
     }
 
     linux_node_pool = {
       vm_size   = "Standard_D4ds_v5"
       min_nodes = 4
       max_nodes = 10
-      max_pods  = 100
+      max_pods  = 30
     }
 
     availability_zones = ["1"]
