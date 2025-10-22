@@ -11,6 +11,7 @@ parameters:
   action: ''
   terraformSubscriptionID: ''
   backendAzureRmResourceGroupName: ''
+  publishPlanResults: false
 
 steps:
   - template: steps/terraform.yaml@cnp-azuredevops-libraries
@@ -22,6 +23,7 @@ steps:
       serviceConnection: ${{ parameters.serviceConnection }}
       terraformInitSubscription: ${{ parameters.tfInitSub }}
       product: ${{ parameters.product }}
+      publishPlanResults: ${{ parameters.publishPlanResults }}
       tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/${{ parameters.stack }}/${{ parameters.environment }}.tfvars"
       initCommandOptions: >
         -var subscription_id=${{ parameters.terraformSubscriptionID }}
