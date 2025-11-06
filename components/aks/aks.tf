@@ -74,7 +74,7 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = each.value.enable_user_system_nodepool_split
 
-  additional_node_pools = contains(["prod", "ptl", "aat", "ithc", "perftest", "demo", "preview", "sbox"], var.env) ? tolist([
+  additional_node_pools = contains(["prod", "ptl", "aat", "ithc", "perftest", "demo", "preview", "sbox"], var.env) ? [
     {
       name                = "linux"
       vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_DS3_v2")
@@ -82,6 +82,7 @@ module "kubernetes" {
       max_count           = lookup(each.value.linux_node_pool, "max_nodes", 4)
       max_pods            = lookup(each.value.linux_node_pool, "max_pods", 30)
       os_type             = "Linux"
+      os_sku              = null
       node_taints         = []
       enable_auto_scaling = true
       mode                = "User"
@@ -93,11 +94,12 @@ module "kubernetes" {
       max_count           = 10
       max_pods            = 30
       os_type             = "Linux"
+      os_sku              = null
       node_taints         = ["dedicated=jobs:NoSchedule"]
       enable_auto_scaling = true
       mode                = "User"
     }
-    ]) : tolist([
+    ] : [
     {
       name                = "linux"
       vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_DS3_v2")
@@ -105,6 +107,7 @@ module "kubernetes" {
       max_count           = lookup(each.value.linux_node_pool, "max_nodes", 4)
       max_pods            = lookup(each.value.linux_node_pool, "max_pods", 30)
       os_type             = "Linux"
+      os_sku              = null
       node_taints         = []
       enable_auto_scaling = true
       mode                = "User"
@@ -128,11 +131,12 @@ module "kubernetes" {
       max_count           = 10
       max_pods            = 30
       os_type             = "Linux"
+      os_sku              = null
       node_taints         = ["dedicated=jobs:NoSchedule"]
       enable_auto_scaling = true
       mode                = "User"
     }
-  ])
+  ]
 
   project_acr_enabled = each.value.project_acr_enabled
   availability_zones  = each.value.availability_zones
