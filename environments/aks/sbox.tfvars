@@ -5,7 +5,7 @@ clusters = {
     enable_user_system_nodepool_split = true
     project_acr_enabled               = true
 
-    enable_automatic_channel_upgrade_patch = true
+    enable_automatic_channel_upgrade_patch = false
 
     system_node_pool = {
       vm_size   = "Standard_D4ds_v5"
@@ -35,7 +35,7 @@ clusters = {
     enable_user_system_nodepool_split = true
     project_acr_enabled               = true
 
-    enable_automatic_channel_upgrade_patch = true
+    enable_automatic_channel_upgrade_patch = false
 
     system_node_pool = {
       vm_size   = "Standard_D4ds_v5"
