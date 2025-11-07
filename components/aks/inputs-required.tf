@@ -95,16 +95,16 @@ variable "clusters" {
 
     windows_node_pool = optional(object({
       vm_size   = optional(string, "Standard_D4ds_v5")
-      min_nodes = optional(number, 2)
-      max_nodes = optional(number, 4)
+      min_nodes = optional(number, 0)
+      max_nodes = optional(number, 10)
       max_pods  = optional(number, 30)
-      os_sku    = optional(string, "Windows2019")
+      os_sku    = optional(string, "Windows2022")
       }), {
       vm_size   = "Standard_D4ds_v5"
-      min_nodes = 2
-      max_nodes = 4
+      min_nodes = 0
+      max_nodes = 10
       max_pods  = 30
-      os_sku    = "Windows2019"
+      os_sku    = "Windows2022"
     })
 
     node_os_maintenance_window_config = object({
