@@ -74,8 +74,7 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = each.value.enable_user_system_nodepool_split
 
-  # ptlsbox environment gets Windows nodes for legacy app testing, all other environments use Linux-only
-  additional_node_pools = contains(["ptlsbox"], var.env) ? [
+  additional_node_pools = contains(["ptlsbox" , "ptl"], var.env) ? [
     {
       name                = "linux"
       vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_DS3_v2")
