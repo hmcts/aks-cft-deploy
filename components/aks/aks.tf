@@ -74,7 +74,8 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = each.value.enable_user_system_nodepool_split
 
-  additional_node_pools = contains([], var.env) ? tuple([]) : [
+  # ptlsbox environment gets Windows nodes for legacy app testing, all other environments use Linux-only
+  additional_node_pools = contains(["ptlsbox"], var.env) ? [
     {
       name                = "linux"
       vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_DS3_v2")
@@ -82,6 +83,44 @@ module "kubernetes" {
       max_count           = lookup(each.value.linux_node_pool, "max_nodes", 4)
       max_pods            = lookup(each.value.linux_node_pool, "max_pods", 30)
       os_type             = "Linux"
+      os_sku              = null
+      node_taints         = []
+      enable_auto_scaling = true
+      mode                = "User"
+    },
+    {
+      name                = "msnode"
+      vm_size             = each.value.windows_node_pool.vm_size
+      min_count           = each.value.windows_node_pool.min_nodes
+      max_count           = each.value.windows_node_pool.max_nodes
+      max_pods            = each.value.windows_node_pool.max_pods
+      os_type             = "Windows"
+      os_sku              = each.value.windows_node_pool.os_sku
+      node_taints         = ["kubernetes.io/os=windows:NoSchedule"]
+      enable_auto_scaling = true
+      mode                = "User"
+    },
+    {
+      name                = "cronjob"
+      vm_size             = "Standard_D4ds_v5"
+      min_count           = 0
+      max_count           = 10
+      max_pods            = 30
+      os_type             = "Linux"
+      os_sku              = null
+      node_taints         = ["dedicated=jobs:NoSchedule"]
+      enable_auto_scaling = true
+      mode                = "User"
+    }
+    ] : [
+    {
+      name                = "linux"
+      vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_DS3_v2")
+      min_count           = lookup(each.value.linux_node_pool, "min_nodes", 2)
+      max_count           = lookup(each.value.linux_node_pool, "max_nodes", 4)
+      max_pods            = lookup(each.value.linux_node_pool, "max_pods", 30)
+      os_type             = "Linux"
+      os_sku              = null
       node_taints         = []
       enable_auto_scaling = true
       mode                = "User"
@@ -93,6 +132,7 @@ module "kubernetes" {
       max_count           = 10
       max_pods            = 30
       os_type             = "Linux"
+      os_sku              = null
       node_taints         = ["dedicated=jobs:NoSchedule"]
       enable_auto_scaling = true
       mode                = "User"
