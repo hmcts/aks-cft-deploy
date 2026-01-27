@@ -164,6 +164,7 @@ resources:
   - workload-identity-federated-credential.yaml
   - workload-identity-ua-identity.yaml
   - workload-identity-rg.yaml
+  - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/aso-controller-settings-patch.yaml
 patches:
   - path: ${FLUX_CONFIG_URL}/apps/flux-system/base/patches/workload-identity-deployment-patch.yaml
   - path: ${FLUX_CONFIG_URL}/apps/flux-system/serviceaccount/${CLUSTER_ENV}.yaml
