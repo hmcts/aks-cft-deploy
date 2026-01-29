@@ -18,7 +18,7 @@ clusters = {
       max_nodes = 10
     }
 
-    availability_zones = []
+    availability_zones = ["1", "2", "3"]
 
     node_os_maintenance_window_config = {
       frequency  = "Daily"
