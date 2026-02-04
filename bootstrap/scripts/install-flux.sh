@@ -151,6 +151,16 @@ download_files "https://api.github.com/repos/hmcts/cnp-flux-config/contents/apps
 "s|\${ENVIRONMENT}|$ENVIRONMENT|g" \
 "s|\${ISSUER_URL}|$ISSUER_URL|g"
 
+# Check if aso-controller-settings-patch.yaml exists for this environment
+ASO_PATCH_URL="${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/aso-controller-settings-patch.yaml"
+if curl --output /dev/null --silent --head --fail "$ASO_PATCH_URL"; then
+    ASO_PATCH_RESOURCE="- ${ASO_PATCH_URL}"
+    echo "ASO controller settings patch found for environment ${CLUSTER_ENV}"
+else
+    ASO_PATCH_RESOURCE=""
+    echo "ASO controller settings patch not found for environment ${CLUSTER_ENV}, skipping"
+fi
+
 # Generating Kustomization manifest
 echo "Deploying Flux - Generating Kustomization manifest"
 (
@@ -164,7 +174,7 @@ resources:
   - workload-identity-federated-credential.yaml
   - workload-identity-ua-identity.yaml
   - workload-identity-rg.yaml
-  - ${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/aso-controller-settings-patch.yaml
+  ${ASO_PATCH_RESOURCE}
 patches:
   - path: ${FLUX_CONFIG_URL}/apps/flux-system/base/patches/workload-identity-deployment-patch.yaml
   - path: ${FLUX_CONFIG_URL}/apps/flux-system/serviceaccount/${CLUSTER_ENV}.yaml
