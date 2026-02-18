@@ -166,6 +166,12 @@ additional_routes_application_gateway = [
     address_prefix         = "10.10.80.0/24"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "hub-github-network-prod-vnet"
+    address_prefix         = "10.10.232.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   }
 ]
 
