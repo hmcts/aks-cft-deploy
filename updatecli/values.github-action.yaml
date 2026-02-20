@@ -24,8 +24,8 @@ environments:
     aks_subscription: DCD-CFTAPPS-DEV
   ithc:
     enabled: true
-    aks_name: cft-ithc-00-aks
-    aks_resource_group: cft-ithc-00-rg
+    aks_name: cft-ithc-01-aks
+    aks_resource_group: cft-ithc-01-rg
     aks_subscription: DCD-CFTAPPS-ITHC
   ptlsbox:
     enabled: true
