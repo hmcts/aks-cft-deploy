@@ -13,6 +13,8 @@ jobs:
   updatecli:
     runs-on: ubuntu-latest
     steps:
+      - name: "hi it's danny"
+        run: "echo hello"
       - name: Checkout
         uses: actions/checkout@v4
       - name: 'Az CLI login'
