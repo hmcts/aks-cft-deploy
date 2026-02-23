@@ -22,7 +22,7 @@ clusters = {
       is_prod    = false
     }
 
-    availability_zones = ["1", "2", "3"]
+    availability_zones = []
   }
 }
 autoShutdown = true
