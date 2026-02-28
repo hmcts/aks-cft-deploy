@@ -9,7 +9,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: master
+      ref: tf-plan-analysis-2
       name: hmcts/cnp-azuredevops-libraries
       endpoint: "hmcts"
     - repository: cnp-flux-config
@@ -87,18 +87,7 @@ parameters:
         backendAzureRmResourceGroupName: "azure-control-stg-rg"
         aksKeyVault: "dcdcftappsstgkv"
         terraformSubscriptionID: "96c274ce-846d-4e48-89a7-d528432298a7"
-      - env: "ptl"
-        dependsOn: "ptlsbox"
-        serviceConnection: "DTS-CFTPTL-INTSVC"
-        backendAzureRmResourceGroupName: "azure-control-ptl-rg"
-        aksKeyVault: "dtscftptl"
-        terraformSubscriptionID: "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
-      - env: "prod"
-        dependsOn: "aat"
-        serviceConnection: "DCD-CFTAPPS-PROD"
-        backendAzureRmResourceGroupName: "azure-control-prod-rg"
-        aksKeyVault: "dcdcftappsprodkv"
-        terraformSubscriptionID: "8cbc6f36-7c56-4963-9d36-739db5d00b27"
+
 
 variables:
   - name: project
@@ -149,10 +138,12 @@ stages:
               - Aks_${{ component.dependsOn }}
               - BootStrapClusters_${{ component.dependsOn }}
               - PipelineTests_${{ component.dependsOn }}
-          - ? ${{ if and(ne(component.env, 'sbox'), ne(parameters.action, 'apply')) }}
+          - ? ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'destroy')) }}
             : - Network_${{ component.dependsOn }}
               - Managed_Identity_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
+              - BootStrapClusters_${{ component.dependsOn }}
+              - PipelineTests_${{ component.dependsOn }}
           - ${{ else }}:
               - Precheck
         jobs:

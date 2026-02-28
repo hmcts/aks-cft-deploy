@@ -16,7 +16,7 @@ clusters = {
     linux_node_pool = {
       vm_size   = "Standard_D4ds_v5"
       min_nodes = 4
-      max_nodes = 10
+      max_nodes = 20
       max_pods  = 30
     }
 
