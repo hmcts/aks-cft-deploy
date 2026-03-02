@@ -9,7 +9,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: master
+      ref: 542e806bded81cc8d8179a82960bff20016fd855
       name: hmcts/cnp-azuredevops-libraries
       endpoint: "hmcts"
     - repository: cnp-flux-config
@@ -186,10 +186,10 @@ stages:
                   product: ${{ variables.product }}
                   publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: NULL
-                  initCommandOptions: >-
+                  initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
                     -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
-                  planCommandOptions: >-
+                  planCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
 
       - stage: "Network_${{ component.env }}"
@@ -211,10 +211,10 @@ stages:
                   product: ${{ variables.product }}
                   publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ component.env }}.tfvars"
-                  initCommandOptions: >-
+                  initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
                     -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
-                  planCommandOptions: >-
+                  planCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
                     -var control_vault=$(controlKeyVault)
                     -var project=$(project)
@@ -242,11 +242,11 @@ stages:
                   product: ${{ variables.product }}
                   publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ component.env }}.tfvars"
-                  initCommandOptions: >-
+                  initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
                     -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
                     -backend-config storage_account_name=$(STORAGE_ACCOUNT)
-                  planCommandOptions: >-
+                  planCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
                     -var control_vault=$(KEY_VAULT)
                     -var project=$(project)
@@ -269,10 +269,10 @@ stages:
                   product: ${{ variables.product }}
                   publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/managed-identity/${{ component.env }}.tfvars"
-                  initCommandOptions: >-
+                  initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
                     -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
-                  planCommandOptions: >-
+                  planCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
                     -var control_vault=$(controlKeyVault)
                     -var project=$(project)
@@ -318,7 +318,7 @@ stages:
                   backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                   setClusterNumbersEnvVar: true
                   ${{ if ne(parameters['cluster'], 'All') }}:
-                    targetCommand: >-
+                    targetCommand: >
                       -target azurerm_resource_group.kubernetes_resource_group["\"${{parameters.cluster}}\""]
                       -target module.kubernetes["\"${{parameters.cluster}}\""]
 
@@ -338,7 +338,7 @@ stages:
                   terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
                   backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                   ${{ if ne(parameters['cluster'], 'All') }}:
-                    targetCommand: >-
+                    targetCommand: >
                       -target azurerm_role_assignment.uami_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
                       -target azurerm_role_assignment.preview_externaldns_read_rg["\"${{parameters.cluster}}\""]
                       -target azurerm_role_assignment.preview_externaldns_dns_zone_contributor["\"${{parameters.cluster}}\""]
