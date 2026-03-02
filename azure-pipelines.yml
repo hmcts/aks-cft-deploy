@@ -1,7 +1,4 @@
-trigger:
-  branches:
-    include:
-      - main
+trigger: none
 
 pr:
   branches:
@@ -282,17 +279,21 @@ stages:
 
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
-        pool: hmcts-cftptl-agent-pool
+        # pool: hmcts-cftptl-agent-pool
+        pool:
+          vmImage: ${{ variables.agentPool }}
         dependsOn:
           - Managed_Identity_${{ component.env }}
         condition: |
           or (
             and(
+              succeeded(),
               in(variables['Build.Reason'], 'Manual', 'PullRequest'),
               in('${{ parameters.cluster }}', '00', '01'),
               eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
             ),
             and(
+              succeeded(),
               in(variables['Build.Reason'], 'Manual', 'PullRequest'),
               eq('${{ parameters.cluster }}', 'All')
             ),
