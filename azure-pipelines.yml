@@ -1,4 +1,7 @@
-trigger: none
+trigger:
+  branches:
+    include:
+      - main
 
 pr:
   branches:
@@ -118,7 +121,7 @@ variables:
   - template: vars/input-variables.yaml@cnp-azuredevops-libraries
   - name: finalAction
     ${{ if and(in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/master'), in(variables['Build.Reason'], 'BatchedCI', 'IndividualCI', 'PullRequest', 'Schedule'))  }}:
-      value: 'apply'
+      value: "apply"
     ${{ else }}:
       value: ${{ parameters.action }}
   - name: publishPlanResults
@@ -143,14 +146,14 @@ stages:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
         dependsOn:
-          - ? ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'apply')) }}
-            : - Network_${{ component.dependsOn }}
+          - ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'apply')) }}:
+              - Network_${{ component.dependsOn }}
               - Managed_Identity_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
               - BootStrapClusters_${{ component.dependsOn }}
               - PipelineTests_${{ component.dependsOn }}
-          - ? ${{ if and(ne(component.env, 'sbox'), ne(parameters.action, 'apply')) }}
-            : - Network_${{ component.dependsOn }}
+          - ${{ if and(ne(component.env, 'sbox'), ne(parameters.action, 'apply')) }}:
+              - Network_${{ component.dependsOn }}
               - Managed_Identity_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
           - ${{ else }}:
@@ -182,13 +185,13 @@ stages:
                   component: "genesis"
                   location: ${{ parameters.location }}
                   serviceConnection: ${{ component.serviceConnection }}
+                  backendResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
                   publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: NULL
                   initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
-                    -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
                   planCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
 
@@ -207,13 +210,13 @@ stages:
                   component: "network-rg"
                   location: ${{ parameters.location }}
                   serviceConnection: ${{ component.serviceConnection }}
+                  backendResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
                   publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network-rg/${{ component.env }}.tfvars"
                   initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
-                    -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
                   planCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
                     -var control_vault=$(controlKeyVault)
@@ -238,14 +241,14 @@ stages:
                   component: "network"
                   location: ${{ parameters.location }}
                   serviceConnection: OPS-APPROVAL-GATE-MGMT-ENVS
+                  backendResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
+                  backendStorageAccountName: $(STORAGE_ACCOUNT)
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
                   publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/network/${{ component.env }}.tfvars"
                   initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
-                    -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
-                    -backend-config storage_account_name=$(STORAGE_ACCOUNT)
                   planCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
                     -var control_vault=$(KEY_VAULT)
@@ -265,13 +268,13 @@ stages:
                   component: managed-identity
                   location: ${{ parameters.location }}
                   serviceConnection: ${{ component.serviceConnection }}
+                  backendResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
                   terraformInitSubscription: ${{ variables.tfInitSub }}
                   product: ${{ variables.product }}
                   publishPlanResults: ${{ variables.publishPlanResults }}
                   tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/managed-identity/${{ component.env }}.tfvars"
                   initCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
-                    -backend-config resource_group_name=${{ component.backendAzureRmResourceGroupName }}
                   planCommandOptions: >
                     -var subscription_id=${{ component.terraformSubscriptionID }}
                     -var control_vault=$(controlKeyVault)
@@ -279,21 +282,17 @@ stages:
 
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
-        # pool: hmcts-cftptl-agent-pool
-        pool:
-          vmImage: ${{ variables.agentPool }}
+        pool: hmcts-cftptl-agent-pool
         dependsOn:
           - Managed_Identity_${{ component.env }}
         condition: |
           or (
             and(
-              succeeded(),
               in(variables['Build.Reason'], 'Manual', 'PullRequest'),
               in('${{ parameters.cluster }}', '00', '01'),
               eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
             ),
             and(
-              succeeded(),
               in(variables['Build.Reason'], 'Manual', 'PullRequest'),
               eq('${{ parameters.cluster }}', 'All')
             ),
@@ -396,7 +395,7 @@ stages:
     condition: and(eq('${{ parameters.Action }}', 'Plan'), succeededOrFailed())
     dependsOn:
       - ${{ each component in parameters.environment_components }}:
-        - Aks_${{ component.env }}
+          - Aks_${{ component.env }}
     jobs:
       - job: AnalysePlans
         steps:
