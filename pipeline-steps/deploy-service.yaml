@@ -1,16 +1,16 @@
 parameters:
-  environment: ''
-  location: ''
-  stack: ''
-  project: ''
-  tfvars: ''
-  serviceConnection: ''
-  tfInitSub: ''
-  targetCommand: ''
+  environment: ""
+  location: ""
+  stack: ""
+  project: ""
+  tfvars: ""
+  serviceConnection: ""
+  tfInitSub: ""
+  targetCommand: ""
   setClusterNumbersEnvVar: false
-  action: ''
-  terraformSubscriptionID: ''
-  backendAzureRmResourceGroupName: ''
+  action: ""
+  terraformSubscriptionID: ""
+  backendAzureRmResourceGroupName: ""
   publishPlanResults: false
 
 steps:
@@ -21,13 +21,13 @@ steps:
       component: ${{ parameters.stack }}
       location: ${{ parameters.location }}
       serviceConnection: ${{ parameters.serviceConnection }}
+      backendResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
       terraformInitSubscription: ${{ parameters.tfInitSub }}
       product: ${{ parameters.product }}
       publishPlanResults: ${{ parameters.publishPlanResults }}
       tfVarsFile: "$(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/environments/${{ parameters.stack }}/${{ parameters.environment }}.tfvars"
       initCommandOptions: >
         -var subscription_id=${{ parameters.terraformSubscriptionID }}
-        -backend-config resource_group_name=${{ parameters.backendAzureRmResourceGroupName }}
       planCommandOptions: "-var subscription_id=${{ parameters.terraformSubscriptionID }} -var control_vault=$(controlKeyVault) -var project=$(project) ${{ parameters.targetCommand }}"
 
   - ${{ if eq(parameters.setClusterNumbersEnvVar, true) }}:
