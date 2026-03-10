@@ -36,13 +36,13 @@ steps:
           Write-Host "##vso[task.setvariable variable=tfVersion]$tfVersion"
         displayName: Set terraform version env variable
 
-      - task: TerraformCLI@2
+      - task: TerraformTask@5
         displayName: Terraform output
         inputs:
           command: output
           terraformVersion: $(tfVersion)
           workingDirectory: $(System.DefaultWorkingDirectory)/$(buildRepoSuffix)/components/${{ parameters.stack }}
-          environmentServiceName: ${{ parameters.serviceConnection }}
+          environmentServiceNameAzureRM: ${{ parameters.serviceConnection }}
 
       - script: |
           echo "Setting clusterNumbers variable to $clusters"
