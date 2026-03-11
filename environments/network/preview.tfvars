@@ -20,6 +20,17 @@ additional_subnets = [
   {
     name           = "infra-appgws"
     address_prefix = "10.101.194.0/25"
+  },
+  {
+    name           = "crime-idam"
+    address_prefix = "10.101.129.0/24"
+    default_outbound_access_enabled = false
+    delegations = {
+      postgres_flexible = {
+        service_name = "Microsoft.DBforPostgreSQL/flexibleServers"
+        actions      = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+      }
+    }
   }
 ]
 
