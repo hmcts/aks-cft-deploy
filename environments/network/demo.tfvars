@@ -24,7 +24,6 @@ additional_subnets = [
   {
     name           = "crime-idam"
     address_prefix = "10.50.65.0/24"
-    default_outbound_access_enabled = false
     delegations = {
       postgres_flexible = {
         service_name = "Microsoft.DBforPostgreSQL/flexibleServers"
