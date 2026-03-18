@@ -23,7 +23,7 @@ additional_subnets = [
   },
   {
     name           = "crime-idam"
-    address_prefix = "10.48.65.0/24"
+    address_prefix = "10.48.105.0/24"
     delegations = {
       postgres_flexible = {
         service_name = "Microsoft.DBforPostgreSQL/flexibleServers"
