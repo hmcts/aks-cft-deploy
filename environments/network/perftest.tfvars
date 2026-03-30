@@ -22,15 +22,16 @@ additional_subnets = [
     address_prefix = "10.48.98.0/25"
   },
   {
-    name           = "crime-idam"
-    address_prefix = "10.48.105.0/24"
+    name                  = "crime-idam"
+    address_prefix        = "10.48.105.0/24"
+    associate_route_table = true
     delegations = {
       postgres_flexible = {
         service_name = "Microsoft.DBforPostgreSQL/flexibleServers"
         actions      = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
       }
     }
-   nsg_rules = [
+    nsg_rules = [
       {
         name                       = "deny-all-inbound"
         priority                   = 4096

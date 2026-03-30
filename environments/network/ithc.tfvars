@@ -22,8 +22,9 @@ additional_subnets = [
     address_prefix = "10.11.226.0/25"
   },
   {
-    name           = "crime-idam"
-    address_prefix = "10.11.233.0/24"
+    name                  = "crime-idam"
+    address_prefix        = "10.11.233.0/24"
+    associate_route_table = true
     delegations = {
       postgres_flexible = {
         service_name = "Microsoft.DBforPostgreSQL/flexibleServers"
