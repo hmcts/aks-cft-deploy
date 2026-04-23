@@ -62,9 +62,9 @@ module "genesis" {
   tags                    = module.ctags.common_tags
   developers_group        = local.developers_group
   business_area           = lower(module.ctags.common_tags["businessArea"])
-  jenkins_provider_sub_id = local.mi_cft[local.environment].subscription_id
-  jenkins_mi_name         = local.mi_cft[local.environment].name
-  jenkins_mi_rg_name      = local.mi_cft[local.environment].rg_name
+  jenkins_provider_sub_id = local.mi_cft[var.env].subscription_id
+  jenkins_mi_name         = local.mi_cft[var.env].name
+  jenkins_mi_rg_name      = local.mi_cft[var.env].rg_name
 }
 
 module "ctags" {
