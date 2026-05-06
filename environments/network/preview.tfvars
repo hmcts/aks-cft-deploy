@@ -62,7 +62,8 @@ additional_subnets = [
         protocol                   = "*"
         source_port_range          = "*"
         destination_port_range     = "*"
-        source_address_prefix      = "10.10.0.0/16"
+        # Allow from DEV & SIT
+        source_address_prefixs      = "10.10.0.0/16, 10.15.0.0/16"
         destination_address_prefix = "*"
       },
     ]
