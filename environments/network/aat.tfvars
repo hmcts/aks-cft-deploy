@@ -175,9 +175,9 @@ additional_routes_application_gateway = [
   },
   {
     name                   = "hub-github-network-prod-vnet-2"
-    address_prefix         = "10.10.231.0/24"
+    address_prefix         = "10.10.232.0/24"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.11.8.36"
+    next_hop_in_ip_address = "10.11.72.36" # https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/aks-infra-cftptl-intsvc-rg/providers/Microsoft.Network/routeTables/aks-route-table/overview routes to 10.148.0.0/18 hence to 10.148.15.250
   },
 ]
 
