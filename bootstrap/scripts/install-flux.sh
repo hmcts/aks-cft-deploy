@@ -145,11 +145,25 @@ function flux_github_app_secret {
 function install_flux {
 # Generating WI ResourceGroup manifest
 echo "Deploying Flux - Generating WI manifests"
-download_files "https://api.github.com/repos/hmcts/cnp-flux-config/contents/apps/flux-system/workload-identity" \
-"${TMP_DIR}/gotk" \
-"s|\${WI_CLUSTER}|$ENVIRONMENT-$CLUSTER_NAME|g" \
-"s|\${ENVIRONMENT}|$ENVIRONMENT|g" \
-"s|\${ISSUER_URL}|$ISSUER_URL|g"
+
+WI_FOLDER="apps/flux-system/${CLUSTER_ENV}/workload-identity"
+WI_FOLDER_CHECK="${FLUX_CONFIG_URL}/${WI_FOLDER}/kustomization.yaml"
+
+if curl --output /dev/null --silent --head --fail "${WI_FOLDER_CHECK}"; then
+  echo "Using env-specific workload-identity folder for ${CLUSTER_ENV}"
+  download_files "https://api.github.com/repos/hmcts/cnp-flux-config/contents/${WI_FOLDER}" \
+  "${TMP_DIR}/gotk" \
+  "s|\${WI_CLUSTER}|$ENVIRONMENT-$CLUSTER_NAME|g" \
+  "s|\${ENVIRONMENT}|$ENVIRONMENT|g" \
+  "s|\${ISSUER_URL}|$ISSUER_URL|g"
+else
+  echo "Using shared workload-identity folder"
+  download_files "https://api.github.com/repos/hmcts/cnp-flux-config/contents/apps/flux-system/workload-identity" \
+  "${TMP_DIR}/gotk" \
+  "s|\${WI_CLUSTER}|$ENVIRONMENT-$CLUSTER_NAME|g" \
+  "s|\${ENVIRONMENT}|$ENVIRONMENT|g" \
+  "s|\${ISSUER_URL}|$ISSUER_URL|g"
+fi
 
 # Check if aso-controller-settings-patch.yaml exists for this environment
 ASO_PATCH_URL="${FLUX_CONFIG_URL}/apps/flux-system/${CLUSTER_ENV}/base/aso-controller-settings-patch.yaml"
