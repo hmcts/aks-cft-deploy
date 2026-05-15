@@ -15,10 +15,14 @@ resource "azurerm_role_assignment" "network_access" {
   scope                = data.azurerm_virtual_network.network.id
 }
 
+data "azuread_service_principal" "hub_nonprod_intsvc" {
+  count        = !contains(["prod", "ptl", "aat"], var.env) ? 1 : 0
+  display_name = "DTS Bootstrap (sub:hmcts-hub-nonprod-intsvc)"
+}
+
 resource "azurerm_role_assignment" "hub_nonprod_intsvc_network_contributor" {
   count                = !contains(["prod", "ptl", "aat"], var.env) ? 1 : 0
-  # EA: DTS Bootstrap (sub:hmcts-hub-nonprod-intsvc)
-  principal_id         = "1708cfd4-75b3-44a3-943b-4526840772c2"
+  principal_id         = data.azuread_service_principal.hub_nonprod_intsvc[0].object_id
   role_definition_name = "Network Contributor"
   scope                = data.azurerm_virtual_network.network.id
 }
