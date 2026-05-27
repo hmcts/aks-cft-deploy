@@ -348,10 +348,26 @@ stages:
                       -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
                       -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
+      - stage: UpdateOidcIssuerUrl_${{ component.env }}
+        displayName: "${{ upper(component.env) }}: Update OIDC Issuer URL"
+        dependsOn:
+          - Aks_${{ component.env }}
+        condition: succeeded()
+        jobs:
+          - job: UpdateOidcIssuerUrl
+            steps:
+              - checkout: self
+              - checkout: cnp-flux-config
+              - template: steps/update-oidc-issuer-url.yaml@cnp-azuredevops-libraries
+                parameters:
+                  serviceConnection: ${{ component.serviceConnection }}
+                  environment: ${{ component.env }}
+                  cluster: ${{ parameters.cluster }}
+
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
-          - Aks_${{ component.env }}
+          - UpdateOidcIssuerUrl_${{ component.env }}
         variables:
           clusters: ${{ parameters.cluster }}
         condition: |
