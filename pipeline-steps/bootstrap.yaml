@@ -1,12 +1,13 @@
 parameters:
   environment: ''
+  serviceConnection: ''
+  cluster: ''
   project: ''
   akskeyvault: ''
   terraformSubscriptionID: ''
 
 steps:
 - checkout: self
-- checkout: cnp-flux-config
 - template: steps/keyvault-read.yaml@cnp-azuredevops-libraries
   parameters:
     serviceConnection: ${{ parameters.serviceConnection }}
@@ -22,12 +23,6 @@ steps:
       failOnStandardError: 'true'
       inlineScript: |
         echo "##vso[task.setvariable variable=AZURE_MI_ID]$(az identity show --resource-group genesis-rg --name aks-${{ parameters.environment }}-mi --query="clientId" -o tsv)"
-
-- template: steps/update-oidc-issuer-url.yaml@cnp-azuredevops-libraries
-  parameters:
-    serviceConnection: ${{ parameters.serviceConnection }}
-    environment: ${{ parameters.environment }}
-    cluster: ${{ parameters.cluster }}
 
 - task: AzureCLI@2
   displayName: 'Bootstrap'
