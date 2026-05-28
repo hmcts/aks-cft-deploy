@@ -350,7 +350,11 @@ stages:
         displayName: "${{ upper(component.env) }}: Update OIDC Issuer URL"
         dependsOn:
           - Aks_${{ component.env }}
-        condition: succeeded()
+        condition: |
+          or(
+            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
+            and(succeeded(), eq(variables['isMain'], true))
+          )
         jobs:
           - job: UpdateOidcIssuerUrl
             steps:
@@ -372,7 +376,7 @@ stages:
         condition: |
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+            and(succeeded(), eq(variables['isMain'], true))
           )
         jobs:
           - job: BootStrap
@@ -393,7 +397,7 @@ stages:
         condition: |
           or(
             and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+            and(succeeded(), eq(variables['isMain'], true))
           )
         jobs:
           - job: PipelineTests
