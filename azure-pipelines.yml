@@ -346,11 +346,13 @@ stages:
                       -target azurerm_role_assignment.preview2aat_cft_rg_identity_operator["\"${{parameters.cluster}}\""]
                       -target data.azurerm_kubernetes_cluster.kubernetes["\"${{parameters.cluster}}\""]
 
-      - stage: UpdateOidcIssuerUrl_${{ component.env }}
-        displayName: "${{ upper(component.env) }}: Update OIDC Issuer URL"
+      - stage: BootStrapClusters_${{ component.env }}
+        displayName: "${{ upper(component.env) }}: BootStrap Clusters"
         dependsOn:
           - Aks_${{ component.env }}
         condition: and(succeeded(), eq(variables['finalAction'], 'apply'))
+        variables:
+          clusters: ${{ parameters.cluster }}
         jobs:
           - job: UpdateOidcIssuerUrl
             steps:
@@ -362,15 +364,6 @@ stages:
                   environment: ${{ component.env }}
                   cluster: ${{ parameters.cluster }}
                   fluxConfigRepo: cnp-flux-config
-
-      - stage: BootStrapClusters_${{ component.env }}
-        displayName: "${{ upper(component.env) }}: BootStrap Clusters"
-        dependsOn:
-          - UpdateOidcIssuerUrl_${{ component.env }}
-        variables:
-          clusters: ${{ parameters.cluster }}
-        condition: and(succeeded(), eq(variables['finalAction'], 'apply'))
-        jobs:
           - job: BootStrap
             steps:
               - template: pipeline-steps/bootstrap.yaml
