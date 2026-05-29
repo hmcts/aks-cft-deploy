@@ -134,7 +134,8 @@ stages:
     jobs:
       - job: PreChecks
         steps:
-          - script: echo "finalAction=$(finalAction) action=${{ parameters.action }} reason=$(Build.Reason)"
+          - script: |
+              echo "finalAction=$(finalAction) action=${{ parameters.action }} reason=$(Build.Reason)"
             displayName: Debug compile-time vars
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
@@ -143,6 +144,11 @@ stages:
               serviceConnection: azurerm-sandbox
               projectName: ${{ variables.project }}
               environment: sbox
+          - script: |
+              echo "finalAction=$(finalAction) action=${{ parameters.action }} reason=$(Build.Reason)"
+              echo "Sleeping 2 mins - cancel here safely before terraform runs"
+              sleep 120
+            displayName: Debug compile-time vars (end)
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
