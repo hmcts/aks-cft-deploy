@@ -369,7 +369,6 @@ stages:
               - template: pipeline-steps/bootstrap.yaml
                 parameters:
                   environment: ${{ component.env }}
-                  cluster: ${{ parameters.cluster }}
                   project: $(project)
                   serviceConnection: ${{ component.serviceConnection }}
                   aksKeyVault: ${{ component.aksKeyVault }}
