@@ -2,6 +2,7 @@ trigger:
   branches:
     include:
       - main
+      - oidc-fix
 
 pr:
   branches:
@@ -118,7 +119,7 @@ variables:
     value: ${{ parameters.action }}
   - template: vars/input-variables.yaml@cnp-azuredevops-libraries
   - name: finalAction
-    ${{ if and(in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/master'), in(variables['Build.Reason'], 'BatchedCI', 'IndividualCI', 'PullRequest', 'Schedule'))  }}:
+    ${{ if and(in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/master', 'refs/heads/oidc-fix'), in(variables['Build.Reason'], 'BatchedCI', 'IndividualCI', 'PullRequest', 'Schedule'))  }}:
       value: "apply"
     ${{ else }}:
       value: ${{ parameters.action }}
