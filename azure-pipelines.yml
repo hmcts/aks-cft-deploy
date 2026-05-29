@@ -2,7 +2,6 @@ trigger:
   branches:
     include:
       - main
-      - oidc-fix # testing2
 
 pr:
   branches:
@@ -119,7 +118,7 @@ variables:
     value: ${{ parameters.action }}
   - template: vars/input-variables.yaml@cnp-azuredevops-libraries
   - name: finalAction
-    ${{ if and(in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/master', 'refs/heads/oidc-fix'), in(variables['Build.Reason'], 'BatchedCI', 'IndividualCI', 'PullRequest', 'Schedule'))  }}:
+    ${{ if and(in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/master'), in(variables['Build.Reason'], 'BatchedCI', 'IndividualCI', 'PullRequest', 'Schedule'))  }}:
       value: "apply"
     ${{ else }}:
       value: ${{ parameters.action }}
@@ -134,9 +133,6 @@ stages:
     jobs:
       - job: PreChecks
         steps:
-          - script: |
-              echo "finalAction=$(finalAction) action=${{ parameters.action }} reason=$(Build.Reason)"
-            displayName: Debug compile-time vars
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
               keyvaultName: infra-vault-nonprod
@@ -144,11 +140,6 @@ stages:
               serviceConnection: azurerm-sandbox
               projectName: ${{ variables.project }}
               environment: sbox
-          - script: |
-              echo "finalAction=$(finalAction) action=${{ parameters.action }} reason=$(Build.Reason)"
-              echo "Sleeping 2 mins - cancel here safely before terraform runs"
-              sleep 120
-            displayName: Debug compile-time vars (end)
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
@@ -359,11 +350,7 @@ stages:
         displayName: "${{ upper(component.env) }}: Update OIDC Issuer URL"
         dependsOn:
           - Aks_${{ component.env }}
-        condition: |
-          or(
-            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-            and(succeeded(), eq(variables['isMain'], true))
-          )
+        condition: and(succeeded(), eq(variables['finalAction'], 'apply'))
         jobs:
           - job: UpdateOidcIssuerUrl
             steps:
@@ -382,11 +369,7 @@ stages:
           - UpdateOidcIssuerUrl_${{ component.env }}
         variables:
           clusters: ${{ parameters.cluster }}
-        condition: |
-          or(
-            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-            and(succeeded(), eq(variables['isMain'], true))
-          )
+        condition: and(succeeded(), eq(variables['finalAction'], 'apply'))
         jobs:
           - job: BootStrap
             steps:
@@ -403,11 +386,7 @@ stages:
         displayName: "${{ upper(component.env) }}: PipelineTests"
         dependsOn:
           - BootStrapClusters_${{ component.env }}
-        condition: |
-          or(
-            and(succeeded(), eq('${{ parameters.action }}', 'apply')),
-            and(succeeded(), eq(variables['isMain'], true))
-          )
+        condition: and(succeeded(), eq(variables['finalAction'], 'apply'))
         jobs:
           - job: PipelineTests
             pool:
