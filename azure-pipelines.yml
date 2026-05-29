@@ -134,6 +134,8 @@ stages:
     jobs:
       - job: PreChecks
         steps:
+          - script: echo "finalAction=$(finalAction) action=${{ parameters.action }} reason=$(Build.Reason)"
+            displayName: Debug compile-time vars
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
               keyvaultName: infra-vault-nonprod
