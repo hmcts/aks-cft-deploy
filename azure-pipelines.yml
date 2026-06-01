@@ -358,6 +358,7 @@ stages:
             steps:
               - checkout: self
               - checkout: cnp-flux-config
+              - checkout: cnp-azuredevops-libraries
               - template: steps/update-oidc-issuer-url.yaml@cnp-azuredevops-libraries
                 parameters:
                   serviceConnection: ${{ component.serviceConnection }}
@@ -366,6 +367,8 @@ stages:
                   fluxConfigRepo: cnp-flux-config
           - job: BootStrap
             steps:
+              - checkout: self
+              - checkout: cnp-azuredevops-libraries
               - template: pipeline-steps/bootstrap.yaml
                 parameters:
                   environment: ${{ component.env }}
