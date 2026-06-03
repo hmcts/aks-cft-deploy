@@ -65,7 +65,7 @@ additional_subnets = [
         source_address_prefix      = "10.20.0.0/16"
         destination_address_prefix = "*"
       },
-        name                        = "allow-pgsql-ha-inbound"
+        name                        = "allow-pgsql-flexible-ha-inbound"
         priority                    = 300
         direction                   = "Inbound"
         access                      = "Allow"
@@ -74,7 +74,7 @@ additional_subnets = [
         destination_port_range      = "5432"
         source_address_prefix       = "10.48.105.0/24"
         destination_address_prefix  = "10.48.105.0/24"
-    }
+      },
     ]
   }
 ]
