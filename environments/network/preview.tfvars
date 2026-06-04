@@ -25,6 +25,7 @@ additional_subnets = [
     name                  = "crime-idam"
     address_prefix        = "10.101.204.0/24"
     associate_route_table = true
+    service_endpoints     = ["Microsoft.Storage"]
     delegations = {
       postgres_flexible = {
         service_name = "Microsoft.DBforPostgreSQL/flexibleServers"
