@@ -25,6 +25,7 @@ additional_subnets = [
     name                  = "crime-idam"
     address_prefix        = "10.48.105.0/24"
     associate_route_table = true
+    service_endpoints     = ["Microsoft.Storage"]
     delegations = {
       postgres_flexible = {
         service_name = "Microsoft.DBforPostgreSQL/flexibleServers"
@@ -64,6 +65,17 @@ additional_subnets = [
         destination_port_range     = "*"
         source_address_prefix      = "10.20.0.0/16"
         destination_address_prefix = "*"
+      },
+      {
+        name                       = "allow-pgsql-flexible-ha-inbound"
+        priority                   = 400
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "5432"
+        source_address_prefix      = "10.48.105.0/24"
+        destination_address_prefix = "10.48.105.0/24"
       },
     ]
   }
