@@ -20,7 +20,7 @@ resource "azurerm_role_assignment" "jenkins_aat_mi_ptl_network_reader" {
 resource "azurerm_role_assignment" "jenkins_aat_mi_preview_network_reader" {
   count = var.env == "aat" ? 1 : 0
 
-  provider             = azurerm.preview
+  provider             = azurerm.preview2aat
   principal_id         = data.azurerm_user_assigned_identity.jenkins_aat_mi[0].principal_id
   scope                = "/subscriptions/8b6ea922-0862-443e-af15-6056e1c9b9a4/resourceGroups/cft-preview-network-rg"
   role_definition_name = "Reader"
