@@ -26,7 +26,7 @@ data "azuread_service_principal" "aks_auto_shutdown" {
 
 module "kubernetes" {
   for_each = var.clusters
-  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=fix/enable-msi-auth-for-oms"
+  source   = "git::https://github.com/hmcts/aks-module-kubernetes.git?ref=4.x"
 
   control_resource_group = "azure-control-${local.control_resource_environment}-rg"
   environment            = var.env
