@@ -70,13 +70,6 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  subscription_id            = "8b6ea922-0862-443e-af15-6056e1c9b9a4"
-  skip_provider_registration = "true"
-  features {}
-  alias = "cftapps-dev"
-}
-
-provider "azurerm" {
   subscription_id            = "ed302caf-ec27-4c64-a05e-85731c3ce90e"
   skip_provider_registration = "true"
   features {}
