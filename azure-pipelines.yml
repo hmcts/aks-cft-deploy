@@ -167,7 +167,9 @@ stages:
 
               pr_target_envs=",sbox,"
 
-              if [[ "${BUILD_REASON:-}" == "PullRequest" && -d .git ]]; then
+              echo "Detecting PR environments from ${BUILD_REPOSITORY_LOCALPATH:-$(pwd)}"
+
+              if [[ "${BUILD_REASON:-}" == "PullRequest" ]] && git rev-parse --show-toplevel >/dev/null 2>&1; then
                 target_branch="${SYSTEM_PULLREQUEST_TARGETBRANCH:-refs/heads/main}"
                 target_short="${target_branch#refs/heads/}"
 
@@ -191,14 +193,14 @@ stages:
 
                 pr_target_envs=","$(printf '%s\n' "${envs[@]}" | awk 'NF' | sort -u | paste -sd ',' -)","
               elif [[ "${BUILD_REASON:-}" == "PullRequest" ]]; then
-                echo "No git checkout available in $(pwd); using sbox only"
+                echo "No git checkout available in ${BUILD_REPOSITORY_LOCALPATH:-$(pwd)}; using sbox only"
               fi
 
               echo "PR target environments: ${pr_target_envs}"
               echo "##vso[task.setvariable variable=prTargetEnvs;isOutput=true]${pr_target_envs}"
             name: detect_pr_envs
             displayName: Detect PR target environments
-            workingDirectory: $(Build.SourcesDirectory)
+            workingDirectory: $(Build.Repository.LocalPath)
 
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
