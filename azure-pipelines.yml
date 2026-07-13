@@ -2,11 +2,28 @@ trigger:
   branches:
     include:
       - main
+  paths:
+    include:
+      - azure-pipelines.yml
+      - pipeline-steps/**
+      - pipeline-scripts/**
+      - ci/**
+      - scripts/checking-clusters.sh
+      - bootstrap/**
+      - components/**
+      - environments/**
 
 pr:
   branches:
     include:
       - refs/heads/main
+  paths:
+    include:
+      - azure-pipelines.yml
+      - pipeline-steps/**
+      - bootstrap/**
+      - components/**
+      - environments/**
 
 resources:
   repositories:
@@ -133,6 +150,39 @@ stages:
     jobs:
       - job: PreChecks
         steps:
+          - checkout: self
+
+          - bash: |
+              set -euo pipefail
+
+              pr_target_envs=",sbox,"
+
+              if [[ "${BUILD_REASON:-}" == "PullRequest" ]]; then
+                target_branch="${SYSTEM_PULLREQUEST_TARGETBRANCH:-refs/heads/main}"
+                target_short="${target_branch#refs/heads/}"
+
+                git fetch --no-tags origin "${target_short}:${target_short}" --depth=1 || true
+
+                changed_files=()
+                if git rev-parse --verify "${target_short}" >/dev/null 2>&1; then
+                  mapfile -t changed_files < <(git diff --name-only "${target_short}...HEAD")
+                fi
+
+                envs=("sbox")
+                for changed_file in "${changed_files[@]}"; do
+                  if [[ "$changed_file" =~ ^environments/[^/]+/([A-Za-z0-9_-]+)\.tfvars$ ]]; then
+                    envs+=("${BASH_REMATCH[1]}")
+                  fi
+                done
+
+                pr_target_envs=","$(printf '%s\n' "${envs[@]}" | awk 'NF' | sort -u | paste -sd ',' -)","
+              fi
+
+              echo "PR target environments: ${pr_target_envs}"
+              echo "##vso[task.setvariable variable=prTargetEnvs;isOutput=true]${pr_target_envs}"
+            name: detect_pr_envs
+            displayName: Detect PR target environments
+
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
               keyvaultName: infra-vault-nonprod
@@ -143,7 +193,9 @@ stages:
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
+        condition: and(succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ component.env }}', 'sbox'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
+          - PreCheck
           - ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'apply')) }}:
               - Network_${{ component.dependsOn }}
               - Managed_Identity_${{ component.dependsOn }}
@@ -154,8 +206,6 @@ stages:
               - Network_${{ component.dependsOn }}
               - Managed_Identity_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
-          - ${{ else }}:
-              - Precheck
         jobs:
           - job: CheckingClusters
             steps:
@@ -170,7 +220,7 @@ stages:
 
       - stage: Genesis_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Genesis"
-        condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded())
+        condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ component.env }}', 'sbox'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
           - CheckingClusters_${{ component.env }}
         jobs:
@@ -195,6 +245,7 @@ stages:
 
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
+        condition: and(succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ component.env }}', 'sbox'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
           - Genesis_${{ component.env }}
         jobs:
@@ -254,6 +305,7 @@ stages:
 
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
+        condition: and(succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ component.env }}', 'sbox'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
           - Network_${{ component.env }}
         jobs:
@@ -286,20 +338,23 @@ stages:
         dependsOn:
           - Managed_Identity_${{ component.env }}
         condition: |
-          or (
-            and(
-              succeeded(),
-              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
-              in('${{ parameters.cluster }}', '00', '01'),
-              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
-            ),
-            and(
-              succeeded(),
-              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
-              eq('${{ parameters.cluster }}', 'All')
-            ),
-            and(succeeded(), in(variables['Build.Reason'], 'PullRequest', 'Manual')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          and(
+            or(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ component.env }}', 'sbox'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')),
+            or (
+              and(
+                succeeded(),
+                in(variables['Build.Reason'], 'Manual', 'PullRequest'),
+                in('${{ parameters.cluster }}', '00', '01'),
+                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+              ),
+              and(
+                succeeded(),
+                in(variables['Build.Reason'], 'Manual', 'PullRequest'),
+                eq('${{ parameters.cluster }}', 'All')
+              ),
+              and(succeeded(), in(variables['Build.Reason'], 'PullRequest', 'Manual')),
+              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+            )
           )
         jobs:
           - job: DeployInfrastructure
@@ -398,7 +453,7 @@ stages:
 
   - stage: Analyse_plans
     displayName: "Analyse terraform plan"
-    condition: and(eq('${{ parameters.Action }}', 'Plan'), succeededOrFailed())
+    condition: and(eq('${{ parameters.Action }}', 'Plan'), not(canceled()))
     dependsOn:
       - ${{ each component in parameters.environment_components }}:
           - Aks_${{ component.env }}
