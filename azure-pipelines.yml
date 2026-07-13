@@ -166,22 +166,48 @@ stages:
               set -euo pipefail
 
               pr_target_envs=",sbox,"
+              repo_dir=""
+              repo_name="${BUILD_REPOSITORY_NAME##*/}"
 
-              echo "Detecting PR environments from ${BUILD_REPOSITORY_LOCALPATH:-$(pwd)}"
+              candidates=(
+                "${BUILD_REPOSITORY_LOCALPATH:-}"
+                "${BUILD_SOURCESDIRECTORY:-}"
+                "${PIPELINE_WORKSPACE:-}/s"
+                "$(pwd)"
+              )
 
-              if [[ "${BUILD_REASON:-}" == "PullRequest" ]] && git rev-parse --show-toplevel >/dev/null 2>&1; then
+              if [[ -n "${repo_name:-}" ]]; then
+                candidates+=(
+                  "${BUILD_REPOSITORY_LOCALPATH:-}/${repo_name}"
+                  "${BUILD_SOURCESDIRECTORY:-}/${repo_name}"
+                  "${PIPELINE_WORKSPACE:-}/s/${repo_name}"
+                  "$(pwd)/${repo_name}"
+                )
+              fi
+
+              for candidate in "${candidates[@]}"; do
+                [[ -z "$candidate" ]] && continue
+                if git -C "$candidate" rev-parse --show-toplevel >/dev/null 2>&1; then
+                  repo_dir="$candidate"
+                  break
+                fi
+              done
+
+              echo "Detecting PR environments from ${repo_dir:-${BUILD_REPOSITORY_LOCALPATH:-$(pwd)}}"
+
+              if [[ "${BUILD_REASON:-}" == "PullRequest" && -n "$repo_dir" ]]; then
                 target_branch="${SYSTEM_PULLREQUEST_TARGETBRANCH:-refs/heads/main}"
                 target_short="${target_branch#refs/heads/}"
 
-                if git fetch --no-tags origin "${target_short}:${target_short}" --depth=1 2>/dev/null; then
+                if git -C "$repo_dir" fetch --no-tags origin "${target_short}:${target_short}" --depth=1 2>/dev/null; then
                   echo "Fetched target branch ${target_short}"
                 else
                   echo "Could not fetch target branch ${target_short}; using sbox only"
                 fi
 
                 changed_files=()
-                if git rev-parse --verify "${target_short}" >/dev/null 2>&1; then
-                  mapfile -t changed_files < <(git diff --name-only "${target_short}...HEAD")
+                if git -C "$repo_dir" rev-parse --verify "${target_short}" >/dev/null 2>&1; then
+                  mapfile -t changed_files < <(git -C "$repo_dir" diff --name-only "${target_short}...HEAD")
                 fi
 
                 envs=("sbox")
@@ -193,7 +219,7 @@ stages:
 
                 pr_target_envs=","$(printf '%s\n' "${envs[@]}" | awk 'NF' | sort -u | paste -sd ',' -)","
               elif [[ "${BUILD_REASON:-}" == "PullRequest" ]]; then
-                echo "No git checkout available in ${BUILD_REPOSITORY_LOCALPATH:-$(pwd)}; using sbox only"
+                echo "No git checkout available in detected paths; using sbox only"
               fi
 
               echo "PR target environments: ${pr_target_envs}"
