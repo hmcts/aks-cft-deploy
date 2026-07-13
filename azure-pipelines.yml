@@ -207,7 +207,12 @@ stages:
 
                 changed_files=()
                 if git -C "$repo_dir" rev-parse --verify "${target_short}" >/dev/null 2>&1; then
-                  mapfile -t changed_files < <(git -C "$repo_dir" diff --name-only "${target_short}...HEAD")
+                  if git -C "$repo_dir" merge-base "${target_short}" HEAD >/dev/null 2>&1; then
+                    mapfile -t changed_files < <(git -C "$repo_dir" diff --name-only "${target_short}...HEAD")
+                  else
+                    echo "No merge base for ${target_short}...HEAD; using ${target_short}..HEAD"
+                    mapfile -t changed_files < <(git -C "$repo_dir" diff --name-only "${target_short}..HEAD")
+                  fi
                 fi
 
                 envs=("sbox")
