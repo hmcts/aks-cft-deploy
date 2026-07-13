@@ -63,10 +63,13 @@ parameters:
     values:
       - "UK South"
 
-  - name: agentPool
-    displayName: Agent Pool (hosted image or self-hosted pool name)
+  - name: agentPoolType
+    displayName: Agent Type
     type: string
-    default: ubuntu-latest
+    default: hosted
+    values:
+      - hosted
+      - self-hosted
 
   - name: environment_components
     type: object
@@ -130,6 +133,10 @@ variables:
     value: cft
   - name: timeoutInMinutes
     value: "60"
+  - name: hostedVmImage
+    value: ubuntu-latest
+  - name: selfHostedAgentPool
+    value: hmcts-cftptl-agent-pool
   - name: tfInitSub
     value: "04d27a32-7a07-48b3-95b8-3c8691e1a263"
   - name: product
@@ -343,10 +350,10 @@ stages:
       - stage: Aks_${{ component.env }}
         displayName: "${{ upper(component.env) }}: AKS clusters"
         pool:
-          ${{ if eq(parameters.agentPool, 'ubuntu-latest') }}:
-            vmImage: ubuntu-latest
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
           ${{ else }}:
-            name: ${{ parameters.agentPool }}
+            name: $(selfHostedAgentPool)
         dependsOn:
           - Managed_Identity_${{ component.env }}
         condition: |
@@ -452,10 +459,10 @@ stages:
         jobs:
           - job: PipelineTests
             pool:
-              ${{ if eq(parameters.agentPool, 'ubuntu-latest') }}:
-                vmImage: ubuntu-latest
+              ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+                vmImage: $(hostedVmImage)
               ${{ else }}:
-                name: ${{ parameters.agentPool }}
+                name: $(selfHostedAgentPool)
             timeoutInMinutes: ${{ variables.timeoutInMinutes }}
             steps:
               - template: steps/pipeline-tests-jest.yaml@cnp-azuredevops-libraries
