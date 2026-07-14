@@ -2,11 +2,28 @@ trigger:
   branches:
     include:
       - main
+  paths:
+    include:
+      - azure-pipelines.yml
+      - pipeline-steps/**
+      - pipeline-scripts/**
+      - ci/**
+      - scripts/checking-clusters.sh
+      - bootstrap/**
+      - components/**
+      - environments/**
 
 pr:
   branches:
     include:
       - refs/heads/main
+  paths:
+    include:
+      - azure-pipelines.yml
+      - pipeline-steps/**
+      - bootstrap/**
+      - components/**
+      - environments/**
 
 resources:
   repositories:
