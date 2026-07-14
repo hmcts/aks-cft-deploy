@@ -8,7 +8,7 @@ trigger:
       - pipeline-steps/**
       - pipeline-scripts/**
       - ci/**
-      - scripts/checking-clusters.sh
+      - scripts/**
       - bootstrap/**
       - components/**
       - environments/**
