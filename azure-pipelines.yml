@@ -169,33 +169,11 @@ stages:
         steps:
           - checkout: self
 
-          - bash: |
-              echo "Build.SourcesDirectory = $(Build.SourcesDirectory)"
-              echo "Build.Repository.LocalPath = $(Build.Repository.LocalPath)"
-              echo "Build.Repository.Name = $(Build.Repository.Name)"
-              echo "RepoFolderName = $(RepoFolderName)"
-
-              echo "Build.SourcesDirectory"
-              ls "$(Build.SourcesDirectory)"
-              echo "Build.Repository.LocalPath"
-              ls "$(Build.Repository.LocalPath)"
-
-          - bash: |
-              set -euo pipefail
-
-              script_path="pipeline-scripts/detect-pr-envs.sh"
-
-              if [[ ! -f "${script_path}" ]]; then
-                echo "##vso[task.logissue type=error]Could not locate ${script_path}"
-                exit 1
-              fi
-
-              echo "Running PR detector script: ${script_path}"
-              bash "${script_path}"
+          - task: ShellScript@2
             name: detect_pr_envs
             displayName: Detect PR target environments
-            # workingDirectory: $(Pipeline.Workspace)/s/aks-cft-deploy
-            workingDirectory: $(Build.SourcesDirectory)/$(RepoFolderName)
+            inputs:
+              scriptPath: '$(Build.SourcesDirectory)/$(RepoFolderName)/pipeline-scripts/detect-pr-envs.sh'
 
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
