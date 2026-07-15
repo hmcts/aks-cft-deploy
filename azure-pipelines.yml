@@ -167,13 +167,11 @@ stages:
         steps:
           - checkout: self
 
-          - task: Bash@3
+          - bash: |
+              bash "$(Build.Repository.LocalPath)/pipeline-scripts/detect-pr-envs.sh"
             name: detect_pr_envs
             displayName: Detect PR target environments
-            inputs:
-              targetType: filePath
-              filePath: pipeline-scripts/detect-pr-envs.sh
-              workingDirectory: $(Build.Repository.LocalPath)
+            workingDirectory: $(Build.Repository.LocalPath)
 
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
