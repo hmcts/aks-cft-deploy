@@ -1,5 +1,29 @@
 # cft-aks-deploy
+
 Terraform code to deploy CFT AKS Cluster and underlying infrastructure.
+
+## Pipeline trigger and manual validation rules
+
+PR auto-runs are intentionally path-filtered to reduce noise and cost. Only changes under the paths configured in pipeline trigger rules will auto-start a PR pipeline.
+
+If your PR changes code outside those paths but still needs validation, run pipeline manually and choose required parameters.
+
+Use manual runs when testing:
+
+1) Shared scripts or docs that influence operator behavior but do not match PR trigger paths.
+2) Non-functional changes that still require confidence checks before merge.
+3) Targeted cluster execution for validation using the cluster parameter.
+
+PR environment detection now fails fast. If target branch fetch or git checkout detection fails, PreCheck fails immediately instead of silently running sbox-only.
+
+## Agent pool selection
+
+No implicit default pool is used. All stages now resolve pool from the agentPoolType parameter:
+
+1) hosted -> vmImage from hostedVmImage variable.
+2) self-hosted -> pool name from selfHostedAgentPool variable.
+
+Purpose: keep behavior predictable across users and queues, and avoid accidental routing to a project/org default pool.
 
 ## Warning
 
@@ -39,7 +63,7 @@ When applying with a change like this in the plan you will need to delete the PD
 ## Scripts Information
 
 As CFT is currently configured via ARM templates and an active solution, some additional scripts have been created to assist with moving from ARM to Terraform
-    
+
     1) scripts/key-vault-copy-filedownload.sh - Copies KeyVault secrets from currently used cft KeyVault to new KeyVault that is mentioned in Genesis stage 
 
     2)  scripts/postgresql-add-new-subnets.sh - Assigns the new aks00/01 subnets to all relevant postgresql databases for the specific environment, such as perftest, aat etc. 

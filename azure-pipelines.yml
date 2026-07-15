@@ -157,81 +157,23 @@ name: "AKS-CFT-Deploy - $(finalAction)"
 stages:
   - stage: PreCheck
     displayName: PreChecks
+    pool:
+      ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+        vmImage: $(hostedVmImage)
+      ${{ else }}:
+        name: $(selfHostedAgentPool)
     jobs:
       - job: PreChecks
         steps:
           - checkout: self
 
-          - bash: |
-              set -euo pipefail
-
-              pr_target_envs=",sbox,"
-              repo_dir=""
-              repo_name="${BUILD_REPOSITORY_NAME##*/}"
-
-              candidates=(
-                "${BUILD_REPOSITORY_LOCALPATH:-}"
-                "${BUILD_SOURCESDIRECTORY:-}"
-                "${PIPELINE_WORKSPACE:-}/s"
-                "$(pwd)"
-              )
-
-              if [[ -n "${repo_name:-}" ]]; then
-                candidates+=(
-                  "${BUILD_REPOSITORY_LOCALPATH:-}/${repo_name}"
-                  "${BUILD_SOURCESDIRECTORY:-}/${repo_name}"
-                  "${PIPELINE_WORKSPACE:-}/s/${repo_name}"
-                  "$(pwd)/${repo_name}"
-                )
-              fi
-
-              for candidate in "${candidates[@]}"; do
-                [[ -z "$candidate" ]] && continue
-                if git -C "$candidate" rev-parse --show-toplevel >/dev/null 2>&1; then
-                  repo_dir="$candidate"
-                  break
-                fi
-              done
-
-              echo "Detecting PR environments from ${repo_dir:-${BUILD_REPOSITORY_LOCALPATH:-$(pwd)}}"
-
-              if [[ "${BUILD_REASON:-}" == "PullRequest" && -n "$repo_dir" ]]; then
-                target_branch="${SYSTEM_PULLREQUEST_TARGETBRANCH:-refs/heads/main}"
-                target_short="${target_branch#refs/heads/}"
-
-                if git -C "$repo_dir" fetch --no-tags origin "${target_short}:${target_short}" --depth=1 2>/dev/null; then
-                  echo "Fetched target branch ${target_short}"
-                else
-                  echo "Could not fetch target branch ${target_short}; using sbox only"
-                fi
-
-                changed_files=()
-                if git -C "$repo_dir" rev-parse --verify "${target_short}" >/dev/null 2>&1; then
-                  if git -C "$repo_dir" merge-base "${target_short}" HEAD >/dev/null 2>&1; then
-                    mapfile -t changed_files < <(git -C "$repo_dir" diff --name-only "${target_short}...HEAD")
-                  else
-                    echo "Three-dot diff unavailable here; using two-dot diff instead (${target_short}..HEAD)"
-                    mapfile -t changed_files < <(git -C "$repo_dir" diff --name-only "${target_short}..HEAD")
-                  fi
-                fi
-
-                envs=("sbox")
-                for changed_file in "${changed_files[@]}"; do
-                  if [[ "$changed_file" =~ ^environments/[^/]+/([A-Za-z0-9_-]+)\.tfvars$ ]]; then
-                    envs+=("${BASH_REMATCH[1]}")
-                  fi
-                done
-
-                pr_target_envs=","$(printf '%s\n' "${envs[@]}" | awk 'NF' | sort -u | paste -sd ',' -)","
-              elif [[ "${BUILD_REASON:-}" == "PullRequest" ]]; then
-                echo "No git checkout available in detected paths; using sbox only"
-              fi
-
-              echo "PR target environments: ${pr_target_envs}"
-              echo "##vso[task.setvariable variable=prTargetEnvs;isOutput=true]${pr_target_envs}"
+          - task: Bash@3
             name: detect_pr_envs
             displayName: Detect PR target environments
-            workingDirectory: $(Build.Repository.LocalPath)
+            inputs:
+              targetType: filePath
+              filePath: pipeline-scripts/detect-pr-envs.sh
+              workingDirectory: $(Build.Repository.LocalPath)
 
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
@@ -243,6 +185,11 @@ stages:
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
         condition: and(succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ component.env }}', 'sbox'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
           - PreCheck
@@ -270,7 +217,12 @@ stages:
 
       - stage: Genesis_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Genesis"
-        condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ component.env }}', 'sbox'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
+        condition: and(ne('${{ parameters.action }}', 'Destroy'), succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ component.env }}', 'sbox'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
           - CheckingClusters_${{ component.env }}
         jobs:
@@ -295,6 +247,11 @@ stages:
 
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
         condition: and(succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ component.env }}', 'sbox'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
           - Genesis_${{ component.env }}
@@ -355,6 +312,11 @@ stages:
 
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
         condition: and(succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq('${{ component.env }}', 'sbox'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
           - Network_${{ component.env }}
@@ -455,6 +417,11 @@ stages:
 
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
         dependsOn:
           - Aks_${{ component.env }}
         condition: and(succeeded(), eq(variables['finalAction'], 'apply'))
@@ -486,16 +453,16 @@ stages:
 
       - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
         dependsOn:
           - BootStrapClusters_${{ component.env }}
         condition: and(succeeded(), eq(variables['finalAction'], 'apply'))
         jobs:
           - job: PipelineTests
-            pool:
-              ${{ if eq(parameters.agentPoolType, 'hosted') }}:
-                vmImage: $(hostedVmImage)
-              ${{ else }}:
-                name: $(selfHostedAgentPool)
             timeoutInMinutes: ${{ variables.timeoutInMinutes }}
             steps:
               - template: steps/pipeline-tests-jest.yaml@cnp-azuredevops-libraries
@@ -508,7 +475,12 @@ stages:
 
   - stage: Analyse_plans
     displayName: "Analyse terraform plan"
-    condition: and(eq('${{ parameters.Action }}', 'Plan'), not(canceled()))
+    pool:
+      ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+        vmImage: $(hostedVmImage)
+      ${{ else }}:
+        name: $(selfHostedAgentPool)
+    condition: and(eq('${{ parameters.action }}', 'plan'), not(canceled()))
     dependsOn:
       - ${{ each component in parameters.environment_components }}:
           - Aks_${{ component.env }}
