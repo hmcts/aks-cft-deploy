@@ -168,7 +168,27 @@ stages:
           - checkout: self
 
           - bash: |
-              bash "$(Build.Repository.LocalPath)/pipeline-scripts/detect-pr-envs.sh"
+              set -euo pipefail
+
+              repo_name="${BUILD_REPOSITORY_NAME##*/}"
+              script_candidates=(
+                "${BUILD_REPOSITORY_LOCALPATH:-}/pipeline-scripts/detect-pr-envs.sh"
+                "${BUILD_SOURCESDIRECTORY:-}/pipeline-scripts/detect-pr-envs.sh"
+                "${BUILD_SOURCESDIRECTORY:-}/${repo_name}/pipeline-scripts/detect-pr-envs.sh"
+                "${PIPELINE_WORKSPACE:-}/s/pipeline-scripts/detect-pr-envs.sh"
+                "${PIPELINE_WORKSPACE:-}/s/${repo_name}/pipeline-scripts/detect-pr-envs.sh"
+                "${SYSTEM_DEFAULTWORKINGDIRECTORY:-}/pipeline-scripts/detect-pr-envs.sh"
+              )
+
+              for script_path in "${script_candidates[@]}"; do
+                [[ -f "${script_path}" ]] || continue
+                echo "Running PR detector script: ${script_path}"
+                bash "${script_path}"
+                exit 0
+              done
+
+              echo "##vso[task.logissue type=error]Could not locate pipeline-scripts/detect-pr-envs.sh in known checkout paths"
+              exit 1
             name: detect_pr_envs
             displayName: Detect PR target environments
             workingDirectory: $(Build.Repository.LocalPath)
@@ -180,6 +200,7 @@ stages:
               serviceConnection: azurerm-sandbox
               projectName: ${{ variables.project }}
               environment: sbox
+              
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
