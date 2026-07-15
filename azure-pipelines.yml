@@ -172,6 +172,7 @@ stages:
           - task: ShellScript@2
             name: detect_pr_envs
             displayName: Detect PR target environments
+            condition: eq(variables['Build.Reason'], 'PullRequest')
             inputs:
               scriptPath: '$(Build.SourcesDirectory)/$(RepoFolderName)/pipeline-scripts/detect-pr-envs.sh'
 
