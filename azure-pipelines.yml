@@ -151,6 +151,8 @@ variables:
       value: ${{ parameters.action }}
   - name: publishPlanResults
     value: false
+  - name: RepoFolderName
+    value: $[ split(variables['Build.Repository.Name'], '/')[1] ]
 
 name: "AKS-CFT-Deploy - $(finalAction)"
 
@@ -169,33 +171,31 @@ stages:
 
           - bash: |
               echo "Build.SourcesDirectory = $(Build.SourcesDirectory)"
-              echo "Pipeline.Workspace = $(Pipeline.Workspace)"
-              echo "System.DefaultWorkingDirectory = $(System.DefaultWorkingDirectory)"
               echo "Build.Repository.LocalPath = $(Build.Repository.LocalPath)"
               echo "Build.Repository.Name = $(Build.Repository.Name)"
+              echo "RepoFolderName = $(RepoFolderName)"
 
+              echo "Build.SourcesDirectory"
               ls "$(Build.SourcesDirectory)"
-              ls "$(Pipeline.Workspace)"
-              ls "$(System.DefaultWorkingDirectory)"
+              echo "Build.Repository.LocalPath"
               ls "$(Build.Repository.LocalPath)"
-              ls "$(Build.Repository.Name)"
 
-          # - bash: |
-          #     set -euo pipefail
+          - bash: |
+              set -euo pipefail
 
-          #     script_path="${PIPELINE_WORKSPACE:-}/s/aks-cft-deploy/pipeline-scripts/detect-pr-envs.sh"
+              script_path="pipeline-scripts/detect-pr-envs.sh"
 
-          #     if [[ ! -f "${script_path}" ]]; then
-          #       echo "##vso[task.logissue type=error]Could not locate ${script_path}"
-          #       exit 1
-          #     fi
+              if [[ ! -f "${script_path}" ]]; then
+                echo "##vso[task.logissue type=error]Could not locate ${script_path}"
+                exit 1
+              fi
 
-          #     echo "Running PR detector script: ${script_path}"
-          #     bash "${script_path}"
-          #   name: detect_pr_envs
-          #   displayName: Detect PR target environments
-          #   # workingDirectory: $(Pipeline.Workspace)/s/aks-cft-deploy
-          #   workingDirectory: $(Build.SourcesDirectory)
+              echo "Running PR detector script: ${script_path}"
+              bash "${script_path}"
+            name: detect_pr_envs
+            displayName: Detect PR target environments
+            # workingDirectory: $(Pipeline.Workspace)/s/aks-cft-deploy
+            workingDirectory: $(Build.SourcesDirectory)/$(RepoFolderName)
 
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
