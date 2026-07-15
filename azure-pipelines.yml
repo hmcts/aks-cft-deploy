@@ -168,30 +168,34 @@ stages:
           - checkout: self
 
           - bash: |
-              set -euo pipefail
+              echo "Build.SourcesDirectory = $(Build.SourcesDirectory)"
+              echo "Pipeline.Workspace = $(Pipeline.Workspace)"
+              echo "System.DefaultWorkingDirectory = $(System.DefaultWorkingDirectory)"
+              echo "Build.Repository.LocalPath = $(Build.Repository.LocalPath)"
+              echo "Build.Repository.Name = $(Build.Repository.Name)"
 
-              repo_name="${BUILD_REPOSITORY_NAME##*/}"
-              script_candidates=(
-                "${BUILD_REPOSITORY_LOCALPATH:-}/pipeline-scripts/detect-pr-envs.sh"
-                "${BUILD_SOURCESDIRECTORY:-}/pipeline-scripts/detect-pr-envs.sh"
-                "${BUILD_SOURCESDIRECTORY:-}/${repo_name}/pipeline-scripts/detect-pr-envs.sh"
-                "${PIPELINE_WORKSPACE:-}/s/pipeline-scripts/detect-pr-envs.sh"
-                "${PIPELINE_WORKSPACE:-}/s/${repo_name}/pipeline-scripts/detect-pr-envs.sh"
-                "${SYSTEM_DEFAULTWORKINGDIRECTORY:-}/pipeline-scripts/detect-pr-envs.sh"
-              )
+              ls "$(Build.SourcesDirectory)"
+              ls "$(Pipeline.Workspace)"
+              ls "$(System.DefaultWorkingDirectory)"
+              ls "$(Build.Repository.LocalPath)"
+              ls "$(Build.Repository.Name)"
 
-              for script_path in "${script_candidates[@]}"; do
-                [[ -f "${script_path}" ]] || continue
-                echo "Running PR detector script: ${script_path}"
-                bash "${script_path}"
-                exit 0
-              done
+          # - bash: |
+          #     set -euo pipefail
 
-              echo "##vso[task.logissue type=error]Could not locate pipeline-scripts/detect-pr-envs.sh in known checkout paths"
-              exit 1
-            name: detect_pr_envs
-            displayName: Detect PR target environments
-            workingDirectory: $(Build.Repository.LocalPath)
+          #     script_path="${PIPELINE_WORKSPACE:-}/s/aks-cft-deploy/pipeline-scripts/detect-pr-envs.sh"
+
+          #     if [[ ! -f "${script_path}" ]]; then
+          #       echo "##vso[task.logissue type=error]Could not locate ${script_path}"
+          #       exit 1
+          #     fi
+
+          #     echo "Running PR detector script: ${script_path}"
+          #     bash "${script_path}"
+          #   name: detect_pr_envs
+          #   displayName: Detect PR target environments
+          #   # workingDirectory: $(Pipeline.Workspace)/s/aks-cft-deploy
+          #   workingDirectory: $(Build.SourcesDirectory)
 
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
@@ -200,7 +204,7 @@ stages:
               serviceConnection: azurerm-sandbox
               projectName: ${{ variables.project }}
               environment: sbox
-              
+
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
