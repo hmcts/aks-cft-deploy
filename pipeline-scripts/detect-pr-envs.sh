@@ -2,13 +2,20 @@
 
 set -euo pipefail
 
+# Generic assumptions for reuse:
+# - env tfvars are stored as environments/<component>/<env>.tfvars
+# - pipeline stage env names match <env> file basenames
+# - script runs in Azure DevOps with git checkout available
+
 pr_target_envs=",sbox,"
+pr_run_all_envs=false
 
 # Non-PR runs do not need env detection. Keep default output stable and exit fast.
 if [[ "${BUILD_REASON:-}" != "PullRequest" ]]; then
   echo "PR detector skipped: BUILD_REASON=${BUILD_REASON:-unknown}"
   echo "PR target environments: ${pr_target_envs}"
   echo "##vso[task.setvariable variable=prTargetEnvs;isOutput=true]${pr_target_envs}"
+  echo "##vso[task.setvariable variable=prRunAllEnvs;isOutput=true]${pr_run_all_envs}"
   exit 0
 fi
 
@@ -64,14 +71,36 @@ if ! git -C "${repo_dir}" merge-base "${target_short}" HEAD >/dev/null 2>&1; the
 fi
 
 # Parse tfvars path convention and append unique env names in-place.
-while IFS= read -r changed_file; do
-  if [[ "${changed_file}" =~ ^environments/[^/]+/([A-Za-z0-9_-]+)\.tfvars$ ]]; then
-    env_name="${BASH_REMATCH[1]}"
-    if [[ "${pr_target_envs}" != *",${env_name},"* ]]; then
-      pr_target_envs+="${env_name},"
-    fi
+changed_files=()
+mapfile -t changed_files < <(git -C "${repo_dir}" diff --name-only "${diff_ref}")
+
+force_all_envs=false
+
+for changed_file in "${changed_files[@]}"; do
+  # Any file under components/ is treated as cross-environment impact.
+  if [[ "${changed_file}" =~ ^components/.+ ]]; then
+    force_all_envs=true
+    break
   fi
-done < <(git -C "${repo_dir}" diff --name-only "${diff_ref}")
+done
+
+if [[ "${force_all_envs}" == true ]]; then
+  # components/** changes are treated as cross-environment impact.
+  # Signal pipeline to run normal full PR stage flow without env diff filtering.
+  echo "components/** change detected; disabling PR env diff filter"
+  pr_run_all_envs=true
+else
+  while IFS= read -r changed_file; do
+    if [[ "${changed_file}" =~ ^environments/[^/]+/([A-Za-z0-9_-]+)\.tfvars$ ]]; then
+      env_name="${BASH_REMATCH[1]}"
+      if [[ "${pr_target_envs}" != *",${env_name},"* ]]; then
+        pr_target_envs+="${env_name},"
+      fi
+    fi
+  done < <(printf '%s\n' "${changed_files[@]}")
+fi
 
 echo "PR target environments: ${pr_target_envs}"
 echo "##vso[task.setvariable variable=prTargetEnvs;isOutput=true]${pr_target_envs}"
+echo "PR run all environments: ${pr_run_all_envs}"
+echo "##vso[task.setvariable variable=prRunAllEnvs;isOutput=true]${pr_run_all_envs}"
