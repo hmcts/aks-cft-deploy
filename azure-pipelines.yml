@@ -29,7 +29,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: cnp-azuredevops-libraries-DTSPO-33297
+      ref: refs/heads/master
       name: hmcts/cnp-azuredevops-libraries
       endpoint: "hmcts"
     - repository: cnp-flux-config

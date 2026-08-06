@@ -19,7 +19,7 @@ variable "oms_agent_enabled" {
 }
 
 variable "expiresAfter" {
-  default = "3000-01-02"
+  default = "3000-01-01"
 }
 
 variable "autoShutdown" {

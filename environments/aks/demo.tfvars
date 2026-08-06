@@ -13,7 +13,7 @@ clusters = {
       vm_size   = "Standard_D8ds_v5"
       min_nodes = 15
       max_nodes = 30
-      max_pods  = 51
+      max_pods  = 50
     }
 
     availability_zones = ["1", "2", "3"]
