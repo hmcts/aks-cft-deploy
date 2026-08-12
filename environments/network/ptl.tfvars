@@ -262,6 +262,12 @@ additional_routes = [
     address_prefix         = "10.11.63.0/24"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.72.36"
+  },
+  {
+    name                   = "sps-ai-stg"
+    address_prefix         = "10.181.20.0/22"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.72.36"
   }
 ]
 
