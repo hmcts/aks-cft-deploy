@@ -151,8 +151,6 @@ variables:
       value: ${{ parameters.action }}
   - name: publishPlanResults
     value: false
-  - name: RepoFolderName
-    value: $[ split(variables['Build.Repository.Name'], '/')[1] ]
 
 name: "AKS-CFT-Deploy - $(finalAction)"
 
@@ -168,6 +166,8 @@ stages:
       - job: PreChecks
         steps:
           - checkout: self
+            persistCredentials: true
+            fetchDepth: 0
 
           - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
               - checkout: cnp-azuredevops-libraries
