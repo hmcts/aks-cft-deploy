@@ -29,7 +29,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: master
+      ref: refs/heads/master
       name: hmcts/cnp-azuredevops-libraries
       endpoint: "hmcts"
     - repository: cnp-flux-config
@@ -157,9 +157,26 @@ name: "AKS-CFT-Deploy - $(finalAction)"
 stages:
   - stage: PreCheck
     displayName: PreChecks
+    pool:
+      ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+        vmImage: $(hostedVmImage)
+      ${{ else }}:
+        name: $(selfHostedAgentPool)
     jobs:
       - job: PreChecks
         steps:
+          - checkout: self
+            persistCredentials: true
+            fetchDepth: 0
+
+          - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+              - checkout: cnp-azuredevops-libraries
+              - task: ShellScript@2
+                name: detect_pr_envs
+                displayName: Detect PR target environments
+                inputs:
+                  scriptPath: '$(Build.SourcesDirectory)/cnp-azuredevops-libraries/scripts/detect-pr-envs.sh'
+
           - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
             parameters:
               keyvaultName: infra-vault-nonprod
@@ -167,10 +184,18 @@ stages:
               serviceConnection: azurerm-sandbox
               projectName: ${{ variables.project }}
               environment: sbox
+
   - ${{ each component in parameters.environment_components }}:
       - stage: "CheckingClusters_${{ component.env }}"
         displayName: "Checking Clusters for ${{ component.env }}"
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
+        condition: and(succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prRunAllEnvs'], 'true'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
+          - PreCheck
           - ${{ if and(ne(component.env, 'sbox'), eq(parameters.action, 'apply')) }}:
               - Network_${{ component.dependsOn }}
               - Managed_Identity_${{ component.dependsOn }}
@@ -181,8 +206,6 @@ stages:
               - Network_${{ component.dependsOn }}
               - Managed_Identity_${{ component.dependsOn }}
               - Aks_${{ component.dependsOn }}
-          - ${{ else }}:
-              - Precheck
         jobs:
           - job: CheckingClusters
             steps:
@@ -197,7 +220,12 @@ stages:
 
       - stage: Genesis_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Genesis"
-        condition: and(ne('${{ parameters.Action }}', 'Destroy'), succeeded())
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
+        condition: and(ne('${{ parameters.action }}', 'Destroy'), succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prRunAllEnvs'], 'true'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
           - CheckingClusters_${{ component.env }}
         jobs:
@@ -222,6 +250,12 @@ stages:
 
       - stage: "Network_${{ component.env }}"
         displayName: "${{ upper(component.env) }}: Network"
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
+        condition: and(succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prRunAllEnvs'], 'true'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
           - Genesis_${{ component.env }}
         jobs:
@@ -281,6 +315,12 @@ stages:
 
       - stage: Managed_Identity_${{ component.env }}
         displayName: "${{ upper(component.env) }}: Managed_Identity"
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
+        condition: and(succeeded(), or(ne(variables['Build.Reason'], 'PullRequest'), eq(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prRunAllEnvs'], 'true'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')))
         dependsOn:
           - Network_${{ component.env }}
         jobs:
@@ -315,20 +355,23 @@ stages:
         dependsOn:
           - Managed_Identity_${{ component.env }}
         condition: |
-          or (
-            and(
-              succeeded(),
-              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
-              in('${{ parameters.cluster }}', '00', '01'),
-              eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
-            ),
-            and(
-              succeeded(),
-              in(variables['Build.Reason'], 'Manual', 'PullRequest'),
-              eq('${{ parameters.cluster }}', 'All')
-            ),
-            and(succeeded(), in(variables['Build.Reason'], 'PullRequest', 'Manual')),
-            and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+          and(
+            or(ne(variables['Build.Reason'], 'PullRequest'), eq(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prRunAllEnvs'], 'true'), contains(dependencies.PreCheck.outputs['PreChecks.detect_pr_envs.prTargetEnvs'], ',${{ component.env }},')),
+            or (
+              and(
+                succeeded(),
+                in(variables['Build.Reason'], 'Manual', 'PullRequest'),
+                in('${{ parameters.cluster }}', '00', '01'),
+                eq(dependencies.CheckingClusters_${{ component.env }}.outputs['CheckingClusters.check_clusters.cluster_deploy'], '${{ parameters.cluster }}')
+              ),
+              and(
+                succeeded(),
+                in(variables['Build.Reason'], 'Manual', 'PullRequest'),
+                eq('${{ parameters.cluster }}', 'All')
+              ),
+              and(succeeded(), in(variables['Build.Reason'], 'PullRequest', 'Manual')),
+              and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+            )
           )
         jobs:
           - job: DeployInfrastructure
@@ -377,6 +420,11 @@ stages:
 
       - stage: BootStrapClusters_${{ component.env }}
         displayName: "${{ upper(component.env) }}: BootStrap Clusters"
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
         dependsOn:
           - Aks_${{ component.env }}
         condition: and(succeeded(), eq(variables['finalAction'], 'apply'))
@@ -408,16 +456,16 @@ stages:
 
       - stage: PipelineTests_${{ component.env }}
         displayName: "${{ upper(component.env) }}: PipelineTests"
+        pool:
+          ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+            vmImage: $(hostedVmImage)
+          ${{ else }}:
+            name: $(selfHostedAgentPool)
         dependsOn:
           - BootStrapClusters_${{ component.env }}
         condition: and(succeeded(), eq(variables['finalAction'], 'apply'))
         jobs:
           - job: PipelineTests
-            pool:
-              ${{ if eq(parameters.agentPoolType, 'hosted') }}:
-                vmImage: $(hostedVmImage)
-              ${{ else }}:
-                name: $(selfHostedAgentPool)
             timeoutInMinutes: ${{ variables.timeoutInMinutes }}
             steps:
               - template: steps/pipeline-tests-jest.yaml@cnp-azuredevops-libraries
@@ -430,7 +478,12 @@ stages:
 
   - stage: Analyse_plans
     displayName: "Analyse terraform plan"
-    condition: and(eq('${{ parameters.Action }}', 'Plan'), succeededOrFailed())
+    pool:
+      ${{ if eq(parameters.agentPoolType, 'hosted') }}:
+        vmImage: $(hostedVmImage)
+      ${{ else }}:
+        name: $(selfHostedAgentPool)
+    condition: and(eq('${{ parameters.action }}', 'plan'), not(canceled()))
     dependsOn:
       - ${{ each component in parameters.environment_components }}:
           - Aks_${{ component.env }}
