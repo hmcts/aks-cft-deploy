@@ -13,5 +13,7 @@ az account set --subscription ${TERRAFORMSUBSCRIPTIONID}
 az aks get-credentials \
     --resource-group "${PROJECT}"-"${ENVIRONMENT}"-"${CLUSTER_NAME}"-rg \
     --name "${PROJECT}"-"${ENVIRONMENT}"-"${CLUSTER_NAME}"-"${SERVICE}" \
-    --admin \
     --overwrite-existing
+
+# Non-admin kubeconfig authenticates via AAD exec plugin; kubelogin converts it to reuse the pipeline's az cli login
+kubelogin convert-kubeconfig -l azurecli
