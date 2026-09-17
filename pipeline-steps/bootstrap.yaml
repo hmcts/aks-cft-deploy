@@ -24,7 +24,7 @@ steps:
         echo "##vso[task.setvariable variable=AZURE_MI_ID]$(az identity show --resource-group genesis-rg --name aks-${{ parameters.environment }}-mi --query="clientId" -o tsv)"
 
 - script: |
-    wget -q https://github.com/Azure/kubelogin/releases/download/v0.0.9/kubelogin-linux-amd64.zip
+    wget -q https://github.com/Azure/kubelogin/releases/download/v0.2.19/kubelogin-linux-amd64.zip
     unzip kubelogin-linux-amd64.zip
     sudo mv bin/linux_amd64/kubelogin /usr/bin
   displayName: 'Install kubelogin'
@@ -39,3 +39,5 @@ steps:
     failOnStandardError: 'false'
     scriptPath: aks-cft-deploy/bootstrap/bootstrap.sh
     arguments: ${{ parameters.project }} aks $(env) $(controlKeyVault) ${{ parameters.serviceConnection }} "$(clusters)" deploy ${{ parameters.akskeyvault }} ${{parameters.terraformSubscriptionID}}
+  env:
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
