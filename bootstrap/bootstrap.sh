@@ -28,6 +28,11 @@ echo "Params: $*"
 export AAD_SERVICE_PRINCIPAL_CLIENT_ID="${servicePrincipalId}"
 export AAD_SERVICE_PRINCIPAL_CLIENT_SECRET="${servicePrincipalKey}"
 
+# TEMP DIAGNOSTIC: confirm addSpnToEnvironment actually populated these for this service connection type (remove once spn/azurepipelines mode is confirmed working)
+echo "DEBUG servicePrincipalId set: $([[ -n "${servicePrincipalId:-}" ]] && echo yes || echo no)"
+echo "DEBUG servicePrincipalKey set: $([[ -n "${servicePrincipalKey:-}" ]] && echo yes || echo no)"
+echo "DEBUG tenantId set: $([[ -n "${tenantId:-}" ]] && echo yes || echo no)"
+
 project=${1}
 env=${3}
 if [[ "${6}" == "All" ]]; then
