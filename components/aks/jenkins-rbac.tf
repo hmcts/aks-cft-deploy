@@ -59,7 +59,7 @@ resource "azurerm_role_assignment" "jenkins_environment_mi_aks_admin" {
   depends_on = [module.kubernetes]
 }
 
-resource "azurerm_role_assignment" "jenkins_environment_mi_aks_admin" {
+resource "azurerm_role_assignment" "jenkins_environment_mi_aks_user" {
   for_each             = var.clusters
   principal_id         = data.azurerm_user_assigned_identity.jenkins_environment_mi.principal_id
   role_definition_name = "Azure Kubernetes Service Cluster User Role"
