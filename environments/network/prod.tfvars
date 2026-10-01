@@ -20,6 +20,64 @@ additional_subnets = [
   {
     name           = "infra-appgws"
     address_prefix = "10.90.98.0/25"
+  },
+  {
+    name                  = "crime-idam"
+    address_prefix        = "10.90.99.0/24"
+    associate_route_table = true
+    service_endpoints     = ["Microsoft.Storage"]
+    delegations = {
+      postgres_flexible = {
+        service_name = "Microsoft.DBforPostgreSQL/flexibleServers"
+        actions      = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+      }
+    }
+    nsg_rules = [
+      {
+        name                       = "deny-all-inbound"
+        priority                   = 4096
+        direction                  = "Inbound"
+        access                     = "Deny"
+        protocol                   = "*"
+        source_port_range          = "*"
+        destination_port_range     = "*"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+      },
+      {
+        name                       = "allow-palo-inbound"
+        priority                   = 100
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "*"
+        source_port_range          = "*"
+        destination_port_range     = "*"
+        source_address_prefix      = "10.11.8.32/27"
+        destination_address_prefix = "*"
+      },
+      {
+        name                       = "allow-crime-idam-vnet-inbound"
+        priority                   = 200
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "*"
+        source_port_range          = "*"
+        destination_port_range     = "*"
+        source_address_prefix      = "10.225.0.0/16"
+        destination_address_prefix = "*"
+      },
+      {
+        name                       = "allow-pgsql-flexible-ha-inbound"
+        priority                   = 400
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "5432"
+        source_address_prefix      = "10.90.99.0/24"
+        destination_address_prefix = "10.90.99.0/24"
+      },
+    ]
   }
 ]
 
