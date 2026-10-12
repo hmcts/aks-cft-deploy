@@ -11,15 +11,16 @@ then
     wget -q https://github.com/Azure/kubelogin/releases/download/v0.0.9/kubelogin-linux-amd64.zip
     unzip kubelogin-linux-amd64.zip &> /dev/null
     sudo mv bin/linux_amd64/kubelogin /usr/bin
-    kubelogin convert-kubeconfig -l azurecli
 fi
 
 az account set -s "${aks_subscription}"
 
 az aks get-credentials \
     --resource-group "${aks_resource_group}"\
-    --name "${aks_name}"\
-    --admin
+    --name "${aks_name}"
+
+# Must run every iteration (not just on first install) since each loop pass fetches a different cluster's kubeconfig
+kubelogin convert-kubeconfig -l azurecli
 
 current_version=$(az aks show  --resource-group "${aks_resource_group}" --name "${aks_name}" | grep 'currentKubernetesVersion' | grep -Eo '[0-9].[0-9][0-9]')
 aks_version=$(echo "$current_version + 0.01" | bc)
