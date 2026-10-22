@@ -147,6 +147,12 @@ additional_routes_application_gateway = [
     address_prefix         = "10.10.81.0/24"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.11.8.36"
+  },
+  {
+    name                   = "sps-platform-networking-vnet-prod"
+    address_prefix         = "10.180.24.0/22"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.11.8.36"
   }
 ]
 
