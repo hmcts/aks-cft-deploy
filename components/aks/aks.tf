@@ -74,7 +74,7 @@ module "kubernetes" {
 
   enable_user_system_nodepool_split = each.value.enable_user_system_nodepool_split
 
-  additional_node_pools = contains(["ptlsbox" , "ptl"], var.env) ? [
+  additional_node_pools = concat(contains(["ptlsbox" , "ptl"], var.env) ? [
     {
       name                = "linux"
       vm_size             = lookup(each.value.linux_node_pool, "vm_size", "Standard_DS3_v2")
@@ -136,7 +136,20 @@ module "kubernetes" {
       enable_auto_scaling = true
       mode                = "User"
     }
-  ]
+  ], var.env == "ptl" && each.key == "00" ? [
+    {
+      name                = "jenkins"
+      vm_size             = "Standard_E8ds_v5"
+      min_count           = 1
+      max_count           = 1
+      max_pods            = 30
+      os_type             = "Linux"
+      os_sku              = null
+      node_taints         = ["dedicated=jenkins:NoSchedule"]
+      enable_auto_scaling = true
+      mode                = "User"
+    }
+  ] : [])
 
   project_acr_enabled = each.value.project_acr_enabled
   availability_zones  = each.value.availability_zones
