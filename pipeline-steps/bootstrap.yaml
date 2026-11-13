@@ -16,7 +16,6 @@ steps:
   displayName: 'Setup Authentication'
   inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
-      addSpnToEnvironment: true
       scriptType: bash
       scriptLocation: inlineScript
       failOnStandardError: 'true'
@@ -33,7 +32,6 @@ steps:
   displayName: 'Bootstrap'
   inputs:
     azureSubscription: ${{ parameters.serviceConnection }}
-    addSpnToEnvironment: true
     workingDirectory: aks-cft-deploy/bootstrap
     scriptType: bash
     failOnStandardError: 'false'
