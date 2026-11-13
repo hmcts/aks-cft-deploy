@@ -21,6 +21,7 @@ steps:
       component: ${{ parameters.stack }}
       location: ${{ parameters.location }}
       serviceConnection: ${{ parameters.serviceConnection }}
+      fallbackGenerateIdToken: ${{ eq(parameters.stack, 'aks') }}
       backendResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
       terraformInitSubscription: ${{ parameters.tfInitSub }}
       product: ${{ parameters.product }}
