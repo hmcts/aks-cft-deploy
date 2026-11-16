@@ -31,6 +31,9 @@ steps:
 
 - task: AzureCLI@2
   displayName: 'Bootstrap'
+  ${{ if eq(parameters.environment, 'sbox') }}:
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
   inputs:
     azureSubscription: ${{ parameters.serviceConnection }}
     addSpnToEnvironment: true

@@ -1,0 +1,107 @@
+trigger: none
+pr: none
+
+resources:
+  repositories:
+    - repository: cnp-azuredevops-libraries
+      type: github
+      ref: refs/heads/master
+      name: hmcts/cnp-azuredevops-libraries
+      endpoint: hmcts
+
+parameters:
+  - name: runBootstrap
+    displayName: Run sandbox bootstrap after authentication checks
+    type: boolean
+    default: false
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - name: clusters
+    value: "01"
+  - name: KUBECONFIG
+    value: $(Agent.TempDirectory)/sbox-wif-kubeconfig
+
+jobs:
+  - job: SandboxWifTest
+    displayName: Sandbox WIF test
+    timeoutInMinutes: 60
+    steps:
+      - checkout: self
+        path: s/aks-cft-deploy
+
+      - checkout: cnp-azuredevops-libraries
+        path: s/cnp-azuredevops-libraries
+
+      - bash: |
+          set -euo pipefail
+
+          install_dir="$(Agent.TempDirectory)/sbox-wif-kubelogin"
+          mkdir -p "$install_dir"
+
+          curl --fail --show-error --location \
+            https://github.com/Azure/kubelogin/releases/download/v0.2.19/kubelogin-linux-amd64.zip \
+            --output "$install_dir/kubelogin.zip"
+
+          unzip -o "$install_dir/kubelogin.zip" -d "$install_dir"
+
+          "$install_dir/bin/linux_amd64/kubelogin" --version
+          echo "##vso[task.prependpath]$install_dir/bin/linux_amd64"
+        displayName: Install pinned kubelogin
+
+      - task: AzureCLI@2
+        displayName: Verify sandbox WIF authentication
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        inputs:
+          azureSubscription: DCD-CFTAPPS-SBOX-WIF
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            set -euo pipefail
+
+            expected_subscription="b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb"
+            actual_subscription="$(az account show --query id -o tsv)"
+
+            if [[ "$actual_subscription" != "$expected_subscription" ]]; then
+              echo "##vso[task.logissue type=error]Unexpected subscription; refusing to continue."
+              exit 1
+            fi
+
+            command -v kubelogin
+            kubelogin --version
+            command -v kubectl
+
+            bash "$(Pipeline.Workspace)/s/aks-cft-deploy/bootstrap/scripts/get-aks-credentials.sh" \
+              cft \
+              aks \
+              sbox \
+              unused \
+              DCD-CFTAPPS-SBOX-WIF \
+              "$(clusters)" \
+              deploy \
+              unused \
+              "$expected_subscription"
+
+            expected_context="cft-sbox-$(clusters)-aks"
+            actual_context="$(kubectl config current-context)"
+
+            if [[ "$actual_context" != "$expected_context" ]]; then
+              echo "##vso[task.logissue type=error]Unexpected Kubernetes context; refusing to continue."
+              exit 1
+            fi
+
+            kubectl get namespaces --request-timeout=30s
+            kubectl auth can-i create namespaces
+            kubectl auth can-i create clusterrolebindings.rbac.authorization.k8s.io
+
+      - ${{ if eq(parameters.runBootstrap, true) }}:
+          - template: pipeline-steps/bootstrap.yaml
+            parameters:
+              environment: sbox
+              project: cft
+              serviceConnection: DCD-CFTAPPS-SBOX-WIF
+              akskeyvault: dcdcftappssboxkv
+              terraformSubscriptionID: b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb
