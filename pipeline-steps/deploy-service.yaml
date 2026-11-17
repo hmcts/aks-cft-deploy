@@ -5,6 +5,7 @@ parameters:
   project: ""
   tfvars: ""
   serviceConnection: ""
+  fallbackGenerateIdToken: false
   tfInitSub: ""
   targetCommand: ""
   setClusterNumbersEnvVar: false
@@ -21,6 +22,7 @@ steps:
       component: ${{ parameters.stack }}
       location: ${{ parameters.location }}
       serviceConnection: ${{ parameters.serviceConnection }}
+      fallbackGenerateIdToken: ${{ parameters.fallbackGenerateIdToken }}
       backendResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
       terraformInitSubscription: ${{ parameters.tfInitSub }}
       product: ${{ parameters.product }}

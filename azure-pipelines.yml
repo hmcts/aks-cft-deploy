@@ -392,6 +392,7 @@ stages:
                   publishPlanResults: ${{ variables.publishPlanResults }}
                   tfInitSub: ${{ variables.tfInitSub }}
                   serviceConnection: ${{ component.serviceConnection }}
+                  fallbackGenerateIdToken: ${{ and(parameters.sboxOnlyTest, eq(component.env, 'sbox')) }}
                   action: ${{ parameters.action }}
                   terraformSubscriptionID: ${{ component.terraformSubscriptionID }}
                   backendAzureRmResourceGroupName: ${{ component.backendAzureRmResourceGroupName }}
