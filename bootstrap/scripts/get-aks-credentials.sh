@@ -15,9 +15,9 @@ az aks get-credentials \
     --name "${PROJECT}"-"${ENVIRONMENT}"-"${CLUSTER_NAME}"-"${SERVICE}" \
     --overwrite-existing
 
-# Non-admin kubeconfig authenticates via AAD exec plugin; kubelogin converts it to use the pipeline's service principal
-# client-id/tenant-id must be passed as flags (kubelogin only bakes these into the kubeconfig from flags or pre-existing
-# exec args, not from env vars); the secret is deliberately left out of the kubeconfig, read from AAD_SERVICE_PRINCIPAL_CLIENT_SECRET at token-fetch time
+# Use Azure Pipelines federation for sbox; retain SPN authentication for other environments.
+# SPN login embeds the client ID and tenant ID in kubeconfig and reads the client secret from
+# AAD_SERVICE_PRINCIPAL_CLIENT_SECRET when kubelogin requests a token.
 if [[ "${ENVIRONMENT}" == "sbox" ]]; then
     : "${SYSTEM_ACCESSTOKEN:?SYSTEM_ACCESSTOKEN is required}"
     : "${SYSTEM_OIDCREQUESTURI:?SYSTEM_OIDCREQUESTURI is required}"
