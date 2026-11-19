@@ -29,7 +29,7 @@ resources:
   repositories:
     - repository: cnp-azuredevops-libraries
       type: github
-      ref: refs/heads/master
+      ref: refs/heads/DTSPO-34417-update-oidc-checker-connection
       name: hmcts/cnp-azuredevops-libraries
       endpoint: "hmcts"
     - repository: cnp-flux-config
@@ -187,6 +187,7 @@ stages:
               keyvaultName: infra-vault-nonprod
               keyvaultSecret: "azure-devops-sp-token"
               serviceConnection: DCD-CFT-Sandbox-WIF
+              kvConnectedServiceName: DCD-CFT-Sandbox-WIF
               projectName: ${{ variables.project }}
               environment: sbox
 
@@ -448,6 +449,8 @@ stages:
               - template: steps/update-oidc-issuer-url.yaml@cnp-azuredevops-libraries
                 parameters:
                   serviceConnection: ${{ component.serviceConnection }}
+                  keyvaultServiceConnection: DTS-CFTPTL-INTSVC-WIF
+                  kvConnectedServiceName: DCD-CFT-Sandbox-WIF
                   environment: ${{ component.env }}
                   cluster: ${{ parameters.cluster }}
                   fluxConfigRepo: cnp-flux-config
