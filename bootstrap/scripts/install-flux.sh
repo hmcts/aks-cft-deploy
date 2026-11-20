@@ -86,8 +86,24 @@ function install_aso {
 
   # Wait for cert-manager to be ready
   echo "Waiting for cert-manager to be ready..." 
-  cert_manager_pod="$(kubectl get pod -n cert-manager --no-headers=true | awk '/cert-manager-webhook/{print $1}')"
-  wait_for_k8s_resource "pod" "$cert_manager_pod" "cert-manager" "Ready"
+  if ! cert_manager_pod_list="$(kubectl get pods -n cert-manager \
+    --field-selector=status.phase!=Succeeded \
+    --no-headers=true)"; then
+    echo "ERROR: Unable to list cert-manager pods." >&2
+    exit 1
+  fi
+
+  cert_manager_pods="$(printf '%s\n' "$cert_manager_pod_list" |
+    awk '$1 ~ /^cert-manager-webhook-/ {print $1}')"
+
+  if [[ -z "$cert_manager_pods" ]]; then
+    echo "ERROR: No active cert-manager webhook pods found." >&2
+    exit 1
+  fi
+
+  for pod in $cert_manager_pods; do
+    wait_for_k8s_resource "pod" "$pod" "cert-manager" "Ready"
+  done
   wait_for_k8s_resource "svc" "cert-manager-webhook" "cert-manager" ""
   wait_for_k8s_resource "mutatingwebhookconfiguration" "cert-manager-webhook" "" ""
 
