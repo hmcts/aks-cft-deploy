@@ -52,14 +52,14 @@ EOF
 ) > "${TMP_DIR}/admin/kustomization.yaml"
 
 # Apply
-    echo "Deploying aadPodIdentity - Applying manifest" 
+    echo "Deploying aadPodIdentity - Applying manifest"
     ./kustomize build "${TMP_DIR}/admin" |  kubectl apply -f - 2>&1 | filter_kubectl_warnings
-    
+
     CRDS="azureassignedidentities.aadpodidentity.k8s.io azureidentitybindings.aadpodidentity.k8s.io azureidentities.aadpodidentity.k8s.io azurepodidentityexceptions.aadpodidentity.k8s.io"
     for crd in $(echo "${CRDS}"); do
         kubectl -n flux-system wait --for condition=established --timeout=60s "customresourcedefinition.apiextensions.k8s.io/$crd"
     done
-    
+
     kubectl apply -f https://raw.githubusercontent.com/hmcts/cnp-flux-config/refs/heads/master/apps/admin/aad-pod-id/mic-exception.yaml 2>&1 | filter_kubectl_warnings
     kubectl apply -f https://raw.githubusercontent.com/hmcts/cnp-flux-config/refs/heads/master/apps/kube-system/aad-pod-id/mic-exception.yaml 2>&1 | filter_kubectl_warnings
 }
@@ -231,11 +231,16 @@ EOF
 # Main
 ############################################################
 
-mkdir -p "${TMP_DIR}"/{gotk,flux-config,aso,admin,cert-manager}
+if [ "${ENVIRONMENT}" == "sbox" ]; then
+  mkdir -p "${TMP_DIR}"/{gotk,flux-config,aso,cert-manager}
+else
+  mkdir -p "${TMP_DIR}"/{gotk,flux-config,aso,admin,cert-manager}
+fi
 
 install_kustomize
-# Legacy - for aadPodIdentity (some namespaces still using aadPodIdentity)
-install_aadpodidentity
+if [ "${ENVIRONMENT}" != "sbox" ]; then
+  install_aadpodidentity
+fi
 install_aso
 # Install flux components
 flux_github_app_secret

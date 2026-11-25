@@ -12,16 +12,17 @@ steps:
     serviceConnection: ${{ parameters.serviceConnection }}
     environment: ${{ parameters.environment }}
 
-- task: AzureCLI@2
-  displayName: 'Setup Authentication'
-  inputs:
-      azureSubscription: ${{ parameters.serviceConnection }}
-      addSpnToEnvironment: true
-      scriptType: bash
-      scriptLocation: inlineScript
-      failOnStandardError: 'true'
-      inlineScript: |
-        echo "##vso[task.setvariable variable=AZURE_MI_ID]$(az identity show --resource-group genesis-rg --name aks-${{ parameters.environment }}-mi --query="clientId" -o tsv)"
+- ${{ if ne(parameters.environment, 'sbox') }}:
+  - task: AzureCLI@2
+    displayName: 'Setup Authentication'
+    inputs:
+        azureSubscription: ${{ parameters.serviceConnection }}
+        addSpnToEnvironment: true
+        scriptType: bash
+        scriptLocation: inlineScript
+        failOnStandardError: 'true'
+        inlineScript: |
+          echo "##vso[task.setvariable variable=AZURE_MI_ID]$(az identity show --resource-group genesis-rg --name aks-${{ parameters.environment }}-mi --query="clientId" -o tsv)"
 
 - script: |
     wget -q https://github.com/Azure/kubelogin/releases/download/v0.2.19/kubelogin-linux-amd64.zip
