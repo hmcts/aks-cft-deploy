@@ -155,6 +155,7 @@ if curl --output /dev/null --silent --head --fail "${WI_FOLDER_CHECK}"; then
   "${TMP_DIR}/gotk" \
   "s|\${WI_CLUSTER}|$ENVIRONMENT-$CLUSTER_NAME|g" \
   "s|\${ENVIRONMENT}|$ENVIRONMENT|g" \
+  "s|\${CLUSTER}|$CLUSTER_NAME|g" \
   "s|\${ISSUER_URL}|$ISSUER_URL|g"
 else
   echo "Using shared workload-identity folder"
@@ -162,6 +163,7 @@ else
   "${TMP_DIR}/gotk" \
   "s|\${WI_CLUSTER}|$ENVIRONMENT-$CLUSTER_NAME|g" \
   "s|\${ENVIRONMENT}|$ENVIRONMENT|g" \
+  "s|\${CLUSTER}|$CLUSTER_NAME|g" \
   "s|\${ISSUER_URL}|$ISSUER_URL|g"
 fi
 
